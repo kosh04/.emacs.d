@@ -1,10 +1,8 @@
-;;; xyzzy.el --- Common-Lisp, SLIME, and xyzzy no subset
+;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの便利関数・キーマップをEmacsで使う
 
 ;; This file is NOT part of Emacs.
 
-;; Time-stamp: <2009-04-19T15:16:49>
-
-;; xyzzyの関数・キーマップをEmacsでも使いたい
+;; Time-stamp: <2009-04-19T19:50:58>
 
 ;; CLパッケージは関数をライブラリとして使用することは推奨されていない.
 ;; 代用するならloopマクロが考えられる
@@ -367,6 +365,8 @@
 (defvaralias 'make-backup-file-always 'delete-old-versions
   "番号が最後までいったら勝手に詰める") ; ?
 
+;; clear-undo-boundary
+
 ;; (list make-backup-files version-control kept-old-versions kept-new-versions 'pack-backup-file-name make-backup-file-always)
 
 ;;; @@Minibuffer
@@ -453,7 +453,7 @@
 (fset 'minor-mode-map #'current-minor-mode-maps)
 
 ;; MINOR-MODE-KEYMAPS LOCAL-KEYMAP GLOBAL-KEYMAPの順に優先されます。らしい
-;; 書き直し
+;; 後で書き直し
 ;; (where-is-internal 'describe-function) => ([f1 102] [help 102] [menu-bar help-menu describe describe-function])
 (defun command-keys (command global-keymap local-keymap &optional minor-mode-keymaps)
   (let (acc tmp)
@@ -605,7 +605,7 @@
 (defun autoload-function-p (def)
   (eq (car-safe (symbol-function def)) 'autoload))
 
-;;; @@Xyzzy
+;;; @@Xyzzy-only
 (defvar *kill-buffer-kills-scratch* nil
   "non-nilならば、kill-bufferで*scratch*が削除可能.")
 
@@ -673,6 +673,7 @@
 (autoload 'cl-prettyprint "cl-extra")
 (autoload 'cl-macroexpand-all "cl-extra")
 
+;; slime-macroexpand-1
 (defun elisp-macroexpand-1 (&optional repeatedly)
   (interactive "P")
   (let ((form (car (save-excursion
