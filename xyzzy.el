@@ -2,7 +2,7 @@
 
 ;; This file is NOT part of Emacs.
 
-;; Time-stamp: <2009-04-19T19:50:58>
+;; Time-stamp: <2009-04-23T18:05:58JST>
 
 ;; CLパッケージは関数をライブラリとして使用することは推奨されていない.
 ;; 代用するならloopマクロが考えられる
@@ -153,8 +153,15 @@
 (defadvice eval-last-sexp (before eval-safe activate)
   "ポイントがシンボルの途中でもエラーにならない eval-last-sexp"
   ;; 他のモードでも使えるようにスキップする文字を明示的にすべきかも
-  (skip-syntax-forward "w_"))
+  (with-syntax-table emacs-lisp-mode-syntax-table
+    (skip-syntax-forward "w_")))
 ;; (ad-deactivate 'eval-last-sexp)
+
+;; (defvaralias 'hoge 'load-in-progress)
+
+;; (defun  mc-load-file (filename &optional encoding)
+;;   (load-with-code-conversion ))
+;; set-auto-coding-for-load
 
 ;;; @@Input/Output
 (defun princ-to-string (object &optional stream)
@@ -201,7 +208,7 @@
 ;; (pathname-directory "~/lib/emacs/") => ("home" "lxuser" "lib" "emacs")
 (defun pathname-directory (pathname)
   (let ((dir (split-string (file-name-directory (expand-file-name pathname))
-                           "/" 'rmit-nulls)))
+                           "/" 'omit-nulls)))
     (if (string-match "^[A-Za-z]:$" (car dir)) ; trim Device
         (cdr dir)
         dir)))
@@ -217,6 +224,12 @@
     (if (or (null x)
             (not (string-equal (car x) (car y))))
         (return nil))))
+
+;; (defun sub-directory-p (dir parent)
+;;   (let ((case-fold-search t))
+;;     (string-match (concat "^" (regexp-quote
+;;                                (file-name-as-directory parent)))
+;;                   (file-name-as-directory dir))))
 
 ;; シンボリックリンク考慮なし
 (defun path-equal (pathname1 pathname2)
@@ -244,6 +257,10 @@
       (concat (expand-file-name pathname) "c")
       (concat (expand-file-name pathname) ".elc")))
 
+;; (defun compile-file-pathname (pathname)
+;;   (require 'bytecomp)
+;;   (byte-compile-dest-file pathname))
+
 (defun file-length (pathname)
   "Return PATHNAME size in bytes."
   (nth 7 (file-attributes pathname)))
@@ -258,23 +275,20 @@
 (defun move-previous-window (&optional arg)
   (interactive "p")
   (other-window (- arg)))
-(global-set-key "\C-xp" 'move-previous-window)
+;; (global-set-key "\C-xp" 'move-previous-window)
 
 (defun get-window-start-line ()
   (or (line-number-at-pos (window-start))
       (save-excursion
         (move-to-window-line 0)
         (line-number-at-pos))
-      (if (pos-visible-in-window-p (point-min))
-          1
-          (save-excursion (while (pos-visible-in-window-p)
-                            (line-move -1))
-                          (1+ (line-number-at-pos))))))
+      ))
 
 (defun get-window-line (&optional window)
   "ウィンドウのカーソルの表示行を返します. [zero-origin]"
   ;; posn-col-row ?
-  (cdr (posn-actual-col-row (posn-at-point (point) window))))
+  (cdr (posn-actual-col-row (posn-at-point (point) window)))
+  )
 
 ;; window-height はモードラインとヘッダとミニバッファと何を含む？
 ;; (- (window-height) (window-body-height))
@@ -309,8 +323,8 @@
   (other-window -1)
   (scroll-window -2))
 
-(global-set-key [S-C-down] 'scroll-up-both-window) ; #\S-C-Down
-(global-set-key [S-C-up] 'scroll-down-both-window) ; #\S-C-Up
+;; (global-set-key [S-C-down] 'scroll-up-both-window) ; #\S-C-Down
+;; (global-set-key [S-C-up] 'scroll-down-both-window) ; #\S-C-Up
 
 (put 'scroll-left 'disabled nil)        ; C-x <
 ;; (put 'scroll-right 'disabled nil)       ; C-x >
@@ -360,6 +374,21 @@
       (if (string-match regexp (buffer-name b))
           (push b acc)))
     (nreverse acc)))
+
+;; 0:LF(unix) 1:CRLF(dos) 2:CR(mac)
+;; バッファのエンコードで改行コードが指定されてない場合はあるのか？
+(defun buffer-eol-code (&optional buffer)
+  (with-current-buffer (or buffer (current-buffer))
+    (coding-system-eol-type buffer-file-coding-system)))
+
+(defun change-eol-code (&optional arg)
+  (interactive "p")
+  (set-buffer-file-coding-system
+   (or arg
+       (case (buffer-eol-code)
+         (0  'dos)
+         (1  'mac)
+         (t  'unix)))))
 
 ;; optporop.l backup.l
 (defvaralias 'make-backup-file-always 'delete-old-versions
@@ -466,24 +495,28 @@
       (dolist (x tmp) (pushnew x acc :test #'equalp)))
     (nreverse acc)))
 
-(dolist (key '(?\C-1 ?\C-2 ?\C-3 ?\C-4 ?\C-5 ?\C-6 ?\C-7 ?\C-8 ?\C-9 ?\C-0))
-  (and (eq (lookup-key global-map (vector key)) 'digit-argument)
-       (global-unset-key (vector key))))
-(dolist (keymap (list lisp-mode-map
-                      lisp-interaction-mode-map
-                      emacs-lisp-mode-map
-                      ;; lisp-mode-shared-map
-                      ;; ielm-map
-                      ))
-  (define-key keymap "\C-m" 'newline-and-indent))
-(global-set-key "\M-p" 'repeat-complex-command)
-(global-set-key "\C-z" 'scroll-down)
-(global-set-key "\C-xa" 'set-variable)
-(global-set-key "\C-x\C-c" 'iconify-or-deiconify-frame)
-(global-set-key "\C-x\C-z" 'shrink-window)
-(define-key esc-map "\C-h" 'backward-kill-word) ; [?\C-\M-h]
+;; -> (require 'xyzzy-keymap)
+;; (dolist (key '(?\C-1 ?\C-2 ?\C-3 ?\C-4 ?\C-5 ?\C-6 ?\C-7 ?\C-8 ?\C-9 ?\C-0))
+;;   (and (eq (lookup-key global-map (vector key)) 'digit-argument)
+;;        (global-unset-key (vector key))))
+;; (dolist (keymap (list lisp-mode-map
+;;                       lisp-interaction-mode-map
+;;                       emacs-lisp-mode-map
+;;                       ;; lisp-mode-shared-map
+;;                       ;; ielm-map
+;;                       ))
+;;   (define-key keymap "\C-m" 'newline-and-indent))
+;; (global-set-key "\M-p" 'repeat-complex-command)
+;; (global-set-key "\C-z" 'scroll-down)
+;; (global-set-key "\C-xa" 'set-variable)
+;; (global-set-key "\C-x\C-c" 'iconify-or-deiconify-frame)
+;; (global-set-key "\C-x\C-z" 'shrink-window)
+;; (define-key esc-map "\C-h" 'backward-kill-word) ; [?\C-\M-h] (kbd "C-M-h")
 
-(global-set-key [M-f4] 'kill-emacs)
+;; (global-set-key [M-f4] 'kill-emacs)
+
+;; (global-set-key "\C-h" 'delete-backward-char)
+;; (define-key isearch-mode-map "\C-h" 'isearch-delete-char)
 
 ;;; @@Text
 ;; あってないかも
@@ -508,6 +541,9 @@
   (decode-coding-region p1 p2 encoding))
 
 (fset 'detect-char-encoding #'detect-coding-string) ; ?
+
+;; クリップボードエンコーディング
+;; (set-selection-coding-system)
 
 ;;; @@Search, Regexp
 (fset 'ed::protect-match-data 'save-match-data)
@@ -543,6 +579,13 @@
 (defun stop-all-timers () (mapc #'cancel-timer timer-list))
 
 ;;; @@Menu
+;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=mouse%20click
+(defun bingalls-edit-menu (event)
+  "右クリックでメニュー"
+  (interactive "e")
+  (popup-menu menu-bar-edit-menu))
+;; (global-unset-key [down-mouse-3])
+;; (global-set-key [mouse-3] 'bingalls-edit-menu)
 
 ;;; @@Filer
 ;;; filer [xyzzy] <-> dired [emacs]
@@ -565,29 +608,44 @@
         ((looking-at "[])}]")
          (forward-char) (backward-sexp))
         (t nil)))
-(global-set-key [?\M-\]] 'goto-matched-parenthesis)
+;; (global-set-key [?\M-\]] 'goto-matched-parenthesis)
 
 (defun current-line-number ()
   (line-number-at-pos (point)))
 
-(defun goto-bol () (goto-char (line-beginning-position)))
-(defun goto-eol () (goto-char (line-end-position)))
+(defun goto-bol ()
+  (or (beginning-of-line 1)
+      (goto-char (line-beginning-position))))
+
+(defun goto-eol ()
+  (or (end-of-line 1)
+      (goto-char (line-end-position))))
 
 ;;; @@Process
+(defmacro with-setenv (environ &rest body)
+  ;; 変数値を共有すると元の変更が#1#にも及ぶのみたいなので、シーケンスのコピーで回避
+  `(let ((#1=#:oenviron (copy-sequence process-environment)))
+     (unwind-protect
+          (progn
+            (mapc (lambda (x) (setenv (car x) (cdr x))) ,environ)
+            ,@body)
+       (setq process-environment #1#))))
+
 ;; 試してません
 (defun execute-subprocess (cmd &optional arg bufname environ directory)
-  (let ((process-environment (append (mapcar #'(lambda (env)
-                                                 (format "%s=%s" (car env) (cdr env)))
-                                             environ)
-                                     process-environment))
-        (default-directory (or directory default-directory)))
-    (setq bufname (or bufname"*Command Output*"))
-    (start-process-shell-command "Shell" bufname cmd arg)
-    (get-buffer bufname)))
+  (interactive "s& ")
+  (let ((default-directory (or directory default-directory)))
+    (with-setenv environ
+      (shell-command cmd bufname shell-command-default-error-buffer))))
 
 ;;; @@System
 (defun find-load-path (filename)
   (locate-library filename))
+
+;; (fset 'dump-xyzzy #'dump-emacs)
+;; si:dump-image-path
+
+;; (fset 'start-xyzzy-server #'server-start)
 
 ;;; @@Misc
 (fset 'modulep #'featurep)
@@ -604,6 +662,16 @@
 
 (defun autoload-function-p (def)
   (eq (car-safe (symbol-function def)) 'autoload))
+
+;; ? next-selection-coding-system
+(defvaralias '*clipboard-char-encoding* 'selection-coding-system
+  "クリップボードエンコーディング")
+(fset 'change-clipboard-encoding #'set-clipboard-coding-system)
+
+;; エンコードを指定してファイルの読み込み
+(defvaralias '*expected-fileio-encoding* 'coding-system-for-read)
+
+(fset 'char-encoding-p #'coding-system-p)
 
 ;;; @@Xyzzy-only
 (defvar *kill-buffer-kills-scratch* nil
@@ -708,15 +776,19 @@
   (interactive)
   (elisp-macroexpand-1 t))
 
-(dolist (keymap (list emacs-lisp-mode-map
-                      lisp-interaction-mode-map                      
-                      ;; ielm-map
-                      ))
-  (define-key keymap "\C-c\C-m" 'elisp-macroexpand-1)
-  (define-key keymap "\C-c\M-m" 'elisp-macroexpand-all)
-  (define-key keymap "\C-ch" 'info-lookup-symbol))
+;; (dolist (keymap (list emacs-lisp-mode-map
+;;                       lisp-interaction-mode-map                      
+;;                       ;; ielm-map
+;;                       ))
+;;   (define-key keymap "\C-c\C-m" 'elisp-macroexpand-1)
+;;   (define-key keymap "\C-c\M-m" 'elisp-macroexpand-all)
+;;   (define-key keymap "\C-ch" 'info-lookup-symbol))
 
 ;; だめ
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
+
+;;; Local Variables:
+;;; coding: utf-8
+;;; End:
 
 ;;; xyzzy.el ends here
