@@ -1,8 +1,8 @@
-;;; -*- mode: Lisp-Interaction -*-
-;;; Emacsê—pƒƒ‚
+;;; -*- mode: lisp-interaction; coding: utf-8 -*-
+;;; Emacså°‚ç”¨ãƒ¡ãƒ¢
 
-;;; •¶š(ƒL[)‚Ì•\Œ»•û–@FX
-;;; *** Šî–{‚ÍƒxƒNƒ^
+;;; æ–‡å­—(ã‚­ãƒ¼)ã®è¡¨ç¾æ–¹æ³•è‰²ã€…
+;;; *** åŸºæœ¬ã¯ãƒ™ã‚¯ã‚¿
 ?h                                      ; 104
 [?h]                                    ; [104]
 ?\C-h                                   ; 8
@@ -23,13 +23,13 @@
 
 (every #'char-valid-p '(0 1 2 254 255)) ; t
 
-;;; Ctrl-H ‚ğ‘O1•¶šíœ‚É•ÏX
+;;; Ctrl-H ã‚’å‰1æ–‡å­—å‰Šé™¤ã«å¤‰æ›´
 (keyboard-translate ?\^h ?\177)
 (keyboard-translate ?\^h 'backspace)
 (keyboard-translate ?\C-h ?\C-?)
 (load-library "keyswap")
 
-;;; C-h ‚Æ BS ‚ª“¯‚¶‹““®‚É‚È‚é
+;;; C-h ã¨ BS ãŒåŒã˜æŒ™å‹•ã«ãªã‚‹
 (global-set-key [backspace] 'backward-delete-char)
 (keyboard-translate ?\C-h 'backspace)
 (global-set-key [delete] 'delete-char)
@@ -40,33 +40,33 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 ;; isearch
 (define-key isearch-mode-map "\C-k" 'isearch-edit-string)
 
-;; ls ‚Ìo—Í‚ğ‰pŒê‚É‚·‚é "$ LANG=C ls"
-;; <on cygwin> ÀsŒã‚à LANG ‚ª•ÏX‚³‚ê‚½‚Ü‚Ü
+;; ls ã®å‡ºåŠ›ã‚’è‹±èªã«ã™ã‚‹ "$ LANG=C ls"
+;; <on cygwin> å®Ÿè¡Œå¾Œã‚‚ LANG ãŒå¤‰æ›´ã•ã‚ŒãŸã¾ã¾
 '(add-hook 'dired-mode-hook
            '(lambda ()
               (make-local-variable 'process-environment)
               (setenv "LANG" "C")))
 
-;;; EmacsHelp‚ÌŒÄ‚Ño‚µ (help-command‚ÍF1‚©‚ç‚àŒÄ‚Ño‚¹‚é)
+;;; EmacsHelpã®å‘¼ã³å‡ºã— (help-commandã¯F1ã‹ã‚‰ã‚‚å‘¼ã³å‡ºã›ã‚‹)
 (global-set-key "\C-c\C-h" 'help-command)
 (global-set-key "\M-?" 'help-command)
 
 ;;; fill
-(setq paragraph-start '"^\\([ @E›<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
+(setq paragraph-start '"^\\([ ã€€ãƒ»â—‹<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
 
-;;; ’[––‚©‚ç‹N“®‚µ‚½ (emacs -nw) ‚Éƒƒjƒ…[ƒo[‚ğÁ‚·
+;;; ç«¯æœ«ã‹ã‚‰èµ·å‹•ã—ãŸæ™‚ (emacs -nw) ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ã‚’æ¶ˆã™
 (if window-system (menu-bar-mode 1) (menu-bar-mode -1))
 
-;;; ‘SŠp‹ó”’‚Æ‚©‰üs‚Æ‚©ƒ^ƒu‚ğ‹­’²•\¦
+;;; å…¨è§’ç©ºç™½ã¨ã‹æ”¹è¡Œã¨ã‹ã‚¿ãƒ–ã‚’å¼·èª¿è¡¨ç¤º
 (require 'jaspace)
 (autoload 'jaspace-mode-on "jaspace" nil t)
 (setq jaspace-mode '(c-mode))
-(setq jaspace-alternate-jaspace-string " ")
+(setq jaspace-alternate-jaspace-string "â–¡")
 (if window-system
     (setq jaspace-alternate-eol-string "\xab\n"))
 (setq jaspace-highlight-tabs ?^)	; use ^ as a tab marker
 
-;;; s––‚Ì–³‘Ê‚È‹ó”’•¶š‚ğ•\¦
+;;; è¡Œæœ«ã®ç„¡é§„ãªç©ºç™½æ–‡å­—ã‚’è¡¨ç¤º
 (setq-default show-trailing-whitespace t)
 (set-face-background 'trailing-whitespace "plum") ;;"SteelBlue")
 ;; (set-face-underline 'trailing-whitespace t)
@@ -79,12 +79,12 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
   (setq show-trailing-whitespace nil))
 (add-hook 'shell-mode-hook 'turn-off-show-trailing-whitespace)
 
-;; mew ‚©‚ç”qØ‚µ‚½(‚ç‚µ‚¢)
+;; mew ã‹ã‚‰æ‹å€Ÿã—ãŸ(ã‚‰ã—ã„)
 (defvar cfirchat-url-regexp
   "\\b\\(s?https?\\|ftp\\|file\\|gopher\\|news\\|telnet\\|wais\\|mailto\\):\\(//[-a-zA-Z0-9_.]+:[0-9]*\\)?[-a-zA-Z0-9_=?#$@~`%&*+|\\/.,]*[-a-zA-Z0-9_=#$@~`%&*+|\\/]"
-  "* URL ‚Éƒ}ƒbƒ`‚·‚é³‹K•\Œ»")
+  "* URL ã«ãƒãƒƒãƒã™ã‚‹æ­£è¦è¡¨ç¾")
 
-;; ƒJ[ƒ\ƒ‹ˆÊ’u‚Ìface‚ğ’²‚×‚éŠÖ”
+;; ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®faceã‚’èª¿ã¹ã‚‹é–¢æ•°
 (defun describe-face-at-point()
   "Return facce used at point."
   (interactive)
@@ -92,51 +92,51 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 
 (global-set-key "\M-g" 'goto-line)
 
-;;; shell-mode ‚Å‚ÍƒpƒXƒ[ƒh‚ğ•\¦‚µ‚È‚¢
-;;; ‘½•ªƒfƒtƒHƒ‹ƒg
+;;; shell-mode ã§ã¯ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’è¡¨ç¤ºã—ãªã„
+;;; å¤šåˆ†ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
 (add-hook 'comint-output-filter-functions
 	  'comint-watch-for-password-prompt)
 
-;;; ƒŠƒhƒD (ƒAƒ“ƒhƒD‚ÌƒAƒ“ƒhƒD)
+;;; ãƒªãƒ‰ã‚¥ (ã‚¢ãƒ³ãƒ‰ã‚¥ã®ã‚¢ãƒ³ãƒ‰ã‚¥)
 ;;; http://www.fan.gr.jp/~ring/Meadow/elisp/redo.el
 (require 'redo)
 (global-set-key [?\C-_] 'redo)
 
-;;; ƒ}ƒEƒX‚É”½‰
+;;; ãƒã‚¦ã‚¹ã«åå¿œ
 (define-key global-map [mouse-4] 'scroll-down)
 (define-key global-map [mouse-5] 'scroll-up)
 (mwheel-install)
 (setq mouse-wheel-follow-mouse t)
 
-;; ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚Ì•Û‘¶êŠ‚ğw’è
-;; ~/emacs_backup ƒfƒBƒŒƒNƒgƒŠ‚É•Û‘¶
+;; ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜å ´æ‰€ã‚’æŒ‡å®š
+;; ~/emacs_backup ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ä¿å­˜
 (setq make-backup-files t)
 (setq backup-directory-alist
       (cons (cons "\\.*$" (expand-file-name "~/emacs_backup"))
             backup-directory-alist))
 
-;; F•t‚¯‚ÉŠÖ‚µ‚Ä (22‚È‚ç 'jit-lock-mode ‚ªƒfƒtƒH 'lazy-lock-mode)
+;; è‰²ä»˜ã‘ã«é–¢ã—ã¦ (22ãªã‚‰ 'jit-lock-mode ãŒãƒ‡ãƒ•ã‚© 'lazy-lock-mode)
 (setq font-lock-support-mode 'fast-lock-mode)
 
-;;; ƒoƒbƒtƒ@ŠÔˆÚ“®
+;;; ãƒãƒƒãƒ•ã‚¡é–“ç§»å‹•
 (global-set-key [?\C-x ?\C-.] 'next-buffer)
 (global-set-key [?\C-x ?\C-,] 'previous-buffer)
 
-;;; —~’£‚è‚È kill-line (‹ó”’‚¾‚¯‚Ìs‚Í‰üs‚à‚Â‚¢‚Å‚Éíœ‚·‚é)
+;;; æ¬²å¼µã‚Šãª kill-line (ç©ºç™½ã ã‘ã®è¡Œã¯æ”¹è¡Œã‚‚ã¤ã„ã§ã«å‰Šé™¤ã™ã‚‹)
 (setq kill-whole-line t)
 
-;;; ƒJ[ƒ\ƒ‹‚æ‚è‘O‚Ì•”•ª‚àŠÜ‚ß‚ÄƒJƒbƒg (vi‚Ìdd)
+;;; ã‚«ãƒ¼ã‚½ãƒ«ã‚ˆã‚Šå‰ã®éƒ¨åˆ†ã‚‚å«ã‚ã¦ã‚«ãƒƒãƒˆ (viã®dd)
 (global-set-key "\M-k" 'kill-whole-line)
 
-;; ;;; kill-ring ‚ÍƒeƒLƒXƒg‘®«‚ğ•Û‘¶‚µ‚È‚­‚Ä‚¢‚¢ (–¢Š®¬)
+;; ;;; kill-ring ã¯ãƒ†ã‚­ã‚¹ãƒˆå±æ€§ã‚’ä¿å­˜ã—ãªãã¦ã„ã„ (æœªå®Œæˆ)
 ;; (defadvice kill-new (around my-kill-ring-disable-text-property activate)
 ;;   (let ((new (ad-get-arg 0)))
 ;;     (set-text-properties 0 (length new) nil new)
 ;;     ad-do-it))
 
-;;; M-x: what-cursor-position (C-x =): ƒJ[ƒ\ƒ‹ˆÊ’u‚Ìî•ñ
+;;; M-x: what-cursor-position (C-x =): ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®æƒ…å ±
 
-;;; ƒJ[ƒlƒ‹•ÒW—p C-mode
+;;; ã‚«ãƒ¼ãƒãƒ«ç·¨é›†ç”¨ C-mode
 (defun linux-c-mode ()
   "C mode with adjusted defaults for use with the Linux kernel"
   (interactive)
@@ -152,18 +152,18 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 (setq auto-mode-alist (cons '("/usr/src/linux.*/.*\\.[ch]$" . linux-c-mode)
                             auto-mode-alist))
 
-;;; ƒK[ƒxƒWƒRƒŒƒNƒg‚Ì‰ñ”‚ğŒ¸‚ç‚· (ƒfƒtƒH‚Í 4000000)
+;;; ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ãƒˆã®å›æ•°ã‚’æ¸›ã‚‰ã™ (ãƒ‡ãƒ•ã‚©ã¯ 4000000)
 (setq gc-cons-threshold 5000000)
 
-;;; mode-info --- ŠÖ”E•Ï”‚Ìà–¾•¶‚ğQÆ‚·‚éƒRƒ}ƒ“ƒh
-;;; Emacs lisp / C / Perl / Ruby ‚Ìƒ}ƒjƒ…ƒAƒ‹‚ğ•Ö—˜‚É
+;;; mode-info --- é–¢æ•°ãƒ»å¤‰æ•°ã®èª¬æ˜æ–‡ã‚’å‚ç…§ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
+;;; Emacs lisp / C / Perl / Ruby ã®ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã‚’ä¾¿åˆ©ã«
 ;;; http://namazu.org/~tsuchiya/elisp/mode-info.html
 
-;;; ƒ‚[ƒh–¼‚ğ‚à‚Á‚Æ’Z‚­
+;;; ãƒ¢ãƒ¼ãƒ‰åã‚’ã‚‚ã£ã¨çŸ­ã
 (add-hook 'emacs-lisp-mode-hook
           #'(lambda () (setq mode-name "Elisp")))
 
-;;; •¨—sˆÚ“®
+;;; ç‰©ç†è¡Œç§»å‹•
 (defun previous-window-line (n)
   (interactive "p")
   (let ((cur-col
@@ -185,22 +185,22 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 (global-set-key [up] 'previous-window-line)
 (global-set-key [down] 'next-window-line)
 
-;;; ³‹K•\Œ»‚ğŠm”F‚µ‚È‚ª‚çì¬ (M-x: re-builder)
+;;; æ­£è¦è¡¨ç¾ã‚’ç¢ºèªã—ãªãŒã‚‰ä½œæˆ (M-x: re-builder)
 (require 're-builder)
 
-;;; Œ»İ‚ÌŠÖ”–¼‚ğƒ‚[ƒhƒ‰ƒCƒ“‚É•\¦
+;;; ç¾åœ¨ã®é–¢æ•°åã‚’ãƒ¢ãƒ¼ãƒ‰ãƒ©ã‚¤ãƒ³ã«è¡¨ç¤º
 (which-function-mode t)
 
 ;;; M-x: cusomize-apropos
 
-;;; “¯ˆêƒtƒ@ƒCƒ‹–¼‚Ìƒoƒbƒtƒ@–¼‚ğ•ª‚©‚è‚â‚·‚­
-;;; •Ğ•û‚Ìƒoƒbƒtƒ@‚ğÁ‚·‚Æ‚«–³‘Ê‚Èƒoƒbƒtƒ@‚ªc‚é
+;;; åŒä¸€ãƒ•ã‚¡ã‚¤ãƒ«åã®ãƒãƒƒãƒ•ã‚¡åã‚’åˆ†ã‹ã‚Šã‚„ã™ã
+;;; ç‰‡æ–¹ã®ãƒãƒƒãƒ•ã‚¡ã‚’æ¶ˆã™ã¨ãç„¡é§„ãªãƒãƒƒãƒ•ã‚¡ãŒæ®‹ã‚‹
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "*[^*]+*")
 
-;;; ƒJƒ‰ƒtƒ‹‚È diff M-x: ediff-files
-;;; Šù‚ÉŠJ‚¢‚Ä‚¢‚éƒtƒ@ƒCƒ‹(ƒoƒbƒtƒ@)“¯m‚Ådiff‚ğæ‚é‚É‚Í M-x: ediff-buffers
+;;; ã‚«ãƒ©ãƒ•ãƒ«ãª diff M-x: ediff-files
+;;; æ—¢ã«é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«(ãƒãƒƒãƒ•ã‚¡)åŒå£«ã§diffã‚’å–ã‚‹ã«ã¯ M-x: ediff-buffers
 
 (when window-system
   (global-set-key [(f9)]
@@ -208,18 +208,18 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
                       (interactive)
                       (manual-entry (current-word)))))
 
-;;; (point) ã‚Ì’PŒê‚ğŒ©‚Â‚¯‚é
+;;; (point) ä¸Šã®å˜èªã‚’è¦‹ã¤ã‘ã‚‹
 (current-word)
 (thing-at-point 'word)
 
-;;; cygwin ‚Ì man ‚ª•¶š‰»‚¯‚µ‚Ä‚¢‚½Œ´ˆö
-;;;;;  </lisp/man.el>ŠÖ” Man-getpage-in-background 744s–Ú‚ ‚½‚è
+;;; cygwin ã® man ãŒæ–‡å­—åŒ–ã‘ã—ã¦ã„ãŸåŸå› 
+;;;;;  </lisp/man.el>é–¢æ•° Man-getpage-in-background 744è¡Œç›®ã‚ãŸã‚Š
 ;; ;; (let (...
 ;; ;;       (coding-system-for-read
 ;; ;;        (if default-enable-multibyte-characters
 ;; ;; 	         locale-coding-system 'raw-text-unix))
 ;; ;;       ...))
-;;; ‚¤‚¿‚ÌŠÂ‹«‚Í locale-coding-system => cp392 ‚¾‚Á‚½
+;;; ã†ã¡ã®ç’°å¢ƒã¯ locale-coding-system => cp392 ã ã£ãŸ
 ;; (defadvice man (around man-pages-ja activate)
 ;;   (let ((locale-coding-system
 ;; 	 (read-coding-system
@@ -227,20 +227,20 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 ;; 	  'japanese-iso-8bit)))
 ;;     ad-do-it))
 
-;;; ‚æ‚»‚ÌƒEƒBƒ“ƒhƒE‚ÉƒJ[ƒ\ƒ‹‚ğ•\¦‚µ‚È‚¢
-;;; ‘¼‚Ìƒ‰ƒCƒuƒ‰ƒŠ‚ªã‘‚«‚µ‚Ä‚é‚©‚à
+;;; ã‚ˆãã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã‚«ãƒ¼ã‚½ãƒ«ã‚’è¡¨ç¤ºã—ãªã„
+;;; ä»–ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒä¸Šæ›¸ãã—ã¦ã‚‹ã‹ã‚‚
 (setq cursor-in-non-selected-windows nil)
 
-;;; ƒ}ƒEƒX‚ÌˆÊ’u‚Å‚È‚­AƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚Éƒy[ƒXƒg‚·‚é
+;;; ãƒã‚¦ã‚¹ã®ä½ç½®ã§ãªãã€ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã«ãƒšãƒ¼ã‚¹ãƒˆã™ã‚‹
 (setq mouse-yank-at-point t)
 
-;; Shift+ƒJ[ƒ\ƒ‹‚ÅƒŠ[ƒWƒ‡ƒ“‘I‘ğ
+;; Shift+ã‚«ãƒ¼ã‚½ãƒ«ã§ãƒªãƒ¼ã‚¸ãƒ§ãƒ³é¸æŠ
 (pc-selection-mode)
 
-;;; (Meadow‚Å‚ÍƒGƒ‰[) setq: Spawning child process: exec format error
+;;; (Meadowã§ã¯ã‚¨ãƒ©ãƒ¼) setq: Spawning child process: exec format error
 ;; (setq exec-suffixes '(".exe" ".sh" ".pl"))
 
-;; ƒNƒI[ƒg‚ÅƒRƒƒ“ƒgƒAƒEƒg‚µ‚½S®‚ÍƒRƒƒ“ƒg‚ÌF‚É‚·‚é
+;; ã‚¯ã‚ªãƒ¼ãƒˆã§ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã—ãŸSå¼ã¯ã‚³ãƒ¡ãƒ³ãƒˆã®è‰²ã«ã™ã‚‹
 (defun elisp-font-lock-top-quote (limit)
   (when (re-search-forward "^' *(" limit t)
     (forward-char -1)
@@ -253,13 +253,13 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 ;; http://www.emacswiki.org/cgi-bin/emacs/download/blank-mode.el
 ;; http://www.emacswiki.org/elisp/show-wspace.el
 
-;; –³ŒÀƒ‹[ƒv‚É‚È‚é‚©‚à‚µ‚ê‚È‚¢‚æ
+;; ç„¡é™ãƒ«ãƒ¼ãƒ—ã«ãªã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã‚ˆ
 (defun kitaa ()
   (interactive)
-  (let ((kita-list '("ßÍß" " ßÍ" "   ß" "    " "ß   " "Íß " "ßÍß")))
+  (let ((kita-list '("ï¾Ÿâˆ€ï¾Ÿ" " ï¾Ÿâˆ€" "   ï¾Ÿ" "    " "ï¾Ÿ   " "âˆ€ï¾Ÿ " "ï¾Ÿâˆ€ï¾Ÿ")))
     (while t
       (dolist (kao kita-list)
-        (message "·À„ª„ª„ª(%s)„ª„ª„ª!!!!" kao)
+        (message "ï½·ï¾€â”â”â”(%s)â”â”â”!!!!" kao)
         (sit-for .1)))))
 
 (system-name)                           ; "YOUR-D1BE424ADF"
@@ -274,7 +274,7 @@ temporary-file-directory                ; "c:/tmp/"
 (defun windows-p ()
   (if (memq system-type '(ms-dos windows-nt)) t nil))
 
-;; etags g‚Á‚½‚±‚Æ‚È‚¢
+;; etags ä½¿ã£ãŸã“ã¨ãªã„
 (defun make-tags-file (dir)
   (interactive "DMake TAGS file: ")
   (declare (ignore dir))
@@ -282,7 +282,7 @@ temporary-file-directory                ; "c:/tmp/"
                   "%s *.el --output=TAGS"
                   (expand-file-name "etags.exe" exec-directory))))
 
-;; `;' ‚Æ‚© `{' ‚ğ“ü—Í‚·‚é‚Æ‚Æ©“®“I‚É‰üs‚³‚ê‚é
+;; `;' ã¨ã‹ `{' ã‚’å…¥åŠ›ã™ã‚‹ã¨ã¨è‡ªå‹•çš„ã«æ”¹è¡Œã•ã‚Œã‚‹
 (c-toggle-auto-newline)                 ; C-c C-a
 
 (key-description "\C-x \M-y \n \t \r \f123")
@@ -307,12 +307,12 @@ temporary-file-directory                ; "c:/tmp/"
   (sleep-for 0.5)
   (slime-connect "127.0.0.1" 4005))
 
-;;; CLISP‚²‚Á‚½Ï2.46‚Ìİ’è
+;;; CLISPã”ã£ãŸç…®2.46ã®è¨­å®š
 (progn
 (add-to-list 'load-path "c:/usr/local/clisp-2.46-full/lib/slime")
 (load-library "slime")
 (slime-setup '(slime-scratch slime-fancy inferior-slime))
-(setq slime-net-coding-system 'utf-8-unix) ; “ú–{Œê‚ğg‚¢‚½‚¢
+(setq slime-net-coding-system 'utf-8-unix) ; æ—¥æœ¬èªã‚’ä½¿ã„ãŸã„
 (setq slime-lisp-implementations
       '((clisp ("C:/usr/local/clisp-2.44/clisp.exe" "-K full"
                 "-Efile utf-8" "-on-error debug" "-I"))
@@ -325,7 +325,7 @@ temporary-file-directory                ; "c:/tmp/"
 (define-key slime-repl-mode-map [(control ?c) (control ?c)] 'slime-quit-lisp)
 (require 'hyperspec)
 (global-set-key "\C-cH" 'hyperspec-lookup)
-;; CLISP ‚²‚Á‚½Ï
+;; CLISP ã”ã£ãŸç…®
 (load-library "clisp-olio")
 )
 
@@ -337,7 +337,7 @@ temporary-file-directory                ; "c:/tmp/"
     (save-excursion (slime))))
 (add-hook 'slime-mode-hook 'cliki:start-slime)
 
-;;; terminal-coding-system ‚ª utf-8 ‚ğ•Ô‚µ‚½‚ç utf-8 ‚Èİ’è‚É‚·‚é
+;;; terminal-coding-system ãŒ utf-8 ã‚’è¿”ã—ãŸã‚‰ utf-8 ãªè¨­å®šã«ã™ã‚‹
 (labels ((set-coding-system (c)
            (set-default-coding-systems c)
            (set-terminal-coding-system c)
@@ -350,17 +350,17 @@ temporary-file-directory                ; "c:/tmp/"
                                        )))
                          'utf-8)))
 
-;; ƒ‰ƒ€ƒ_®‚Ì”äŠr
+;; ãƒ©ãƒ ãƒ€å¼ã®æ¯”è¼ƒ
 (equal #'(lambda (x) (+ x x))
        #'(lambda (x) (+ x x)))          ; t
 
 
 ;;; @@Encoding
 
-;;; ”ñASCII•¶š -- GNU Emacs LispƒŠƒtƒ@ƒŒƒ“ƒXƒ}ƒjƒ…ƒAƒ‹
+;;; éASCIIæ–‡å­— -- GNU Emacs Lispãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ãƒãƒ‹ãƒ¥ã‚¢ãƒ«
 ;;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_33.html
 
-;; ƒGƒ“ƒR[ƒhŠÖ”E•Ï” ‚½‚Ô‚ñ‚Ü‚¾‚ ‚é
+;; ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰é–¢æ•°ãƒ»å¤‰æ•° ãŸã¶ã‚“ã¾ã ã‚ã‚‹
 ;; mule{,cmds}.el
 mule-keymap
 universal-coding-system-argument (C-x RET c)
@@ -384,23 +384,23 @@ default-terminal-coding-system                        ; japanese-shift-jis
 (default-value 'buffer-file-coding-system)            ; japanese-shift-jis
 
 (coding-system-base 'utf-8)                           ; mule-utf-8
-(detect-coding-string "ã“ã°ã‚„ã—")                 ; (iso-latin-1 emacs-mule raw-text no-conversion)
-(detect-coding-string (encode-coding-string "‚±‚Î‚â‚µ" 'utf-8)) ; (japanese-shift-jis mule-utf-8 raw-text no-conversion)
-(detect-coding-string "‚±‚Î‚â‚µ") ; (japanese-shift-jis iso-latin-1 emacs-mule raw-text no-conversion)
-(find-coding-systems-string "‚±‚Î‚â‚µ")
-(find-charset-string "abc‚Ù‚°")         ; (ascii japanese-jisx0208)
+(detect-coding-string "ç¸ºè–™ï¿½ç¹§ï¿½ï¼ ")                 ; (iso-latin-1 emacs-mule raw-text no-conversion)
+(detect-coding-string (encode-coding-string "ã“ã°ã‚„ã—" 'utf-8)) ; (japanese-shift-jis mule-utf-8 raw-text no-conversion)
+(detect-coding-string "ã“ã°ã‚„ã—") ; (japanese-shift-jis iso-latin-1 emacs-mule raw-text no-conversion)
+(find-coding-systems-string "ã“ã°ã‚„ã—")
+(find-charset-string "abcã»ã’")         ; (ascii japanese-jisx0208)
 (find-charset-string "abc")             ; (ascii)
 
-(let ((encode (encode-coding-string "‚±‚Î‚â‚µ" 'utf-8)))
-  (list encode (decode-coding-string encode 'utf-8))) ; ("\343\201\223\343\201\260\343\202\204\343\201\227" "‚±‚Î‚â‚µ")
+(let ((encode (encode-coding-string "ã“ã°ã‚„ã—" 'utf-8)))
+  (list encode (decode-coding-string encode 'utf-8))) ; ("\343\201\223\343\201\260\343\202\204\343\201\227" "ã“ã°ã‚„ã—")
 
-(map-internal-to-utf-8 "‚±‚Î‚â‚µ") ; "ã“ã°ã‚„ã—" @xyzzy
-(encode-coding-string "‚±‚Î‚â‚µ" 'utf-8) ; "\343\201\223\343\201\260\343\202\204\343\201\227" @emacs
-(string-as-multibyte (string-as-unibyte "‚±‚Î‚â‚µ"))        ; "‚±‚Î‚â‚µ"
-(unibyte-char-to-multibyte (multibyte-char-to-unibyte ?‚ )) ; 2210 (‚ ‚êH) 
-(apply #'make-char (split-char ?‚ ))    ; 53794 (#o151042, #xd222, ?‚ )
+(map-internal-to-utf-8 "ã“ã°ã‚„ã—") ; "ç¸ºè–™ï¿½ç¹§ï¿½ï¼ " @xyzzy
+(encode-coding-string "ã“ã°ã‚„ã—" 'utf-8) ; "\343\201\223\343\201\260\343\202\204\343\201\227" @emacs
+(string-as-multibyte (string-as-unibyte "ã“ã°ã‚„ã—"))        ; "ã“ã°ã‚„ã—"
+(unibyte-char-to-multibyte (multibyte-char-to-unibyte ?ã‚)) ; 2210 (ã‚ã‚Œï¼Ÿ) 
+(apply #'make-char (split-char ?ã‚))    ; 53794 (#o151042, #xd222, ?ã‚)
 
-;; •¶š—ñ‚©‚çcharset‚Ì”»’è•û–@‚ÍH (intern string) ‚Å‚È‚­‚Ä
+;; æ–‡å­—åˆ—ã‹ã‚‰charsetã®åˆ¤å®šæ–¹æ³•ã¯ï¼Ÿ (intern string) ã§ãªãã¦
 coding-system-alist
 
 (coding-system-list 'base-only)
@@ -426,7 +426,7 @@ last-coding-system-used
 ;; (setq default-process-coding-system '(japanese-iso-8bit . japanese-iso-8bit))
 
 
-;; «‘
+;; è¾æ›¸
 (labels ((lookup-add-agents (dic path)
            (pushnew (list dic path) lookup-search-agents :test #'equal)))
   (let ((it "c:/meadow/packages/lisp/lookup/"))
@@ -440,13 +440,13 @@ last-coding-system-used
       (lookup-search-agents 'ndeb "c:/usr/local/dic/JARGON")
       )))
 
-;; ‚±‚¢‚Â‚ÍƒŒƒLƒVƒJƒ‹‚¾
+;; ã“ã„ã¤ã¯ãƒ¬ã‚­ã‚·ã‚«ãƒ«ã 
 (lexical-let ((count 0))
   (defun counter ()
     (incf count)))
 (list (counter) (counter))              ; (1 2)
 
-;; n“úŒã‚ğ•Ô‚·ŠÖ”‚ğ•Ô‚·ŠÖ” (‚Ç‚¤‘‚­Horg)
+;; næ—¥å¾Œã‚’è¿”ã™é–¢æ•°ã‚’è¿”ã™é–¢æ•° (ã©ã†æ›¸ãï¼Ÿorg)
 ;; http://ja.doukaku.org/comment/1273/
 (defun make-ndays-later (n)
   (lexical-let ((n n))
@@ -458,18 +458,18 @@ last-coding-system-used
 (format-time-string "%Y/%m/%d %T" (five-days-later (current-time)))
 ;;=> "2008/12/25 06:02:02"
 
-;;; elisp/CL ‚Ìˆá‚¢
-;; 102: Emacs Lisp ‚Æ Common Lisp ‚Í—‚Ä‚¢‚é‚Ì‚Å‚·‚©?
+;;; elisp/CL ã®é•ã„
+;; 102: Emacs Lisp ã¨ Common Lisp ã¯ä¼¼ã¦ã„ã‚‹ã®ã§ã™ã‹?
 ;; http://stuff.mit.edu/afs/athena/astaff/project/babel/build/sun4/etc/FAQ.jp
-;; ‘å•¶š¬•¶š‚ğ‹æ•Ê‚·‚é
-;; “®“IƒXƒR[ƒv
-;; ƒpƒbƒP[ƒW‚ª–³‚¢
-;; ‘½’l‚ª–³‚¢
-;; ƒŠ[ƒ_ƒ}ƒNƒ‚ª–³‚¢
-;; —L—”A•s“®¬”A‘½”{’·®”‚ª–³‚¢
+;; å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã™ã‚‹
+;; å‹•çš„ã‚¹ã‚³ãƒ¼ãƒ—
+;; ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒç„¡ã„
+;; å¤šå€¤ãŒç„¡ã„
+;; ãƒªãƒ¼ãƒ€ãƒã‚¯ãƒ­ãŒç„¡ã„
+;; æœ‰ç†æ•°ã€ä¸å‹•å°æ•°ã€å¤šå€é•·æ•´æ•°ãŒç„¡ã„
 
 ;; http://cl-cookbook.sourceforge.net/.emacs
-;; NTEmacs ‚¾‚Æ’†“r”¼’[‚ÉŠg‘å‚³‚ê‚é‚ñ‚¾‚ª
+;; NTEmacs ã ã¨ä¸­é€”åŠç«¯ã«æ‹¡å¤§ã•ã‚Œã‚‹ã‚“ã ãŒ
 (defun maximize-frame (&optional frame)
   "Maximize the selected FRAME."
   (interactive)
@@ -488,12 +488,12 @@ last-coding-system-used
 ;;; @@window
 (window-inside-edges)                   ; (1 1 123 20)
 
-;; ƒ}ƒEƒXƒ|ƒWƒVƒ‡ƒ“
-;; ƒtƒŒ[ƒ€‚ğŠO‚ê‚é‚Æ nil ‚É‚È‚é‚ç‚µ‚¢
+;; ãƒã‚¦ã‚¹ãƒã‚¸ã‚·ãƒ§ãƒ³
+;; ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å¤–ã‚Œã‚‹ã¨ nil ã«ãªã‚‹ã‚‰ã—ã„
 (list (cdr (mouse-pixel-position))
       (cdr (mouse-position)))           ; ((587 . 269) (73 . 16))
 
-;; ƒEƒBƒ“ƒhƒEƒ|ƒWƒVƒ‡ƒ“A‚‚³‚Æ•
+;; ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒã‚¸ã‚·ãƒ§ãƒ³ã€é«˜ã•ã¨å¹…
 (list (cons (x-display-pixel-height) (x-display-pixel-width))
       (cons (x-display-mm-height) (x-display-mm-width))
       (posn-x-y (posn-at-point))
@@ -512,12 +512,12 @@ last-coding-system-used
                      9posn-object-width-height)
     (posn-at-point) )
 
-;; ƒtƒŒ[ƒ€ƒ|ƒWƒVƒ‡ƒ“
+;; ãƒ•ãƒ¬ãƒ¼ãƒ ãƒã‚¸ã‚·ãƒ§ãƒ³
 (list (cons (frame-pixel-height) (frame-pixel-width))
       (cons (frame-height) (frame-width))
       (cons (frame-char-height) (frame-char-width)))
 
-;; ƒJ[ƒ\ƒ‹ƒ|ƒWƒVƒ‡ƒ“
+;; ã‚«ãƒ¼ã‚½ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
 (list (posn-col-row (posn-at-point))
       (posn-actual-col-row (posn-at-point))
       (cons (window-start) (window-end))
@@ -543,27 +543,27 @@ last-coding-system-used
 ;; subr.el
 (number-sequence 0 3 .5)                ; (0 0.5 1.0 1.5 2.0 2.5 3.0)
 
-;; keymap ‚ªì‚ç‚ê‚é‘O‚¾‚Æ define-key ‚ª‚Å‚«‚È‚­‚ÄƒGƒ‰[
+;; keymap ãŒä½œã‚‰ã‚Œã‚‹å‰ã ã¨ define-key ãŒã§ããªãã¦ã‚¨ãƒ©ãƒ¼
 (define-key hoge-map [up] 'hoge-hoge)
-;; ‘Îˆ–@
+;; å¯¾å‡¦æ³•
 (add-hook 'hoge-mode-hook
           #'(lambda ()
               (define-key hoge-map [up] 'hoge-hoge)))
 (eval-after-load "hoge"
   '(define-key hoge-map [up] 'hoge-hoge))
 
-;; Blogger ŠÖ˜A
+;; Blogger é–¢é€£
 ;; atom-api (+ nxml)
-;; make ‚ª¸”s‚·‚é‚Ì‚Åè“®‚Å
+;; make ãŒå¤±æ•—ã™ã‚‹ã®ã§æ‰‹å‹•ã§
 ;; $ emacs -batch -q -no-site-file -l rng-auto.el -f rng-byte-compile-load
 (load "c:/tmp/nxml-mode-20041004/rng-auto")
 
 ;; $ emacs -Q --batch --eval '(print (upcase-initials "LL day and night"))'
 
 (expand-file-name "~/Desktop.lnk")      ; "c:/home/lxuser/Desktop.lnk"
-(file-truename "~/Desktop.lnk") ; "c:/Documents and Settings/shigeru/ƒfƒXƒNƒgƒbƒv"
+(file-truename "~/Desktop.lnk") ; "c:/Documents and Settings/shigeru/ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—"
 
-;; :keyg‚¢‚Ã‚ç‚­‚È‚¢‚©H
+;; :keyä½¿ã„ã¥ã‚‰ããªã„ã‹ï¼Ÿ
 (funcall (lambda (&key absolute) (list absolute)) :absolute t) ; (t)
 (funcall (lambda (&key absolute) (list absolute)))             ; ERROR
 ((lambda (a &optional &key absolute)
@@ -573,7 +573,7 @@ last-coding-system-used
 ;; $ which chmod
 (executable-find "chmod")               ; "c:/cygwin/bin/chmod.exe"
 
-;; Œ‹‰Ê‚ª‚¿‚å‚Á‚Æˆá‚¤
+;; çµæœãŒã¡ã‚‡ã£ã¨é•ã†
 (macroexpand '(do ((acc nil) (n 0 (1+ n))) ((> n 10) (nreverse acc))
                (push n acc)))
 (cl-prettyexpand '(do ((acc nil) (n 0 (1+ n))) ((> n 10) (nreverse acc))
@@ -593,7 +593,7 @@ last-coding-system-used
         #'(lambda (x y)
             (string< (buffer-name x) (buffer-name y)))))
 
-;; (buffer-list)‚Ìo—Í‚ğƒ\[ƒg‚·‚é•û–@
+;; (buffer-list)ã®å‡ºåŠ›ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹æ–¹æ³•
 (defun buffer-list-by-name ()
   (dolist (buffer (buffer-list-by-name))
     (bury-buffer buffer))
@@ -602,8 +602,8 @@ last-coding-system-used
 (execute-kbd-macro "\M-\;")             ; 
 (command-execute "\M-\;")               ; 
 
-;; EOFˆÈ‰º‚Ìƒoƒbƒtƒ@‚¢‚ç‚È‚¢
-;; ‚¤‚Ü‚­“®‚¢‚Ä‚È‚¢‹C‚ª‚·‚é
+;; EOFä»¥ä¸‹ã®ãƒãƒƒãƒ•ã‚¡ã„ã‚‰ãªã„
+;; ã†ã¾ãå‹•ã„ã¦ãªã„æ°—ãŒã™ã‚‹
 (defun fit-window ()
   (interactive)
   (when (pos-visible-in-window-p (point-max))
@@ -614,38 +614,38 @@ last-coding-system-used
 
 max-lisp-eval-depth                     ; 300
 
-;; EmacsWiki‚©‚çƒCƒ“ƒXƒg[ƒ‹ (byrubikich)
+;; EmacsWikiã‹ã‚‰ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ« (byrubikich)
 ;; http://www.emacswiki.org/cgi-bin/emacs/install-elisp.el
 
-;;; ˆê”­ƒCƒ“ƒfƒ“ƒg
+;;; ä¸€ç™ºã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
 (defun indent-buffer ()
   "indent current buffer"
   (interactive)
   (indent-region (point-min) (point-max)))
 
-;; elisp‚ÌƒfƒoƒbƒOŠÖ”FX
-;; ƒfƒoƒbƒK (debug, edebug)
+;; elispã®ãƒ‡ãƒãƒƒã‚°é–¢æ•°è‰²ã€…
+;; ãƒ‡ãƒãƒƒã‚¬ (debug, edebug)
 ;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_18.html#Edebug
-;; ƒvƒƒtƒ@ƒCƒ‰ (profile)
+;; ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ© (profile)
 ;; http://www.mew.org/~kazu/doc/elisp/profile.html
 (mapcar #'featurep '(profile elp disass debug edebug)) ; (nil nil nil t nil)
 
-;; #1=(#1# x) ‚Å‚È‚¢‚ÌH
+;; #1=(#1# x) ã§ãªã„ã®ï¼Ÿ
 (let ((a '(x x))) (setcar a a))         ; (#0 x)
 (let ((a '(x x))) (setcdr a a))         ; (x . #0)
 (quote #1=(#1# x))                      ; (#0 x)
 
-;; defun* (cl-macs.el) ‚Ìg‚¢“¹‚ª•ª‚©‚ç‚ñ
+;; defun* (cl-macs.el) ã®ä½¿ã„é“ãŒåˆ†ã‹ã‚‰ã‚“
 
 ;;; @@dependence
-;;; elisp‚ÌˆË‘¶ŠÖŒW‚ğ’²‚×‚é
+;;; elispã®ä¾å­˜é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 (featurep 'loadhist)
 (feature-file 'google)                  ; "c:/home/lxuser/lib/emacs/google.elc"
 (feature-file 'cl)                      ; "c:/home/emacs/22.1/lisp/emacs-lisp/cl.elc"
 (file-provides "cl")                    ; (cl cl-19)
 (file-requires "cl")                    ; nil
 (file-requires "xyzzy")                 ; (cl)
-;; 'cl‚ª‚Ç‚Ìƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚³‚ê‚Ä‚¢‚é‚©
+;; 'clãŒã©ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ã‹
 (file-dependents "cl")                  ; ("c:/home/emacs/22.1/lisp/emacs-lisp/cl-macs.elc" "c:/home/lxuser/lib/emacs/xyzzy-util.el" "c:/usr/local/clisp-2.47-full/lib/slime/hyperspec.elc" "c:/usr/local/clisp-2.47-full/lib/slime/slime.elc")
 
 ;; ?
@@ -653,15 +653,15 @@ max-lisp-eval-depth                     ; 300
 (symbol-file 'xyzzy)                    ; "c:/home/lxuser/lib/emacs/xyzzy.el"
 (symbol-file 'symbol-file)              ; "c:/home/emacs/22.1/lisp/subr.elc"
 
-;; ˆê‰c‚·‚¯‚Ç‚¢‚ç‚È‚¢‚Æv‚¤
+;; ä¸€å¿œæ®‹ã™ã‘ã©ã„ã‚‰ãªã„ã¨æ€ã†
 (defun sub-directory-p (dir parent)
-  "DIRECTORY‚ªPARENT‚ÌƒTƒuƒfƒBƒŒƒNƒgƒŠ‚È‚çtA‚»‚¤‚Å‚È‚¯‚ê‚Înil‚ğ•Ô‚·B"
+  "DIRECTORYãŒPARENTã®ã‚µãƒ–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãªã‚‰tã€ãã†ã§ãªã‘ã‚Œã°nilã‚’è¿”ã™ã€‚"
   (labels ((dirname (x)
-             "––”ö‚É`/'‚ğ‚Â‚¯‚½ƒfƒBƒŒƒNƒgƒŠ–¼‚ğ•Ô‚·: /home->/home/"
+             "æœ«å°¾ã«`/'ã‚’ã¤ã‘ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’è¿”ã™: /home->/home/"
              (if (file-directory-p x)
                  (file-name-as-directory x)
                  (file-name-directory x))))
-    ;; dirname‚Ífile-name-as-directory‚¾‚¯‚Å‚¢‚¢‚Æv‚¤
+    ;; dirnameã¯file-name-as-directoryã ã‘ã§ã„ã„ã¨æ€ã†
     (do ((x (pathname-directory (dirname dir)) (cdr x))
          (y (pathname-directory (dirname parent)) (cdr y)))
         ((null y) t)
@@ -670,8 +670,8 @@ max-lisp-eval-depth                     ; 300
           (return nil)))))
 
 ;;; @@compile
-;; w’è‚µ‚½ƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚ğÄƒoƒCƒgƒRƒ“ƒpƒCƒ‹
-(byte-recompile-directory "~/lib/emacs/" t) ; *.elc‚Ì‚È‚¢ƒtƒ@ƒCƒ‹‚à‹­§“I‚ÉH
+;; æŒ‡å®šã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã‚’å†ãƒã‚¤ãƒˆã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
+(byte-recompile-directory "~/lib/emacs/" t) ; *.elcã®ãªã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚‚å¼·åˆ¶çš„ã«ï¼Ÿ
 
 ;;; @@File-local Variables in Emacs
 ;;; http://www.kmc.gr.jp/~tak/memo/emacs-local-variable.html
@@ -679,7 +679,7 @@ max-lisp-eval-depth                     ; 300
 (process-list)                          ; (#<process shell>)
 (get-process "shell")                   ; #<process shell>
 
-;; ƒ}ƒEƒXƒzƒC[ƒ‹ˆÚ“®‚Ì‚Æ‚«‚¾‚¯ avoidance-mode ‚ğ–³Œø‚É‚µ‚½‚©‚Á‚½‚ªAo—ˆ‚È‚©‚Á‚½
+;; ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ç§»å‹•ã®ã¨ãã ã‘ avoidance-mode ã‚’ç„¡åŠ¹ã«ã—ãŸã‹ã£ãŸãŒã€å‡ºæ¥ãªã‹ã£ãŸ
 (defadvice mwheel-scroll (around no-mouse-avoidance-mode activate)
   (let ((mouse-avoidance-mode nil))
     ad-do-it))
@@ -687,11 +687,11 @@ max-lisp-eval-depth                     ; 300
 ;; tabbar-mode
 ;; http://www.emacswiki.org/cgi-bin/wiki/TabBarMode
 
-;; ŠTŠÏ•ÏX‚ÆƒOƒ‹[ƒv‰»‚Ì•ÏX
+;; æ¦‚è¦³å¤‰æ›´ã¨ã‚°ãƒ«ãƒ¼ãƒ—åŒ–ã®å¤‰æ›´
 ;; http://d.hatena.ne.jp/katsu_w/20080319
 ;; http://amitp.blogspot.com/2007/04/emacs-buffer-tabs.html
 
-;; ŠJ”­‚ªÄŠJ‚³‚ê‚½H—Lu‚É‚æ‚é‚à‚Ì‚©H
+;; é–‹ç™ºãŒå†é–‹ã•ã‚ŒãŸï¼Ÿæœ‰å¿—ã«ã‚ˆã‚‹ã‚‚ã®ã‹ï¼Ÿ
 ;; http://github.com/davidswelt/aquamacs-git/tree/master/src/site-lisp/tabbar/tabbar.el
 (load-file "~/lib/tabbar.el")
 (tabbar-mode t)
@@ -699,55 +699,55 @@ max-lisp-eval-depth                     ; 300
 
 (global-set-key "\C-x\C-t\C-f" 'toggle-truncate-lines)
 
-;; elisp‚ÌƒoƒbƒNƒNƒI[ƒg‚Ìˆµ‚¢ (backquote.el)
+;; elispã®ãƒãƒƒã‚¯ã‚¯ã‚ªãƒ¼ãƒˆã®æ‰±ã„ (backquote.el)
 
-;; ‚È‚ºƒGƒ‰[‚É‚È‚éH -> elisp‚É&body‚Í‚È‚¢B&rest‚ğg‚¤‚©defmacro*‚ğg‚¤‚©
+;; ãªãœã‚¨ãƒ©ãƒ¼ã«ãªã‚‹ï¼Ÿ -> elispã«&bodyã¯ãªã„ã€‚&restã‚’ä½¿ã†ã‹defmacro*ã‚’ä½¿ã†ã‹
 (defmacro when1 (test &body body)
   (let ((result (gensym)))
     `(let ((,result ,test))
        (when ,result ,@body)
        ,result)))
 (when1 (position ?a "kobayashi")
-       (princ "Œ©‚Â‚¯‚½!"))
+       (princ "è¦‹ã¤ã‘ãŸ!"))
 
 (setq )
 (set-variable )
 
-;;; ³‹K•\Œ»‚ğ‘‚­‚Ì‚ğx‰‡‚·‚éƒc[ƒ‹
+;;; æ­£è¦è¡¨ç¾ã‚’æ›¸ãã®ã‚’æ”¯æ´ã™ã‚‹ãƒ„ãƒ¼ãƒ«
 (regexp-opt '("define" "lambda" "fn" "define-macro" "lambda-macro") t)
 "\\(define\\(?:-macro\\)?\\|fn\\|lambda\\(?:-macro\\)?\\)"
 (regexp-opt '("define" "lambda" "fn" "define-macro" "lambda-macro") 'words)
 "\\<\\(define\\(?:-macro\\)?\\|fn\\|lambda\\(?:-macro\\)?\\)\\>"
 
-;;; (0 1 2 3 4 ...) ‚È‚ñ‚Ä—ª‹L‚¢‚ç‚È‚¢
+;;; (0 1 2 3 4 ...) ãªã‚“ã¦ç•¥è¨˜ã„ã‚‰ãªã„
 (setq eval-expression-print-length nil
       eval-expression-print-level nil)
 (list eval-expression-print-length eval-expression-print-level) ; (12 4)
 
-;;; @@defadviceƒ}ƒNƒ
+;;; @@defadviceãƒã‚¯ãƒ­
 (ad-is-active 'eval-last-sexp)
-;; Šˆ«‰»/•sŠˆ«‰»
+;; æ´»æ€§åŒ–/ä¸æ´»æ€§åŒ–
 (ad-activate ad-deactivate)
 
-;;; Emacs@vine‚ÌƒJ[ƒ\ƒ‹F•t‚¯‚Á‚Ä‚Ç‚¤‚â‚Á‚Ä‚½‚Á‚¯H
+;;; Emacs@vineã®ã‚«ãƒ¼ã‚½ãƒ«è‰²ä»˜ã‘ã£ã¦ã©ã†ã‚„ã£ã¦ãŸã£ã‘ï¼Ÿ
 (list input-method-activate-hook input-method-inactivate-hook)
 (mapcar #'boundp '(mw32-ime-on-hook mw32-ime-off-hook))
 (lambda () (set-cursor-color "brown"))
 
 ;;; !? string-to-list@mule-util.el
-(append "‚±‚Î‚â‚µ" nil)                 ; (53811 53840 53860 53815)
+(append "ã“ã°ã‚„ã—" nil)                 ; (53811 53840 53860 53815)
 
 ;;; @@etags
 ;; http://www8.atpages.jp/hotsuma/chalow/2002-04-16.html#2002-04-16-1
-TAGS ƒRƒ}ƒ“ƒh‚Ü‚Æ‚ß [Emacs]
-M-x find-tag (M-.) ƒVƒ“ƒ{ƒ‹‚Ì’è‹`•”•ª‚É”ò‚ÔB
-M-x pop-tag-mark (M-*) ‘O‚Ìó‘Ô‚É”ò‚ÔB
-M-x tags-search ƒVƒ“ƒ{ƒ‹‚ğŒŸõ‚³‚¹‚éB
-M-x tags-loop-continue (M-,) Ÿ‚ÌŒó•â‚É”ò‚ÔB(ŒŸõó‘Ô‚ÅÀs)
-M-x find-tag-other-window (C-x 4 .) ’è‹`•”•ª‚ğ•ÊƒEƒBƒ“ƒhƒE‚É•\¦B
-M-x find-tag-other-frame (C-x 5 .) ’è‹`•”•ª‚ğ•ÊƒtƒŒ[ƒ€‚É•\¦B
-M-x complete-symbol (M-TAB) ƒVƒ“ƒ{ƒ‹–¼‚Ì•âŠ®(ƒ^ƒuƒe[ƒuƒ‹‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚é)
-M-x visit-tags-table ƒ^ƒuƒe[ƒuƒ‹‚ğ“Ç‚İ‚İ’¼‚·B
+TAGS ã‚³ãƒãƒ³ãƒ‰ã¾ã¨ã‚ [Emacs]
+M-x find-tag (M-.) ã‚·ãƒ³ãƒœãƒ«ã®å®šç¾©éƒ¨åˆ†ã«é£›ã¶ã€‚
+M-x pop-tag-mark (M-*) å‰ã®çŠ¶æ…‹ã«é£›ã¶ã€‚
+M-x tags-search ã‚·ãƒ³ãƒœãƒ«ã‚’æ¤œç´¢ã•ã›ã‚‹ã€‚
+M-x tags-loop-continue (M-,) æ¬¡ã®å€™è£œã«é£›ã¶ã€‚(æ¤œç´¢çŠ¶æ…‹ã§å®Ÿè¡Œ)
+M-x find-tag-other-window (C-x 4 .) å®šç¾©éƒ¨åˆ†ã‚’åˆ¥ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤ºã€‚
+M-x find-tag-other-frame (C-x 5 .) å®šç¾©éƒ¨åˆ†ã‚’åˆ¥ãƒ•ãƒ¬ãƒ¼ãƒ ã«è¡¨ç¤ºã€‚
+M-x complete-symbol (M-TAB) ã‚·ãƒ³ãƒœãƒ«åã®è£œå®Œ(ã‚¿ãƒ–ãƒ†ãƒ¼ãƒ–ãƒ«ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹æ™‚)
+M-x visit-tags-table ã‚¿ãƒ–ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’èª­ã¿è¾¼ã¿ç›´ã™ã€‚
 
 (defun what-charset-region (from to)
   (interactive "r")
@@ -758,7 +758,7 @@ header-line-format
 mode-line-format
 icon-title-format
 
-;; ‘Š‘ÎƒfƒBƒŒƒNƒgƒŠH
+;; ç›¸å¯¾ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼Ÿ
 (expand-file-name (file-relative-name "c:/home/TODO.txt")) ; "c:/home/TODO.txt"
 
 (list most-positive-fixnum most-negative-fixnum) ; (268435455 -268435456)
@@ -770,25 +770,25 @@ icon-title-format
 
 (every #'char-valid-p (number-sequence #x00 #xFF)) ; t
 
-;; ŠÖ”Aƒ}ƒNƒA•Ï”‚ğ–¢’è‹`‰»‚·‚é
-;; ˆË‘¶ŠÖŒW‚ª‰ğÁ‚³‚ê‚È‚¢‚ÆƒGƒ‰[ (‘¼‚Ìƒtƒ@ƒCƒ‹‚©‚ç require ‚³‚ê‚Ä‚é‚Æ‚©)
+;; é–¢æ•°ã€ãƒã‚¯ãƒ­ã€å¤‰æ•°ã‚’æœªå®šç¾©åŒ–ã™ã‚‹
+;; ä¾å­˜é–¢ä¿‚ãŒè§£æ¶ˆã•ã‚Œãªã„ã¨ã‚¨ãƒ©ãƒ¼ (ä»–ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ require ã•ã‚Œã¦ã‚‹ã¨ã‹)
 (require 'redo)
 (unload-feature 'redo)
 
-;;; ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚©‚ç
+;;; ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‹ã‚‰
 command-line-args                       ; ("C:\\home\\emacs\\22.1\\bin\\emacs.exe")
-;;; ƒXƒNƒŠƒvƒgŒ¾Œê‚Æ‚µ‚Ä—˜—p
-noninteractive                          ; nil (ƒoƒbƒ`ˆ— t)
-$ emacs --script (Emacs 22 ˆÈ~‚ÌƒIƒvƒVƒ‡ƒ“)
+;;; ã‚¹ã‚¯ãƒªãƒ—ãƒˆè¨€èªã¨ã—ã¦åˆ©ç”¨
+noninteractive                          ; nil (ãƒãƒƒãƒå‡¦ç†æ™‚ t)
+$ emacs --script (Emacs 22 ä»¥é™ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
 $ emacs --batch -Q -l 2> /dev/null
 ;; --quick, -Q (equivalent to -q --no-site-file --no-splash)
-;;; ƒoƒbƒ`ƒtƒ@ƒCƒ‹‚©‚çƒRƒ“ƒpƒCƒ‹
-;;; Œã‚Å’²‚×‚ë
+;;; ãƒãƒƒãƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
+;;; å¾Œã§èª¿ã¹ã‚
 $ emacs -batch -q -no-site-file -l $FILE
 
 $ emacs -batch -f batch-byte-compile *.el
 
-;; #! ‚ªƒRƒƒ“ƒgs‚Æ‚µ‚Ä–³‹‚³‚ê‚é (‚±‚ê‚Í‹»–¡[‚¢)
+;; #! ãŒã‚³ãƒ¡ãƒ³ãƒˆè¡Œã¨ã—ã¦ç„¡è¦–ã•ã‚Œã‚‹ (ã“ã‚Œã¯èˆˆå‘³æ·±ã„)
 (apply #'+
        #! (error "comment?")
        '(1 2 3 4 5 6 7 8 9 10))         ; 55
@@ -804,8 +804,8 @@ $ emacs -batch -f batch-byte-compile *.el
     (run-scheme (format "C:/PROGRA~1/newlisp/newlisp.exe -C -w %s"
                         (expand-file-name default-directory)))))
 
-;;; ‘SŠp‹ó”’Aƒ^ƒu‚È‚Ç‚Ì‹­’²•\¦
-;;; ‚±‚ê‚¾‚Æfont-lock‚ªŒÄ‚Ño‚³‚ê‚é‚½‚Ñ‚ÉƒL[ƒ[ƒh‚ª’Ç‰Á‚³‚ê‚Ä’x‚­‚È‚ç‚È‚¢‚©H
+;;; å…¨è§’ç©ºç™½ã€ã‚¿ãƒ–ãªã©ã®å¼·èª¿è¡¨ç¤º
+;;; ã“ã‚Œã ã¨font-lockãŒå‘¼ã³å‡ºã•ã‚Œã‚‹ãŸã³ã«ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãŒè¿½åŠ ã•ã‚Œã¦é…ããªã‚‰ãªã„ã‹ï¼Ÿ
 ;;; http://eigyr.dip.jp/diary/200712.html#%E5%85%A8%E8%A7%92%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%82%84%E3%82%BF%E3%83%96%E3%82%92%E5%BC%B7%E8%AA%BF
 
 ;;; @@Info
@@ -813,7 +813,7 @@ $ emacs -batch -f batch-byte-compile *.el
   "Display the Emacs Lisp manual in Info mode."
   (interactive)
   (info "elisp"))
-(Info-goto-node)                        ; info-mode ‚ÅƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒu‚ÉŒÄ‚Ño‚µ‚Ä‚İ‚é(g)
+(Info-goto-node)                        ; info-mode ã§ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒ†ã‚£ãƒ–ã«å‘¼ã³å‡ºã—ã¦ã¿ã‚‹(g)
 (call-interactively #'info-lookup-symbol)
 (directory-files (car Info-directory-list) nil "elisp*")
 (info "(elisp)Regular Expressions")
@@ -836,10 +836,10 @@ $ emacs -batch -f batch-byte-compile *.el
   (let ((woman-use-topic-at-point t))
     (woman)))
 ;; (global-set-key "\C-cw" 'woman-at-point)
-(global-set-key "\C-cw" 'manual-entry)  ; ‚Å‚«‚ê‚Î Woman ‚æ‚è‚±‚Á‚¿
+(global-set-key "\C-cw" 'manual-entry)  ; ã§ãã‚Œã° Woman ã‚ˆã‚Šã“ã£ã¡
 (setq woman-use-own-frame nil)
 
-;; •âŠ®“™
+;; è£œå®Œç­‰
 ;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_20.html#SEC270
 completion-ignore-case                                        ; t
 (try-completion "f" '("foo" "bar" "baz" "bazz" "hoge" "for")) ; "fo"
@@ -861,31 +861,31 @@ completion-ignore-case                                        ; t
        (i integer (lsh)))))
 
 ;;; @@Bitwise Operations on Integers
-;; lsh (logical shift: ˜_—ƒVƒtƒg)
+;; lsh (logical shift: è«–ç†ã‚·ãƒ•ãƒˆ)
 (lsh #b0101 #b0001)                     ; 10 #b1010
 (lsh #b0111 #b0001)                     ; 14 #b1110
 (lsh #b0110 -1)                         ;  3 #b0011
 
-;; ash (arithmetic shift: ZpƒVƒtƒg) 
+;; ash (arithmetic shift: ç®—è¡“ã‚·ãƒ•ãƒˆ) 
 (ash #b11111111111111111111111111010    ; -6
      #b11111111111111111111111111111    ; -1
      )                                  ; -3 #b11111111111111111111111111101
 
-(encode-coding-string "‚±‚Î‚â‚µ" 'cp932)  ; "\202\261\202\316\202\342\202\265"
-(encode-coding-string "‚±‚Î‚â‚µ" 'binary) ; "\222\244\263\222\244\320\222\244\344\222\244\267"
-(encode-coding-string "‚±‚Î‚â‚µ" 'sjis)   ; "\202\261\202\316\202\342\202\265"
-(encode-coding-string "‚±‚Î‚â‚µ" 'euc-jp) ; "\244\263\244\320\244\344\244\267"
-(encode-coding-string "‚±‚Î‚â‚µ" 'utf-8)  ; "\343\201\223\343\201\260\343\202\204\343\201\227"
-(encode-coding-string "‚±‚Î‚â‚µ" 'utf-16) ; "\376\3770S0p0\2040W"
+(encode-coding-string "ã“ã°ã‚„ã—" 'cp932)  ; "\202\261\202\316\202\342\202\265"
+(encode-coding-string "ã“ã°ã‚„ã—" 'binary) ; "\222\244\263\222\244\320\222\244\344\222\244\267"
+(encode-coding-string "ã“ã°ã‚„ã—" 'sjis)   ; "\202\261\202\316\202\342\202\265"
+(encode-coding-string "ã“ã°ã‚„ã—" 'euc-jp) ; "\244\263\244\320\244\344\244\267"
+(encode-coding-string "ã“ã°ã‚„ã—" 'utf-8)  ; "\343\201\223\343\201\260\343\202\204\343\201\227"
+(encode-coding-string "ã“ã°ã‚„ã—" 'utf-16) ; "\376\3770S0p0\2040W"
 
-(string-as-multibyte (string-as-unibyte "‚±‚Î‚â‚µ")) ; "‚±‚Î‚â‚µ"
+(string-as-multibyte (string-as-unibyte "ã“ã°ã‚„ã—")) ; "ã“ã°ã‚„ã—"
 
 (decode-sjis-char (encode-sjis-char ?z)) ; 122 (#o172, #x7a, ?z)
 
 (normal-top-level-add-to-load-path DIRS)
 
-;; ƒtƒ@ƒCƒ‹‚ğ˜A”Ô‚É‚·‚é
-;; ‚½‚¾‚µAŠù‚Éƒ\[ƒg‚³‚ê‚Ä‚¢‚é•K—v‚ ‚è
+;; ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é€£ç•ªã«ã™ã‚‹
+;; ãŸã ã—ã€æ—¢ã«ã‚½ãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹å¿…è¦ã‚ã‚Š
 (let ((n 0)
       (ext "jpg"))
   (dolist (file (directory-files #1=DIR nil (format "\\.%s$" ext)))
@@ -894,9 +894,9 @@ completion-ignore-case                                        ; t
     (setq n (1+ n))))
 
 (defun list-to-string (char-list) (apply #'string char-list))
-(list-to-string (string-to-list "‚±‚ê‚ÍŠ¿š•¶š—ñ")) ; "‚±‚ê‚ÍŠ¿š•¶š—ñ"
+(list-to-string (string-to-list "ã“ã‚Œã¯æ¼¢å­—æ–‡å­—åˆ—")) ; "ã“ã‚Œã¯æ¼¢å­—æ–‡å­—åˆ—"
 
-;; Y combinator ‚Û‚¢‚à‚Ì
+;; Y combinator ã½ã„ã‚‚ã®
 (defun f (q)
   (lexical-let ((q q))
     (lambda (n)
@@ -905,7 +905,7 @@ completion-ignore-case                                        ; t
 
 ;;; help-fns.el:describe-function-1:253
 (defun function-truename (def)
-  "DEF‚ªŠÖ”‚ÌƒGƒCƒŠƒAƒX‚È‚ç‚ÎAŠÖ”‚ÌÀ‘Ì–¼‚ğ•Ô‚·."
+  "DEFãŒé–¢æ•°ã®ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãªã‚‰ã°ã€é–¢æ•°ã®å®Ÿä½“åã‚’è¿”ã™."
   (while (symbolp (symbol-function def))
     (setq def (symbol-function def)))
   def)
@@ -918,7 +918,7 @@ completion-ignore-case                                        ; t
   "Return number of bytes in a buffer."
   (with-current-buffer buffer
     (1- (position-bytes (point-max)))))
-;; ‚±‚êAƒtƒ@ƒCƒ‹ƒTƒCƒY‚Æ‚Íˆá‚¤‚Ì‚©‚ËH
+;; ã“ã‚Œã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã¨ã¯é•ã†ã®ã‹ã­ï¼Ÿ
 (list 
  (buffer-bytes ".emacs.my.el")
  (buffer-size (get-buffer ".emacs.my.el"))

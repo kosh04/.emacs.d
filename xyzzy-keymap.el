@@ -2,7 +2,7 @@
 
 ;; This file is NOT part of Emacs.
 
-;; Time-stamp: <2009-04-23T17:01:15JST>
+;; Time-stamp: <2009-04-24T10:04:39JST>
 
 ;;; Code:
 (provide 'xyzzy-keymap)
@@ -44,7 +44,7 @@
     (define-key keymap (kbd "C-c h") 'info-lookup-symbol))
   
   (global-set-key (kbd "<mouse-3>") 'bingalls-edit-menu)
-  (global-set-key (kbd "M-\\") 'goto-matched-parenthesis)
+  (global-set-key (kbd "M-]") 'goto-matched-parenthesis)
   )
 
 ;;; xyzzy-keymap.el ends here.
