@@ -3,7 +3,7 @@
 ;;; This file is NOT part of Emacs.
 ;;;
 
-;;; Time-stamp: <2009-04-23T17:52:11JST>
+;;; Time-stamp: <2009-05-25T03:35:03JST>
 
 ;;; TODO
 ;;; setq & setq-default
@@ -16,6 +16,8 @@
   (require 'xyzzy)
   (require 'xyzzy-keymap)
   (require 'xyzzy-util))
+;; (unless window-system (global-set-key (kbd "C-x C-c") 'kill-emacs))
+(when window-system (global-set-key (kbd "C-x C-c") 'iconify-or-deiconify-frame))
 
 ;; flet, labels のインデント修正方法 (よろしくないかも)
 (fset 'lisp-indent-function #'common-lisp-indent-function)
@@ -99,6 +101,9 @@
 ;; (ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
 ;; (ad-activate 'font-lock-mode)
 (add-hook 'text-mode-hook 'font-lock-fontify-buffer)
+
+;;; 端末から起動した時 (emacs -nw) にメニューバーを消す
+(menu-bar-mode (if window-system 1 -1))
 
 ;;; バッファのタブ化
 (require 'tabbar)
@@ -208,11 +213,14 @@
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (global-set-key "\C-xtl" 'eldoc-mode)
 
-(define-key emacs-lisp-mode-map [?\C-.] 'lisp-complete-symbol)
-(define-key lisp-interaction-mode-map [?\C-.] 'lisp-complete-symbol)
+;; (define-key emacs-lisp-mode-map [?\C-.] 'lisp-complete-symbol)
+;; (define-key lisp-interaction-mode-map [?\C-.] 'lisp-complete-symbol)
 
 ;;; カーソルあっちいって
-(when (display-mouse-p) (mouse-avoidance-mode 'exile))
+(and (display-mouse-p)
+     (if (eq system-type 'windows-nt)
+         (mouse-avoidance-mode 'exile)
+         (mouse-avoidance-mode 'banish)))
 
 ;;; Elisp をさらに色付け
 (require 'elisp-font-lock)
@@ -244,10 +252,12 @@
 (setq track-eol t)
 
 ;;; インデントして次の行へ
-(defun indent-and-next-line ()
-  (interactive "*")
-  (indent-according-to-mode)
-  (next-line 1))
+(defun indent-and-next-line (&optional args)
+  (interactive "*p")
+  (dotimes (x (prefix-numeric-value args))
+    (indent-according-to-mode)
+    (next-line 1)))
+(byte-compile 'indent-and-next-line)
 (define-key global-map "\M-n" 'indent-and-next-line)
 
 ;;; 物理行移動マイナーモード
@@ -336,12 +346,18 @@
 ;; (load-library "newlisp")
 (load-library "newlisp/newlisp")
 (add-to-list 'auto-mode-alist '("\\.lsp$" . newlisp-mode))
+(setq *newlisp-manual-text* (locate-file "newlisp/newlisp_manual.txt" load-path))
 
 ;;; 需要ある？
 (global-set-key [?\C-8] 'insert-parentheses)
 (global-set-key [?\C-2] (defun insert-double-quotes (&optional arg)
                           (interactive "P")
                           (insert-pair arg ?\" ?\")))
+(global-set-key (kbd "C-3")
+                (defun insert-multi-comment-for-lisp (&optional arg)
+                  (interactive "P")
+                  (insert "#|" "|#")
+                  (backward-char 2)))
 ;; (global-set-key [?\(] 'insert-parentheses)
 ;; (global-set-key [?\"] 'insert-pair)
 
@@ -351,7 +367,7 @@
 (setq find-function-C-source-directory
       (if (eq system-type 'windows-nt)
           "c:/home/lxuser/src/emacs-22.2/src/"
-          "~/emacs22-22.2/src/"))
+	  (expand-file-name "~/src/emacs22-22.2/src/")))
 (global-set-key [(control ?c) ?f] 'find-library)
 (define-key ctl-x-map [?j] 'find-function)
 
@@ -468,5 +484,11 @@
               (list encoding (decode-coding-string string encoding)))
           (detect-coding-string string)))
 
-(or (lookup-key global-map [f12])
-    (global-set-key [f12] 'emacs-lisp-mode))
+(or (lookup-key global-map [f12]) (global-set-key [f12] 'emacs-lisp-mode))
+(or (lookup-key global-map (kbd "<M-f12>"))
+    (global-set-key (kbd "<M-f12>") 'lisp-interaction-mode))
+
+
+(when (eq system-type 'windows-nt)
+  (require 'ispell)
+  (setq ispell-program-name (expand-file-name "Aspell/bin/aspell.exe" (getenv "programfiles"))))

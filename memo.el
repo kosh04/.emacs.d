@@ -1,18 +1,18 @@
 ;;; -*- mode: lisp-interaction; coding: utf-8 -*-
 ;;; Emacs専用メモ
 
-;;; 文字(キー)の表現方法色々
+;;; 文字(キーバインド)の表現方法色々
 ;;; *** 基本はベクタ
 ?h                                      ; 104
-[?h]                                    ; [104]
+[?h]                                    ; [104] (ベクタ)
 ?\C-h                                   ; 8
 "\C-h"                                  ; ""
 [(f9)]                                  ; F9
 (coerce "\C-h" 'vector)                 ; [8] (vconcat "\C-h")
 (global-set-key [(control ?c) (control ?v)] 'ignore)
 (lookup-key global-map [(control ?c) (control ?v)]) ; ignore
-(kbd "<up> <up> <down> <down> <left> <right> <left> <right> b a")
-;; [up up down down left right left right 98 97]
+(kbd "<up> <up> <down> <down> <left> <right> <left> <right> B A")
+;; [up up down down left right left right 66 65]
 (kbd "C-m")                             ; ""
 [return]                                ; "\C-m"
 (kbd "C-M-<up>")                        ; [C-M-up]
@@ -53,9 +53,6 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 
 ;;; fill
 (setq paragraph-start '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
-
-;;; 端末から起動した時 (emacs -nw) にメニューバーを消す
-(if window-system (menu-bar-mode 1) (menu-bar-mode -1))
 
 ;;; 全角空白とか改行とかタブを強調表示
 (require 'jaspace)
@@ -188,7 +185,7 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
 ;;; 正規表現を確認しながら作成 (M-x: re-builder)
 (require 're-builder)
 
-;;; 現在の関数名をモードラインに表示
+;;; 現在の関数名をモードラインに表示 (M-x: which-function-mode)
 (which-function-mode t)
 
 ;;; M-x: cusomize-apropos
@@ -262,14 +259,16 @@ backward-delete-char-untabify-method    ; untabify/hungry/all/nil
         (message "ｷﾀ━━━(%s)━━━!!!!" kao)
         (sit-for .1)))))
 
-(system-name)                           ; "YOUR-D1BE424ADF"
+(system-name)                           ; "YOUR-XXXXXXXXXX"
 system-time-locale                      ; nil
 system-messages-locale                  ; nil
 system-configuration                    ; "i386-mingw-nt5.1.2600"
 system-type                             ; windows-nt
 temporary-file-directory                ; "c:/tmp/"
 
-(split-string (getenv "PATH") ";")      ; == exec-path
+(every #'string-equal
+       (split-string (getenv "PATH") path-separator)
+       exec-path)                       ; t
 
 (defun windows-p ()
   (if (memq system-type '(ms-dos windows-nt)) t nil))
@@ -292,6 +291,8 @@ temporary-file-directory                ; "c:/tmp/"
           (list (text-char-description x) (string x)))
         '(?\C-c ?\M-m ?\C-\M-m))
 =>(("^C" "") ("\xed" "\355") ("\x8d" "\x8d"))
+
+(list ?\xff ?\377 #xff #o377)           ; (255 255 255 255)
 
 (getenv "programfiles")                 ; "C:\\Program Files"
 
@@ -354,7 +355,6 @@ temporary-file-directory                ; "c:/tmp/"
 (equal #'(lambda (x) (+ x x))
        #'(lambda (x) (+ x x)))          ; t
 
-
 ;;; @@Encoding
 
 ;;; 非ASCII文字 -- GNU Emacs Lispリファレンスマニュアル
@@ -390,6 +390,8 @@ default-terminal-coding-system                        ; japanese-shift-jis
 (find-coding-systems-string "こばやし")
 (find-charset-string "abcほげ")         ; (ascii japanese-jisx0208)
 (find-charset-string "abc")             ; (ascii)
+
+(prefer-coding-system)
 
 (let ((encode (encode-coding-string "こばやし" 'utf-8)))
   (list encode (decode-coding-string encode 'utf-8))) ; ("\343\201\223\343\201\260\343\202\204\343\201\227" "こばやし")
@@ -523,6 +525,48 @@ last-coding-system-used
       (cons (window-start) (window-end))
       (cons (point-min) (point-max)))
 
+;; フレームのサイズと位置
+;; frame-{height,width} の古い別名
+(cons (screen-height) (screen-width))
+
+;; 各ウィンドウには次の属性があります
+;; * ウィンドウを含んでいるフレーム
+;; * ウィンドウの高さ
+;; * ウィンドウの幅
+;; * スクリーンやフレームを基準にしたウィンドウの隅
+;; * ウィンドウが表示しているバッファ
+;; * ウィンドウの左上隅に対応するバッファ内の位置
+;; * コラム単位の水平方向のスクロール量
+;; * ポイント
+;; * マーク
+;; * どの程度最近にウィンドウが選択されたか
+
+;; 左端--上端--右端--下端
+(window-edges (selected-window))        ; (0 0 84 20)  上側のウィンドウ
+(window-edges (selected-window))        ; (0 20 84 41) 下側のウィンドウ
+;; 下端が**行目であるのは、最下行はエコー領域だからである。
+
+;; +-------------+
+;; |(0 0)        |
+;; |             |
+;; +-------------+(84 20)
+;; |(0 20)       |
+;; |             |
+;; +-------------+(84 41)
+
+;;              column 35
+;; +------------+-------------------+ line 0
+;; |(0 0 35 15) |(35 0 80 15)       |
+;; +------------+-------------------+ line 15
+;; |(0 15 80 50)                    |
+;; |                                |
+;; +--------------------------------+ line 50
+;; column 0                         column 80
+
+;; 座標とウィンドウ
+(window-at 0 0 (selected-frame))        ; #<window 3 on *info*>
+(coordinates-in-window-p '(0 . 0) (selected-window))
+
 (current-frame-configuration)
 (frame-parameters)
 (current-window-configuration)
@@ -569,9 +613,6 @@ last-coding-system-used
 ((lambda (a &optional &key absolute)
    (list a absolute))
  10)                                    ; (10 nil)
-
-;; $ which chmod
-(executable-find "chmod")               ; "c:/cygwin/bin/chmod.exe"
 
 ;; 結果がちょっと違う
 (macroexpand '(do ((acc nil) (n 0 (1+ n))) ((> n 10) (nreverse acc))
@@ -653,21 +694,6 @@ max-lisp-eval-depth                     ; 300
 (symbol-file 'xyzzy)                    ; "c:/home/lxuser/lib/emacs/xyzzy.el"
 (symbol-file 'symbol-file)              ; "c:/home/emacs/22.1/lisp/subr.elc"
 
-;; 一応残すけどいらないと思う
-(defun sub-directory-p (dir parent)
-  "DIRECTORYがPARENTのサブディレクトリならt、そうでなければnilを返す。"
-  (labels ((dirname (x)
-             "末尾に`/'をつけたディレクトリ名を返す: /home->/home/"
-             (if (file-directory-p x)
-                 (file-name-as-directory x)
-                 (file-name-directory x))))
-    ;; dirnameはfile-name-as-directoryだけでいいと思う
-    (do ((x (pathname-directory (dirname dir)) (cdr x))
-         (y (pathname-directory (dirname parent)) (cdr y)))
-        ((null y) t)
-      (if (or (null x)
-              (not (equalp (car x) (car y))))
-          (return nil)))))
 
 ;;; @@compile
 ;; 指定したディレクトリ以下を再バイトコンパイル
@@ -758,10 +784,24 @@ header-line-format
 mode-line-format
 icon-title-format
 
-;; 相対ディレクトリ？
-(expand-file-name (file-relative-name "c:/home/TODO.txt")) ; "c:/home/TODO.txt"
+;; 相対ディレクトリ
+(file-relative-name "/usr/bin/sbcl" "/usr")                ; "bin/sbcl"
 
-(list most-positive-fixnum most-negative-fixnum) ; (268435455 -268435456)
+(let (acc)
+  (dolist (sym '(most-negative-fixnum
+                 most-negative-short-float 
+                 most-negative-double-float 
+                 most-negative-single-float 
+                 most-positive-single-float 
+                 most-positive-long-float 
+                 most-positive-short-float 
+                 most-positive-fixnum 
+                 most-negative-long-float 
+                 most-positive-double-float))
+    (if (boundp sym)
+        (push (cons sym (symbol-value sym)) acc)))
+  (nreverse acc))
+;;=> ((most-negative-fixnum . -268435456) (most-positive-fixnum . 268435455))
 
 (defun redraw-emacs ()
   (redraw-display)
@@ -787,6 +827,27 @@ $ emacs --batch -Q -l 2> /dev/null
 $ emacs -batch -q -no-site-file -l $FILE
 
 $ emacs -batch -f batch-byte-compile *.el
+
+;;; 再コンパイル
+(byte-recompile-directory "~/lib/emacs/" nil)
+;;; *.elc のないファイルも強制的にコンパイル
+(byte-recompile-directory "~/lib/emacs/" t)
+
+;; ちょっと中途半端過ぎるなあ
+(defun copy-elisp-if-newer (fromdir todir)
+  (dolist (file (directory-files todir nil "\\.el$"))
+    (let ((fromfile (expand-file-name file fromdir))
+          (tofile (expand-file-name file todir))
+          (byte-compile-verbose nil))
+      (when (and (file-newer-than-file-p fromfile tofile)
+                 (y-or-n-p (format "%s を更新しますか？" file)))
+        (copy-file fromfile tofile 'ok-if-already-exists))))
+  (byte-recompile-directory fromdir))
+
+(defun update-elisp-library ()
+  (interactive)
+  (copy-elisp-if-newer "/windows/home/lxuser/lib/emacs/"
+                       "~/lib/emacs/"))
 
 ;; #! がコメント行として無視される (これは興味深い)
 (apply #'+
@@ -846,30 +907,15 @@ completion-ignore-case                                        ; t
 (try-completion "b" '("foo" "bar" "baz" "bazz" "hoge" "for")) ; "ba"
 (all-completions "f" '("foo" "bar" "baz" "bazz" "hoge" "for")) ; ("foo" "for")
 
-(defun list-hexadecimal-colors-display ()
-  (interactive)
-  (list-colors-display
-   (mapcar #'(lambda (x)
-               (format "#%.6x" x))
-           (number-sequence #x000000 #xe0e0e0 #x000020))))
-(byte-compile 'list-hexadecimal-colors-display)
-(logand #b0111)
-(format "%x" #b0111)
-(logand #b01111 #b0001)
-(defun logcount (integer)
-  (do ((n 0 (1+ n))
-       (i integer (lsh)))))
-
-;;; @@Bitwise Operations on Integers
-;; lsh (logical shift: 論理シフト)
-(lsh #b0101 #b0001)                     ; 10 #b1010
-(lsh #b0111 #b0001)                     ; 14 #b1110
-(lsh #b0110 -1)                         ;  3 #b0011
-
-;; ash (arithmetic shift: 算術シフト) 
-(ash #b11111111111111111111111111010    ; -6
-     #b11111111111111111111111111111    ; -1
-     )                                  ; -3 #b11111111111111111111111111101
+;; コンパイルしても重いよ
+(byte-compile
+ (defun list-hexadecimal-colors-display ()
+   (interactive)
+   (list-colors-display
+    (mapcar #'(lambda (x)
+                (format "#%.6x" x))
+            (number-sequence #x000000 #xe0e0e0 #x000020))))
+ )
 
 (encode-coding-string "こばやし" 'cp932)  ; "\202\261\202\316\202\342\202\265"
 (encode-coding-string "こばやし" 'binary) ; "\222\244\263\222\244\320\222\244\344\222\244\267"
@@ -944,3 +990,64 @@ completion-ignore-case                                        ; t
 
 (defun* bindp (key &optional (map global-map))
   (lookup-key map key))
+
+;; $ which chmod
+(executable-find "chmod")               ; "c:/cygwin/bin/chmod.exe"
+
+(file-truename (executable-find "x-www-browser"))
+"/usr/lib/firefox-3.0.10/firefox.sh"
+"/usr/bin/epiphany-gecko"
+
+(user-full-name)                        ; "Shigeru Kobayashi"
+(user-login-name)                       ; "shigeru"
+user-login-name                         ; "shigeru"
+(user-original-login-name)              ; "shigeru"
+(user-real-login-name)                  ; "shigeru"
+(user-real-uid)                         ; 1000
+(user-uid)                              ; 1000
+
+;; キルリングとクリップボードの中途半端な同期
+(global-set-key (kbd "M-w") 'clipboard-kill-ring-save)
+
+;; emacs起動時の名前、ディレクトリ
+(invocation-name)                       ; "emacs"
+(invocation-directory)                  ; "/usr/bin/"
+installation-directory
+
+;; newLISP functions
+(defun env (&optional variable value)
+  (let ((envlist (mapcar (lambda (str)
+                           (cons (substring str 0 #1=(string-match "=" str))
+                                 (substring str (1+ #1#))))
+                         process-environment)))
+    (cond (value (setenv variable value))
+          (variable (cdr (assoc variable envlist)))
+          (:else envlist))))
+
+(defun bits (number)
+  (cond ((zerop number) "0")
+        (:else
+         (let* ((binary-alist '((?0 . "0000") (?1 . "0001") (?2 . "0010") (?3 . "0011")
+                                (?4 . "0100") (?5 . "0101") (?6 . "0110") (?7 . "0111")
+                                (?8 . "1000") (?9 . "1001") (?A . "1010") (?B . "1011")
+                                (?C . "1100") (?D . "1101") (?E . "1110") (?F . "1111")))
+                (#1=string0101 (mapconcat (lambda (char)
+                                            (cdr (assoc char binary-alist)))
+                                          (format "%X" number) nil)))
+           (substring #1# (string-match "1" #1#))))))
+(bits #b10110)                          ; "10110"
+(bits #b000111)                         ; "111"
+(bits -2)                               ; "11111111111111111111111111110"
+(bits most-positive-fixnum)             ;  "1111111111111111111111111111"
+(bits most-negative-fixnum)             ; "10000000000000000000000000000"
+
+;;; @@Bitwise Operations on Integers
+;; lsh (logical shift, 論理シフト)
+(lsh #b0101 #b0001)                     ; 10 #b1010
+(lsh #b0111 #b0001)                     ; 14 #b1110
+(lsh #b0110 -1)                         ;  3 #b0011
+
+;; ash (arithmetic shift, 算術シフト) 
+(ash #b11111111111111111111111111010    ; -6
+     #b11111111111111111111111111111    ; -1
+     )                                  ; -3 #b11111111111111111111111111101
