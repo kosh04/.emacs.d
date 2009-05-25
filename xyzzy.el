@@ -1,19 +1,45 @@
-;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの便利関数・キーマップをEmacsで使う
+;;; -*- mode:emacs-lisp; coding:utf-8 -*-
+;;;
+;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの関数/変数をEmacsで使うためのライブラリ
+;;;
+;;; Time-stamp: <2009-05-25T04:00:12>
+
+;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
+;; Version: 0.1
+;; Keywords: extensions
 
 ;; This file is NOT part of Emacs.
 
-;; Time-stamp: <2009-04-23T18:05:58JST>
+;;; Commentary:
 
-;; CLパッケージは関数をライブラリとして使用することは推奨されていない.
-;; 代用するならloopマクロが考えられる
+;; * これはなに？
+;; 亀井さん作成のEmacsクローンxyzzyと本家emacsの関数・変数名等の
+;; 違いを吸収するためのライブラリみたいなものです。
+;; 以下の目的で作成しました。
+;;
+;; - 動作は同じで、名前が微妙に異なる関数・変数をエイリアスにして、
+;;   とりあえず使えるようにする
+;;   例: delete-hook[emacs] と remove-hook[xyzzy]
+;; - xyzzyにしかない関数・変数をemacsでも使えるように
+;;   例: kill-scratch-hook, sub-directory-p
+;;
+;; また、CommonLisp/SLIMEの関数群も少ないですが定義してあります。
+;;
+;; * 注意
+;; このライブラリに依存したコードを書くことは推奨しません。
+;; あくまで参考までに...
+
+;; * 最新バージョンはこちらにあります:
+;; http://github.com/kosh04/emacs-lisp/tree/master
+
+;; CLパッケージは関数をライブラリとして使用することは推奨されていない。
+;; 代用するならloopマクロが考えられる (展開されれば純elispコード)
 
 ;;; Code:
 (provide 'xyzzy)
 
-(eval-when-compile
-  (require 'cl)
-  ;; (require 'ielm)
-  )
+(eval-when-compile (require 'cl))
+;; (require 'ielm)
 
 ;;; @@Data-Type
 (fset 'compiled-function-p #'byte-code-function-p)
@@ -60,7 +86,20 @@
 ;;; @@Number
 (defun logandc1 (x y) (logand (lognot y) y))
 (defun logandc2 (x y) (logand x (lognot y)))
-;; (defun logcount (integer) ())
+
+;; from Corman Lisp:
+;; http://www.cormanlisp.com/CormanLisp/patches/2_5/math2.lisp
+(defun logcount (integer)
+  (check-type integer integer)
+  ;; if negative, use two's complement to flip
+  (do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
+       (count 0 (+ count (logand x 1))))
+      ((= x 0) count)))
+
+(defun logbitp (index integer)
+  (check-type index (integer 0 *))
+  (check-type integer integer)
+  (< 0 (logand integer (expt 2 index))))
 
 ;;; @@Character
 ;; (digit-char-p ?f 16) => 15
@@ -82,6 +121,9 @@
   "Return T if CHAR is [ -~] or Newline, otherwise NIL."
   (or (and (<= 32 char) (<= char 126))
       (= char 10)))
+
+(defun char-unicode (char) (encode-char char 'ucs))
+(defun unicode-char (code) (decode-char 'ucs code))
 
 ;;; @@Sequence
 (defun remove-trail-slash (str)
@@ -152,13 +194,13 @@
 ;;; @@Eval
 (defadvice eval-last-sexp (before eval-safe activate)
   "ポイントがシンボルの途中でもエラーにならない eval-last-sexp"
-  ;; 他のモードでも使えるようにスキップする文字を明示的にすべきかも
   (with-syntax-table emacs-lisp-mode-syntax-table
     (skip-syntax-forward "w_")))
 ;; (ad-deactivate 'eval-last-sexp)
 
 ;; (defvaralias 'hoge 'load-in-progress)
 
+;; * Emacsは文字コードに関係なくファイルをロードできるはず
 ;; (defun  mc-load-file (filename &optional encoding)
 ;;   (load-with-code-conversion ))
 ;; set-auto-coding-for-load
@@ -209,8 +251,8 @@
 (defun pathname-directory (pathname)
   (let ((dir (split-string (file-name-directory (expand-file-name pathname))
                            "/" 'omit-nulls)))
-    (if (string-match "^[A-Za-z]:$" (car dir)) ; trim Device
-        (cdr dir)
+    (if (memq system-type '(ms-dos windows-nt)) ; cygwinも含む？
+        (cdr dir)                       ; trim Device
         dir)))
 
 ;; (sub-directory-p "~/lib/emacs/" "~/lib/emacs/") => t
@@ -251,15 +293,16 @@
                   (char-equal (elt pathname2 l1) ?/))
              ))))
 
-(defun compile-file-pathname (pathname)
-  "Emacsでバイトコンパイルした時の出力ファイル名を返します."
-  (if (string-match emacs-lisp-file-regexp pathname)
-      (concat (expand-file-name pathname) "c")
-      (concat (expand-file-name pathname) ".elc")))
-
 ;; (defun compile-file-pathname (pathname)
-;;   (require 'bytecomp)
-;;   (byte-compile-dest-file pathname))
+;;   "Emacsでバイトコンパイルした時の出力ファイル名を返します."
+;;   (if (string-match emacs-lisp-file-regexp pathname)
+;;       (concat (expand-file-name pathname) "c")
+;;       (concat (expand-file-name pathname) ".elc")))
+
+;; (byte-compile-dest-file "xyzzy.el.gz") => "xyzzy.elc"
+(defun compile-file-pathname (pathname)
+  (require 'bytecomp)
+  (byte-compile-dest-file pathname))
 
 (defun file-length (pathname)
   "Return PATHNAME size in bytes."
@@ -327,16 +370,21 @@
 ;; (global-set-key [S-C-up] 'scroll-down-both-window) ; #\S-C-Up
 
 (put 'scroll-left 'disabled nil)        ; C-x <
-;; (put 'scroll-right 'disabled nil)       ; C-x >
+(put 'scroll-right 'disabled nil)       ; C-x >
 
 (fset 'toggle-ruler #'ruler-mode)
-(fset 'toggle-cursor-line #'hl-line-mode) ; 下線カーソルface変更
+(fset 'toggle-cursor-line #'global-hl-line-mode)
+;; 下線カーソルface変更
+;; (setq hl-line-face 'underline)
 (defun set-buffer-fold-type-none () (interactive) (toggle-truncate-lines 1))
 (defun set-buffer-fold-type-window () (interactive) (toggle-truncate-lines -1))
 (defun toggle-eof (&optional arg)
   (interactive "P")
   (setq default-indicate-empty-lines
         (or arg (not default-indicate-empty-lines))))
+
+;; スクロールバーは右側
+(set-scroll-bar-mode 'right)
 
 ;;; @@Buffer
 (fset 'selected-buffer #'current-buffer)
@@ -361,7 +409,6 @@
 (defun xyzzy-revert-buffer (&optional encoding)
   (interactive (list (if current-prefix-arg
                          (read-coding-system "Encoding: ")
-                         ;; (intern (completing-read "Encoding: " '("sjis" "euc-jp" "utf-8") nil t))
                          buffer-file-coding-system)))
   (check-coding-system encoding)
   (let ((coding-system-for-read encoding))
@@ -386,9 +433,18 @@
   (set-buffer-file-coding-system
    (or arg
        (case (buffer-eol-code)
-         (0  'dos)
-         (1  'mac)
-         (t  'unix)))))
+         (0 'dos)
+         (1 'mac)
+         (t 'unix)))))
+
+;; change-default-fileio-encoding
+;; change-default-eol-code
+(fset 'change-clipboard-encoding #'set-clipboard-coding-system)
+(fset 'change-fileio-encoding #'set-buffer-file-coding-system)
+
+;; ? next-selection-coding-system
+(defvaralias '*clipboard-char-encoding* 'selection-coding-system
+  "クリップボードエンコーディング")
 
 ;; optporop.l backup.l
 (defvaralias 'make-backup-file-always 'delete-old-versions
@@ -422,7 +478,6 @@
 (defadvice kill-line (before kill-line-read-only activate)
   (barf-if-buffer-read-only))
 
-;; 起動時から使えるように
 (put 'upcase-region 'disabled nil)      ; C-x C-u
 (put 'downcase-region 'disabled nil)    ; C-x C-l
 (put 'narrow-to-region 'disabled nil)   ; C-x n n
@@ -495,29 +550,6 @@
       (dolist (x tmp) (pushnew x acc :test #'equalp)))
     (nreverse acc)))
 
-;; -> (require 'xyzzy-keymap)
-;; (dolist (key '(?\C-1 ?\C-2 ?\C-3 ?\C-4 ?\C-5 ?\C-6 ?\C-7 ?\C-8 ?\C-9 ?\C-0))
-;;   (and (eq (lookup-key global-map (vector key)) 'digit-argument)
-;;        (global-unset-key (vector key))))
-;; (dolist (keymap (list lisp-mode-map
-;;                       lisp-interaction-mode-map
-;;                       emacs-lisp-mode-map
-;;                       ;; lisp-mode-shared-map
-;;                       ;; ielm-map
-;;                       ))
-;;   (define-key keymap "\C-m" 'newline-and-indent))
-;; (global-set-key "\M-p" 'repeat-complex-command)
-;; (global-set-key "\C-z" 'scroll-down)
-;; (global-set-key "\C-xa" 'set-variable)
-;; (global-set-key "\C-x\C-c" 'iconify-or-deiconify-frame)
-;; (global-set-key "\C-x\C-z" 'shrink-window)
-;; (define-key esc-map "\C-h" 'backward-kill-word) ; [?\C-\M-h] (kbd "C-M-h")
-
-;; (global-set-key [M-f4] 'kill-emacs)
-
-;; (global-set-key "\C-h" 'delete-backward-char)
-;; (define-key isearch-mode-map "\C-h" 'isearch-delete-char)
-
 ;;; @@Text
 ;; あってないかも
 (defun convert-encoding-to-internal (encoding input-string &optional output-stream)
@@ -547,6 +579,7 @@
 
 ;;; @@Search, Regexp
 (fset 'ed::protect-match-data 'save-match-data)
+(fset 'store-match-data #'set-match-data)
 
 (defun looking-for (string &optional case-fold)
   (save-match-data                      ; 必要?
@@ -638,9 +671,17 @@
     (with-setenv environ
       (shell-command cmd bufname shell-command-default-error-buffer))))
 
+(defun launch-application (cmd)
+  (start-process "launch-application" nil cmd))
+
 ;;; @@System
 (defun find-load-path (filename)
   (locate-library filename))
+
+(fset 'machine-name #'system-name)
+(fset 'user-name #'user-login-name)
+
+;; (list os-major-version os-minor-version os-platform)
 
 ;; (fset 'dump-xyzzy #'dump-emacs)
 ;; si:dump-image-path
@@ -662,11 +703,6 @@
 
 (defun autoload-function-p (def)
   (eq (car-safe (symbol-function def)) 'autoload))
-
-;; ? next-selection-coding-system
-(defvaralias '*clipboard-char-encoding* 'selection-coding-system
-  "クリップボードエンコーディング")
-(fset 'change-clipboard-encoding #'set-clipboard-coding-system)
 
 ;; エンコードを指定してファイルの読み込み
 (defvaralias '*expected-fileio-encoding* 'coding-system-for-read)
@@ -776,19 +812,7 @@
   (interactive)
   (elisp-macroexpand-1 t))
 
-;; (dolist (keymap (list emacs-lisp-mode-map
-;;                       lisp-interaction-mode-map                      
-;;                       ;; ielm-map
-;;                       ))
-;;   (define-key keymap "\C-c\C-m" 'elisp-macroexpand-1)
-;;   (define-key keymap "\C-c\M-m" 'elisp-macroexpand-all)
-;;   (define-key keymap "\C-ch" 'info-lookup-symbol))
-
 ;; だめ
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
-
-;;; Local Variables:
-;;; coding: utf-8
-;;; End:
 
 ;;; xyzzy.el ends here
