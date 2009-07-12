@@ -37,4 +37,7 @@
                       (mapconcat #'url-hexify-string (split-string string) "+")
                       (or google-search-url-options "")
                       )))
+
+;; (global-set-key (kbd "C-c g") 'google-search)
+
 (provide 'google)

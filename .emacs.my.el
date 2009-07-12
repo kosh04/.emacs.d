@@ -1,37 +1,43 @@
-;;; -*- mode: emacs-lisp -*-
+;;; -*- mode: emacs-lisp; coding:utf-8 -*-
 ;;;
 ;;; This file is NOT part of Emacs.
-;;;
 
-;;; Time-stamp: <2009-05-25T03:35:03JST>
+;;; Time-stamp: <2009-07-13T02:09:28>
 
-;;; TODO
-;;; setq & setq-default
-
+;; どのパッケージがCLをロードするのか
 (eval-after-load "cl"
   (quote (message "Loading CL: %S" load-file-name)))
+
+(eval-after-load "utf-8"
+  (quote (progn
+           (message "Loading UTF-8: %S" load-file-name))))
 
 ;; (require 'cl)
 (when (locate-library "xyzzy")
   (require 'xyzzy)
   (require 'xyzzy-keymap)
   (require 'xyzzy-util))
-;; (unless window-system (global-set-key (kbd "C-x C-c") 'kill-emacs))
-(when window-system (global-set-key (kbd "C-x C-c") 'iconify-or-deiconify-frame))
+
+(global-set-key (kbd "C-x C-c")
+                (cond (window-system 'iconify-frame)
+                      (:else 'suspend-emacs)))
+;; (define-key help-map [(control ?x) (control ?c)] 'kill-emacs)
 
 ;; flet, labels のインデント修正方法 (よろしくないかも)
 (fset 'lisp-indent-function #'common-lisp-indent-function)
 
 (add-to-list 'auto-mode-alist '("\\.elc" . emacs-lisp-mode))
 
-;; -> xyzzy.el
+(menu-bar-mode (if window-system 1 -1))
+
+;; -> xyzzy-keymap.el
 ;; (global-set-key "\C-h" 'delete-backward-char)
 ;; (define-key isearch-mode-map "\C-h" 'isearch-delete-char)
 
 ;;; highlight-line
 (require 'hl-line)
 (add-hook 'dired-mode-hook 'hl-line-mode)
-(add-hook 'buffer-menu-mode-hook 'hl-line-mode)
+;; (add-hook 'buffer-menu-mode-hook 'hl-line-mode)
 
 ;;; auto-fill
 (setq-default fill-column 80)
@@ -41,14 +47,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 表示関係
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ツールバーいらない
-(tool-bar-mode -1)
-
-;;; ビジブルベル
+;; スクロールバーは右側
+(when window-system
+  (set-scroll-bar-mode 'right)
+  (tool-bar-mode -1))
 (setq visible-bell nil)
+(transient-mark-mode t)
+(global-font-lock-mode t)
+(setq inhibit-startup-message t)     ; スタートアップのメッセージを表示しない
+;; (setq initial-scratch-message "")    ; *scratch* バッファに入る文字列
 
-;;; mark 領域に色付け
-(setq transient-mark-mode t)
+;;; modeline
+(when window-system
+  (set-face-background 'modeline "black")
+  (set-face-foreground 'modeline "grey90"))
+(line-number-mode t)
+(column-number-mode t)
 
 ;;; [UN*X.emacs] から
 ;;(c-add-style "mystyle" '((c-basic-offset . 4)))
@@ -58,30 +72,17 @@
 (add-hook 'c-mode-common-hook   'my-indent-style)
 (add-hook 'c++-mode-common-hook 'my-indent-style)
 
-;;; modeline
-(set-face-background 'modeline "black")
-(set-face-foreground 'modeline "grey90")
-(line-number-mode t)
-(column-number-mode t)
-(setq display-time-string-forms
-      '(month"/"day"("dayname") "24-hours":"minutes))
-(display-time)
-
 ;;; frame
 (setq frame-title-format
-      `(" %b " (buffer-file-name "( %f )") " on " ,(system-name)
-        " ----- " ,(if (featurep 'meadow)
-                       (Meadow-version)
-                     (format "Emacs %s" emacs-version))))
+      `(" %b " (buffer-file-name "(%f)") " on " ,(system-name)
+               " - " ,(if (featurep 'meadow)
+                          (Meadow-version)
+                          (format "Emacs %s" emacs-version))))
 
 ;;; paren
 (show-paren-mode t)			; 対応する括弧に色をつける
 ;; (setq show-paren-style 'expression) ; カッコ全体をハイライト
 (setq parse-sexp-ignore-comments t)	; コメント内のカッコは無視。
-
-(setq inhibit-startup-message t)     ; スタートアップのメッセージを表示しない
-;; (setq initial-scratch-message "")    ; *scratch* バッファに入る文字列
-(global-font-lock-mode t)		; Syntax Highlighting
 
 ;;; タブ、全角スペースを可視化
 ;;; http://homepage1.nifty.com/blankspace/emacs/color.html
@@ -100,45 +101,42 @@
      )))
 ;; (ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
 ;; (ad-activate 'font-lock-mode)
-(add-hook 'text-mode-hook 'font-lock-fontify-buffer)
-
-;;; 端末から起動した時 (emacs -nw) にメニューバーを消す
-(menu-bar-mode (if window-system 1 -1))
+;; (add-hook 'text-mode-hook 'font-lock-fontify-buffer)
+(add-hook 'after-change-major-mode-hook 'font-lock-fontify-buffer)
 
 ;;; バッファのタブ化
-(require 'tabbar)
-(tabbar-mode (if window-system 1 -1))
-;; kill-bufferしたときに戻るバッファが変わるのを抑える
-;; http://www.bookshelf.jp/pukiwiki/pukiwiki.php?Elisp%2F%A5%BF%A5%D6%A4%C7%A5%D0%A5%C3%A5%D5%A5%A1%A4%F2%C0%DA%A4%EA%C2%D8%A4%A8%A4%EB
-(remove-hook 'kill-buffer-hook 'tabbar-buffer-kill-buffer-hook)
-;; グループ化しない
-(setq tabbar-buffer-groups-function #'(lambda (buffer) (list "All Buffers"))
-      tabbar-buffer-list-function 'valid-buffer-list)
-(defsubst valid-buffer-list ()
-  ;; (remove-if #'(lambda (buffer) (or (find (aref (buffer-name buffer) 0) " ") (member (buffer-name buffer) '("*Buffer List*" "*Messages*" "*Completions*" "*Compile-Log*")))) (buffer-list))
-  (let (acc)
-    (dolist (buffer (buffer-list))
-      (unless (or (string-match "^ .+" (buffer-name buffer))
-                  (member (buffer-name buffer)
-                          '("*Buffer List*" "*Messages*" "*Completions*"
-                            "*Compile-Log*" "*Dired log*" "*slime-events*"
-                            "*Disabled Command*" "*Quail Completions*"
-                            "*Fuzzy Completions*" "*WoMan-Log*")))
-        (push buffer acc)))
-    (nreverse acc)))
-(when tabbar-mode
+(load "tabbar" t)
+(when (featurep 'tabbar)
+  (tabbar-mode 1)
+  ;; kill-bufferしたときに戻るバッファが変わるのを抑える
+  ;; http://www.bookshelf.jp/pukiwiki/pukiwiki.php?Elisp%2F%A5%BF%A5%D6%A4%C7%A5%D0%A5%C3%A5%D5%A5%A1%A4%F2%C0%DA%A4%EA%C2%D8%A4%A8%A4%EB
+  (remove-hook 'kill-buffer-hook 'tabbar-buffer-kill-buffer-hook)
+  ;; グループ化しない
+  (setq tabbar-buffer-groups-function #'(lambda (buffer) (list "All Buffers"))
+        tabbar-buffer-list-function
+        #'(lambda ()
+            (delq nil
+                  (mapcar (lambda (buffer)
+                            (and (or (string-match "^[^ *]" (buffer-name buffer))
+                                     (member (buffer-name buffer)
+                                             '("*scratch*" "*ruby*" "*newlisp*")))
+                                 buffer))
+                          (buffer-list)))))
+  
   (set-face-attribute 'tabbar-default-face nil :background "gray60")
   (set-face-attribute 'tabbar-unselected-face nil :background "gray85" :foreground "gray30" :box nil)
   (set-face-attribute 'tabbar-selected-face nil :background "#f2f2f6" :foreground "black" :box nil)
   (set-face-attribute 'tabbar-button-face nil :box '(:line-width 1 :color "gray72" :style released-button))
   (set-face-attribute 'tabbar-separator-face nil :height 0.7)
-  (global-set-key [?\C-x ?\C-.] 'tabbar-forward-tab)
-  (global-set-key [?\C-x ?\C-,] 'tabbar-backward-tab))
+  ;; gnome-terminalだとC-. C-, が効かないの忘れてた
+  (global-set-key (kbd "C-x C-.")  'tabbar-forward-tab)
+  (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
+  )
 
 ;;; shell-command(M-!) のコマンド入力に補完を効かせる
 ;;; http://namazu.org/~tsuchiya/
-(require 'shell-command)
-(shell-command-completion-mode)
+(when (load "shell-command" 'noerror)
+  (shell-command-completion-mode))
 
 ;;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -152,15 +150,7 @@
 (defadvice shell (around shell-split-windows activate)
   (let ((shell-buffer (save-window-excursion ad-do-it)))
     (unless (eq shell-buffer (current-buffer))
-      (pop-to-buffer (buffer-name shell-buffer)
-                     'other-window))))
-;; (defadvice shell (around shell-split-windows activate)
-;;   (unless (or (string-match "*\*shell\**" (buffer-name))
-;;               (not (y-or-n-p "現在のバッファを残す?")))
-;;     (delete-other-windows)
-;;     (split-window-vertically)
-;;     (other-window 1))
-;;   ad-do-it)
+      (pop-to-buffer (buffer-name shell-buffer) 'other-window))))
 (define-key mode-specific-map [?s] 'shell)
 
 ;;; URLをブラウザで開く
@@ -186,10 +176,6 @@
   (let ((system-time-locale "C"))
     (insert (format-time-string "%Y-%m-%dT%H:%M:%S"))))
 (global-set-key "\C-ct" 'insert-time)
-
-;;; 最近開いたファイル
-(recentf-mode t)
-;; (global-set-key "\C-c\C-f" 'recentf-open-files) ; なんとなく
 
 ;;; gzファイルも編集できるように
 (auto-compression-mode t)
@@ -217,48 +203,35 @@
 ;; (define-key lisp-interaction-mode-map [?\C-.] 'lisp-complete-symbol)
 
 ;;; カーソルあっちいって
-(and (display-mouse-p)
-     (if (eq system-type 'windows-nt)
-         (mouse-avoidance-mode 'exile)
-         (mouse-avoidance-mode 'banish)))
+;; (display-mouse-p)
+(if (eq system-type 'windows-nt)
+    (mouse-avoidance-mode 'exile)
+    (mouse-avoidance-mode 'banish))
 
 ;;; Elisp をさらに色付け
 (require 'elisp-font-lock)
+;; 再帰が深すぎるとスタックが足りなくなるので適当に大きく
+(setq max-lisp-eval-depth 1000)
+;; (setq max-specpdl-size max-specpdl-size)
 
 ;;; カーソル上にあるファイル名や URL を開く
 ;;; フツーの Find file: は C-u C-x C-f
-(require 'ffap)
-(ffap-bindings)
+;; (require 'ffap)
+;; (ffap-bindings)
 
 ;;; 関数一覧 (M-x: imenu)
 (require 'imenu)
-(global-set-key "\C-c\C-l" 'imenu)      ; lisp-modeのslime-load-fileと被る
+;; (global-set-key "\C-c\C-l" 'imenu)      ; lisp-modeのslime-load-fileと被る
 (global-set-key "\C-ci" 'imenu)
-
-;;; 余分な空白をカット
-;;; 標準で 'delete-trailing-whitespace というのがありました
-;;; 一応 'query-replace のように確認したほうがいいか？
-(defun trim-trailing-whitespace (start end)
-  (interactive "*r")
-  (save-excursion
-    ;; (replace-regexp "[ \t]+$" "" nil start end)
-    (perform-replace "[ \t]+$" "" nil t nil nil nil start end)))
-(defun trim-whole-tail-whitespace ()
-  (interactive "*")
-  (trim-trailing-whitespace (point-min) (point-max)))
-;; (add-hook 'write-file-hooks 'trim-tail-whitespace)
-
-;;; non-nil なら常に行末移動
-(setq track-eol t)
 
 ;;; インデントして次の行へ
 (defun indent-and-next-line (&optional args)
   (interactive "*p")
-  (dotimes (x (prefix-numeric-value args))
+  (dotimes (x args)
     (indent-according-to-mode)
-    (next-line 1)))
-(byte-compile 'indent-and-next-line)
-(define-key global-map "\M-n" 'indent-and-next-line)
+    (line-move 1)))
+;; (byte-compile 'indent-and-next-line)
+(global-set-key "\M-n" 'indent-and-next-line)
 
 ;;; 物理行移動マイナーモード
 ;;; http://xem.jp/~tkng/physical-line.el ; 404 Not Found
@@ -281,45 +254,33 @@
     ad-do-it))
 
 ;; 大文字小文字の区別をしない
-(setq completion-ignore-case t)
-(setq read-file-name-completion-ignore-case t)
+(setq completion-ignore-case t
+      read-file-name-completion-ignore-case t)
 
 ;;; 誤爆するとイヤなので無効化
 (global-unset-key "\C-xm")		; compose-mail
 (global-unset-key "\C-x\C-n")		; set-goal-column
 
 ;;; Google 検索
-(autoload 'google-search "google" nil t)
+(require 'google)
 (global-set-key "\C-cg" 'google-search)
 
 ;;; １行スクロール (でもたまに半画面スクロールする)
-'(setq scroll-conservatively 35
-      scroll-margin 0
-      scroll-step 1)
+;; (setq scroll-conservatively 35 scroll-margin 0 scroll-step 1)
 
 ;;; 終了時の状態を保存
 (desktop-save-mode t)
+(setq desktop-load-locked-desktop nil)
 
 ;;; スクリプトを保存する時，自動的に chmod +x を行う
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
-;;; Prolog
-(setq prolog-program-name "C:/cygwin/lib/pl-5.6.36/bin/i686-cygwin/pl.exe")
-;; (setq prolog-consult-string "[user].\n")
-(add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
-(defun prolog-consult-buffer ()
-  (interactive)
-  (save-buffer)
-  (prolog-consult-region nil (point-max) (point-min)))
-
 ;;; inferior-lisp
 ;; "c:/usr/local/clisp-2.47-full/bin/clisp.exe"
 ;; "c:/cygwin/bin/clisp.exe"
-(setq inferior-lisp-program
-      (cond ((eql system-type 'windows-nt)
-             "C:/usr/local/clisp-2.44/clisp.exe")
-            ((eql system-type 'gnu/linux)
-             "sbcl")))
+(if (eql system-type 'windows-nt)
+    (setq inferior-lisp-program "C:/usr/local/clisp-2.44/clisp.exe"))
+
 ;; (autoload 'lisp-eval-last-sexp "inf-lisp")
 ;; (global-set-key "\C-c\C-x" 'lisp-eval-last-sexp)
 ;; (autoload 'switch-to-lisp "inf-lisp" nil t)
@@ -343,17 +304,18 @@
   )
 
 ;;; newLISP
-;; (load-library "newlisp")
-(load-library "newlisp/newlisp")
+;; (load-library "newlisp/newlisp")
+(load "newlisp" 'noerror)
 (add-to-list 'auto-mode-alist '("\\.lsp$" . newlisp-mode))
-(setq *newlisp-manual-text* (locate-file "newlisp/newlisp_manual.txt" load-path))
+(setq newlisp-manual-text
+      (locate-file "newlisp/newlisp_manual.txt" load-path))
 
-;;; 需要ある？
-(global-set-key [?\C-8] 'insert-parentheses)
-(global-set-key [?\C-2] (defun insert-double-quotes (&optional arg)
-                          (interactive "P")
-                          (insert-pair arg ?\" ?\")))
-(global-set-key (kbd "C-3")
+;; (global-set-key [?\C-8] 'insert-parentheses)
+(global-set-key (kbd "M-\"")
+                (defun insert-double-quotes (&optional arg)
+                  (interactive "P")
+                  (insert-pair arg ?\" ?\")))
+(global-set-key (kbd "M-#")
                 (defun insert-multi-comment-for-lisp (&optional arg)
                   (interactive "P")
                   (insert "#|" "|#")
@@ -381,16 +343,19 @@
           (t (error "not found: %s" sym)))))
 (define-key esc-map [?.] 'find-symbol-at-point)
 
+;;; Buffer List 関係
 ;; (load-library "buff-menu")
 ;; (define-key Buffer-menu-mode-map [(control ?g)] 'quit-window)
 ;; (add-hook 'buffer-menu-mode-hook #'(lambda () (pop-to-buffer "*Buffer List*")))
-(global-set-key [(control ?x) (control ?b)] 'electric-buffer-list)
-(setq Buffer-menu-sort-column 2)        ; '(CRM Buffer Size Mode File)
-(eval-after-load 'ebuff-menu
-  (quote (progn
-           (define-key electric-buffer-menu-mode-map "\C-g" 'Electric-buffer-menu-quit))))
+;; (global-set-key [(control ?x) (control ?b)] 'electric-buffer-list)
+;; (setq Buffer-menu-sort-column 2)        ; '(CRM Buffer Size Mode File)
+;; (eval-after-load 'ebuff-menu
+;;   (quote (progn
+;;            (define-key electric-buffer-menu-mode-map "\C-g" 'Electric-buffer-menu-quit))))
 ;; (global-set-key "\C-x\C-b" 'buffer-menu-other-window)
 ;; (define-key Buffer-menu-mode-map "\C-g" 'kill-buffer-and-window)
+(global-set-key [(control ?x) (control ?b)] 'bs-show)
+(add-hook 'bs-mode-hook 'hl-line-mode)
 
 (defun sequence (from to &optional step)
   (if (<= from to)
@@ -400,21 +365,15 @@
 ;;; dired.el
 ;;; xyzzy.elに移動させる？
 (setq ls-lisp-dirs-first t)
+;; (defun dired-here () (interactive) (dired default-directory))
 (defun dired-here ()
+  "diredを起動して、作業中のファイルにカーソルを当てる."
   (interactive)
-  (dired default-directory))
+  (let ((file (buffer-file-name)))
+    (dired (file-name-directory (or file default-directory)))
+    (if file (dired-goto-file file))))
 (global-set-key (kbd "C-c C-f") 'dired-here)
 ;; (define-key dired-mode-map [(control ?g)] 'quit-window)
-;; filename$ <- 正規表現で検索した方がよさそう
-(defadvice dired (around set-position-buffer-file activate)
-  "dired起動後、作業中のファイルにカーソルを当てる."
-  (let ((file (buffer-file-name)))
-    ad-do-it
-    (when file
-      (let ((name (file-name-nondirectory file)))
-        (re-search-forward (concat (regexp-quote name) "$"))
-        (backward-char (length name))))))
-;; (ad-deactivate 'dired)
 
 (defun indent-line-sexp ()
   "長い一行S式をそれなりにインデントします."
@@ -441,6 +400,7 @@
                            (indent-for-comment)
                            ;; (ignore-errors (kill-line))
                            (command-execute "\C-u\C-x\C-e")))
+(global-set-key [(control ?c) (control ?r)] 'eval-region)
 
 (defun recompile-and-load-file ()
   "*.lc があれば再コンパイルとロード."
@@ -464,9 +424,13 @@
 
 ;;; @@info
 (require 'info)
-(add-to-list 'Info-additional-directory-list "~/info/libc/")
-(define-key mode-specific-map [?h] 'info-lookup-symbol)
-
+(eval-after-load "info"
+  (quote
+   (progn
+     (add-to-list 'Info-additional-directory-list "~/info/libc/")
+     (define-key mode-specific-map [?h] 'info-lookup-symbol)
+     )))
+  
 ;;; 存在するバッファのみ切り替え
 (defadvice switch-to-buffer (before existing-buffer activate compile)
   "When interactive, switch to existing buffers only, unless given a prefix argument."
@@ -474,21 +438,55 @@
                                   (other-buffer)
                                   (null current-prefix-arg)))))
 
-;; eshell
-(add-hook 'eshell-first-time-mode-hook
-          #'(lambda ()
-              (define-key eshell-mode-map [(control ?a)] 'eshell-bol)))
-
 (defun detect-and-decode-string (string)
   (mapcar #'(lambda (encoding)
-              (list encoding (decode-coding-string string encoding)))
+              (cons encoding (decode-coding-string string encoding)))
           (detect-coding-string string)))
 
-(or (lookup-key global-map [f12]) (global-set-key [f12] 'emacs-lisp-mode))
-(or (lookup-key global-map (kbd "<M-f12>"))
-    (global-set-key (kbd "<M-f12>") 'lisp-interaction-mode))
-
+(or (lookup-key global-map [f12])   (global-set-key [f12] 'emacs-lisp-mode))
+(or (lookup-key global-map [C-f12]) (global-set-key [C-f12] 'lisp-interaction-mode))
 
 (when (eq system-type 'windows-nt)
-  (require 'ispell)
-  (setq ispell-program-name (expand-file-name "Aspell/bin/aspell.exe" (getenv "programfiles"))))
+  ;; (require 'ispell)
+  (setq ispell-program-name (expand-file-name "Aspell/bin/aspell.exe" (getenv "PROGRAMFILES"))))
+
+;; @@Ruby
+;; (push (expand-file-name "~/lib/emacs/ruby/") load-path)
+;; (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+(when (eq system-type 'windows-nt)
+  (require 'inf-ruby)
+  (require 'ruby-mode)
+  ;; "sh -c irb --inf-ruby-mode" でも起動はするけどプロンプトが現れない...
+  (setq ruby-program-name "ruby -S irb --inf-ruby-mode"))
+
+(defvar *temporary-buffer-list* nil)
+;; "*Help*" は消さない方が吉
+(setq *temporary-buffer-list* '("*Completions*"))
+;; Ctrl-]
+(defadvice abort-recursive-edit (before with-kill-temp-buffers activate)
+  (let ((kill-buffer-safe
+         (lambda (buffer)
+           (and (get-buffer buffer) (kill-buffer buffer)))))
+    (mapc kill-buffer-safe *temporary-buffer-list*)))
+
+;; (fset 'trim-tailing-whitespace #'delete-trailing-whitespace)
+(defun trim-tailing-whitespace ()
+  (interactive)
+  (save-restriction
+    (when mark-active
+      (narrow-to-region (region-beginning)
+                        (region-end)))
+    (delete-trailing-whitespace)))
+
+;; 折り返しいらない
+(setq default-truncate-lines t)         ; 水平分割
+(setq truncate-partial-width-windows t) ; 垂直分割
+
+;; なぜか utf-8 になっていたので
+(when (eq system-type 'windows-nt)
+  (setq default-process-coding-system
+        ;; '(japanese-iso-8bit . japanese-iso-8bit)
+        '(sjis-unix . sjis-unix)
+        ))
+
+;;; .emacs.my.el ends here
