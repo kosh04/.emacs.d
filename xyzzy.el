@@ -2,7 +2,7 @@
 ;;;
 ;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの関数/変数をEmacsで使うためのライブラリ
 ;;;
-;;; Time-stamp: <2009-05-25T04:00:12>
+;;; Time-stamp: <2009-07-13T00:56:00>
 
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
 ;; Version: 0.1
@@ -13,27 +13,23 @@
 ;;; Commentary:
 
 ;; * これはなに？
+;;
 ;; 亀井さん作成のEmacsクローンxyzzyと本家emacsの関数・変数名等の
 ;; 違いを吸収するためのライブラリみたいなものです。
+;;
 ;; 以下の目的で作成しました。
 ;;
 ;; - 動作は同じで、名前が微妙に異なる関数・変数をエイリアスにして、
 ;;   とりあえず使えるようにする
 ;;   例: delete-hook[emacs] と remove-hook[xyzzy]
+;;
 ;; - xyzzyにしかない関数・変数をemacsでも使えるように
 ;;   例: kill-scratch-hook, sub-directory-p
 ;;
 ;; また、CommonLisp/SLIMEの関数群も少ないですが定義してあります。
 ;;
-;; * 注意
-;; このライブラリに依存したコードを書くことは推奨しません。
-;; あくまで参考までに...
-
 ;; * 最新バージョンはこちらにあります:
 ;; http://github.com/kosh04/emacs-lisp/tree/master
-
-;; CLパッケージは関数をライブラリとして使用することは推奨されていない。
-;; 代用するならloopマクロが考えられる (展開されれば純elispコード)
 
 ;;; Code:
 (provide 'xyzzy)
@@ -48,8 +44,7 @@
   (if (string-match "[A-Za-z0-9]" (char-to-string char)) t nil))
 
 (defun kanji-char-p (character)
-  (check-type character character)
-  (multibyte-string-p (string character)))
+  (multibyte-string-p (char-to-string character)))
 
 ;;; @@Variable-and-Constant
 (defvaralias '*modules* 'features)
@@ -59,6 +54,9 @@
 (defvaralias 'si:*command-line-args* 'command-line-args-left) ; command-line-args ?
 (defvaralias '*load-pathname* 'load-file-name)
 (defvaralias '*etc-path* 'data-directory)
+;;            引数有りで実行            引数なしで実行される
+(defvaralias '*query-kill-buffer-hook* 'kill-buffer-query-functions)
+(defvaralias '*query-kill-xyzzy-hook* 'kill-emacs-query-functions)
 
 (defmacro defparameter (symbol value &optional doc-string)
   `(if (boundp ',symbol)
@@ -68,6 +66,16 @@
               `(put ',symbol 'variable-documentation ,doc-string))
          ',symbol)
        (defvar ,symbol ,value ,doc-string)))
+
+;;; 代入する変数が束縛されているかどうかは実行時まで分からない
+;; (defmacro defparameter (symbol value &optional doc-string)
+;;   (if (boundp symbol)
+;;       `(progn
+;;          (set ',symbol ,value)
+;;          ,(if doc-string
+;;               `(put ',symbol 'variable-documentation ,doc-string))
+;;          ',symbol)
+;;       `(defvar ,symbol ,value ,doc-string)))
 
 ;;; @@制御構造
 ;;; @@Package
@@ -122,6 +130,8 @@
   (or (and (<= 32 char) (<= char 126))
       (= char 10)))
 
+;; (defun char-code (char) (check-type char character) char)
+;; (defun code-char (code) (check-type code integer) code)
 (defun char-unicode (char) (encode-char char 'ucs))
 (defun unicode-char (code) (decode-char 'ucs code))
 
@@ -178,10 +188,10 @@
 (defun string-trim (char-bag string)
   (string-left-trim char-bag (string-right-trim char-bag string)))
 
-;; substitute-string と replace-regexp-in-string が似ている気がする
-;; (arglist 'substitute-string)        ; (string pattern replacement &key :case-fold :start :end :skip :count)
-;; (arglist 'replace-regexp-in-string) ; (regexp rep string &optional fixedcase literal subexp start)
-;; (replace-regexp-in-string "(foo).*'" "bar" " foo foo" nil nil 1) ; " bar foo"
+(defun* substitute-string (string pattern replacement
+                                  &key case-fold start end skip count)
+  (let ((case-fold-search case-fold))
+    (replace-regexp-in-string pattern replacement string 'fixedcase)))
 
 ;;; @@List
 (fset 'safe-car #'car-safe)
@@ -197,6 +207,15 @@
   (with-syntax-table emacs-lisp-mode-syntax-table
     (skip-syntax-forward "w_")))
 ;; (ad-deactivate 'eval-last-sexp)
+
+;; Emacsのeval-regionの返り値が常にnil、出力はデフォルトでは破棄される
+;; -> せめて出力は破棄せずにミニバッファに表示したい
+;; できれば返り値も弄りたいが...
+(defadvice eval-region (before output-to-stdout activate)
+  ;; Programs can pass third argument PRINTFLAG which controls output:
+  ;; A value of nil means discard it; anything else is stream for printing it.
+  (or (ad-get-arg 2)
+      (ad-set-arg 2 standard-output)))
 
 ;; (defvaralias 'hoge 'load-in-progress)
 
@@ -218,6 +237,9 @@
 (fset 'get-buffer-file-name #'buffer-file-name)
 (fset 'file-exist-p #'file-exists-p)
 (fset 'pathname-type #'file-name-extension)
+(fset 'find-other-file  #'find-alternate-file)
+
+;; (defun user-homedir-pathname () default-directory)
 
 ;; CLにファイルのリンク先を参照する関数はあるのか？
 ;; file-truename, file-chase-links
@@ -251,8 +273,8 @@
 (defun pathname-directory (pathname)
   (let ((dir (split-string (file-name-directory (expand-file-name pathname))
                            "/" 'omit-nulls)))
-    (if (memq system-type '(ms-dos windows-nt)) ; cygwinも含む？
-        (cdr dir)                       ; trim Device
+    (if (memq system-type '(ms-dos windows-nt)) ; ? cygwin
+        (cdr dir)                               ; ignore drive letter
         dir)))
 
 ;; (sub-directory-p "~/lib/emacs/" "~/lib/emacs/") => t
@@ -312,15 +334,20 @@
 (fset 'plain-error #'error)
 
 ;;; @@Window
+(fset 'set-window #'select-window)
 (fset 'next-page #'scroll-up)
 (fset 'previous-page #'scroll-down)
+
+;; split-window-vertically
+;; Emacs: ウィンドウを上下に分割 [C-x 2]
+;; xyzzy: ウィンドウを左右に分割 [C-x 5]
 
 (defun move-previous-window (&optional arg)
   (interactive "p")
   (other-window (- arg)))
-;; (global-set-key "\C-xp" 'move-previous-window)
 
 (defun get-window-start-line ()
+  ;; どちらでも効果は同じ
   (or (line-number-at-pos (window-start))
       (save-excursion
         (move-to-window-line 0)
@@ -333,6 +360,7 @@
   (cdr (posn-actual-col-row (posn-at-point (point) window)))
   )
 
+;; FIXME:
 ;; window-height はモードラインとヘッダとミニバッファと何を含む？
 ;; (- (window-height) (window-body-height))
 ;; ? (window-line-height)
@@ -349,9 +377,8 @@
 
 (defun scroll-window (arg)
   (check-type arg integer)
-  (scroll-up arg))
+  (ignore-errors (scroll-up arg)))
 
-;;  End of buffer, Beginning of buffer でウィンドウが移動してしまう
 (defun scroll-up-both-window ()
   (interactive)
   (other-window 1)
@@ -365,9 +392,6 @@
   (scroll-window -2)
   (other-window -1)
   (scroll-window -2))
-
-;; (global-set-key [S-C-down] 'scroll-up-both-window) ; #\S-C-Down
-;; (global-set-key [S-C-up] 'scroll-down-both-window) ; #\S-C-Up
 
 (put 'scroll-left 'disabled nil)        ; C-x <
 (put 'scroll-right 'disabled nil)       ; C-x >
@@ -383,18 +407,20 @@
   (setq default-indicate-empty-lines
         (or arg (not default-indicate-empty-lines))))
 
-;; スクロールバーは右側
-(set-scroll-bar-mode 'right)
-
 ;;; @@Buffer
 (fset 'selected-buffer #'current-buffer)
 (fset 'find-buffer #'get-buffer)
 (fset 'create-new-buffer #'generate-new-buffer)
+(fset 'buffer-can-undo-p #'buffer-enable-undo)
+(fset 'kill-selected-buffer #'kill-this-buffer)
 
 (defun delete-buffer (buffer)
   "Kill the BUFFER without query."
   (let ((kill-buffer-query-functions nil))
     (kill-buffer buffer)))
+
+(defun deleted-buffer-p (buffer)
+  (not (buffer-live-p buffer)))
 
 (defun file-visited-p (&optional buffer)
   (if (buffer-file-name buffer) t nil))
@@ -405,7 +431,6 @@
     (line-number-at-pos (point-max))))
 
 ;; revert-buffer{,-with-coding-system}
-;; おかしなエンコード指定をすると読み込み後のポイント位置がずれるんだが、なぜだ
 (defun xyzzy-revert-buffer (&optional encoding)
   (interactive (list (if current-prefix-arg
                          (read-coding-system "Encoding: ")
@@ -423,19 +448,31 @@
     (nreverse acc)))
 
 ;; 0:LF(unix) 1:CRLF(dos) 2:CR(mac)
+(defconst buffer-eol-alist '((0 . unix) (1 . dos) (2 . mac)))
+
 ;; バッファのエンコードで改行コードが指定されてない場合はあるのか？
 (defun buffer-eol-code (&optional buffer)
   (with-current-buffer (or buffer (current-buffer))
     (coding-system-eol-type buffer-file-coding-system)))
 
 (defun change-eol-code (&optional arg)
-  (interactive "p")
-  (set-buffer-file-coding-system
-   (or arg
-       (case (buffer-eol-code)
-         (0 'dos)
-         (1 'mac)
-         (t 'unix)))))
+  (interactive "P")
+  (let ((eol-type (or (and arg (prefix-numeric-value arg))
+                      (buffer-eol-code))))
+    (set-buffer-file-coding-system (cdr (assoc (mod (1+ eol-type) 3)
+                                               buffer-eol-alist))
+                                   nil 'nomodify)))
+
+(defun xyzzy-erase-buffer (buffer)
+  (with-current-buffer (or buffer (current-buffer))
+    (let ((buffer-read-only nil))
+      (erase-buffer)                      ; バッファ上のテキスト,restriction
+      ;; ・修正日付
+      (set-buffer-modified-p nil)         ; 変更フラグ
+      (setq buffer-undo-list nil)         ; UNDO情報
+      )))
+
+;; (put 'erase-buffer 'disabled nil)
 
 ;; change-default-fileio-encoding
 ;; change-default-eol-code
@@ -453,6 +490,7 @@
 ;; clear-undo-boundary
 
 ;; (list make-backup-files version-control kept-old-versions kept-new-versions 'pack-backup-file-name make-backup-file-always)
+;; ediff の独立ウィンドウを参考に (select-buffer) [f2]
 
 ;;; @@Minibuffer
 
@@ -478,38 +516,129 @@
 (defadvice kill-line (before kill-line-read-only activate)
   (barf-if-buffer-read-only))
 
+;;; 読み込み専用のテキストをキル
+;;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=kill-read-only-ok
+;; このオプションがnil以外であると, kill-regionは, バッファが読み出し
+;; 専用であってもエラーとしない. そのかわりに, キルリングを更新しバッ
+;; ファは変更せずに戻る.
+;;
+;; エラーが出るかそうでないかの違いだけで、結局コピーは出来てしまうんですが...
+;; (setq kill-read-only-ok t)
+
 (put 'upcase-region 'disabled nil)      ; C-x C-u
 (put 'downcase-region 'disabled nil)    ; C-x C-l
 (put 'narrow-to-region 'disabled nil)   ; C-x n n
 
 ;;; @@Mode
 (fset 'delete-hook #'remove-hook)
+(fset 'run-hook-with-args-while-success 'run-hook-with-args-until-failure)
 
 ;;; @@Syntax
-(defmacro define-syntax-xxx-p (name c)
-  `(defun ,(intern (format "syntax-%s-p" (symbol-name name)))
-       (char &optional syntax-table)
-     (with-syntax-table (or syntax-table (syntax-table))
-       (eql (char-syntax char) ,c))))
+(defparameter syntax-char-alist
+  '(
+    ;; emacs/xyzzy共通
+    (?\s . whitespace-syntax)
+    (?w  . word-constituent)
+    (?_  . symbol-constituent)
+    (?.  . punctuation)
+    (?\( . open-parenthesis)
+    (?\) . close-parenthesis)
+    (?\" . string-quote)
+    (?\\ . escape)
+    (?/  . character-quote)
+    (?$  . paired-delimiter)            ; [math]
+    (?\' . expression-prefix)           ; [symbol-prefix]
+    (?<  . comment-starter)
+    (?>  . comment-ender)
+    (?@  . inherit-standard-syntax)
+    (?!  . generic-comment-fence)
+    (?|  . generic-string-fence)
+    ;; Flags
+    (?1 . start-of-multi-comment1)
+    (?2 . start-of-multi-comment2)
+    (?3 . end-of-multi-comment1)
+    (?4 . end-of-multi-comment2)
+    (?b . comment-sequence-b)
+    (?n . nestable-comment-sequence)
+    (?p . prefix-character)
+    ;; xyzzy専用？
+    (?\" . string-quote)
+    (?x . junk)
+    (?\{ . open-tag)
+    (?\} . close-tag)
+    ))
+
+(eval-when-compile
+  (defmacro define-syntax-xxx-p (name c)
+    `(defun ,(intern (format "syntax-%s-p" (symbol-name name)))
+         (char &optional syntax-table)
+       (with-syntax-table (or syntax-table (syntax-table))
+         (eql (char-syntax char) ,c)))))
+
 ;; ちゃんと並び替えよう
-;; Cの/* 2文字コメントとかどうする？ */
+;; /* 2文字コメントどうする？ */
 ;; http://www.fan.gr.jp/~ring/doc/elisp_20/elisp_35.html
-(define-syntax-xxx-p whitespace ? )
+(define-syntax-xxx-p whitespace ?\s)
 (define-syntax-xxx-p word ?w)
 (define-syntax-xxx-p symbol ?_)
 (define-syntax-xxx-p punctuation ?.)
 (define-syntax-xxx-p open ?\()
 (define-syntax-xxx-p close ?\))
-(define-syntax-xxx-p character-quote ?\") ; quote
+(define-syntax-xxx-p character-quote ?\")
 (define-syntax-xxx-p escape ?\\)
-(define-syntax-xxx-p start-comment ?\<)
-(define-syntax-xxx-p end-comment ?\>)
-(define-syntax-xxx-p expression-prefix ?') ; symbol-prefix
-(define-syntax-xxx-p paired-delimiter ?$)  ; math
-(define-syntax-xxx-p string-quote ?\")     ; string
+;; character-quote (`/')
+(define-syntax-xxx-p paired-delimiter ?$)
+(define-syntax-xxx-p expression-prefix ?\')
+(define-syntax-xxx-p start-comment ?<)
+(define-syntax-xxx-p end-comment ?>)
+;; inherit standard syntax (`@')
+;; generic string fence (`|')
+;; generic comment fence (`!')
+(define-syntax-xxx-p string-quote ?\")      ; string
 (define-syntax-xxx-p junk ?x)
-(define-syntax-xxx-p open-tag ?{)
-(define-syntax-xxx-p close-tag ?})
+(define-syntax-xxx-p open-tag ?\{)
+(define-syntax-xxx-p close-tag ?\})
+
+;; FIXME: シンタックスのエントリをマージできないからあんまり使えない
+;; Emacsは1文字ごとにまとめて構文定義しないと駄目
+
+;; (defmacro define-set-syntax-xxx (name newentry)
+;;   `(defun ,(intern (format "set-syntax-%s" name)) (chare &optional syntax-table)
+;;      (modify-syntax-entry char ,newentry syntax-table)))
+
+;; (info "(elisp) Syntax Tables")
+;; (char-syntax)
+;; (describe-syntax)
+;; (describe-char (point))
+;; (syntax-after (point))
+;; (get-char-property (point) 'syntax-table)
+;; (internal-describe-syntax-value (aref (syntax-table) ?\s))=>which means: whitespace
+;; set-char-table-extra-slot
+
+(defun set-syntax-match (syntax-table open-char close-char)
+  (modify-syntax-entry open-char (format "(%c" close-char) syntax-table)
+  (modify-syntax-entry close-char (format ")%c" open-char) syntax-table))
+
+(defun set-syntax-start-multi-comment (syntax-table string)
+  (modify-syntax-entry (elt string 0) ". 1" syntax-table)
+  (modify-syntax-entry (elt string 1) ". 2" syntax-table))
+
+(defun set-syntax-end-multi-comment (syntax-table string)
+  (modify-syntax-entry (elt string 0) ". 3" syntax-table)
+  (modify-syntax-entry (elt string 1) ". 4" syntax-table))
+
+;; ? parse-sexp-ignore-comments
+(defun set-syntax-start-c++-comment (syntax-table char &optional parse-sexp-ignore-comment-p)
+  (declare (ignorable parse-sexp-ignore-comment-p))
+  (modify-syntax-entry char "< 12b" syntax-table))
+
+(defun set-syntax-end-c++-comment (syntax-table char &optional parse-sexp-ignore-comment-p)
+  (modify-syntax-entry char "> 4b" syntax-table))
+
+(defun* use-syntax-table (syntax-table &optional buffer (invalidate-p t))
+  (declare (ignorable invalidate-p))
+  (with-current-buffer (or buffer (current-buffer))
+    (set-syntax-table syntax-table)))
 
 ;; lisp/expand.el を参考に
 (defun parse-point-syntax (&optional point)
@@ -551,7 +680,6 @@
     (nreverse acc)))
 
 ;;; @@Text
-;; あってないかも
 (defun convert-encoding-to-internal (encoding input-string &optional output-stream)
   (declare (ignore output-stream))
   (encode-coding-string input-string encoding))
@@ -597,7 +725,8 @@
 ;;; @@Dialog
 
 ;;; @@Date-Time
-;;; 時刻は UNIX time なので注意
+;; Common Lisp (xyzzy) features universal-time
+;; Emacs Lisp features UNIX-time
 (fset 'get-universal-time #'current-time)
 (fset 'encode-universal-time #'encode-time)
 (fset 'decode-universal-time #'decode-time)
@@ -617,8 +746,6 @@
   "右クリックでメニュー"
   (interactive "e")
   (popup-menu menu-bar-edit-menu))
-;; (global-unset-key [down-mouse-3])
-;; (global-set-key [mouse-3] 'bingalls-edit-menu)
 
 ;;; @@Filer
 ;;; filer [xyzzy] <-> dired [emacs]
@@ -641,7 +768,6 @@
         ((looking-at "[])}]")
          (forward-char) (backward-sexp))
         (t nil)))
-;; (global-set-key [?\M-\]] 'goto-matched-parenthesis)
 
 (defun current-line-number ()
   (line-number-at-pos (point)))
@@ -654,6 +780,8 @@
   (or (end-of-line 1)
       (goto-char (line-end-position))))
 
+;; (put 'set-goal-column 'disabled nil)
+
 ;;; @@Process
 (defmacro with-setenv (environ &rest body)
   ;; 変数値を共有すると元の変更が#1#にも及ぶのみたいなので、シーケンスのコピーで回避
@@ -664,15 +792,21 @@
             ,@body)
        (setq process-environment #1#))))
 
-;; 試してません
+;; NOT Tested
 (defun execute-subprocess (cmd &optional arg bufname environ directory)
   (interactive "s& ")
   (let ((default-directory (or directory default-directory)))
     (with-setenv environ
       (shell-command cmd bufname shell-command-default-error-buffer))))
 
-(defun launch-application (cmd)
-  (start-process "launch-application" nil cmd))
+;; (defun launch-application (cmd)
+;;   (start-process "launch-application" nil shell-file-name cmd))
+;; (ed::shell-command-line ...) コマンドライン処理関数が欲しいところ
+(and (fboundp 'w32-shell-execute)
+     (defun launch-application (app)
+       "外部プログラムを実行します."
+       (let ((w32-start-process-show-window t))
+         (w32-shell-execute "open" app))))
 
 ;;; @@System
 (defun find-load-path (filename)
@@ -683,19 +817,107 @@
 
 ;; (list os-major-version os-minor-version os-platform)
 
+;; src/w32fns.c, lisp/w32-fns.el
+(when (fboundp 'w32-version)
+  (defun os-major-version () (nth 0 (w32-version)))
+  (defun os-minor-version () (nth 1 (w32-version)))
+  (defun os-build-number () (nth 2 (w32-version))))
+
+(defun si:*show-window-foreground ()
+  "ウィンドウを最前面に表示."
+  (raise-frame (selected-frame))
+  (frame-focus (selected-frame)))
+
 ;; (fset 'dump-xyzzy #'dump-emacs)
 ;; si:dump-image-path
 
-;; (fset 'start-xyzzy-server #'server-start)
+(defun start-xyzzy-server () (server-mode 1))
+(defun stop-xyzzy-server () (server-mode -1))
+
+;; @@Condition
+;; si:*print-condition
+(fset 'si:*condition-string #'error-message-string)
+
+(defsubst find-condition-variable (handlers)
+  (let (e)
+    (dolist (handler handlers)
+      (pushnew (car (nth 1 handler)) e :test #'equal))
+    ;; condition-case のエラー用変数は1つだけなので注意を促す
+    (if (/= 1 (length e)) (warn "plural condition variable are not allowed: %s" e))
+    (car e)))
+
+(defmacro handler-case (form &rest cases)
+  `(condition-case ,(find-condition-variable cases)
+       ,form
+     ,@(mapcar (lambda (c)
+                 ;; (error (e) form1 ...) => (error form1 ...)
+                 (cons (car c) (nthcdr 2 c)))
+               cases)))
 
 ;;; @@Misc
 (fset 'modulep #'featurep)
 (fset 'gc #'garbage-collect)
 (defun etc-path () data-directory)
 
+(fset 'quit-recursive-edit #'abort-recursive-edit) ; ? exit-recursive-edit
+;; (fset 'toggle-trace-on-error #'toggle-debug-on-error)
+
+(defun si:base64-encode (string &optional output-stream)
+  (cond (output-stream
+         (print #1=(base64-encode-string (encode-coding-string string 'binary))
+                output-stream)
+         t)
+        (t #1#)))
+
+(defun si:base64-decode (string &optional output-stream fold-width)
+  (declare (ignore fold-width))
+  (cond (output-stream
+         (print #1=(decode-coding-string (base64-decode-string string) 'emacs-mule)
+                output-stream)
+         t)
+        (t #1#)))
+
+;; url/url-util.el
+;; (require 'url-util)
+(defun si:www-url-encode (string &optional output-stream literal-char)
+  "STRINGをURLエンコードします."
+  (declare (ignore output-stream))
+  (let ((url-unreserved-chars
+         (if (eq literal-char 't)
+             nil
+             (make-unreserved-chars (or literal-char "-A-Za-z0-9$_.+!*'(|),")))))
+    (url-hexify-string (encode-coding-string string locale-coding-system))))
+
+;; url-unhex-string
+(defun si:www-url-decode (input-string &optional output-stream)
+  "STRINGをURLデコードします."
+  (declare (ignore output-stream))
+  (let ((decoded-url
+         (replace-regexp-in-string "%\\([0-9A-F][0-9A-F]\\)"
+                                   (lambda (str)
+                                     ;; "%FA" => "\xFA"
+                                     (char-to-string
+                                      (string-to-number (match-string 1 str) 16)))
+                                   input-string)))
+    (decode-coding-string decoded-url locale-coding-system)))
+
+(defun make-unreserved-chars (literal-char)
+  "引数文字列からURLエンコードしない文字のリストを作成します."
+  (if (string-equal literal-char "")
+      nil
+      (let ((words (concat "[^" literal-char "]")))
+        (remove-if (lambda (c)
+                     (string-match words (char-to-string c)))
+                   (number-sequence 0 127)))))
+
+;; (set-difference (make-unreserved-chars "-A-Za-z0-9$_.+!*'(|),") url-unreserved-chars) => (?| ?, ?+ ?$)
+
 (defun update-mode-line (&optional buffer)
   (with-current-buffer (or buffer (current-buffer))
-    (force-mode-line-update)))
+    (if (fboundp 'mw32-ime-mode-line-update)
+        (mw32-ime-mode-line-update)
+        (force-mode-line-update)
+        )))
 
 (defun refresh-screen (&optional f)
   (redraw-display)
@@ -704,8 +926,9 @@
 (defun autoload-function-p (def)
   (eq (car-safe (symbol-function def)) 'autoload))
 
-;; エンコードを指定してファイルの読み込み
-(defvaralias '*expected-fileio-encoding* 'coding-system-for-read)
+(defvaralias '*expected-fileio-encoding* 'coding-system-for-read
+  "エンコードを指定してファイルの読み込み")
+;; buffer-file-coding-system-explicit
 
 (fset 'char-encoding-p #'coding-system-p)
 
@@ -734,7 +957,7 @@
 ;; 正規表現のコンパイルってあったっけ？
 (defun compile-regexp (regexp &optional case-fold) regexp)
 
-;; 未完 ポイント位置でなくマウスの位置に表示される
+;; FIXME: ポイント位置でなくマウスの位置に表示される
 ;; left,topはピクセル指定？
 (defun popup-string (string point &optional timeout)
   (save-excursion
@@ -812,7 +1035,6 @@
   (interactive)
   (elisp-macroexpand-1 t))
 
-;; だめ
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
 
 ;;; xyzzy.el ends here
