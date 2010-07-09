@@ -1,23 +1,25 @@
-;;; -*- mode:emacs-lisp; coding:utf-8 -*-
-;;;
 ;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの関数/変数をEmacsで使うためのライブラリ
-;;;
-;;; Time-stamp: <2009-10-19T11:46:35>
+
+;; Copyright (C) 2009,2010 Shigeru Kobayashi
 
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
 ;; Version: 0.1
-;; Keywords: extensions
+;; Created: 2009-03-11
+;; URL: http://github.com/kosh04/emacs-lisp/raw/master/xyzzy.el
+;; Keywords: lisp,extensions
 
 ;; This file is NOT part of Emacs.
 
 ;;; Commentary:
-
-;; * これはなに？
+;;
+;; これはなに？
+;; ------------
 ;;
 ;; 亀井さん作成のEmacsクローンxyzzyと本家emacsの関数・変数名等の
 ;; 違いを吸収するためのライブラリみたいなものです。
 ;;
-;; * 何のために使うの？
+;; 何のために使うの？
+;; ------------------
 ;;
 ;; - 動作は同じで、名前が微妙に異なる関数・変数をエイリアスにして
 ;;   とりあえず使えるようにする
@@ -27,12 +29,21 @@
 ;;   例: kill-scratch-hook, sub-directory-p
 ;;
 ;; また、CommonLisp/SLIMEの関数群も少ないですが定義してあります。
-;;
-;; * 最新バージョンはこちらにあります:
-;; http://github.com/kosh04/emacs-lisp/tree/master
 
+;; 最新バージョンはこの辺にあります:
+;;
+;;   http://github.com/kosh04/emacs-lisp/tree/master
+
+;;; Installation:
+;;
+;; 1. このファイルをパスの通ったディレクトリに置く
+;;    必要ならばバイトコンパイルする
+;; 2. .emacs に次の行を加える
+;;    (require 'xyzzy)
+;;
 
 ;;; Code:
+
 (provide 'xyzzy)
 
 (eval-when-compile (require 'cl))
@@ -40,6 +51,9 @@
 
 ;;; @@Data-Type
 (fset 'compiled-function-p #'byte-code-function-p)
+
+(defun alpha-char-p (char)
+  (integerp (string-match "[A-Za-z]" (char-to-string char))))
 
 (defun alphanumericp (char)
   (integerp (string-match "[A-Za-z0-9]" (char-to-string char))))
@@ -58,6 +72,8 @@
 ;;            引数有りで実行            引数なしで実行される
 (defvaralias '*query-kill-buffer-hook* 'kill-buffer-query-functions)
 (defvaralias '*query-kill-xyzzy-hook* 'kill-emacs-query-functions)
+
+(fset 'defconstant #'defconst)
 
 (defmacro defparameter (symbol value &optional docstring)
   `(if (boundp ',symbol)
@@ -80,10 +96,18 @@
 
 (defmacro defvar-local (symbol value &optional docstring)
   `(progn
-     (defvar ,symbol ,initvalue ,docstring)
+     (defvar ,symbol ,value ,docstring)
      (make-variable-buffer-local ',symbol)))
 
+;; cl-macs.el:1716
+;;; Some more Emacs-related place types.
+;; (defsetf ...)
+
 ;;; @@制御構造
+
+;; Common Lisp `tagbody' for Emacs Lisp
+;; http://www.emacswiki.org/emacs/tagbody.el
+
 ;;; @@Package
 ;;; @@Function
 
@@ -102,10 +126,11 @@
 ;; symbol-function ~= indirect-function
 
 ;;; @@Number
+(fset 'rem #'%)
 (defun logandc1 (x y) (logand (lognot y) y))
 (defun logandc2 (x y) (logand x (lognot y)))
 
-;; from Corman Lisp:
+;; from Corman Lisp
 ;; http://www.cormanlisp.com/CormanLisp/patches/2_5/math2.lisp
 (defun logcount (integer)
   (check-type integer integer)
@@ -114,12 +139,21 @@
        (count 0 (+ count (logand x 1))))
       ((= x 0) count)))
 
+(defun integer-length (integer)
+  (check-type integer integer)
+  (do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
+       (count 0 (1+ count)))
+      ((= x 0) count)))
+
 (defun logbitp (index integer)
   (check-type index (integer 0 *))
   (check-type integer integer)
   (< 0 (logand integer (expt 2 index))))
 
 ;;; @@Character
+(fset 'char #'elt)
+(fset 'char-columns #'char-width)
+
 ;; [xyzzy] C-q 2 1     -> ! (#x21)
 ;; [emacs] C-q 2 1 RET -> ^Q (#o21)
 (defun quote-char (&optional arg)
@@ -147,20 +181,49 @@
   (or (and (<= 32 char) (<= char 126))
       (= char 10)))
 
+;; FIXME: もうちょっと綺麗にならないものか
+(defun both-case-p (char)
+  (let ((case-fold-search t)
+        (uc (upcase char))
+        (dc (downcase char)))
+    (and (char-equal uc dc)
+         (/= uc dc))))
+
+(defun upper-case-p (char)
+  (let ((case-fold-search nil))
+    (and (both-case-p char)
+         (char-equal char (upcase char)))))
+
+(defun lower-case-p (char)
+  (and (both-case-p char)
+       (not (upper-case-p char))))
+
+;; use Mule-UCS (Emacs 21)
 ;; Emacs23ならば内部コードがunicodeなので必要無し
+;; Emacs 20 ならば multibyte-char-to-unibyte も一応代用できそう
 (defun char-unicode (char) (encode-char char 'ucs))
 (defun unicode-char (code) (decode-char 'ucs code))
 
+;; (fset 'char-int #'identity)
+
 ;; `describe-char-unicodedata-file' を設定していれば利用可能
-(defun char-name (character)
-  (nth 1 (assoc "Name" (describe-char-unicode-data character))))
+(when (fboundp 'describe-char-unicode-data)
+  (defun char-name (character)
+    (require 'descr-text)
+    (nth 1 (assoc "Name" (describe-char-unicode-data character))))
+  )
 
 ;; (defun name-char (name) )
 
 (defun char= (char &rest more-chars)
-  (every (lambda (c)
-           (char-equal c char))
-         more-chars))
+  (let ((case-fold-search nil))
+    ;; (every (lambda (c) (char-equal c char)) more-chars)
+    (do* ((chars more-chars (cdr chars))
+          (c #1=(car chars) #1#))
+        ((null chars) t)
+      (if (not (char-equal c char))
+          (return-from char= nil)))
+    ))
 
 ;;; @@Sequence
 (defun remove-trail-slash (str)
@@ -178,11 +241,20 @@
 (defun map-slash-to-backslash (string) (subst-char-in-string ?/ ?\\ string))
 (defun map-backslash-to-slash (string) (subst-char-in-string ?\\ ?/ string))
 
-(defun* string/= (string1 string2 &key (start1 0) end1 (start2 0) end2)
-  (eq (compare-strings string1 start1 end1
-                       string2 start2 end2
-                       nil)
-      t))
+;; 大文字小文字を区別して文字列の比較
+;; string-equalのエイリアスとして定義されている(subr.el)ので上書きすると問題があるかも
+;; (defun* string= (string1 string2 &key (start1 0) end1 (start2 0) end2)
+;;   (check-type string1 string)
+;;   (check-type string2 string)
+;;   (eq (compare-strings string1 start1 end1
+;;                        string2 start2 end2
+;;                        nil)
+;;       t))
+
+;; (defun* string/= (string1 string2 &key (start1 0) end1 (start2 0) end2)
+;;   (not (string= string1 string2
+;;                 :start1 start1 :end1 end1
+;;                 :start2 start2 :end2 end2)))
 
 (defun string-left-trim (char-bag string)
   (setq char-bag (let (acc)
@@ -227,7 +299,7 @@
 
 ;;; @@Hash
 ;;; @@Array
-;;; @@Chunc
+;;; @@Chunk
 
 ;;; @@Eval
 (defadvice eval-last-sexp (before eval-safe activate)
@@ -249,12 +321,23 @@
 
 ;; * Emacsは文字コードに関係なくファイルをロードできるはず
 ;; (defun  mc-load-file (filename &optional encoding)
-;;   (load-with-code-conversion ))
+;;   (load-with-code-conversion filename filename t))
 ;; set-auto-coding-for-load
 
 ;;; @@Input/Output
 (defun princ-to-string (object &optional stream)
   (with-output-to-string (princ object stream)))
+
+;; (apropos "network")
+
+;; (defun* xyzzy-open-network-stream
+;;     (buffer host service &key incode outcode eol-code)
+;;   (declare (ignore eol-code))
+;;   (make-network-process :buffer buffer
+;;                         :host host
+;;                         :service service
+;;                         :codng `(incode . outcode)))
+;; (defalias 'open-network-stream-xyzzy 'xyzzy-open-network-stream)
 
 ;; (values)を使うpprintは実装できない？
 
@@ -267,6 +350,7 @@
 (fset 'pathname-type #'file-name-extension)
 (fset 'find-other-file  #'find-alternate-file)
 (fset 'get-file-attributes #'file-attributes)
+(fset 'make-temp-file-name #'make-temp-file)
 
 ;; (defun user-homedir-pathname () default-directory)
 ;; get-disk-usage
@@ -275,9 +359,26 @@
 ;; file-truename, file-chase-links
 (defun* directory (pathname &key absolute recursive wild depth file-only
                             show-dots count directory-only callback file-info)
-  (if file-info
-      (directory-files-and-attributes pathname absolute wild)
-      (directory-files pathname absolute wild)))
+  (declare (ignore recursive depth show-dots count))
+  (labels ((filter (f seq)
+             (let (acc)
+               (dolist (x seq acc)
+                 (if (funcall f) x)))))
+    (let (files)
+      (dolist (file (if file-info
+                        (directory-files-and-attributes pathname absolute wild)
+                        (directory-files pathname absolute wild)))
+        (if (cond (file-only
+                   (and (file-exists-p file)
+                        (not (file-directory-p file))))
+                  (directory-only
+                   (file-directory-p file))
+                  (t t))
+            (push (funcall (if callback callback #'identity)
+                           file)
+                  files)))
+      (nreverse files))))
+;; (directory ".")
 
 (defun pathname-name (pathname)
   (file-name-sans-extension (file-name-nondirectory pathname)))
@@ -487,10 +588,20 @@
           (push b acc)))
     (nreverse acc)))
 
+(defun enum-buffers (fn)
+  "関数FNがnon-nilを返すまでバッファを列挙し続けます."
+  (let (ret)
+    (catch 'found
+      (dolist (buffer (buffer-list))
+        (setq ret (funcall fn buffer))
+        (if ret (throw 'found ret))))))
+
 ;; 0:LF(unix) 1:CRLF(dos) 2:CR(mac)
 (defconst buffer-eol-alist '((0 . unix) (1 . dos) (2 . mac)))
+;;(defvar *default-eol-code* 1)
 
-;; バッファのエンコードで改行コードが指定されてない場合はあるのか？
+;; バッファのエンコードで改行コードが指定されてない場合はある？
+;; -> ファイルに関連付けされていないバッファ
 (defun buffer-eol-code (&optional buffer)
   (with-current-buffer (or buffer (current-buffer))
     (coding-system-eol-type buffer-file-coding-system)))
@@ -499,9 +610,10 @@
   (interactive "P")
   (let ((eol-type (or (and arg (prefix-numeric-value arg))
                       (buffer-eol-code))))
-    (set-buffer-file-coding-system (cdr (assoc (mod (1+ eol-type) 3)
-                                               buffer-eol-alist))
-                                   nil 'nomodify)))
+    (when (integerp eol-type)
+      (set-buffer-file-coding-system (cdr (assoc (mod (1+ eol-type) 3)
+                                                 buffer-eol-alist))
+                                     nil 'nomodify))))
 
 (defun xyzzy-erase-buffer (buffer)
   (with-current-buffer (or buffer (current-buffer))
@@ -533,9 +645,17 @@
   (buffer-local-value symbol buffer))
 
 (defun set-buffer-file-name (filename &optional buffer)
-  "バッファBUFFERに関連付けられているファイル名をFILENAMEに変更します."
+  "BUFFERに関連付けられているファイル名をFILENAMEに変更します."
   (with-current-buffer (or buffer (current-buffer))
     (setq buffer-file-name filename)))
+
+(defun buffer-fileio-encoding (&optional buffer)
+  (with-current-buffer (or buffer (current-buffer))
+    buffer-file-coding-system))
+
+(defun set-buffer-fileio-encoding (code &optional buffer)
+  (with-current-buffer (or buffer (current-buffer))
+    (set-buffer-file-coding-system code)))
 
 ;; clear-undo-boundary
 
@@ -565,8 +685,8 @@
   t)
 
 ;; buffer-read-onlyの時はちゃんとエラーにして、カーソルが動かないように
-(defadvice kill-line (before kill-line-read-only activate)
-  (barf-if-buffer-read-only))
+;; (defadvice kill-line (before kill-line-read-only activate)
+;;   (barf-if-buffer-read-only))
 
 ;;; 読み込み専用のテキストをキル
 ;;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=kill-read-only-ok
@@ -574,38 +694,46 @@
 ;; 専用であってもエラーとしない. そのかわりに, キルリングを更新しバッ
 ;; ファは変更せずに戻る.
 ;;
-;; エラーが出るかそうでないかの違いだけで、結局コピーは出来てしまうんですが...
+;; エラーが出るかそうでないかの違いだけで、結局コピーは出来てしまうんだが...
 ;; (setq kill-read-only-ok t)
 
 (put 'upcase-region 'disabled nil)      ; C-x C-u
 (put 'downcase-region 'disabled nil)    ; C-x C-l
 (put 'narrow-to-region 'disabled nil)   ; C-x n n
 
-;; (require 'japan-util)
+(eval-when-compile
+  (require 'japan-util))
+
 ;; japanese-katakana                       ; ひらがな→カタカナ
 ;; japanese-hiragana                       ; カタカナ→ひらがな
 ;; japanese-hankaku                        ; 全角→半角
 ;; japanese-zenkaku                        ; 半角→全角
+
 (defun* map-to-half-width-region (from to &key ascii hiragana katakana greek cyrillic)
   "指定したリージョンを半角文字に変換します."
-  (interactive "r*")
+  (interactive "*r")
   (japanese-hankaku-region from to ascii))
+;; (fset 'map-to-half-width-region #'japanese-hankaku-region)
 
+;; FIXME: defun*-interactive を組み合わせるとインタラクティブに呼び出せない？
 (defun* map-to-full-width-region (from to &key ascii hiragana katakana greek cyrillic)
   "指定したリージョンを全角文字に変換します."
-  (interactive "r*")
+  (interactive "*r")
   (japanese-zenkaku-region from to katakana))
+;; (fset 'map-to-full-width-region #'japanese-zenkaku-region)
 
 (defun* map-to-half-width-string (string &key ascii hiragana katakana greek cyrillic)
   "文字列STRINGを半角に変換します."
   (japanese-hankaku string ascii))
 
-(defun* map-to-full-width-region (string &key ascii hiragana katakana greek cyrillic)
+(defun* map-to-full-width-string (string &key ascii hiragana katakana greek cyrillic)
   "文字列STRINGを全角に変換します."
   (japanese-zenkaku string))
 
+;; (apropos "clipobard")
+
 ;;; @@Mode
-(fset 'delete-hook #'remove-hook)
+(fset 'delete-hook 'remove-hook)
 (fset 'run-hook-with-args-while-success 'run-hook-with-args-until-failure)
 ;; #'toggle-mode は便利か？
 
@@ -718,7 +846,7 @@
 
 ;; lisp/expand.el を参考に
 (defun parse-point-syntax (&optional point)
-  (unless point (setq point (point)))
+  (or point (setq point (point)))
   (save-excursion
     (goto-char point)
     (let* ((lim (or (save-excursion
@@ -796,6 +924,11 @@
 
 ;; (defun do-completion (from to type &optional compl word last-char) )
 
+(defun set-tab-columns (column &optional buffer)
+  (if (bufferp buffer)
+      (set 'tab-width column)
+      (set-default 'tab-width column)))
+
 ;;; @@Search, Regexp
 (fset 'ed::protect-match-data 'save-match-data)
 (fset 'store-match-data #'set-match-data)
@@ -814,13 +947,17 @@
       (error nil))))
 
 ;;; @@Dialog
+(defun y-or-n-p-with-dialog (fmt &rest args)
+  (let ((last-nonmenu-event nil)
+        (use-dialog-box t))
+    (y-or-n-p (apply #'format fmt args))))
 
 ;;; @@Date-Time
 ;; Common Lisp (xyzzy) features `universal-time'
 ;; Emacs Lisp          features `UNIX-time'
-(fset 'get-universal-time #'current-time)
-(fset 'encode-universal-time #'encode-time)
-(fset 'decode-universal-time #'decode-time)
+;; (fset 'get-universal-time #'current-time)
+;; (fset 'encode-universal-time #'encode-time)
+;; (fset 'decode-universal-time #'decode-time)
 (fset 'format-date-string #'format-time-string)
 (fset 'get-internal-real-time #'get-internal-run-time) ; ?
 (defun get-decoded-time () (decode-time (current-time)))
@@ -851,6 +988,12 @@
   (dired-get-filename nil 'no-error))
 
 ;;; @@Position
+(fset 'marker-point #'marker-position)
+
+;; (defun goto-marker (marker)
+;;   "マーカーのポジションへポイントを移動します。"
+;;   (move-marker marker (point)))
+
 (defun goto-matched-parenthesis ()
   "Go to the matching parenthesis if on parenthesis."
   (interactive)
@@ -874,10 +1017,40 @@
 ;; (put 'set-goal-column 'disabled nil)
 
 ;;; @@Process
+
+;; (xyzzy:call-process CMD :wait t)
+;; == (emacs:call-process PROGNAME nil 0 nil ARGS)
+;; BUFFER; 0 means discard output and don't wait
+
 (defmacro with-setenv (environ &rest body)
   `(let ((process-environment (copy-sequence process-environment)))
-     (mapc (lambda (x) (setenv (car x) (cdr x))) ,environ)
+     (mapc (lambda (x)
+             (setenv (car x) (cdr x)))
+           ,environ)
      ,@body))
+
+;; 子プロセスの生成
+;; start-process[emacs] <-> make-process[xyzzy]
+(defun* make-process (cmd-line &key environ output exec-directory
+                               incode outcode eol-code)
+  (declare (ignore eol-code))
+  (setq cmd-line (split-string cmd-line " "))
+  (let* ((default-directory (or exec-directory default-directory))
+         (program (car cmd-line))
+         (args (cdr cmd-line))
+         (proc (apply #'start-process "xyzzy-process"
+                      (or output (current-buffer))
+                      program args)))
+    (set-process-coding-system proc
+                               (or incode (car default-process-coding-system))
+                               (or outcode(cdr default-process-coding-system)))
+    proc))
+
+;; decoding=incode;encoding=outcode
+(defun process-incode (process) (car (process-coding-system process)))
+(defun process-outcode (process) (cdr (process-coding-system process)))
+(defun set-process-incode (process code) (set-process-coding-system process nil code))
+(defun set-process-outcode (process code) (set-process-coding-system process code nil))
 
 ;; NOT Tested
 (defun execute-subprocess (cmd &optional arg bufname environ directory)
@@ -890,25 +1063,48 @@
 ;;   (start-process "launch-application" nil shell-file-name cmd))
 ;; (ed::shell-command-line ...) コマンドライン処理関数が欲しいところ
 (when (fboundp 'w32-shell-execute)
-  (defun launch-application (app)
-    "外部プログラムを実行します."
-    (let ((w32-start-process-show-window t)) ; ?
-      (w32-shell-execute "open" app)))
+(defun launch-application (app)
+  "外部プログラムを実行します."
+  (let ((w32-start-process-show-window t)) ; ?
+    (w32-shell-execute "open" app)))
 
-  (defun shell-execute (filename &optional directory params)
-    "FILENAMEを関連付けられたプログラムで起動する."
-    ;; $ cmd /c start http://www.google.com/
-    ;; (call-process "cmd.exe" nil 0 nil "\\/c" "start" FILENAME)
-    (w32-shell-execute "open" (if (file-exists-p filename)
-                                  (expand-file-name filename)
-                                  filename)))
-  ;; (defvar *eshell* shell-file-name)
-  (defun run-console ()
-    (interactive)
-    (launch-application "cmd.exe"))
-  )                                ; end of `(fboundp 'w32-shell-execute)'
+(defun shell-execute (filename &optional directory params)
+  "FILENAMEを関連付けられたプログラムで起動する."
+  ;; $ cmd /c start http://www.google.com/
+  ;; (call-process "cmd.exe" nil 0 nil "\\/c" "start" FILENAME)
+  (w32-shell-execute "open" (if (file-exists-p filename)
+                                (expand-file-name filename)
+                                filename)))
+;; (defvar *eshell* shell-file-name)
+(defun run-console ()
+  (interactive)
+  (launch-application (or explicit-shell-file-name
+                          (getenv "ESHELL")
+                          shell-file-name)))
+)                                  ; end of `(fboundp 'w32-shell-execute)'
 
 ;; (fset 'process-exit-code #'process-exit-status)
+
+(defun filter-region (command &optional start end)
+  (interactive "*s| \nr")
+  (shell-command-on-region start end command nil 'replace))
+
+;; (require 'shell-command)
+;; (defun filter-region (command &optional start end)
+;;   (interactive (progn
+;;                  (barf-if-buffer-read-only)
+;;                  (unless (mark)
+;;                    (error "The mark is not set now, so there is no region"))
+;;                  (list (shell-command-read-minibuffer
+;;                         "| " default-directory
+;;                         nil nil nil 'shell-command-history)
+;;                        (region-beginning)
+;;                        (region-end))))
+;;   (shell-command-on-region start end command nil 'replace))
+
+(defun filter-buffer (command)
+  (interactive "*s# ")
+  (filter-region command (point-min) (point-max)))
 
 ;;; @@System
 (defun find-load-path (filename)
@@ -971,6 +1167,11 @@
 (fset 'quit-recursive-edit #'abort-recursive-edit) ; ? exit-recursive-edit
 ;; (fset 'toggle-trace-on-error #'toggle-debug-on-error)
 
+;; (fset 'documentation #'documentation-property)
+
+(defun goto-column (column)
+  (move-to-column column nil))
+
 (defun si:base64-encode (string &optional output-stream)
   (cond (output-stream
          (print #1=(base64-encode-string (encode-coding-string string 'binary))
@@ -986,11 +1187,24 @@
          t)
         (t #1#)))
 
+(defsubst make-unreserved-chars (literal-char)
+  "引数文字列からURLエンコードしない文字のリストを作成します."
+  (if (string-equal literal-char "")
+      nil
+      (let ((words (concat "[^" literal-char "]"))
+            (acc '()))
+        (dolist (c (number-sequence 0 127))
+          (if (string-match words (char-to-string c))
+              (push c acc)))
+        (nreverse acc))))
+
+;; (set-difference (make-unreserved-chars "-A-Za-z0-9$_.+!*'(|),") url-unreserved-chars) => (?| ?, ?+ ?$)
+
 ;; url/url-util.el
-;; (require 'url-util)
 (defun si:www-url-encode (string &optional output-stream literal-char)
   "STRINGをURLエンコードします."
   (declare (ignore output-stream))
+  (require 'url-util)
   (let ((url-unreserved-chars
          (if (eq literal-char 't)
              nil
@@ -1001,25 +1215,19 @@
 (defun si:www-url-decode (input-string &optional output-stream)
   "STRINGをURLデコードします."
   (declare (ignore output-stream))
+  (require 'url-util)                   ; use `replace-regexp-in-string'
   (let ((decoded-url
-         (replace-regexp-in-string "%\\([0-9A-F][0-9A-F]\\)"
-                                   (lambda (str)
-                                     ;; "%FA" => "\xFA"
-                                     (char-to-string
-                                      (string-to-number (match-string 1 str) 16)))
+         (replace-regexp-in-string "%\\([0-9A-Fa-f][0-9A-Fa-f]\\)"
+                                   #'(lambda (str)
+                                       ;; "%FA" => "\xFA"
+                                       (char-to-string
+                                        (string-to-number (match-string 1 str) 16)))
                                    input-string)))
     (decode-coding-string decoded-url locale-coding-system)))
 
-(defsubst make-unreserved-chars (literal-char)
-  "引数文字列からURLエンコードしない文字のリストを作成します."
-  (if (string-equal literal-char "")
-      nil
-      (let ((words (concat "[^" literal-char "]")))
-        (remove-if (lambda (c)
-                     (string-match words (char-to-string c)))
-                   (number-sequence 0 127)))))
-
-;; (set-difference (make-unreserved-chars "-A-Za-z0-9$_.+!*'(|),") url-unreserved-chars) => (?| ?, ?+ ?$)
+;; もしくは urlencode.el
+;; "http://taiyaki.org/elisp/urlencode/"
+;; "http://taiyaki.org/elisp/urlencode/src/urlencode.el"
 
 (defun update-mode-line (&optional buffer)
   (with-current-buffer (or buffer (current-buffer))
@@ -1041,18 +1249,18 @@
 
 (fset 'char-encoding-p #'coding-system-p)
 
-(defun xyzzy-grep (regexp &optional arg)
-  "バッファ内を正規表現検索する."
-  (interactive (list (read-string "Grep (buffer): ") current-prefix-arg))
-  (cond (arg (occur regexp))                             ; 現在のバッファ
-        (t   (multi-occur (valid-buffer-list) regexp)))) ; 全てのバッファ
-
 (defsubst valid-buffer-list ()
   (let (acc)
     (dolist (b (buffer-list))
       (unless (string-match "^ " (buffer-name b))
         (push b acc)))
     (nreverse acc)))
+
+(defun xyzzy-grep (regexp &optional arg)
+  "バッファ内を正規表現検索する."
+  (interactive (list (read-string "Grep (buffer): ") current-prefix-arg))
+  (cond (arg (occur regexp))                             ; 現在のバッファ
+        (t   (multi-occur (valid-buffer-list) regexp)))) ; 全てのバッファ
 
 ;;; @@Xyzzy-only
 (defvar *kill-buffer-kills-scratch* nil
@@ -1085,6 +1293,7 @@
 
 ;; FIXME: ポイント位置でなくマウスの位置に表示される
 ;; left,topはピクセル指定？
+;; (momentary-string-display STRING POINT)
 (defun popup-string (string point &optional timeout)
   (save-excursion
     (cond ((pos-visible-in-window-p point)
@@ -1143,24 +1352,38 @@
                       ))))
         (print-circle t)
         (temp-buffer-setup-hook '(emacs-lisp-mode))
-        ;; 色付けがなぜ効かない
-        (temp-buffer-show-hook  '(font-lock-fontify-buffer)))
+        ;; FIXME: なぜ色付けが効かない?
+        ;; (temp-buffer-show-hook  (copy-sequence temp-buffer-show-hook))
+        (temp-buffer-show-hook '(font-lock-fontify-buffer))
+        )
+    ;; (add-hook 'temp-buffer-show-hook
+    ;;           (lambda ()
+    ;;             (emacs-lisp-mode)
+    ;;             ;; (font-lock-fontify-buffer)
+    ;;             ))
     (unless form
       (return-from elisp-macroexpand-1))
-    (with-output-to-temp-buffer " *ELISP macroexpantion*"
-      (princ (with-temp-buffer
-               (if *elisp-macroexpand-require-cl-function*
-                   (cl-prettyexpand form repeatedly)
-                   (cl-prettyprint (funcall (if repeatedly
-                                                #'cl-macroexpand-all
-                                                #'macroexpand)
-                                            form)))
-               (buffer-string))))))
+    (with-output-to-temp-buffer #1=" *ELISP macroexpantion*"
+      (with-temp-buffer
+        (if *elisp-macroexpand-require-cl-function*
+            (cl-prettyexpand form repeatedly)
+            (cl-prettyprint (funcall (if repeatedly
+                                         #'cl-macroexpand-all
+                                         #'macroexpand)
+                                     form)))
+        (copy-to-buffer #1# (point-min) (point-max)) ))
+    ))
 
 (defun elisp-macroexpand-all ()
   (interactive)
   (elisp-macroexpand-1 t))
 
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
+
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; coding: utf-8
+;; End:
 
 ;;; xyzzy.el ends here
