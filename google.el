@@ -1,5 +1,4 @@
-;;; -*- mode:emacs-lisp; coding:utf-8 -*-
-;;; google.el --- 簡易 Google 検索
+;;; google.el --- 簡易 Google 検索		-*- coding: utf-8 -*-
 
 ;; 元ネタ: 自慢の.emacsを貼り付けよう スレ 198
 ;; http://www.geocities.co.jp/SiliconValley-SanJose/7225/log/1001393679.html#R198
@@ -21,23 +20,39 @@
       (setq i (1+ i) j (1+ j)))
     (substring ret 0 j)))
 
+(if (fboundp 'url-hexify-string)
+    (fset 'google-encoding #'url-hexify-string))
+
+;; ブラウザをw3mに変更する場合は
+;; (require 'w3m)
+;; (setq google-search-browser-function 'w3m-browse-url)
+(defvar google-search-browser-function browse-url-browser-function)
+
 ;; "&hl=ja&lr=lang_ja&num=100"
-(defvar google-search-url-options nil)
+(defvar google-search-url-options
+  "&ie=UTF-8&oe=UTF-8")
 
 ;;;###autoload
 (defun google-search (string)
-  (interactive (list (read-string "Google: "
-                                  (if mark-active
-                                      (buffer-substring (region-beginning)
-                                                        (region-end))
-                                      (current-word)))))
+  (interactive
+   (list (read-string "Google: "
+                      (cond (mark-active
+                             (buffer-substring-no-properties
+                              (region-beginning)
+                              (region-end)))
+                            (:else
+                             (current-word))))))
   ;; (require 'browse-url)
-  (browse-url (concat "http://www.google.com/search?q="
-                      ;; (google-encoding str)
-                      (mapconcat #'url-hexify-string (split-string string) "+")
-                      (or google-search-url-options "")
-                      )))
+  (let ((browse-url-browser-function google-search-browser-function))
+    (browse-url (concat "http://www.google.com/search?q="
+                        (mapconcat #'google-encoding
+                                   (split-string string)
+                                   "+")
+                        (or google-search-url-options "")
+                        ))))
 
 ;; (global-set-key (kbd "C-c g") 'google-search)
 
 (provide 'google)
+
+;;; google.el ends here.
