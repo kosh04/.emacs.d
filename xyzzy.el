@@ -5,13 +5,13 @@
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
 ;; Version: 0.1
 ;; Created: 2009-03-11
-;; URL: http://github.com/kosh04/emacs-lisp/raw/master/xyzzy.el
 ;; Keywords: lisp,extensions
+;; URL: http://github.com/kosh04/emacs-lisp/raw/master/xyzzy.el
 
 ;; This file is NOT part of Emacs.
 
 ;;; Commentary:
-;;
+
 ;; これはなに？
 ;; ------------
 ;;
@@ -30,17 +30,20 @@
 ;;
 ;; また、CommonLisp/SLIMEの関数群も少ないですが定義してあります。
 
-;; 最新バージョンはこの辺にあります:
-;;
-;;   http://github.com/kosh04/emacs-lisp/tree/master
-
 ;;; Installation:
-;;
+
 ;; 1. このファイルをパスの通ったディレクトリに置く
-;;    必要ならばバイトコンパイルする
-;; 2. .emacs に次の行を加える
+;; 2. 必要ならばバイトコンパイルする
+;;    `emacs -batch -f batch-byte-compile xyzzy.el`
+;; 3. .emacs に次の行を加える
 ;;    (require 'xyzzy)
-;;
+
+;;; ChangeLog:
+
+;; - 2010-10-09
+;;   Emacs21でもとりあえずバイトコンパイルできるように関数やシンタックスを修正
+;; - 2009-04-19
+;;   初版作成
 
 ;;; Code:
 
@@ -199,19 +202,19 @@
        (not (upper-case-p char))))
 
 ;; use Mule-UCS (Emacs 21)
-;; Emacs23ならば内部コードがunicodeなので必要無し
-;; Emacs 20 ならば multibyte-char-to-unibyte も一応代用できそう
+;; Emacs23ならば内部コードがunicodeなので必要無し(あっても問題ない)
+;; Emacs20ならばmultibyte-char-to-unibyteも一応代用できそう
 (defun char-unicode (char) (encode-char char 'ucs))
 (defun unicode-char (code) (decode-char 'ucs code))
 
 ;; (fset 'char-int #'identity)
 
 ;; `describe-char-unicodedata-file' を設定していれば利用可能
-(when (fboundp 'describe-char-unicode-data)
-  (defun char-name (character)
-    (require 'descr-text)
-    (nth 1 (assoc "Name" (describe-char-unicode-data character))))
-  )
+;; Help > describe-variable > describe-char-unicodedata-file
+(autoload 'describe-char-unicode-data "descr-text"
+  "Return a list of Unicode data for unicode CHAR.")
+(defun char-name (character)
+  (nth 1 (assoc "Name" (describe-char-unicode-data character))))
 
 ;; (defun name-char (name) )
 
@@ -220,20 +223,22 @@
     ;; (every (lambda (c) (char-equal c char)) more-chars)
     (do* ((chars more-chars (cdr chars))
           (c #1=(car chars) #1#))
-        ((null chars) t)
+         ((null chars) t)
       (if (not (char-equal c char))
-          (return-from char= nil)))
+          (return nil)))
     ))
 
 ;;; @@Sequence
 (defun remove-trail-slash (str)
   "STR の末尾に `/' があれば削除した文字列を返す。"
-  (cond ((string-match "/$" str)
-         (substring str 0 (1- (length str))))
+  (cond ((string= "" str) str)
+        ((string= "/" (substring str -1))
+         (substring str 0 -1))
         (t str)))
 
 (defun append-trail-slash (str)
-  (cond ((string-match "/$" str) str)
+  (cond ((string= "" str) "/")
+        ((string= "/" (substring str -1)) str)
         (t (concat str "/"))))
 
 ;; (defun map-slash-to-backslash (string) (replace-regexp-in-string "/" "\\\\" string))
@@ -402,8 +407,9 @@
 ;; (pathname-directory "~/lib/emacs")  => ("home" "lxuser" "lib")
 ;; (pathname-directory "~/lib/emacs/") => ("home" "lxuser" "lib" "emacs")
 (defun pathname-directory (pathname)
-  (let ((dir (split-string (file-name-directory (expand-file-name pathname))
-                           "/" 'omit-nulls)))
+  (let ((dir (delete "" (split-string (file-name-directory
+                                       (expand-file-name pathname))
+                                      "/"))))
     (if (memq system-type '(ms-dos windows-nt)) ; ? cygwin
         (cdr dir)                               ; ignore drive letter
         dir)))
@@ -446,12 +452,6 @@
                   (char-equal (elt pathname2 l1) ?/))
              ))))
 
-;; (defun compile-file-pathname (pathname)
-;;   "Emacsでバイトコンパイルした時の出力ファイル名を返します."
-;;   (if (string-match emacs-lisp-file-regexp pathname)
-;;       (concat (expand-file-name pathname) "c")
-;;       (concat (expand-file-name pathname) ".elc")))
-
 ;; (byte-compile-dest-file "xyzzy.el")    => "xyzzy.elc"
 ;; (byte-compile-dest-file "xyzzy.el.gz") => "xyzzy.elc"
 (defun compile-file-pathname (pathname)
@@ -479,20 +479,25 @@
   (other-window (- arg)))
 
 (defun get-window-start-line ()
-  ;; どちらでも効果は同じ
-  (or (line-number-at-pos (window-start))
-      (save-excursion
-        (move-to-window-line 0)
-        (line-number-at-pos))
-      ))
+  ;; どちらも同じ
+  (or ;; (line-number-at-pos (window-start))
+     (save-excursion
+       (move-to-window-line 0)
+       (1+ (count-lines (point-min) (point))))
+     ))
 
 ;; (= (save-excursion (move-to-window-line -1) (line-number-at-pos))
 ;;    (line-number-at-pos (window-end)))   ; => nil
 
 (defun get-window-line (&optional window)
   "ウィンドウのカーソルの表示行を返します. [zero-origin]"
-  ;; posn-col-row ?
-  (cdr (posn-actual-col-row (posn-at-point (point) window)))
+  ;; posn-actual-col-row ?
+  (cdr (posn-col-row (posn-at-point (point) window)))
+  ;; ポイント位置によって値がまちまちなので利用できない
+  ;; (count-lines (save-excursion
+  ;;                (move-to-window-line 0)
+  ;;                (point))
+  ;;              (point))
   )
 
 ;; FIXME:
@@ -535,8 +540,9 @@
 (fset 'toggle-cursor-line #'global-hl-line-mode)
 ;; 下線カーソルface変更
 ;; (setq hl-line-face 'underline)
-(defun set-buffer-fold-type-none () (interactive) (toggle-truncate-lines 1))
-(defun set-buffer-fold-type-window () (interactive) (toggle-truncate-lines -1))
+;; or (toggle-truncate-lines arg)
+(defun set-buffer-fold-type-none () (interactive) (setq truncate-lines t))
+(defun set-buffer-fold-type-window () (interactive) (setq truncate-lines nil))
 (defun toggle-eof (&optional arg)
   (interactive "P")
   (setq default-indicate-empty-lines
@@ -550,7 +556,7 @@
 (fset 'kill-selected-buffer #'kill-this-buffer)
 (fset 'buffer-process #'get-buffer-process)
 
-;; *DON'T use Emacs23 or later*
+;; *DON'T* use Emacs23 or later
 ;; (defvaralias 'buffer-name 'major-mode)
 
 ;; (get-next-buffer)
@@ -730,8 +736,6 @@
   "文字列STRINGを全角に変換します."
   (japanese-zenkaku string))
 
-;; (apropos "clipobard")
-
 ;;; @@Mode
 (fset 'delete-hook 'remove-hook)
 (fset 'run-hook-with-args-while-success 'run-hook-with-args-until-failure)
@@ -741,7 +745,7 @@
 (defparameter syntax-char-alist
   '(
     ;; emacs/xyzzy共通
-    (?\s . whitespace-syntax)
+    (?\  . whitespace-syntax)           ; ?\s
     (?w  . word-constituent)
     (?_  . symbol-constituent)
     (?.  . punctuation)
@@ -782,7 +786,7 @@
 ;; ちゃんと並び替えよう
 ;; /* 2文字コメントどうする？ */
 ;; http://www.fan.gr.jp/~ring/doc/elisp_20/elisp_35.html
-(define-syntax-xxx-p whitespace ?\s)
+(define-syntax-xxx-p whitespace ?\ )    ; ?\s
 (define-syntax-xxx-p word ?w)
 (define-syntax-xxx-p symbol ?_)
 (define-syntax-xxx-p punctuation ?.)
@@ -875,21 +879,22 @@
 (defun command-keys (command global-keymap local-keymap &optional minor-mode-keymaps)
   (let (acc tmp)
     (setq tmp (where-is-internal command global-keymap))
-    (dolist (x tmp) (pushnew x acc :test #'equalp))
+    (dolist (x tmp) (add-to-list acc x))
     (setq tmp (where-is-internal command local-keymap))
-    (dolist (x tmp) (pushnew x acc :test #'equalp))
+    (dolist (x tmp) (add-to-list acc x))
     (when minor-mode-keymaps
       (setq tmp (where-is-internal command global-keymap))
-      (dolist (x tmp) (pushnew x acc :test #'equalp)))
+      (dolist (x tmp) (add-to-list acc x)))
     (nreverse acc)))
 
 (defun get-ime-mode ()
   (stringp current-input-method))
 
-(defun toggle-ime ()
-  (interactive)
-  ;; (mw32-ime-toggle)
-  (toggle-input-method))
+;; (defun toggle-ime ()
+;;   (interactive)
+;;   ;; (mw32-ime-toggle)
+;;   (toggle-input-method))
+(fset 'toggle-ime 'toggle-input-method)
 
 ;;; @@Text
 (defun convert-encoding-to-internal (encoding input-string &optional output-stream)
@@ -1065,6 +1070,7 @@
 (when (fboundp 'w32-shell-execute)
 (defun launch-application (app)
   "外部プログラムを実行します."
+  (interactive "s%% ")
   (let ((w32-start-process-show-window t)) ; ?
     (w32-shell-execute "open" app)))
 
@@ -1078,7 +1084,8 @@
 ;; (defvar *eshell* shell-file-name)
 (defun run-console ()
   (interactive)
-  (launch-application (or explicit-shell-file-name
+  (launch-application (or (and (boundp 'explicit-shell-file-name)
+                               (symbol-value 'explicit-shell-file-name))
                           (getenv "ESHELL")
                           shell-file-name)))
 )                                  ; end of `(fboundp 'w32-shell-execute)'
@@ -1089,22 +1096,36 @@
   (interactive "*s| \nr")
   (shell-command-on-region start end command nil 'replace))
 
-;; (require 'shell-command)
-;; (defun filter-region (command &optional start end)
-;;   (interactive (progn
-;;                  (barf-if-buffer-read-only)
-;;                  (unless (mark)
-;;                    (error "The mark is not set now, so there is no region"))
-;;                  (list (shell-command-read-minibuffer
-;;                         "| " default-directory
-;;                         nil nil nil 'shell-command-history)
-;;                        (region-beginning)
-;;                        (region-end))))
-;;   (shell-command-on-region start end command nil 'replace))
-
 (defun filter-buffer (command)
   (interactive "*s# ")
   (filter-region command (point-min) (point-max)))
+
+;; shell-command.elがあればミニバッファからのコマンド補完が便利になる
+;; http://namazu.org/~tsuchiya/elisp/shell-command.el
+;; (require 'shell-command)
+;; (featurep 'shell-command)
+(eval-after-load "shell-command"
+'(progn
+  (defun filter-region (command &optional start end)
+    (interactive (progn
+                   (barf-if-buffer-read-only)
+                   (unless (mark)
+                     (error "The mark is not set now, so there is no region"))
+                   (list (shell-command-read-minibuffer
+                          "| " default-directory
+                          nil nil nil 'shell-command-history)
+                         (region-beginning)
+                         (region-end))))
+    (shell-command-on-region start end command nil 'replace))
+
+  (defun filter-buffer (command)
+    (interactive (progn
+                   (barf-if-buffer-read-only)
+                   (list (shell-command-read-minibuffer
+                          "| " default-directory
+                          nil nil nil 'shell-command-history))))
+    (filter-region command (point-min) (point-max)))
+  ))
 
 ;;; @@System
 (defun find-load-path (filename)
@@ -1123,11 +1144,14 @@
     (fset 'get-clipboard-data #'w32-get-clipboard-data)
     (fset 'get-clipboard-data #'x-get-clipboard))
 
+;; (apropos "clipoboard")
+
 ;; FIXME: フォーカスは移動するがウィンドウが最前面にこない気がする
 (defun si:*show-window-foreground ()
   "ウィンドウを最前面に表示."
   ;; not known to be defined.
-  (if (fboundp 'x-focus-frame)
+  (if (and (fboundp 'x-focus-frame)
+           (eq window-system 'x))
       (x-focus-frame (selected-frame)))
   (raise-frame (selected-frame))
   (frame-focus (selected-frame)))
@@ -1135,8 +1159,8 @@
 ;; (fset 'dump-xyzzy #'dump-emacs)
 ;; si:dump-image-path
 
-(defun start-xyzzy-server () (server-mode 1))
-(defun stop-xyzzy-server () (server-mode -1))
+(defun start-xyzzy-server () (server-start))
+(defun stop-xyzzy-server () (server-start t))
 
 ;; @@Condition
 ;; si:*print-condition
@@ -1163,6 +1187,12 @@
 (fset 'gc #'garbage-collect)
 (fset 'msgbox #'message-box)
 (defun etc-path () data-directory)
+
+;; tail-f.l
+(defun tail-f (filename)
+  (interactive "ftail-f: ")
+  (find-file filename)
+  (turn-on-auto-revert-tail-mode))
 
 (fset 'quit-recursive-edit #'abort-recursive-edit) ; ? exit-recursive-edit
 ;; (fset 'toggle-trace-on-error #'toggle-debug-on-error)
@@ -1259,8 +1289,9 @@
 (defun xyzzy-grep (regexp &optional arg)
   "バッファ内を正規表現検索する."
   (interactive (list (read-string "Grep (buffer): ") current-prefix-arg))
-  (cond (arg (occur regexp))                             ; 現在のバッファ
-        (t   (multi-occur (valid-buffer-list) regexp)))) ; 全てのバッファ
+  (if arg
+      (occur regexp)                             ; 現在のバッファ
+      (multi-occur (valid-buffer-list) regexp))) ; 全てのバッファ 
 
 ;;; @@Xyzzy-only
 (defvar *kill-buffer-kills-scratch* nil
@@ -1273,7 +1304,7 @@
               (equal (buffer-name (current-buffer)) "*scratch*"))
          (erase-buffer)
          (when (and
-                (null inhibit-startup-message)
+                ;; (null inhibit-startup-message)
                 initial-scratch-message)
            (insert initial-scratch-message)
            (set-buffer-modified-p nil))
@@ -1295,6 +1326,7 @@
 ;; left,topはピクセル指定？
 ;; (momentary-string-display STRING POINT)
 (defun popup-string (string point &optional timeout)
+  (require 'tooltip)
   (save-excursion
     (cond ((pos-visible-in-window-p point)
            (goto-char point))
@@ -1331,9 +1363,10 @@
 ;; (setq *elisp-macroexpand-require-cl-function* nil)
 
 ;;; ? Warning: the function `cl-prettyexpand' might not be defined at runtime.
-(autoload 'cl-prettyexpand "cl-extra")
-(autoload 'cl-prettyprint "cl-extra")
-(autoload 'cl-macroexpand-all "cl-extra")
+;; (autoload 'cl-prettyexpand "cl-extra")
+;; (autoload 'cl-prettyprint "cl-extra")
+;; (autoload 'cl-macroexpand-all "cl-extra")
+(eval-when-compile (load "cl-extra"))
 
 ;; slime-macroexpand-1
 (defun elisp-macroexpand-1 (&optional repeatedly)
@@ -1353,9 +1386,10 @@
         (print-circle t)
         (temp-buffer-setup-hook '(emacs-lisp-mode))
         ;; FIXME: なぜ色付けが効かない?
-        ;; (temp-buffer-show-hook  (copy-sequence temp-buffer-show-hook))
         (temp-buffer-show-hook '(font-lock-fontify-buffer))
+        ;; (temp-buffer-show-hook  (copy-sequence temp-buffer-show-hook))
         )
+    ;; (add-hook 'temp-buffer-show-hook 'font-lock-fontify-buffer)
     ;; (add-hook 'temp-buffer-show-hook
     ;;           (lambda ()
     ;;             (emacs-lisp-mode)
@@ -1371,7 +1405,7 @@
                                          #'cl-macroexpand-all
                                          #'macroexpand)
                                      form)))
-        (copy-to-buffer #1# (point-min) (point-max)) ))
+        (copy-to-buffer #1# (point-min) (point-max))))
     ))
 
 (defun elisp-macroexpand-all ()

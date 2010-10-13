@@ -3,7 +3,7 @@
 
 ;; This file is NOT part of Emacs.
 
-;; Time-stamp: <2009-07-12T23:21:02>
+;; Time-stamp: <2010-07-07T04:25:36>
 
 ;;; Code:
 (provide 'xyzzy-keymap)
@@ -23,7 +23,7 @@
 ;; @@標準関数から
 (dolist (key '(?\C-1 ?\C-2 ?\C-3 ?\C-4 ?\C-5 ?\C-6 ?\C-7 ?\C-8 ?\C-9 ?\C-0))
   (and (eq (lookup-key global-map (vector key)) 'digit-argument)
-       (global-unset-key (vector key))))
+       (global-set-key (vector key) nil)))
 
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
@@ -47,16 +47,19 @@
 (elisp:define-key (kbd "C-c C-k") 'emacs-lisp-byte-compile-and-load)
 (elisp:define-key (kbd "C-c C-i") 'lisp-complete-symbol) ; C-c TAB
 
-(global-set-key (kbd "<M-f4>") 'kill-emacs)
-(global-set-key (kbd "<ESC> <f4>") 'kill-emacs)
+;(global-set-key (kbd "<M-f4>") 'kill-emacs)     ; Alt-F4
+(global-set-key (kbd "<M-f4>") 'save-buffers-kill-emacs)
+(global-set-key (kbd "<ESC> <f4>") 'kill-emacs) ; Esc-F4
 
 ;; @@自分で定義したもの
 (when (featurep 'xyzzy)
   (global-set-key (kbd "C-x p") 'move-previous-window)
+  ;; (global-set-key "\C-xp" "\C-u-1\C-xo") == move-previous-window
   (global-set-key (kbd "<S-C-down>") 'scroll-up-both-window)
   (global-set-key (kbd "<S-C-up>") 'scroll-down-both-window)
-  (global-set-key (kbd "<mouse-3>") 'bingalls-edit-menu)
+  (global-set-key (kbd "<down-mouse-3>") 'bingalls-edit-menu)
   (global-set-key (kbd "M-]") 'goto-matched-parenthesis)
+  (global-set-key (kbd "C-x |") 'filter-region)
 
   (global-set-key (kbd "<RET>") 'newline-and-indent)
 
@@ -64,5 +67,8 @@
   (elisp:define-key (kbd "C-c M-m") 'elisp-macroexpand-all)
   ;; (elisp:define-key (kbd "C-c h") 'info-lookup-symbol) ; help-S
   )
+
+(if (fboundp 'elisp:define-key)
+    (fmakunbound 'elisp:define-key))
 
 ;;; xyzzy-keymap.el ends here.
