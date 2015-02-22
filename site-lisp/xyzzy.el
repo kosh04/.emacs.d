@@ -1,12 +1,12 @@
 ;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの関数/変数をEmacsで使うためのライブラリ
 
-;; Copyright (C) 2009,2010 Shigeru Kobayashi
+;; Copyright (C) 2009,2010,2015 Shigeru Kobayashi
 
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
 ;; Version: 0.1
 ;; Created: 2009-03-11
 ;; Keywords: lisp,extensions
-;; URL: http://github.com/kosh04/emacs-lisp/raw/master/xyzzy.el
+;; URL: http://github.com/kosh04/emacs-lisp/raw/master/site-lisp/xyzzy.el
 
 ;; This file is NOT part of Emacs.
 
@@ -40,10 +40,9 @@
 
 ;;; ChangeLog:
 
-;; - 2010-10-09
-;;   Emacs21でもとりあえずバイトコンパイルできるように関数やシンタックスを修正
-;; - 2009-04-19
-;;   初版作成
+;; - 2015-02-23 Common Lisp 由来のシンボル群を cl-compatible.el に移行
+;; - 2010-10-09 Emacs21でもとりあえずバイトコンパイルできるように関数やシンタックスを修正
+;; - 2009-04-19 初版作成
 
 ;;; Code:
 
@@ -52,109 +51,28 @@
 (eval-when-compile (require 'cl))
 ;; (require 'ielm)
 
-;;; @@Data-Type
-(fset 'compiled-function-p #'byte-code-function-p)
-
-(defun alpha-char-p (char)
-  (integerp (string-match "[A-Za-z]" (char-to-string char))))
-
-(defun alphanumericp (char)
-  (integerp (string-match "[A-Za-z0-9]" (char-to-string char))))
+;;; @@ Data-Type
 
 (defun kanji-char-p (character)
   (multibyte-string-p (char-to-string character)))
 
-;;; @@Variable-and-Constant
-(defvaralias '*modules* 'features)
+;;; @@ Variable-and-Constant
 (defvaralias '*load-path* 'load-path)
 (defvaralias '*pre-startup-hook* 'before-init-hook) ; emacs-startup-hook ?
 (defvaralias '*post-startup-hook* 'after-init-hook) ; window-setup-hook ?
 (defvaralias 'si:*command-line-args* 'command-line-args-left) ; command-line-args ?
-(defvaralias '*load-pathname* 'load-file-name)
 (defvaralias '*etc-path* 'data-directory)
 ;;            引数有りで実行            引数なしで実行される
 (defvaralias '*query-kill-buffer-hook* 'kill-buffer-query-functions)
 (defvaralias '*query-kill-xyzzy-hook* 'kill-emacs-query-functions)
-
-(fset 'defconstant #'defconst)
-
-(defmacro defparameter (symbol value &optional docstring)
-  `(if (boundp ',symbol)
-       (progn
-         (set ',symbol ,value)
-         ,(if docstring
-              `(put ',symbol 'variable-documentation ,docstring))
-         ',symbol)
-       (defvar ,symbol ,value ,docstring)))
-
-;;; 代入する変数が束縛されているかどうかは実行時まで分からない
-;; (defmacro defparameter (symbol value &optional doc-string)
-;;   (if (boundp symbol)
-;;       `(progn
-;;          (set ',symbol ,value)
-;;          ,(if doc-string
-;;               `(put ',symbol 'variable-documentation ,doc-string))
-;;          ',symbol)
-;;       `(defvar ,symbol ,value ,doc-string)))
 
 (defmacro defvar-local (symbol value &optional docstring)
   `(progn
      (defvar ,symbol ,value ,docstring)
      (make-variable-buffer-local ',symbol)))
 
-;; cl-macs.el:1716
-;;; Some more Emacs-related place types.
-;; (defsetf ...)
 
-;;; @@制御構造
-
-;; Common Lisp `tagbody' for Emacs Lisp
-;; http://www.emacswiki.org/emacs/tagbody.el
-
-;;; @@Package
-;;; @@Function
-
-;;; @@Macro
-(defun macro-function (symbol &optional environment)
-  (declare (ignore environment))
-  (and (fboundp symbol)
-       (let ((fn (symbol-function symbol)))
-         (and (eq (car-safe fn) 'macro)
-              fn))))
-
-;;; @@Symbol
-(defun find-symbol (string)
-  (intern-soft string))
-
-;; symbol-function ~= indirect-function
-
-;;; @@Number
-(fset 'rem #'%)
-(defun logandc1 (x y) (logand (lognot y) y))
-(defun logandc2 (x y) (logand x (lognot y)))
-
-;; from Corman Lisp
-;; http://www.cormanlisp.com/CormanLisp/patches/2_5/math2.lisp
-(defun logcount (integer)
-  (check-type integer integer)
-  ;; if negative, use two's complement to flip
-  (do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
-       (count 0 (+ count (logand x 1))))
-      ((= x 0) count)))
-
-(defun integer-length (integer)
-  (check-type integer integer)
-  (do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
-       (count 0 (1+ count)))
-      ((= x 0) count)))
-
-(defun logbitp (index integer)
-  (check-type index (integer 0 *))
-  (check-type integer integer)
-  (< 0 (logand integer (expt 2 index))))
-
-;;; @@Character
-(fset 'char #'elt)
+;;; @@ Character
 (fset 'char-columns #'char-width)
 
 ;; [xyzzy] C-q 2 1     -> ! (#x21)
@@ -164,71 +82,13 @@
   (let ((read-quoted-char-radix 16))
     (quoted-insert arg)))
 
-;; (digit-char-p ?f 16) => 15
-(defun* digit-char-p (char &optional (radix 10))
-  (let ((pos (string-match (string (upcase char))
-                           "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")))
-    (and pos (<= pos radix) pos)))
-
-;; (digit-char 15 16) => 70 (?F)
-(defun* digit-char (weight &optional (radix 10))
-  (and (<= 0 weight) (< weight radix)
-       (< 0 radix) (<= radix 36)        ; (length "012...WYX") => 36
-       (elt "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" weight)))
-
-(defun char-downcase (char) (check-type char character) (downcase char))
-(defun char-upcase (char) (check-type char character) (upcase char))
-
-(defun standard-char-p (char)
-  "Return T if CHAR is [ -~] or Newline, otherwise NIL."
-  (or (and (<= 32 char) (<= char 126))
-      (= char 10)))
-
-;; FIXME: もうちょっと綺麗にならないものか
-(defun both-case-p (char)
-  (let ((case-fold-search t)
-        (uc (upcase char))
-        (dc (downcase char)))
-    (and (char-equal uc dc)
-         (/= uc dc))))
-
-(defun upper-case-p (char)
-  (let ((case-fold-search nil))
-    (and (both-case-p char)
-         (char-equal char (upcase char)))))
-
-(defun lower-case-p (char)
-  (and (both-case-p char)
-       (not (upper-case-p char))))
-
 ;; use Mule-UCS (Emacs 21)
 ;; Emacs23ならば内部コードがunicodeなので必要無し(あっても問題ない)
 ;; Emacs20ならばmultibyte-char-to-unibyteも一応代用できそう
 (defun char-unicode (char) (encode-char char 'ucs))
 (defun unicode-char (code) (decode-char 'ucs code))
 
-;; (fset 'char-int #'identity)
-
-;; `describe-char-unicodedata-file' を設定していれば利用可能
-;; Help > describe-variable > describe-char-unicodedata-file
-(autoload 'describe-char-unicode-data "descr-text"
-  "Return a list of Unicode data for unicode CHAR.")
-(defun char-name (character)
-  (nth 1 (assoc "Name" (describe-char-unicode-data character))))
-
-;; (defun name-char (name) )
-
-(defun char= (char &rest more-chars)
-  (let ((case-fold-search nil))
-    ;; (every (lambda (c) (char-equal c char)) more-chars)
-    (do* ((chars more-chars (cdr chars))
-          (c #1=(car chars) #1#))
-         ((null chars) t)
-      (if (not (char-equal c char))
-          (return nil)))
-    ))
-
-;;; @@Sequence
+;;; @@ Sequence
 (defun remove-trail-slash (str)
   "STR の末尾に `/' があれば削除した文字列を返す。"
   (cond ((string= "" str) str)
@@ -246,67 +106,20 @@
 (defun map-slash-to-backslash (string) (subst-char-in-string ?/ ?\\ string))
 (defun map-backslash-to-slash (string) (subst-char-in-string ?\\ ?/ string))
 
-;; 大文字小文字を区別して文字列の比較
-;; string-equalのエイリアスとして定義されている(subr.el)ので上書きすると問題があるかも
-;; (defun* string= (string1 string2 &key (start1 0) end1 (start2 0) end2)
-;;   (check-type string1 string)
-;;   (check-type string2 string)
-;;   (eq (compare-strings string1 start1 end1
-;;                        string2 start2 end2
-;;                        nil)
-;;       t))
-
-;; (defun* string/= (string1 string2 &key (start1 0) end1 (start2 0) end2)
-;;   (not (string= string1 string2
-;;                 :start1 start1 :end1 end1
-;;                 :start2 start2 :end2 end2)))
-
-(defun string-left-trim (char-bag string)
-  (setq char-bag (let (acc)
-                   (dotimes (n (length char-bag))
-                     (push (elt char-bag n) acc))
-                   (nreverse acc)))
-  (let ((start 0)
-        (end (length string)))
-    (do ((index start (1+ index)))
-        ((or (= index end)
-             (null (memq (elt string index) char-bag)))
-         (substring string index)))))
-
-(defun string-right-trim (char-bag string)
-  ;; (setq char-bag (coerce char-bag 'list))
-  (setq char-bag (let (acc)
-                   (dotimes (n (length char-bag))
-                     (push (elt char-bag n) acc))
-                   (nreverse acc)))
-  (let ((start 0)
-        (end (length string)))
-    (do ((index (1- end) (1- index)))
-        ((or (= index start)
-             (null (memq (elt string index) char-bag)))
-         (substring string start (1+ index))))))
-
-(defun string-trim (char-bag string)
-  (string-left-trim char-bag (string-right-trim char-bag string)))
-
 (defun* substitute-string (string pattern replacement
                                   &key case-fold start end skip count)
   (let ((case-fold-search case-fold))
     (replace-regexp-in-string pattern replacement string 'fixedcase)))
 
-(defun* parse-integer (string &key start end radix junk-allowed)
-  (declare (ignore junk-allowed))
-  (string-to-number (substring string (or start 0) end) radix))
-
-;;; @@List
+;;; @@ List
 (fset 'safe-car #'car-safe)
 (fset 'safe-cdr #'cdr-safe)
 
-;;; @@Hash
-;;; @@Array
-;;; @@Chunk
+;;; @@ Hash
+;;; @@ Array
+;;; @@ Chunk
 
-;;; @@Eval
+;;; @@ Eval
 (defadvice eval-last-sexp (before eval-safe activate)
   "ポイントがシンボルの途中でもエラーにならない eval-last-sexp"
   (with-syntax-table emacs-lisp-mode-syntax-table
@@ -329,9 +142,7 @@
 ;;   (load-with-code-conversion filename filename t))
 ;; set-auto-coding-for-load
 
-;;; @@Input/Output
-(defun princ-to-string (object &optional stream)
-  (with-output-to-string (princ object stream)))
+;;; @@ Input/Output
 
 ;; (apropos "network")
 
@@ -346,73 +157,17 @@
 
 ;; (values)を使うpprintは実装できない？
 
-;;; @@Filesystem
-(fset 'merge-pathnames #'expand-file-name)
-(fset 'file-namestring #'file-name-nondirectory)
-(fset 'directory-namestring #'file-name-directory)
+;;; @@ Filesystem
 (fset 'get-buffer-file-name #'buffer-file-name)
 (fset 'file-exist-p #'file-exists-p)
-(fset 'pathname-type #'file-name-extension)
 (fset 'find-other-file  #'find-alternate-file)
 (fset 'get-file-attributes #'file-attributes)
 (fset 'make-temp-file-name #'make-temp-file)
 
-;; (defun user-homedir-pathname () default-directory)
 ;; get-disk-usage
-
-;; CLにファイルのリンク先を参照する関数はあるのか？
-;; file-truename, file-chase-links
-(defun* directory (pathname &key absolute recursive wild depth file-only
-                            show-dots count directory-only callback file-info)
-  (declare (ignore recursive depth show-dots count))
-  (cl-labels ((filter (f seq)
-                (let (acc)
-                  (dolist (x seq acc)
-                    (if (funcall f) x)))))
-    (let (files)
-      (dolist (file (if file-info
-                        (directory-files-and-attributes pathname absolute wild)
-                        (directory-files pathname absolute wild)))
-        (if (cond (file-only
-                   (and (file-exists-p file)
-                        (not (file-directory-p file))))
-                  (directory-only
-                   (file-directory-p file))
-                  (t t))
-            (push (funcall (if callback callback #'identity)
-                           file)
-                  files)))
-      (nreverse files))))
-;; (directory ".")
-
-(defun pathname-name (pathname)
-  (file-name-sans-extension (file-name-nondirectory pathname)))
-
-(defun namestring (pathname)
-  (expand-file-name pathname))
-
-(defun probe-file (pathname)
-  (and (file-exists-p pathname)
-       (expand-file-name pathname)))
-
-(defun truename (pathname)
-  (or (probe-file pathname)
-      (error "The file %s does not exist." pathname)))
 
 (and (fboundp 'w32-short-file-name)
      (fset 'get-short-path-name #'w32-short-file-name))
-
-;; ディレクトリが存在しているかは考えていないので
-;; 末尾にパス区切りのない "~/lib/emacs" などは "emacs" をファイルとみなしている
-;; (pathname-directory "~/lib/emacs")  => ("home" "lxuser" "lib")
-;; (pathname-directory "~/lib/emacs/") => ("home" "lxuser" "lib" "emacs")
-(defun pathname-directory (pathname)
-  (let ((dir (delete "" (split-string (file-name-directory
-                                       (expand-file-name pathname))
-                                      "/"))))
-    (if (memq system-type '(ms-dos windows-nt)) ; ? cygwin
-        (cdr dir)                               ; ignore drive letter
-        dir)))
 
 ;; (sub-directory-p "~/lib/emacs/" "~/lib/emacs/") => t
 ;; (sub-directory-p "~/lib/emacs/" "~/lib/emacs")  => t
@@ -452,20 +207,10 @@
                   (char-equal (elt pathname2 l1) ?/))
              ))))
 
-;; (byte-compile-dest-file "xyzzy.el")    => "xyzzy.elc"
-;; (byte-compile-dest-file "xyzzy.el.gz") => "xyzzy.elc"
-(defun compile-file-pathname (pathname)
-  (require 'bytecomp)
-  (byte-compile-dest-file pathname))
-
-(defun file-length (pathname)
-  "Return PATHNAME size in bytes."
-  (nth 7 (file-attributes pathname)))
-
-;;; @@Error
+;;; @@ Error
 (fset 'plain-error #'error)
 
-;;; @@Window
+;;; @@ Window
 (fset 'set-window #'select-window)
 (fset 'next-page #'scroll-up)
 (fset 'previous-page #'scroll-down)
@@ -547,7 +292,7 @@
   (interactive "P")
   (setq indicate-empty-lines (or arg (not indicate-empty-lines))))
 
-;;; @@Buffer
+;;; @@ Buffer
 (fset 'selected-buffer #'current-buffer)
 (fset 'find-buffer #'get-buffer)
 (fset 'create-new-buffer #'generate-new-buffer)
@@ -667,9 +412,9 @@
 ;; (list make-backup-files version-control kept-old-versions kept-new-versions 'pack-backup-file-name make-backup-file-always)
 ;; ediff の独立ウィンドウを参考に (select-buffer) [f2]
 
-;;; @@Minibuffer
+;;; @@ Minibuffer
 
-;;; @@Region
+;;; @@ Region
 (defadvice kill-ring-save (after kill-ring-msg activate)
   ;; kill-new の方がいいのかな?
   (message "Region copied"))
@@ -735,12 +480,12 @@
   "文字列STRINGを全角に変換します."
   (japanese-zenkaku string))
 
-;;; @@Mode
+;;; @@ Mode
 (fset 'delete-hook 'remove-hook)
 (fset 'run-hook-with-args-while-success 'run-hook-with-args-until-failure)
 ;; #'toggle-mode は便利か？
 
-;;; @@Syntax
+;;; @@ Syntax
 (defparameter syntax-char-alist
   '(
     ;; emacs/xyzzy共通
@@ -862,7 +607,7 @@
         ((nth 4 state) :comment)
         (t nil)))))
 
-;;; @@Keymap
+;;; @@ Keymap
 (defvaralias '*global-keymap* 'global-map)
 (defvaralias 'spec-map 'mode-specific-map)
 (defvaralias 'ctl-x-6-map '2C-mode-map) ; two-column.el
@@ -895,7 +640,7 @@
 ;;   (toggle-input-method))
 (fset 'toggle-ime 'toggle-input-method)
 
-;;; @@Text
+;;; @@ Text
 (defun convert-encoding-to-internal (encoding input-string &optional output-stream)
   "convert string INPUT-STRING (internal -> ENCODING)"
   (declare (ignore output-stream))
@@ -933,7 +678,7 @@
       (set 'tab-width column)
       (set-default 'tab-width column)))
 
-;;; @@Search, Regexp
+;;; @@ Search, Regexp
 (fset 'ed::protect-match-data 'save-match-data)
 (fset 'store-match-data #'set-match-data)
 
@@ -950,21 +695,14 @@
           (looking-for string case-fold))
       (error nil))))
 
-;;; @@Dialog
+;;; @@ Dialog
 (defun y-or-n-p-with-dialog (fmt &rest args)
   (let ((last-nonmenu-event nil)
         (use-dialog-box t))
     (y-or-n-p (apply #'format fmt args))))
 
-;;; @@Date-Time
-;; Common Lisp (xyzzy) features `universal-time'
-;; Emacs Lisp          features `UNIX-time'
-;; (fset 'get-universal-time #'current-time)
-;; (fset 'encode-universal-time #'encode-time)
-;; (fset 'decode-universal-time #'decode-time)
+;;; @@ Date-Time
 (fset 'format-date-string #'format-time-string)
-(fset 'get-internal-real-time #'get-internal-run-time) ; ?
-(defun get-decoded-time () (decode-time (current-time)))
 
 ;; ? タイマーの書式 [...] を調べよう
 (defun start-timer (interval fn &optional one-shot-p)
@@ -972,14 +710,14 @@
 (fset 'stop-timer #'cancel-function-timers)
 (defun stop-all-timers () (mapc #'cancel-timer timer-list))
 
-;;; @@Menu
+;;; @@ Menu
 ;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=mouse%20click
 (defun bingalls-edit-menu (event)
   "右クリックでメニュー"
   (interactive "e")
   (popup-menu menu-bar-edit-menu))
 
-;;; @@Filer
+;;; @@ Filer
 ;;; filer [xyzzy] <-> dired [emacs]
 (eval-when-compile
   (require 'dired))
@@ -991,7 +729,7 @@
 (defun filer-get-current-file ()
   (dired-get-filename nil 'no-error))
 
-;;; @@Position
+;;; @@ Position
 (fset 'marker-point #'marker-position)
 
 ;; (defun goto-marker (marker)
@@ -1020,7 +758,7 @@
 
 ;; (put 'set-goal-column 'disabled nil)
 
-;;; @@Process
+;;; @@ Process
 
 ;; (xyzzy:call-process CMD :wait t)
 ;; == (emacs:call-process PROGNAME nil 0 nil ARGS)
@@ -1126,7 +864,7 @@
     (filter-region command (point-min) (point-max)))
   ))
 
-;;; @@System
+;;; @@ System
 (defun find-load-path (filename)
   (locate-library filename))
 
@@ -1161,29 +899,12 @@
 (defun start-xyzzy-server () (server-start))
 (defun stop-xyzzy-server () (server-start t))
 
-;; @@Condition
+;; @@ Condition
 ;; si:*print-condition
 (fset 'si:*condition-string #'error-message-string)
 
-(defsubst find-condition-variable (handlers)
-  (let (e)
-    (dolist (handler handlers)
-      (pushnew (car (nth 1 handler)) e :test #'equal))
-    ;; condition-case のエラー用変数は1つだけなので注意を促す
-    (if (/= 1 (length e)) (warn "plural condition variable are not allowed: %s" e))
-    (car e)))
-
-(defmacro handler-case (form &rest cases)
-  `(condition-case ,(find-condition-variable cases)
-       ,form
-     ,@(mapcar (lambda (c)
-                 ;; (error (e) form1 ...) => (error form1 ...)
-                 (cons (car c) (nthcdr 2 c)))
-               cases)))
-
-;;; @@Misc
+;;; @@ Misc
 (fset 'modulep #'featurep)
-(fset 'gc #'garbage-collect)
 (fset 'msgbox #'message-box)
 (defun etc-path () data-directory)
 
@@ -1292,7 +1013,7 @@
       (occur regexp)                             ; 現在のバッファ
       (multi-occur (valid-buffer-list) regexp))) ; 全てのバッファ 
 
-;;; @@Xyzzy-only
+;;; @@ Xyzzy-Only
 (defvar *kill-buffer-kills-scratch* nil
   "non-nilならば、kill-bufferで*scratch*が削除可能.")
 
@@ -1310,11 +1031,6 @@
          nil)
         (t t)))
 (add-hook 'kill-buffer-query-functions 'kill-scratch-hook)
-
-(defun* string-downcase (string &key (start 0) end)
-  (concat (substring string 0 start)
-          (downcase (substring string start end))
-          (if end (substring string end) "")))
 
 ;; 正規表現のコンパイルってあったっけ？
 (defun compile-regexp (regexp &optional case-fold)
@@ -1340,23 +1056,6 @@
                                               `((top . ,y))
                                               tooltip-frame-parameters)))
         (tooltip-show string)))))
-
-(autoload 'trace-is-traced "trace")
-(autoload 'untrace-all "trace")
-(autoload 'untrace-function "trace")
-
-(defmacro trace (&rest function-name)
-  (if function-name
-      `(mapc #'trace-function ',function-name)
-      `(let (fns)
-         (ad-do-advised-functions (fn)
-           (if (trace-is-traced fn) (push fn fns)))
-         (nreverse fns))))
-
-(defmacro untrace (&rest function-name)
-  (if function-name
-      `(mapc #'untrace-function ',function-name)
-      `(untrace-all)))
 
 (defvar *elisp-macroexpand-require-cl-function* t)
 ;; (setq *elisp-macroexpand-require-cl-function* nil)
@@ -1412,11 +1111,5 @@
   (elisp-macroexpand-1 t))
 
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
-
-
-;; Local Variables:
-;; mode: emacs-lisp
-;; coding: utf-8
-;; End:
 
 ;;; xyzzy.el ends here
