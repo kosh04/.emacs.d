@@ -15,6 +15,8 @@
 
 ```elisp
 (add-to-list 'load-path "~/path/to/emacs-lisp/" t)
+(load "site-lisp/cl-compatible")
+(load "site-lisp/xyzzy")
 (load "site-lisp/misc")
 (load "config/backup")
 (load "config/keymaps")

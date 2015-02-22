@@ -331,7 +331,7 @@
                  (cons (car c) (nthcdr 2 c)))
                cases)))
 
-;; @Debug
+;; @@ Debug
 
 (autoload 'trace-is-traced "trace")
 (autoload 'untrace-all "trace")
