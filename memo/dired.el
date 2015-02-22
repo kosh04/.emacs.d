@@ -52,3 +52,14 @@ dired-guess-shell-alist-default
 
 ;; ブラウザで開く
 (fset 'dired-browse-url-at-point #'browse-url-of-dired-file)
+
+;; ファイル名だけを探索するisearch
+;; http://www.emacswiki.org/emacs/dired-isearch.el
+;; http://emacswiki.wikiwikiweb.de/cgi-bin/wiki/download/dired-isearch.el
+(autoload 'dired-isearch-forward "dired-isearch")
+(autoload 'dired-isearch-backward "dired-isearch")
+
+(define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
+(define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
+;;(define-key dired-mode-map (kbd "ESC C-s") 'dired-isearch-forward-regexp)
+;;(define-key dired-mode-map (kbd "ESC C-r") 'dired-isearch-backward-regexp)

@@ -44,12 +44,6 @@
 ;; (setq dired-listing-switches "-al")
 ;; (setq ls-lisp-emulation t ls-lisp-ignore-case t)
 
-;; ファイル名だけを探索するisearch
-;; http://www.emacswiki.org/emacs/dired-isearch.el
-;; http://emacswiki.wikiwikiweb.de/cgi-bin/wiki/download/dired-isearch.el
-(autoload 'dired-isearch-forward "dired-isearch")
-(autoload 'dired-isearch-backward "dired-isearch")
-
 ;; [(dired) a]
 ;; dired バッファを削除した後で find-file (のキーバインドを有効にする)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -73,12 +67,8 @@
   (define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
   (define-key dired-mode-map "q" 'kill-this-buffer)
   ;;(define-key dired-mode-map "X" 'dired-shell-execute)
+  (define-key dired-mode-map (kbd "C-s") 'dired-isearch-filenames)
   (define-key dired-mode-map (kbd "C-x C-q") 'wdired-change-to-wdired-mode)
-
-  (define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
-  (define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
-  ;;(define-key dired-mode-map (kbd "ESC C-s") 'dired-isearch-forward-regexp)
-  ;;(define-key dired-mode-map (kbd "ESC C-r") 'dired-isearch-backward-regexp)
   t)
 
 (with-eval-after-load "wdired"
