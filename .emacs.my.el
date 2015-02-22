@@ -44,23 +44,6 @@
 (or (lookup-key global-map "\M-?")
     (global-set-key "\M-?" help-map))
 
-;;; Backup
-(setq make-backup-files t)
-(setq backup-by-copying t)
-;(setq version-control t)
-;; (add-to-list 'backup-directory-alist '("." . "~/.backup"))
-;(setq backup-directory-alist `(("." . ,temporary-file-directory)))
-;; (setq make-backup-file-name-function #'(lambda (file) (expand-file-name file "/tmp")))
-
-;; flet, labels のインデント修正方法 (よろしくないかも)
-(fset 'lisp-indent-function #'common-lisp-indent-function)
-
-(add-to-list 'auto-mode-alist '("\\.elc?$" . emacs-lisp-mode))
-
-;; -> xyzzy-keymap.el
-;; (global-set-key "\C-h" 'delete-backward-char)
-;; (define-key isearch-mode-map "\C-h" 'isearch-delete-char)
-
 ;;; highlight-line
 (require 'hl-line)
 (add-hook 'dired-mode-hook 'hl-line-mode)
@@ -87,16 +70,6 @@
 ;; (setq inhibit-startup-screen t)     ; スタートアップ画面を表示しない
 ;; (setq initial-scratch-message "")    ; *scratch* バッファに入る文字列
 
-;; Buffer size
-(size-indication-mode 1)
-
-;;; modeline
-(when window-system
-  (set-face-background 'modeline "black")
-  (set-face-foreground 'modeline "grey90"))
-(line-number-mode t)
-(column-number-mode t)
-
 ;;; [UN*X.emacs] から
 ;;(c-add-style "mystyle" '((c-basic-offset . 4)))
 (defun my-indent-style ()
@@ -105,13 +78,6 @@
   )
 (add-hook 'c-mode-common-hook   'my-indent-style)
 (add-hook 'c++-mode-common-hook 'my-indent-style)
-
-;;; frame
-(setq frame-title-format
-      `(" %b " (buffer-file-name "(%f)") " on " ,(system-name)
-               " - " ,(if (featurep 'meadow)
-                          (Meadow-version)
-                          (format "Emacs %s" emacs-version))))
 
 ;;; paren
 (show-paren-mode t)			; 対応する括弧に色をつける
@@ -212,24 +178,6 @@
 (eval-after "newcomment"
   (setq comment-style 'multi-line))
 
-;;; shell-command(M-!) のコマンド入力に補完を効かせる
-;;; http://namazu.org/~tsuchiya/
-(load "shell-command" t)
-(eval-after "shell-command"
-  (shell-command-completion-mode t))
-
-;;; エスケープシーケンスを処理する ("ls --color" が使える)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-(defun shell-other-window ()
-  (interactive)
-  (let ((buffer (save-window-excursion
-                  ;; Enable current-prefix-arg
-                  (call-interactively 'shell))))
-    (or (eq buffer (current-buffer))
-        (switch-to-buffer-other-window buffer))))
-
-(global-set-key (kbd "C-c s") 'shell-other-window)
 
 ;;; URLをブラウザで開く
 ;; (global-set-key [S-mouse-2] 'browse-url-at-mouse)
@@ -248,25 +196,8 @@
            )
      )))
 
-;;; バッファの末尾以降の空白が見える (fringe)
-;; (set-fringe-mode 5)
-(setq-default indicate-empty-lines t)
-(set-face-background 'fringe "gray80")
-
-;;; 日付と時刻の挿入
-;;; http://www.bookshelf.jp/texi/elisp-manual-20-2.5-jp/elisp_38.html#SEC610
-(defun insert-time ()
-  (interactive)
-  (let ((system-time-locale "C"))
-    (insert (format-time-string "%Y-%m-%dT%H:%M:%S"))))
-(global-set-key "\C-ct" 'insert-time)
-
 ;;; gzファイルも編集できるように
 (auto-compression-mode t)
-
-;; インデントにtabを使うかどうか
-(setq-default indent-tabs-mode nil)
-;; (setq-default indent-tabs-mode t)
 
 ;;; Emacs Lisp 関連
 
@@ -280,46 +211,11 @@
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 
-;; (load "eldoc-extension" t)
-;; SLIME風arglist
-;; (set-face-background 'eldoc-highlight-function-argument "darkseagreen2")
-;; (set-face-bold-p 'eldoc-highlight-function-argument nil)
-;; (setq eldoc-idle-delay 0.2 eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
-;; (global-set-key "\C-xtl" 'eldoc-mode)
-
-;; imenu
-(add-hook 'emacs-lisp-mode-hook #'imenu-add-menubar-index)
-
 ;;; カーソルあっちいって
 ;; (display-mouse-p)
 (if (eq system-type 'windows-nt)
     (mouse-avoidance-mode 'exile)
     (mouse-avoidance-mode 'banish))
-
-;;; カーソル上にあるファイル名や URL を開く
-;;; フツーの Find file: は C-u C-x C-f
-;; (require 'ffap)
-;; (ffap-bindings)
-
-(defun ffap-emacs ()
-  "URLをemacsのバッファに開く."
-  (interactive)
-  (url-handler-mode t)
-  (let ((ffap-url-fetcher #'find-file))
-    (call-interactively #'ffap)))
-
-;;; 関数一覧 (M-x: imenu)
-(require 'imenu)
-(global-set-key (kbd "C-c C-l") 'imenu)
-
-;;; インデントして次の行へ
-(defun indent-and-next-line (&optional args)
-  (interactive "p")
-  (dotimes (x args)
-    (indent-according-to-mode)
-    (line-move 1)))
-;; (byte-compile 'indent-and-next-line)
-(global-set-key "\M-n" 'indent-and-next-line)
 
 ;;; 物理行移動マイナーモード
 ;;; http://xem.jp/~tkng/physical-line.el ; 404 Not Found
@@ -340,16 +236,6 @@
      (setq woman-use-own-frame nil)
      (setq woman-cache-filename "~/.emacs.d/woman-cache.el")
      )))
-
-;; 大文字小文字の区別をしない
-(setq completion-ignore-case t
-      read-file-name-completion-ignore-case t)
-(if (boundp 'read-buffer-completion-ignore-case) ; Emacs23.1
-    (setq read-buffer-completion-ignore-case t))
-
-;;; 誤爆するとイヤなので無効化
-(global-unset-key "\C-xm")		; compose-mail
-(global-unset-key "\C-x\C-n")		; set-goal-column
 
 ;;; Google 検索
 (require 'google)
@@ -493,33 +379,6 @@
                     )) ))
     (slime 'newlisp)))
 
-;; (global-set-key [?\C-8] 'insert-parentheses)
-(global-set-key (kbd "M-\"")
-                (defun insert-double-quotes (&optional arg)
-                  (interactive "P")
-                  (insert-pair arg ?\" ?\")))
-(global-set-key (kbd "M-#")
-                (defun insert-multi-comment-for-lisp (&optional arg)
-                  (interactive "P")
-                  (insert "#|" "|#")
-                  (backward-char 2)))
-;; (global-set-key [?\(] 'insert-parentheses)
-;; (global-set-key [?\"] 'insert-pair)
-(global-set-key "\M-'" 'insert-pair)    ; (kbd "ESC '")
-(global-set-key (kbd "ESC `") 'insert-pair) ; "M-`"
-
-;; etags は標準で再帰ができない様子
-;; 代わりにEmacs標準関数を使おうか
-;; #'find-library #'find-variable #'find-function
-(setq find-function-C-source-directory
-      (if (eq system-type 'windows-nt)
-          "~/src/emacs-22.2/src"
-          "~/src/emacs-22/src/"))
-;; (global-set-key [(control ?c) ?f] 'find-library)
-(define-key help-map (kbd "C-l") 'find-library)
-;; (define-key ctl-x-map [?j] 'find-function)
-(define-key help-map "j" 'find-function)
-
 (defun find-symbol-at-point ()
   (interactive)
   ;; (or (find-variable-at-point) (find-function-at-point))
@@ -555,111 +414,6 @@
 (add-hook 'bs-mode-hook 'hl-line-mode)
 ;; (setq Buffer-menu-sort-column 2)        ; '(CRM Buffer Size Mode File)
 
-(defun sequence (from to &optional step)
-  (if (<= from to)
-      (number-sequence from to step)
-      (nreverse (number-sequence to from step))))
-
-;;; @@Dired
-(require 'ls-lisp)
-(setq ls-lisp-use-insert-directory-program nil)
-(setq ls-lisp-dirs-first t)
-;; (setq dired-listing-switches "-al --group-directories-first")
-;; (setq dired-listing-switches "-al")
-;; (setq ls-lisp-emulation t ls-lisp-ignore-case t)
-
-;; dired-other-window に使うなら、同じ形で別定義する必要あり
-(defadvice dired (around set-forcus-on-filename activate)
-  "作業中のファイルにカーソルを当てる."
-  (let ((file (buffer-file-name)))
-    ad-do-it
-    (and file (dired-goto-file file))))
-
-(defun dired-copy-pathname-as-kill ()
-  "ファイルのフルパスを取得."
-  (interactive)
-  ;; With a zero prefix arg, use the absolute file name of each marked file.
-  (dired-copy-filename-as-kill 0))
-
-(defun dired-shell-execute ()
-  "ファイルを関連付けられたプログラムで開く."
-  (interactive)
-  (let ((file (dired-get-filename)))
-    (and file
-         (or (file-exists-p file)
-             (error "Not found %s" file))
-         (y-or-n-p (format "Execute %s? " (file-namestring file)))
-         ;; Linux:gnome-open(xdg-open) / Win32:start
-         (shell-execute file))))
-
-(eval-after-load "dired"
-  (quote
-   (progn
-     (define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
-     (define-key dired-mode-map "q" 'kill-this-buffer)
-     (define-key dired-mode-map "X" 'dired-shell-execute)
-     ;; wdired
-     (define-key dired-mode-map "\C-x\C-q" 'wdired-change-to-wdired-mode)
-     )))
-
-(eval-after-load "wdired"
-  (quote
-   (progn
-     (define-key wdired-mode-map "\C-x\C-q" 'wdired-finish-edit))))
-
-;; [(dired) a]
-;; diredバッファを消してからfind-file (のキーバインドを有効)
-(put 'dired-find-alternate-file 'disabled nil)
-
-;; いろいろなソート
-;; http://www.emacswiki.org/emacs/dired-sort.el
-(defmacro define-dired-sort-by (name switch)
-  `(defun ,(intern (format "dired-sort-by-%s" name)) ()
-     (interactive)
-     (dired-sort-other (concat dired-listing-switches ,switch))))
-
-;; NOTE: -r  ソートの順番を逆にする。
-(define-dired-sort-by size "S")         ; ファイルサイズ
-(define-dired-sort-by extension "X")    ; 拡張子
-(define-dired-sort-by mtime "t")        ; タイムスタンプ
-(define-dired-sort-by ctime "c")        ; 修正時刻
-(define-dired-sort-by atime "u")        ; 最終アクセス時刻
-(define-dired-sort-by version "v")      ; バージョン名／番号
-
-(defadvice dired-find-file (after read-only-mode activate)
-  "Diredからファイルを開く時は読み込み専用にする."
-  (toggle-read-only 1))
-
-;; ファイル名だけを探索するisearch
-;; http://www.emacswiki.org/emacs/dired-isearch.el
-;; http://emacswiki.wikiwikiweb.de/cgi-bin/wiki/download/dired-isearch.el
-(autoload 'dired-isearch-forward "dired-isearch")
-(autoload 'dired-isearch-backward "dired-isearch")
-(eval-after-load "dired"
-  (quote
-   (progn
-     (define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
-     (define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
-     )))
-;; (define-key dired-mode-map (kbd "ESC C-s") 'dired-isearch-forward-regexp)
-;; (define-key dired-mode-map (kbd "ESC C-r") 'dired-isearch-backward-regexp)
-
-
-(defun indent-line-sexp ()
-  "長い一行S式をそれなりにインデントします."
-  (interactive)
-  (save-excursion
-    (save-restriction
-      ;; (while (condition-case nil (backward-up-list) (error nil)))
-      (narrow-to-region (point)
-                        (save-excursion
-                          (forward-sexp)
-                          (point)))
-      ;; (replace-string ") " ")\n")
-      (perform-replace ") " ")\n" nil  nil nil)
-      ))
-  (indent-sexp))
-
 ;;; @@Time-stamp
 (require 'time-stamp)
 (add-hook 'before-save-hook 'time-stamp)
@@ -676,24 +430,6 @@
                     (indent-for-comment)
                     ;; (ignore-errors (kill-line))
                     (command-execute "\C-u\C-x\C-e")))
-(global-set-key [(control ?c) (control ?r)] 'eval-region)
-
-(defun recompile-and-load-file ()
-  "*.lc があれば再コンパイルとロード."
-  (let ((file (buffer-file-name)))
-    (when (and file
-               (member major-mode '(emacs-lisp-mode lisp-interaction-mode))
-               (file-exists-p (byte-compile-dest-file file))
-               (< emacs-major-version 23) ; 23でコンパイルしたファイルは22で使えないので
-               (null (check-parens)))
-      (byte-compile-file file (featurep (intern (pathname-name file)))))))
-(add-hook 'after-save-hook 'recompile-and-load-file)
-;; (remove-hook 'after-save-hook 'recompile-and-load-file)
-
-(global-set-key "\M-g" 'goto-line)
-(global-set-key (kbd "C-x t f") 'toggle-truncate-lines)
-;; toggle-trace-on-error@xyzzy
-(global-set-key (kbd "C-x t e") 'toggle-debug-on-error)
 
 ;;; toggle-scratch-buffer (で呼び出している pop-to-buffer?) と相性が悪いかも
 (require 'linum)
@@ -717,21 +453,9 @@
                                   (other-buffer)
                                   (null current-prefix-arg)))))
 
-(defun detect-and-decode-string (string)
-  (mapcar #'(lambda (encoding)
-              (cons encoding (decode-coding-string string encoding)))
-          (detect-coding-string string)))
-
-(fset 'encode #'encode-coding-string)
-(fset 'decode #'decode-coding-string)
-(fset 'detect #'detect-coding-string)
 
 (or (lookup-key global-map [f12]) (global-set-key [f12] 'emacs-lisp-mode))
 (or (lookup-key global-map [C-f12]) (global-set-key [C-f12] 'lisp-interaction-mode))
-
-(when (eq system-type 'windows-nt)
-  ;; (require 'ispell)
-  (setq ispell-program-name (expand-file-name "Aspell/bin/aspell.exe" (getenv "PROGRAMFILES"))))
 
 ;; @@Ruby
 (autoload 'ruby-mode "ruby-mode" "Major mode for ruby scripts." t)
@@ -780,7 +504,6 @@
            (and (get-buffer buffer) (kill-buffer buffer)))))
     (mapc kill-buffer-safe *temporary-buffer-list*)))
 
-;; (fset 'trim-tailing-whitespace #'delete-trailing-whitespace)
 (defun trim-tailing-whitespace ()
   (interactive)
   (save-restriction
@@ -797,14 +520,6 @@
 (setq default-truncate-lines t)         ; 水平分割
 (setq truncate-partial-width-windows t) ; 垂直分割
 
-;; なぜか utf-8 になっていたので
-;; (set-language-environment "japanese") のせいかな?
-'(when (eq system-type 'windows-nt)
-  (setq default-process-coding-system
-        ;; '(japanese-iso-8bit . japanese-iso-8bit)
-        '(sjis-unix . sjis-unix)
-        ))
-
 ;; @@Migemo
 (load "migemo/migemo" t)
 (eval-after-load "migemo"
@@ -819,11 +534,6 @@
      )))
 ;; キーバインドを変更したかったがisearch-mode-hookに埋め込まれているので断念
 
-(defun insert-zenkaku-space ()
-  "全角空白を挿入."
-  (interactive)
-  (insert (japanese-zenkaku " ")))
-(fset 'insert-full-width-space #'insert-zenkaku-space)
 
 ;; @@url-handler
 ;; URL-FILEも扱えるように
@@ -887,16 +597,6 @@
 
 ;; @@EmacsLispの再定義は色々危険だということを忘れずに...
 (load "redef" t)
-
-;; (url-load "http://jblevins.org/projects/markdown-mode/markdown-mode.el")
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-(fset 'markdown-buffer #'markdown)      ; markdown-preview
-;; (add-hook 'markdown-mode-hook
-;;           (defun markdown-user-setup ()
-;;             (setq tab-width 4)
-;;             ))
 
 ;; Eshell
 (defun eshell-user-setup-hook ()
@@ -970,11 +670,6 @@
                               (char (match-string 0) 0)))
                      nil t))))
 
-(defadvice locate (around modify-buffer-name activate)
-  (let ((locate-buffer-name
-         (format "*Locate %s*" search-string)))
-    ad-do-it))
-
 ;; (global-set-key (kbd "M-w") 'clipboard-kill-ring-save)
 
 ;; @@Mew
@@ -1005,8 +700,6 @@
       (let ((locale-coding-system 'euc-jp-unix))
         ad-do-it)))
 
-(recentf-mode 1)
-
 ;; Racket - http://racket-lang.org/
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
 (defun run-racket ()
@@ -1027,29 +720,6 @@
    (progn
      ;; (setq tramp-default-method "ssh")
      )))
-
-;;; LaTeX
-(eval-after-load "tex-mode"
-  (quote
-   (progn
-     (setq latex-run-command "platex -kanji=euc")
-     (add-to-list 'tex-compile-commands '("platex %f" "%f" "%f.dvi"))
-     (setq tex-dvi-view-command "xdvi")
-     (add-to-list 'auto-coding-alist '("\\.tex$" . japanese-iso-8bit))
-     (add-to-list 'completion-ignored-extensions ".aux")
-     (add-to-list 'completion-ignored-extensions ".dvi")
-     ;; (add-to-list 'completion-ignored-extensions ".log")
-     )))
-
-;; EmacsWiki: Backup Directory - http://www.emacswiki.org/emacs/BackupDirectory
-(setq make-backup-file-name-function
-      #'(lambda (file)
-          (let ((dirname (format-time-string
-                          "~/.emacs.d/backups/%Y-%m-%d")))
-            (or (file-directory-p dirname)
-                ;; mkdir -p DIRNAME
-                (make-directory dirname t))
-            (expand-file-name (file-name-nondirectory file) dirname))))
 
 ;; FIXME
 ;; 賢いタブデリートとかいらない

@@ -1,0 +1,22 @@
+;;; config/keymaps.el
+
+(global-set-key (kbd "C-l") #'recenter)
+
+(electric-pair-mode +1)
+;; (global-set-key (kbd "(") 'insert-pair)     ; ()
+;; (global-set-key (kbd "[") 'insert-pair)     ; []
+;; (global-set-key (kbd "{") 'insert-pair)     ; {}
+;; (global-set-key (kbd "<") 'insert-pair)     ; <>
+;; (global-set-key (kbd "\"") 'insert-pair)    ; ""
+;; (global-set-key (kbd "ESC '") 'insert-pair) ; ''
+;; (global-set-key (kbd "ESC `") 'insert-pair) ; `'
+
+(global-set-key (kbd "C-c C-o") 'browse-url-at-point)
+
+;; toggle
+(global-set-key (kbd "C-x t f") 'toggle-truncate-lines)
+(global-set-key (kbd "C-x t e") 'toggle-debug-on-error)
+
+;; disable
+(global-unset-key (kbd "C-x m"))        ; compose-mail
+(global-unset-key (kbd "C-x C-n"))      ; set-goal-column
