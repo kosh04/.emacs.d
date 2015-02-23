@@ -1,9 +1,15 @@
 ;;; config/progmode.el
 
+;; スペースでインデント
+(setq-default indent-tabs-mode nil)
+
+;; コメント
+(setq comment-style 'multi-line)
+
 ;; 自動改行と欲張りな削除
 (add-hook 'c-mode-common-hook 'c-toggle-auto-hungry-state)
 
-;;; 関数一覧
+;; 関数一覧
 (require 'imenu)
 (global-set-key (kbd "C-c C-l") 'imenu)
 (add-hook 'emacs-lisp-mode-hook #'imenu-add-menubar-index)

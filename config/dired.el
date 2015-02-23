@@ -18,7 +18,7 @@
 
 (defadvice dired-find-file (after read-only-mode activate)
   "読み込み専用でファイルを開く."
-  (toggle-read-only 1))
+  (read-only-mode))
 
 (defun dired-copy-pathname-as-kill ()
   "ファイルのフルパスを取得."
@@ -72,5 +72,5 @@
   t)
 
 (with-eval-after-load "wdired"
-  (define-key wdired-mode-map ("C-x C-q") 'wdired-finish-edit)
+  (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit)
   t)

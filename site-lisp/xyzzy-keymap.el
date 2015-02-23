@@ -34,8 +34,8 @@
 (global-set-key (kbd "C-x C-z") 'shrink-window)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 
-;; (global-set-key [f10] 'first-error)
-;; (global-set-key [f11] 'next-error)
+(global-set-key [f10] 'first-error)
+(global-set-key [f11] 'next-error)
 
 ;; @@Frame
 ;; (define-key ctl-x-map "6" 'ctl-x-5-prefix)

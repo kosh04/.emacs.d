@@ -125,3 +125,134 @@
 (byte-recompile-directory "~/lib/emacs/" t) ; *.elcのないファイルも強制的に？
 
 ;; C-u C-M-x (eval-defun) で edebug 起動
+
+;; Eldoc は便利です
+;; ** Emacs23のeldocは対応する仮引数がハイライトされるようになっている。
+;; http://d.hatena.ne.jp/rubikitch/20090207/1233936430
+;; (load-file "c:/home/emacs/22.1/lisp/emacs-lisp/eldoc.el")
+(autoload 'turn-on-eldoc-mode "eldoc" nil t)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+
+;; xyzzy.el でなんとかなる
+(defun my:macroexpand-region (from to &optional full)
+  (interactive "r\nP")
+  (load "cl-extra")                     ; cl-prettyexpand
+  (let* ((form (read-from-string (buffer-substring from to))))
+    (with-output-to-temp-buffer #1="*elisp macroexpand*"
+      (with-temp-buffer
+        (cl-prettyexpand (car form) full)
+        (copy-to-buffer #1# (point-min) (point-max))))))
+(defalias 'macroexpand-region 'my:macroexpand-region)
+
+;; ラムダ式の比較
+(equal #'(lambda (x) (+ x x))
+       #'(lambda (x) (+ x x)))          ; t
+
+;; レキシカルな束縛
+(lexical-let ((count 0))
+  (defun counter ()
+    (incf count)))
+(list (counter) (counter))              ; (1 2)
+
+max-lisp-eval-depth                     ; 300 (default)
+
+max-specpdl-size
+;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_11.html#IDX595
+;; Limit on number of Lisp variable bindings and `unwind-protect's.
+;; = 変数束縛と unwind-protect による後始末の個数の制限
+
+;; この辺はエラーになったからといって不用意に値を増やすべきではないんじゃなかろうか
+;; 先にエラーの原因となりえるコードを疑うべき
+
+;; EmacsWikiからインストール (byrubikich)
+;; http://www.emacswiki.org/cgi-bin/emacs/install-elisp.el
+
+;; elispのバッククオートの扱い (backquote.el)
+(symbol-function #'\`)
+;;=> (macro . #[(arg) "\301!A\207" [arg backquote-process] 2 887462])
+`(1 2 3 ,(+ 1 2 3))                     ; (1 2 3 6)
+(macroexpand '`(1 2 3 ,(+ 1 2 3)))      ; (list 1 2 3 (+ 1 2 3))
+
+;; なぜエラーになる？ -> elispに&bodyはない。&rest か cl-defmacro を使う
+(defmacro when1 (test &body body)
+  (let ((result (gensym)))
+    `(let ((,result ,test))
+       (when ,result ,@body)
+       ,result)))
+(when1 (position ?a "emacs lisp")
+  (princ "見つけた!"))
+
+(setq )
+(set-variable )
+
+;; (0 1 2 3 4 ...) なんて略記いらない
+(setq eval-expression-print-length nil
+      eval-expression-print-level nil
+      eval-expression-debug-on-error nil)
+
+(list eval-expression-print-length
+      eval-expression-print-level
+      eval-expression-debug-on-error)
+;;=> (12 4 t)
+
+;; (1 2 ...) <-> (1 2 3 4 5) の切り替え時にメッセージ
+;; そもそも"..."の表示自体あまりいらないんだけど
+(defadvice last-sexp-toggle-display (after with-message activate)
+  (if (save-excursion
+        (backward-char 3)
+        (looking-at (regexp-quote "...)")))
+      (message "Fold last sexp")
+      (message "Expand last sexp")))
+
+;;; mule-util.el
+(defsubst string-to-list (string)
+  "Return a list of characters in STRING."
+  ;; `append' の末尾が nil ならば文字型のリストに変換する (cl-coerce@cl-extra.el も参照)
+  (append string nil))
+(append "こんにちは" nil)                 ; (53811 53840 53860 53815)
+
+(let (acc)
+  (dolist (sym '(most-negative-fixnum
+                 most-negative-short-float
+                 most-negative-double-float
+                 most-negative-single-float
+                 most-positive-single-float
+                 most-positive-long-float
+                 most-positive-short-float
+                 most-positive-fixnum
+                 most-negative-long-float
+                 most-positive-double-float))
+    (if (boundp sym)
+        (push (cons sym (symbol-value sym)) acc)))
+  (nreverse acc))
+;;=> ((most-negative-fixnum . -268435456) (most-positive-fixnum . 268435455))
+
+;;; 2つの関数の違いは?
+(interactive-p)
+;; Return t if the function was run directly by user input.
+;; This means that the function was called with `call-interactively'
+;; (which includes being called as the binding of a key)
+;; and input is currently coming from the keyboard (not in keyboard macro),
+;; and Emacs is not running in batch mode (`noninteractive' is nil).
+;;
+;; The only known proper use of `interactive-p' is in deciding whether to
+;; display a helpful message, or how to display it.  If you're thinking
+;; of using it for any other purpose, it is quite likely that you're
+;; making a mistake.  Think: what do you want to do when the command is
+;; called from a keyboard macro?
+;;
+;; If you want to test whether your function was called with
+;; `call-interactively', the way to do that is by adding an extra
+;; optional argument, and making the `interactive' spec specify non-nil
+;; unconditionally for that argument.  (`p' is a good way to do this.)
+
+(called-interactively-p)
+;; Return t if the function using this was called with `call-interactively'.
+;; This is used for implementing advice and other function-modifying
+;; features of Emacs.
+;;
+;; The cleanest way to test whether your function was called with
+;; `call-interactively' is by adding an extra optional argument,
+;; and making the `interactive' spec specify non-nil unconditionally
+;; for that argument.  (`p' is a good way to do this.)

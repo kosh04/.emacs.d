@@ -1,6 +1,14 @@
 ;;; config/keymaps.el
 
-(global-set-key (kbd "C-l") #'recenter)
+(global-set-key (kbd "C-h") 'backward-delete-char)
+(define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+
+(global-set-key (kbd "C-l") 'recenter)
+
+(require 'ffap)
+;; [C-x C-v] 等は通常通り使いたいので全部載せはいらない
+;;(ffap-bindings)
+(global-set-key (kbd "C-x C-f") 'find-file-at-point)
 
 (electric-pair-mode +1)
 ;; (global-set-key (kbd "(") 'insert-pair)     ; ()

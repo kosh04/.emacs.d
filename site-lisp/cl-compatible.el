@@ -5,8 +5,6 @@
 ;; Created: 2015-02-23
 ;; Keywords: lisp,common-lisp
 
-(provide 'cl-compatible)
-
 (eval-when-compile
   (require 'cl))
 (require 'cl-lib)
@@ -353,5 +351,7 @@
 ;; @@ Misc
 
 (fset 'gc #'garbage-collect)
+
+(provide 'cl-compatible)
 
 ;;; cl-compatible.el ends here

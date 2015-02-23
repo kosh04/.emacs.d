@@ -22,16 +22,6 @@
 ;;; fill
 (setq paragraph-start '"^\\([ 　・○<\t\n\f]\\|(?[0-9a-zA-Z]+)\\)")
 
-;;; 全角空白とか改行とかタブを強調表示
-;;; おまけ for GNU Emacs - http://homepage3.nifty.com/satomii/software/elisp.ja.html
-(require 'jaspace)
-(autoload 'jaspace-mode-on "jaspace" nil t)
-(setq jaspace-mode '(c-mode))
-(setq jaspace-alternate-jaspace-string "□")
-(if window-system
-    (setq jaspace-alternate-eol-string "\xab\n"))
-(setq jaspace-highlight-tabs ?^)	; use ^ as a tab marker
-
 ;; mew から拝借した(らしい)
 (defvar cfirchat-url-regexp
   "\\b\\(s?https?\\|ftp\\|file\\|gopher\\|news\\|telnet\\|wais\\|mailto\\):\\(//[-a-zA-Z0-9_.]+:[0-9]*\\)?[-a-zA-Z0-9_=?#$@~`%&*+|\\/.,]*[-a-zA-Z0-9_=#$@~`%&*+|\\/]"
@@ -73,62 +63,6 @@
 
 ;;; M-x: what-cursor-position (C-x =): カーソル位置の情報
 
-;;; カーネル編集用 C-mode
-(defun linux-c-mode ()
-  "C mode with adjusted defaults for use with the Linux kernel"
-  (interactive)
-  (c-mode)
-  (c-set-style "K&R")
-  (setq c-indent-level 8)
-  (setq c-brace-imaginary-offset 0)
-  (setq c-brace-offset -8)
-  (setq c-argdecl-indent 8)
-  (setq c-label-offset -8)
-  (setq c-continued-statement-offset 8)
-  (setq indent-tabs-mode t)
-  (setq tab-width 8)
-  (setq c-basic-offset 8)
-  )
-(setq auto-mode-alist (cons '("/usr/src/linux.*/.*\\.[ch]$" . linux-c-mode)
-                            auto-mode-alist))
-
-;; newLISPのソースコードのインデント
-(defun newlisp-c-mode ()
-  (interactive)
-  (c-mode)
-  (c-set-style "whitesmith") ; ブロック{}と内部のステートメントインデントが一致する
-  (setq indent-tabs-mode t)
-  (setq c-indent-level 8)
-  (setq c-basic-offset 8)
-  (setq tab-width 8)
-  (c-set-offset 'defun-open 0)
-  (c-set-offset 'defun-close 0)
-  (c-set-offset 'defun-block-intro 0)
-  ;(c-set-offset 'brace-entry-open 2)
-  ;; (c-set-offset 'case-label '+)
-  (c-set-offset 'substatement-open 8)
-  ;; (setq fill-column 75)
-  )
-(add-to-list 'auto-mode-alist '("~/src/newlisp/*\\.[ch]$" . newlisp-c-mode))
-
-;; インデント関係
-c-style-alist
-(c-set-style "gnu")
-(c-set-style "stroustrup")
-(c-set-style "whitesmith")
-(c-set-style "linux")
-
-;; offsetに渡すシンボル値の意味
-;; c-basic-offsetの...
-;; +    1 倍
-;; -   -1 倍
-;; ++   2 倍
-;; --  -2 倍
-;; *  0.5 倍
-;; / -0.5 倍
-
-;; C-c C-s: c-show-syntactic-information
-;; 現在のポイントの構文情報を表示
 
 ;;; ガーベジコレクトの回数を減らす (デフォルトは 4000000)
 (setq gc-cons-threshold 5000000)
@@ -136,10 +70,6 @@ c-style-alist
 ;;; mode-info --- 関数・変数の説明文を参照するコマンド
 ;;; Emacs lisp / C / Perl / Ruby のマニュアルを便利に
 ;;; http://namazu.org/~tsuchiya/elisp/mode-info.html
-
-;;; モード名をもっと短く
-(add-hook 'emacs-lisp-mode-hook
-          #'(lambda () (setq mode-name "Elisp")))
 
 ;;; 物理行移動
 (defun previous-window-line (n)
@@ -165,9 +95,6 @@ c-style-alist
 
 ;;; 正規表現を確認しながら作成 (M-x: re-builder)
 (require 're-builder)
-
-;;; 現在の関数名をモードラインに表示 (M-x: which-function-mode)
-(which-function-mode t)
 
 ;;; M-x: cusomize-apropos
 
@@ -226,9 +153,6 @@ c-style-alist
 ;;; (Meadowではエラー) setq: Spawning child process: exec format error
 ;; (setq exec-suffixes '(".exe" ".sh" ".pl"))
 
-;; http://www.emacswiki.org/cgi-bin/emacs/download/blank-mode.el
-;; http://www.emacswiki.org/elisp/show-wspace.el
-
 (defun kitaa ()
   (interactive)
   (let ((kita-list '("ﾟ∀ﾟ" " ﾟ∀" "   ﾟ" "    " "ﾟ   " "∀ﾟ " "ﾟ∀ﾟ")))
@@ -256,19 +180,6 @@ temporary-file-directory                ; "c:/Users/kosh/AppData/Local/Temp/"
 
 ;; `;' や `{' を入力すると自動的に改行される
 (add-hook 'c-mode-common-hook 'c-toggle-auto-newline) ; C-c C-a
-
-;; キーの変換
-(key-description "\C-x \M-y \n \t \r \f123")
-;;=> "C-x SPC M-y SPC C-j SPC TAB SPC RET SPC C-l 1 2 3"
-(kbd (key-description "\C-x \M-y \n \t \r \f123"))
-;;=> [24 32 134217849 32 10 32 9 32 13 32 12 49 50 51]
-
-(mapcar (lambda (x)
-          (list (text-char-description x) (string x)))
-        '(?\C-c ?\M-m ?\C-\M-m))
-;;=> (("^C" "") ("\xed" "\355") ("\x8d" "\x8d"))
-
-(list ?\xff ?\377 #xff #o377)           ; (255 255 255 255)
 
 (getenv "PROGRAMFILES")
 ;;=> "C:\\Program Files (x86)"
@@ -329,11 +240,6 @@ temporary-file-directory                ; "c:/Users/kosh/AppData/Local/Temp/"
                                        )))
                          'utf-8)))
 
-;; ラムダ式の比較
-(equal #'(lambda (x) (+ x x))
-       #'(lambda (x) (+ x x)))          ; t
-
-
 ;; 辞書
 (labels ((lookup-add-agents (dic path)
            (pushnew (list dic path) lookup-search-agents :test #'equal)))
@@ -369,12 +275,6 @@ temporary-file-directory                ; "c:/Users/kosh/AppData/Local/Temp/"
 
 (require 'edict)
 (setq *edict-files* '("/usr/share/edict/edict"))
-
-;; レキシカルな束縛
-(lexical-let ((count 0))
-  (defun counter ()
-    (incf count)))
-(list (counter) (counter))              ; (1 2)
 
 ;; n日後を返す関数を返す関数 (どう書く？org)
 ;; http://ja.doukaku.org/comment/1273/
@@ -421,19 +321,6 @@ temporary-file-directory                ; "c:/Users/kosh/AppData/Local/Temp/"
 (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
                        '(2 "_NET_WM_STATE_FULLSCREEN" 0))
 
-;;; 行末の無駄な空白文字を表示
-(setq-default show-trailing-whitespace t)
-(set-face-background 'trailing-whitespace "plum") ;;"SteelBlue")
-;; (set-face-underline 'trailing-whitespace t)
-(defun toggle-trailing-whitespace (&optional arg)
-  (interactive)
-  (setq show-trailing-whitespace (not show-trailing-whitespace))
-  (font-lock-mode t))
-(defun turn-off-show-trailing-whitespace ()
-  (interactive)
-  (setq show-trailing-whitespace nil))
-(add-hook 'shell-mode-hook 'turn-off-show-trailing-whitespace)
-
 (require 'linum)
 (linum-on)
 
@@ -475,19 +362,6 @@ temporary-file-directory                ; "c:/Users/kosh/AppData/Local/Temp/"
                        (window-lines)
                        (get-window-start-line)))))
 ;; (add-hook 'buffer-menu-mode-hook 'fit-window)
-
-max-lisp-eval-depth                     ; 300 (default)
-
-max-specpdl-size
-;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_11.html#IDX595
-;; Limit on number of Lisp variable bindings and `unwind-protect's.
-;; = 変数束縛と unwind-protect による後始末の個数の制限
-
-;; この辺はエラーになったからといって不用意に値を増やすべきではないんじゃなかろうか
-;; 先にエラーの原因となりえるコードを疑うべき
-
-;; EmacsWikiからインストール (byrubikich)
-;; http://www.emacswiki.org/cgi-bin/emacs/install-elisp.el
 
 ;;; 一発インデント
 (defun indent-buffer ()
@@ -565,48 +439,12 @@ max-specpdl-size
         (push buffer acc)))
     (nreverse acc)))
 
-;; elispのバッククオートの扱い (backquote.el)
-(symbol-function #'\`)
-;;=> (macro . #[(arg) "\301!A\207" [arg backquote-process] 2 887462])
-`(1 2 3 ,(+ 1 2 3))                     ; (1 2 3 6)
-(macroexpand '`(1 2 3 ,(+ 1 2 3)))      ; (list 1 2 3 (+ 1 2 3))
-
-;; なぜエラーになる？ -> elispに&bodyはない。&rest か cl-defmacro を使う
-(defmacro when1 (test &body body)
-  (let ((result (gensym)))
-    `(let ((,result ,test))
-       (when ,result ,@body)
-       ,result)))
-(when1 (position ?a "emacs lisp")
-  (princ "見つけた!"))
-
-(setq )
-(set-variable )
-
 ;;; @@regexp-opt -- 正規表現を書くのを支援するツール
 (regexp-opt '("define" "lambda" "fn" "define-macro" "lambda-macro") t)
 ;;=> "\\(define\\(?:-macro\\)?\\|fn\\|lambda\\(?:-macro\\)?\\)"
 (regexp-opt '("define" "lambda" "fn" "define-macro" "lambda-macro") 'words)
 ;;=> "\\<\\(define\\(?:-macro\\)?\\|fn\\|lambda\\(?:-macro\\)?\\)\\>"
 
-;; (0 1 2 3 4 ...) なんて略記いらない
-(setq eval-expression-print-length nil
-      eval-expression-print-level nil
-      eval-expression-debug-on-error nil)
-
-(list eval-expression-print-length
-      eval-expression-print-level
-      eval-expression-debug-on-error)
-;;=> (12 4 t)
-
-;; (1 2 ...) <-> (1 2 3 4 5) の切り替え時にメッセージ
-;; そもそも"..."の表示自体あまりいらないんだけど
-(defadvice last-sexp-toggle-display (after with-message activate)
-  (if (save-excursion
-        (backward-char 3)
-        (looking-at (regexp-quote "...)")))
-      (message "Fold last sexp")
-      (message "Expand last sexp")))
 
 ;;; @@defadviceマクロ
 (ad-is-active 'eval-last-sexp)
@@ -623,19 +461,11 @@ max-specpdl-size
 
 (add-hook 'input-method-activate-hook (lambda () (set-cursor-color "brown")))
 (add-hook 'input-method-inactivate-hook (lambda () (set-cursor-color "black")))
-(progn
-  (add-hook 'minibuffer-setup-hook
-	    #1=(lambda ()
-	      (set-cursor-color
-	       (if current-input-method "brown" "black"))))
-  (add-hook 'minibuffer-exit-hook #1#))
 
-;;; mule-util.el
-(defsubst string-to-list (string)
-  "Return a list of characters in STRING."
-  ;; `append' の末尾が nil ならば文字型のリストに変換する (cl-coerce@cl-extra.el も参照)
-  (append string nil))
-(append "こんにちは" nil)                 ; (53811 53840 53860 53815)
+(defun input-method-set-cursor-color ()
+  (set-cursor-color (if current-input-method "brown" "black")))
+(add-hook 'minibuffer-setup-hook 'input-method-set-cursor-color)
+(add-hook 'minibuffer-exit-hook 'input-method-set-cursor-color)
 
 ;;; @@etags
 ;; http://www8.atpages.jp/hotsuma/chalow/2002-04-16.html#2002-04-16-1
@@ -671,10 +501,6 @@ tags-table-list                         ; '(...)
   (if (file-exists-p #1=(expand-file-name "TAGS"))
       (visit-tags-table #1# "local")))
 
-(defun what-charset-region (from to)
-  (interactive "r")
-  (message "%s" (find-charset-region from to)))
-
 (apropos "format$" nil)
 frame-title-format
 header-line-format
@@ -683,22 +509,6 @@ icon-title-format
 
 ;; 相対ディレクトリ
 (file-relative-name "/usr/bin/sbcl" "/usr")                ; "bin/sbcl"
-
-(let (acc)
-  (dolist (sym '(most-negative-fixnum
-                 most-negative-short-float
-                 most-negative-double-float
-                 most-negative-single-float
-                 most-positive-single-float
-                 most-positive-long-float
-                 most-positive-short-float
-                 most-positive-fixnum
-                 most-negative-long-float
-                 most-positive-double-float))
-    (if (boundp sym)
-        (push (cons sym (symbol-value sym)) acc)))
-  (nreverse acc))
-;;=> ((most-negative-fixnum . -268435456) (most-positive-fixnum . 268435455))
 
 (defun redraw-emacs ()
   (redraw-display)
@@ -786,10 +596,6 @@ installation-directory
 (require 'auto-complete)
 (global-auto-complete-mode t)
 
-;;; 全角空白、タブなどの強調表示
-;;; これだとfont-lockが呼び出されるたびにキーワードが追加されて遅くならないか？
-;;; http://eigyr.dip.jp/diary/200712.html#%E5%85%A8%E8%A7%92%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%82%84%E3%82%BF%E3%83%96%E3%82%92%E5%BC%B7%E8%AA%BF
-
 ;; 正規表現の表記
 (info "(elisp)Regular Expressions")
 (info "(elisp)Syntax of Regexps")
@@ -863,15 +669,6 @@ completion-ignore-case                  ; t (補完時の大文字小文字の�
       (buffer-size (get-buffer "memo.el"))
       (nth 7 (file-attributes "memo.el")))
 ;;=> (102688 91581 102725)
-
-;; ISO 8601 format
-(format-time-string "%Y-%m-%dT%T%z")    ; "2009-04-14T04:44:54+0900"
-
-;; UNIX time
-(decode-time '(0 0 0))                  ; (0 0 9 1 1 1970 4 nil 32400)
-;; Universal Time [CL]
-(multiple-value-list
- (decode-universal-time 0))             ; (0 0 9 1 1 1900 0 NIL -9)
 
 (defun symbol-describe (symbol)
   `((:name     ,(symbol-name symbol))
@@ -1066,18 +863,6 @@ user-login-name
 
 ;;; 端末から起動した時 (emacs -nw) にメニューバーを消す
 (menu-bar-mode (if window-system 1 -1))
-
-;;; 余分な空白をカット
-;;; 一応 'query-replace のように確認したほうがいいか？
-(defun trim-trailing-whitespace (start end)
-  (interactive "*r")
-  (save-excursion
-    ;; (replace-regexp "[ \t]+$" "" nil start end)
-    (perform-replace "[ \t]+$" "" nil t nil nil nil start end)))
-(defun trim-whole-tail-whitespace ()
-  (interactive "*")
-  (trim-trailing-whitespace (point-min) (point-max)))
-;; (add-hook 'write-file-hooks 'trim-tail-whitespace)
 
 ;;; non-nil なら常に行末移動
 (setq track-eol t)
@@ -1558,6 +1343,14 @@ http://www.emacswiki.org/emacs/hideshowvis.el
 ;; デスクトップの復元
 (desktop-read)
 
+(defun my:session-restore ()
+  "Restore a saved emacs session."
+  (interactive)
+  (if (file-exists-p (desktop-full-file-name))
+      (desktop-read)
+    (message "No desktop found.")))
+(defalias 'session-restore 'my:session-restore)
+
 ;; memory
 (memory-limit)                          ; 176388
 (memory-use-counts)                     ; (4727087 3839 2250706 66553 13555285 203001 181952 733908)
@@ -1897,34 +1690,14 @@ standard-input
 (parse-time-string (current-time-string)) ; ~= (decode-time (current-time))
 (current-time-string '(0 0))            ; "Thu Jan  1 09:00:00 1970"
 
-;;; 2つの関数の違いは?
-(interactive-p)
-;; Return t if the function was run directly by user input.
-;; This means that the function was called with `call-interactively'
-;; (which includes being called as the binding of a key)
-;; and input is currently coming from the keyboard (not in keyboard macro),
-;; and Emacs is not running in batch mode (`noninteractive' is nil).
-;;
-;; The only known proper use of `interactive-p' is in deciding whether to
-;; display a helpful message, or how to display it.  If you're thinking
-;; of using it for any other purpose, it is quite likely that you're
-;; making a mistake.  Think: what do you want to do when the command is
-;; called from a keyboard macro?
-;;
-;; If you want to test whether your function was called with
-;; `call-interactively', the way to do that is by adding an extra
-;; optional argument, and making the `interactive' spec specify non-nil
-;; unconditionally for that argument.  (`p' is a good way to do this.)
+;; ISO 8601 format
+(format-time-string "%Y-%m-%dT%T%z")    ; "2009-04-14T04:44:54+0900"
 
-(called-interactively-p)
-;; Return t if the function using this was called with `call-interactively'.
-;; This is used for implementing advice and other function-modifying
-;; features of Emacs.
-;;
-;; The cleanest way to test whether your function was called with
-;; `call-interactively' is by adding an extra optional argument,
-;; and making the `interactive' spec specify non-nil unconditionally
-;; for that argument.  (`p' is a good way to do this.)
+;; UNIX time
+(decode-time '(0 0 0))                  ; (0 0 9 1 1 1970 4 nil 32400)
+;; Universal Time [CL]
+(multiple-value-list
+ (decode-universal-time 0))             ; (0 0 9 1 1 1900 0 NIL -9)
 
 ;; From: $XYZZYHOME/lisp/imagehdr.l
 (defun read-png-header (filename)
@@ -1953,25 +1726,6 @@ standard-input
 ;; unicode使えるらしい
 "\u685c\u6728\u674e\u674f"
 "\xdd79\xe65a\xe6fb\xd849"
-
-(defun unicode-escape (str)
-  "文字をUncodeエスケープする."
-  (replace-regexp-in-string "." #'(lambda (s)
-                                    (format "\\\\u%04x"
-                                            (char-unicode
-                                             (string-to-char s))))
-                            str))
-(unicode-escape "\u685c\u6728\u674e\u674f")
-
-(defun unicode-unescape (str)
-  "Unicodeエスケープされている文字をデコード."
-  (replace-regexp-in-string "\\\\u\\([[:xdigit:]]\\{4\\}\\)"
-                            #'(lambda (s)
-                                (string (unicode-char
-                                         (string-to-number
-                                          (match-string 1 str) 16))))
-                            str))
-(unicode-unescape "\\u89aa\\u3060\\u3051\\u5b9f\\u884c")
 
 
 (defun asciidoc-buffer ()
@@ -2149,10 +1903,6 @@ Loading subst-jis...
                   minibuf all-frames)
     (nreverse bufs)))
 
-;; @@Mail
-(setq smtpmail-smtp-server "smtp.gmail.com")
-(setq smtpmail-mail-address)
-
 ;; ?
 (set-selection-coding-system 'compound-text-with-extensions)
 
@@ -2215,3 +1965,68 @@ user
   (quote
    (progn
      (define-key mew-summary-mode-map "g" 'mew-status-update))))
+
+;; newLISP
+(defun run-newlisp-sjis ()
+  (interactive)
+  (let ((newlisp-command "newlisp_sjis")
+        (newlisp-process-coding-system 'sjis)
+        (default-process-coding-system 'sjis))
+    (run-newlisp)))
+
+(defun newlisp-browse-manual-w3m ()
+       (interactive)
+       (w3m-find-file newlisp-manual-html))
+
+(add-hook 'newlisp-mode-hook
+          #'(lambda ()
+              (setq comment-start "; ")
+              ;; あまり好まないがタブ幅4のファイルがあまりに多いので
+              (setq tab-width 4)
+              ))
+
+(defun find-symbol-at-point ()
+  (interactive)
+  ;; (or (find-variable-at-point) (find-function-at-point))
+  (let ((sym (symbol-at-point)))
+    (if (memq major-mode '(emacs-lisp-mode lisp-interaction-mode))
+        ;; elisp mode
+        (cond
+          ((null sym) nil)
+          ((boundp sym) (find-variable-other-window sym))
+          ((fboundp sym) (find-function-other-window sym))
+          (t
+           (error "not found: %s" sym)
+           ;; (call-interactively 'find-tag)
+           ))
+        (progn
+          ;; other program
+          (visit-tags-table (expand-file-name "TAGS") t) ; "local"必要？
+          (find-tag (symbol-name sym))))))
+(define-key esc-map [?.] 'find-symbol-at-point)
+
+(load "site-lisp/unicode-escape")
+(unicode-unescape (unicode-escape "\u685c\u6728\u674e\u674f"))
+
+;; いつの間にかマニュアルが文字化けしていた (2009-11-09)
+(if (eq system-type 'windows-nt)
+    (defadvice man (around manpage-ja activate)
+      (let ((locale-coding-system 'euc-jp-unix))
+        ad-do-it)))
+
+;; ２重置換に注意 > "&amp;lt;"
+(defun sgml-quote-region (from to &optional unquotep)
+  (interactive "*r\nP")
+  (let ((case-fold-search t))
+    (format-replace-strings '(("&" . "&amp;")
+                              ("<" . "&lt;")
+                              (">" . "&gt;")
+                              ("\"" . "&quot;")
+                              ("\u00A0" . "&nbsp;"))
+                            unquotep from to)))
+
+(defun sgml-unquote-region (from to)
+  (interactive "*r")
+  (sgml-quote-region from to t))
+
+;;-> sgml-quote で代用可能

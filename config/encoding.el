@@ -13,12 +13,4 @@
 (fset 'decode #'decode-coding-string)
 (fset 'detect #'detect-coding-string)
 
-;; なぜか utf-8 になっていたので
-;; (set-language-environment "japanese") のせいかな?
-'(when (eq system-type 'windows-nt)
-  (setq default-process-coding-system
-        ;; '(japanese-iso-8bit . japanese-iso-8bit)
-        '(sjis-unix . sjis-unix)
-        ))
-
 ;; config/encoding.el ends here.

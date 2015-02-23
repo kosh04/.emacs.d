@@ -17,10 +17,16 @@
 ;; http://namazu.org/~tsuchiya/
 (use-package "shell-command"
   :init (shell-command-completion-mode t)
-  :defer nil)
+  :ensure nil)
 
 (with-eval-after-load 'shell
   ;; 上下キーで補完したい
   (define-key shell-mode-map (kbd "<up>")   'comint-previous-input)
   (define-key shell-mode-map (kbd "<down>") 'comint-next-input)
+  t)
+
+;; Eshell
+(with-eval-after-load 'eshell
+  ;; (add-hook 'eshell-mode-hook 'eshell-user-setup-hook)
+  (setq eshell-ask-to-save-last-dir nil)
   t)

@@ -46,8 +46,6 @@
 
 ;;; Code:
 
-(provide 'xyzzy)
-
 (eval-when-compile (require 'cl))
 ;; (require 'ielm)
 
@@ -1111,5 +1109,7 @@
   (elisp-macroexpand-1 t))
 
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
+
+(provide 'xyzzy)
 
 ;;; xyzzy.el ends here

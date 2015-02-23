@@ -99,6 +99,18 @@ current-language-environment
 (coding-system-doc-string 'utf-8)      ; "UTF-8 (no signature (BOM))"
 (coding-system-doc-string 'emacs-mule) ; "Emacs 21 internal format used in buffer and string."
 
+;; なぜか utf-8 になっていた
+;; (set-language-environment "japanese") のせいかな?
+(when (eq system-type 'windows-nt)
+  (setq default-process-coding-system
+        ;; '(japanese-iso-8bit . japanese-iso-8bit)
+        '(sjis-unix . sjis-unix)
+        ))
+
 (defun kanji-coding-system-p ()
   (memq (coding-system-base buffer-file-coding-system)
         (get-language-info "Japanese" 'coding-system)))
+
+(defun what-charset-region (from to)
+  (interactive "r")
+  (message "%s" (find-charset-region from to)))

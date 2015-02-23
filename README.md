@@ -1,6 +1,6 @@
 ## Files
 
-* .emacs.my.el       - 設定ファイル (old)
+* .emacs.my.el       - 旧設定ファイル
 * site-lisp/         - 自作ライブラリいろいろ
 * - cl-compatible.el - Common Lispのような関数と変数のまとめ
 * - gnome-util.el    - GNOME端末やファイルブラウザを呼び出すユーティリティ
@@ -10,6 +10,14 @@
 * config/xxx.el      - 各種設定ファイル
 * memo/xxx.el        - 雑多なEmacsLispメモ
 
+## 動作環境
+
+Emacs 24 以上
+
+## ルール
+
+- なるべく、各ライブラリのデフォルト設定を利用する
+- Emacs と xyzzy の操作感を共存させたい
 
 ## Usage
 

@@ -44,18 +44,6 @@
 (or (lookup-key global-map "\M-?")
     (global-set-key "\M-?" help-map))
 
-;;; highlight-line
-(require 'hl-line)
-(add-hook 'dired-mode-hook 'hl-line-mode)
-(add-hook 'tar-mode-hook 'hl-line-mode)
-;; (add-hook 'buffer-menu-mode-hook 'hl-line-mode)
-
-;;; auto-fill
-(setq default-fill-column 74)
-(add-hook 'latex-mode-hook 'turn-on-auto-fill)
-(add-hook 'text-mode-hook 'auto-fill-mode)
-(add-hook 'html-mode-hook 'turn-off-auto-fill)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 表示関係
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -83,15 +71,6 @@
 (show-paren-mode t)			; 対応する括弧に色をつける
 ;; (setq show-paren-style 'expression) ; カッコ全体をハイライト
 (setq parse-sexp-ignore-comments t)	; コメント内のカッコは無視。
-
-(put 'font-lock-add-keywords 'lisp-indent-function 1)
-
-;;; タブ、全角スペースを可視化
-;; (require 'my-font-lock-mode)
-
-(load "hi-lock-x.el")
-;; (global-hi-lock-mode)
-(setq hi-lock-file-patterns-policy nil)
 
 ;;; Elisp をさらに色付け
 ;; (require 'elisp-font-lock)
@@ -169,48 +148,6 @@
 ;; FIXME: 入力だけでなく移動でも補完されるのがうざったいので何とかしたい
 (icomplete-mode t)
 
-;; 全て差し替えるかどうか、それが問題だ
-(defmacro eval-after (file &rest args)
-  `(eval-after-load ,file
-     (quote (progn ,@args))))
-(put 'eval-after 'lisp-indent-function 1)
-
-(eval-after "newcomment"
-  (setq comment-style 'multi-line))
-
-
-;;; URLをブラウザで開く
-;; (global-set-key [S-mouse-2] 'browse-url-at-mouse)
-(eval-after-load "browse-url"
-  (quote
-    (progn
-     (global-set-key "\C-c\C-o" 'browse-url-at-point)
-     (setq browse-url-browser-function 'browse-url-generic
-           browse-url-generic-program
-           ;; 端末からの利用ならw3mてのもありかも
-           (cond ((eq system-type 'windows-nt)
-                  "c:/Program Files/Mozilla Firefox/firefox.exe") ; or "start"
-                 ((eq system-type 'gnu/linux)
-                  "x-www-browser"))
-           ;; browse-url-generic-args '("-a" "Safari")
-           )
-     )))
-
-;;; gzファイルも編集できるように
-(auto-compression-mode t)
-
-;;; Emacs Lisp 関連
-
-;;; Eldoc は便利です
-;; ** Emacs23のeldocは対応する仮引数がハイライトされるようになっている。
-;; http://d.hatena.ne.jp/rubikitch/20090207/1233936430
-;; (load-file "c:/home/emacs/22.1/lisp/emacs-lisp/eldoc.el")
-;; (load "_eldoc" t)
-;; (require '_eldoc)                       ; emacs23用のソース
-(autoload 'turn-on-eldoc-mode "eldoc" nil t)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-
 ;;; カーソルあっちいって
 ;; (display-mouse-p)
 (if (eq system-type 'windows-nt)
@@ -239,7 +176,7 @@
 
 ;;; Google 検索
 (require 'google)
-(global-set-key "\C-cg" 'google-search)
+(global-set-key (kbd "C-c g") 'google-search)
 
 ;; FIXME: w3mからは参照できない
 (defun google-translate (string)
@@ -250,18 +187,6 @@
                (if (multibyte-string-p string) "#en|ja|" "#ja|en|")
                (decode-coding-string string 'utf-8))))
 
-;;; @@Desktop -- 終了時の状態を保存
-(desktop-save-mode t)
-(setq desktop-load-locked-desktop nil)
-;; (fset 'restore-desktop #'desktop-read)
-(defun restore-desktop (&optional filename)
-  (interactive (list (read-file-name "Desktop file: " "~/.emacs.desktop")))
-  (let ((desktop-first-buffer nil)
-        (desktop-buffer-ok-count 0)
-        (desktop-buffer-fail-count 0))
-    (load filename 'noerror 'nomsg 'nosfx))
-  ;; (desktop-read (directory-namestring filename))
-  )
 
 ;; 内部変数を保存しておく
 (require 'session)
@@ -336,35 +261,6 @@
                          "*compiler notes*"))))
      )))
 
-;;; newLISP
-;; (load-library "newlisp/newlisp")
-(load "newlisp" t)
-(eval-after-load "newlisp"
-  (quote
-   (progn
-     (setq newlisp-switches "-C -s10000 -strict -v") ; -v は独自オプション
-     (setq newlisp-manual-text
-           (locate-file "newlisp_manual.txt" load-path))
-     (add-to-list 'auto-mode-alist '("\\.lsp$" . newlisp-mode))
-     (add-to-list 'interpreter-mode-alist '("newlisp" . newlisp-mode))
-     (add-hook 'newlisp-mode-hook
-               #'(lambda ()
-                   (setq comment-start "; ")
-                   ;; あまり好まないがタブ幅4のファイルがあまりに多いので
-                   (setq tab-width 4)
-                   ))
-     (defun newlisp-browse-manual-w3m ()
-       (interactive)
-       (w3m-find-file newlisp-manual-html))
-     (defun run-newlisp-sjis ()
-       (interactive)
-       (let ((newlisp-command "newlisp_sjis")
-             (newlisp-process-coding-system 'sjis)
-             (default-process-coding-system 'sjis))
-         (run-newlisp)))
-     (define-key newlisp-mode-map "\C-ch" 'newlisp-lookup-manual)
-     )))
-
 ;;; swank-newlisp
 (defun swank-newlisp-init (port-filename coding-system)
   (format "%S\n" `(swank:start-server ,port-filename)))
@@ -378,26 +274,6 @@
                     :coding-system utf-8-unix
                     )) ))
     (slime 'newlisp)))
-
-(defun find-symbol-at-point ()
-  (interactive)
-  ;; (or (find-variable-at-point) (find-function-at-point))
-  (let ((sym (symbol-at-point)))
-    (if (memq major-mode '(emacs-lisp-mode lisp-interaction-mode))
-        ;; elisp mode
-        (cond
-          ((null sym) nil)
-          ((boundp sym) (find-variable-other-window sym))
-          ((fboundp sym) (find-function-other-window sym))
-          (t
-           (error "not found: %s" sym)
-           ;; (call-interactively 'find-tag)
-           ))
-        (progn
-          ;; other program
-          (visit-tags-table (expand-file-name "TAGS") t) ; "local"必要？
-          (find-tag (symbol-name sym))))))
-(define-key esc-map [?.] 'find-symbol-at-point)
 
 ;;; Buffer List 関係
 ;; (load-library "buff-menu")
@@ -598,87 +474,6 @@
 ;; @@EmacsLispの再定義は色々危険だということを忘れずに...
 (load "redef" t)
 
-;; Eshell
-(defun eshell-user-setup-hook ()
-  (define-key eshell-mode-map "\C-a" 'eshell-bol))
-
-(eval-after-load "eshell"
-  (quote
-   (progn
-     (add-hook 'eshell-mode-hook 'eshell-user-setup-hook)
-     (setq eshell-ask-to-save-last-dir nil)
-     )))
-
-;; html+-mode@xyzzを真似てみよう
-;; ただし端末ではCtrlキー入力が使えない...
-(eval-after-load "sgml-mode"
-  (quote
-   (progn
-     ;(fset 'sgml-quote-region #'sgml-quote)
-     ;(fset 'html-quote-region #'sgml-quote)
-     (define-key sgml-mode-map (kbd "C-,") 'sgml-tag)
-     (define-key sgml-mode-map (kbd "C-.") 'sgml-close-tag)
-     )))
-
-;; ２重置換に注意 > "&amp;lt;"
-(defun sgml-quote-region (from to &optional unquotep)
-  (interactive "*r\nP")
-  (let ((case-fold-search t))
-    (format-replace-strings '(("&" . "&amp;")
-                              ("<" . "&lt;")
-                              (">" . "&gt;")
-                              ("\"" . "&quot;")
-                              ("\u00A0" . "&nbsp;"))
-                            unquotep from to)))
-
-(defun sgml-unquote-region (from to)
-  (interactive "*r")
-  (sgml-quote-region from to t))
-
-;(define-key html-mode-map (kbd "C-c C-q") 'sgml-quote-region)
-
-(defun unhtml-region (start end)
-  "HTMLタグを除去する."
-  (interactive "*r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region start end)
-      (goto-char (point-min))
-      (while (re-search-forward "<[^>]*>" nil t)
-        (replace-match "")))))
-
-(defun unicode-unescape-region (start end)
-  "指定した範囲のUnicodeエスケープ文字(\\uXXXX)をデコードする."
-  (interactive "*r")
-  (save-restriction
-    (narrow-to-region start end)
-    (goto-char (point-min))
-    (while (re-search-forward "\\\\u\\([[:xdigit:]]\\{4\\}\\)" nil t)
-      (replace-match (string (unicode-char
-                              (string-to-number (match-string 1) 16)))
-                     nil t))))
-
-(defun unicode-escape-region (&optional start end)
-  "指定した範囲の文字をUnicodeエスケープする."
-  (interactive "*r")
-  (save-restriction
-    (narrow-to-region start end)
-    (goto-char (point-min))
-    (while (re-search-forward "." nil t)
-      (replace-match (format "\\u%04x"
-                             (char-unicode
-                              (char (match-string 0) 0)))
-                     nil t))))
-
-;; (global-set-key (kbd "M-w") 'clipboard-kill-ring-save)
-
-;; @@Mew
-(eval-after-load "mew"
-  (quote
-   (progn
-     (define-key mew-summary-mode-map "g" 'mew-status-update)
-     )))
-
 ;; @@Java
 ;; (require 'cc-mode)
 (eval-after-load "cc-mode"
@@ -693,12 +488,6 @@
                         args)))
      (define-key java-mode-map (kbd "C-c C-c") 'simple-java-compile-and-go)
      )))
-
-;; いつの間にかマニュアルが文字化けしていた (2009-11-09)
-(if (eq system-type 'windows-nt)
-    (defadvice man (around manpage-ja activate)
-      (let ((locale-coding-system 'euc-jp-unix))
-        ad-do-it)))
 
 ;; Racket - http://racket-lang.org/
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))

@@ -10,8 +10,19 @@
   (interactive)
   (insert (let ((system-time-locale "C"))
             (format-time-string "%Y-%m-%dT%H:%M:%S"))))
+
 (defalias 'insert-time #'my:insert-time)
 (global-set-key (kbd "C-c t") 'insert-time)
+
+(defun my:delete-backward-word (&optional n)
+  (interactive "p")
+  (unless (integerp n)
+    (signal 'wrong-type-argument (list 'integerp n)))
+  (delete-region (point)
+                 (progn (backward-word n) (point))))
+
+(defalias 'delete-backward-word 'my:delete-backward-word)
+(define-key minibuffer-local-map (kbd "C-w") 'delete-backward-word)
 
 ;;; find-file-at-point
 ;; カーソル上にあるファイル名や URL を開く
@@ -25,3 +36,6 @@
   (url-handler-mode t)
   (let ((ffap-url-fetcher #'find-file))
     (call-interactively #'ffap)))
+
+;; font-lock
+(put 'font-lock-add-keywords 'lisp-indent-function 1)
