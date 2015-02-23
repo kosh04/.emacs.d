@@ -18,25 +18,6 @@
   t)
 (add-to-list 'auto-mode-alist '("/usr/src/linux.*/.*\\.[ch]$" . linux-c-mode))
 
-;; newLISPのソースコードのインデント
-(defun newlisp-c-mode ()
-  (interactive)
-  (c-mode)
-  (c-set-style "whitesmith") ; ブロック{}と内部のステートメントインデントが一致する
-  (setq indent-tabs-mode t)
-  (setq c-indent-level 8)
-  (setq c-basic-offset 8)
-  (setq tab-width 8)
-  (c-set-offset 'defun-open 0)
-  (c-set-offset 'defun-close 0)
-  (c-set-offset 'defun-block-intro 0)
-  ;(c-set-offset 'brace-entry-open 2)
-  ;; (c-set-offset 'case-label '+)
-  (c-set-offset 'substatement-open 8)
-  ;; (setq fill-column 75)
-  )
-(add-to-list 'auto-mode-alist '("~/src/newlisp/*\\.[ch]$" . newlisp-c-mode))
-
 ;; インデント関係
 c-style-alist
 (c-set-style "gnu")

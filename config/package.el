@@ -20,3 +20,9 @@
     (defmacro use-package (name &rest args)
       "Dummy definition `use-package'."
       `(message "Ignore Package: %s" ',name)))
+
+;; Cask - Project management for Emacs package development
+(use-package cask
+  :init (cask-initialize)
+  :ensure nil)
+

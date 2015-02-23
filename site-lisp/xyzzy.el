@@ -989,7 +989,7 @@
   (redraw-frame (selected-frame)))
 
 (defun autoload-function-p (def)
-  (eq (car-safe (symbol-function def)) 'autoload))
+  (eq 'autoload (car-safe (symbol-function def))))
 
 (defvaralias '*expected-fileio-encoding* 'coding-system-for-read
   "エンコードを指定してファイルの読み込み")

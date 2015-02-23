@@ -707,28 +707,6 @@ user-login-name
 (user-real-uid)
 (user-uid)
 
-;; @@newLISP
-(defun run-newlisp ()
-  (interactive)
-  ;; run-scheme?
-  (let ((default-process-coding-system '(utf-8 . utf-8)))
-    (run-lisp (format "C:/PROGRA~1/newlisp/newlisp.exe -C -w %s"
-                      (expand-file-name default-directory)))))
-
-;;; ##TCP接続でnewLISP
-(defvar nl-process nil)
-(defun newlisp-process ()
-  (or (and (processp nl-process)
-           (eq 'open (process-status nl-process))
-           nl-process)
-      (let ((default-process-coding-system newlisp-process-coding-system)
-            (buffer (get-buffer-create "*newLISP for TCP/IP*")))
-        (call-process "touch" nil nil nil "/tmp/nl-daemon.log")
-        (call-process "newlisp" nil 0 nil "-C" "-L" "/tmp/nl-daemon.log" "-p" "4711")
-        (setq nl-process
-              (open-network-stream "newlisp" buffer "localhost" 4711))
-        nl-process)))
-
 ;;; @@Bitwise Operations on Integers
 ;; lsh (logical shift, 論理シフト)
 (lsh #b0101 #b0001)                     ; 10 #b1010
@@ -1608,22 +1586,6 @@ standard-input
 (y-or-n-p "ok? ")
 ;; Caps(Ctrl)-g が原因かもしれない
 
-;; newlisp-generic-mode
-(require 'generic-x)
-(defvar newlisp-keywords
-  (car (read-from-string
-        (shell-command-to-string
-         (format "newlisp -n -e \"%s\""
-                 '(map term (filter (fn (s) (primitive? (eval s))) (symbols MAIN))))))))
-(define-generic-mode newlisp-generic-mode
-    '(?\; ?\#)
-  newlisp-keywords
-  `(("\\b\\(-?[0-9]+\\|-?[0-9]+\\.[0-9]+\\|-?0x[0-9a-fA-F]+\\)\\b"
-     . font-lock-variable-name-face)
-    )
-  '("\\.lsp$")
-  nil )
-
 (defun following-char () (or (char-after) 0))
 (defun preceding-char () (or (char-before) 0))
 
@@ -1966,25 +1928,6 @@ user
    (progn
      (define-key mew-summary-mode-map "g" 'mew-status-update))))
 
-;; newLISP
-(defun run-newlisp-sjis ()
-  (interactive)
-  (let ((newlisp-command "newlisp_sjis")
-        (newlisp-process-coding-system 'sjis)
-        (default-process-coding-system 'sjis))
-    (run-newlisp)))
-
-(defun newlisp-browse-manual-w3m ()
-       (interactive)
-       (w3m-find-file newlisp-manual-html))
-
-(add-hook 'newlisp-mode-hook
-          #'(lambda ()
-              (setq comment-start "; ")
-              ;; あまり好まないがタブ幅4のファイルがあまりに多いので
-              (setq tab-width 4)
-              ))
-
 (defun find-symbol-at-point ()
   (interactive)
   ;; (or (find-variable-at-point) (find-function-at-point))
@@ -2030,3 +1973,8 @@ user
   (sgml-quote-region from to t))
 
 ;;-> sgml-quote で代用可能
+
+;; (add-to-list 'load-path "~/src/editors/slime-2013-04-05/")
+;; (require 'slime)
+;; (slime-setup '(slime-repl))
+

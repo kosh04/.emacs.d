@@ -13,8 +13,3 @@
 ;; JSON
 (require 'json)
 (defalias 'json-decode 'json-read-from-string)
-
-;; Ispell
-(require 'ispell)
-(when (eq system-type 'windows-nt)
-  (setq ispell-program-name "/cygwin/bin/aspell"))

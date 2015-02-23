@@ -39,3 +39,10 @@
 
 ;; font-lock
 (put 'font-lock-add-keywords 'lisp-indent-function 1)
+
+(use-package nyan-mode
+  :if window-system
+  :config (progn
+            (setq nyan-bar-length 12)
+            (nyan-mode +1))
+  :ensure t)
