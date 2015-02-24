@@ -32,6 +32,7 @@
 (load "config/progmode")
 (load "config/sgml")
 (load "config/shell")
+(load "config/slime")
 (load "config/textedit")
 (load "config/pkg-built-in")
 (load "config/pkg-tabbar")

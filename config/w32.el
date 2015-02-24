@@ -9,3 +9,5 @@
 ;; may allow decryption of the session data
 (with-eval-after-load "gnutls"
   (setq gnutls-min-prime-bits 1024))
+
+(add-to-list 'exec-path (getenv "SBCL_HOME"))

@@ -10,16 +10,23 @@
 (require 'eldoc)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-;; 引数表示をslime風にする
-(set-face-background 'eldoc-highlight-function-argument "darkseagreen2")
-(set-face-bold-p 'eldoc-highlight-function-argument nil)
+;; 引数表示をSLIME風にする
+(set-face-attribute 'eldoc-highlight-function-argument nil
+                    :background "darkseagreen2"
+                    :underline nil
+                    :bold nil)
 (setq eldoc-idle-delay 0.2
       eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
 
+;; elisp-slime-nav [M-.] [M-,]
+(add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
+(add-hook 'lisp-interaction-mode-hook #'elisp-slime-nav-mode)
+
 ;; (setq find-function-C-source-directory "~/src/emacs-22.2/src")
+
 (define-key help-map (kbd "j") 'find-function) ; or #'find-variable
 (define-key help-map (kbd "C-l") 'find-library)
-;; ETAGS は再帰ができない？
+;;(find-function-setup-keys)
 
 (defun recompile-and-load-file ()
   "*.lc があったら再コンパイルとロードを行う."

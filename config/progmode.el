@@ -43,7 +43,7 @@
   (progn
     (bind-key "C-c h" 'newlisp-lookup-manual newlisp-mode-map)
     (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))
-  :ensure nil)
+  :ensure t)
 
 (use-package wandbox
   :bind (("C-c w w" . wandbox)
