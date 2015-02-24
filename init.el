@@ -1,13 +1,15 @@
 ;;; init.el --- .emacs
 
+;; Add current directory
+(when load-file-name
+  (add-to-list 'load-path (file-name-directory load-file-name)))
+
 ;; Emacs24.4 から標準実装らしい
 (or (fboundp 'with-eval-after-load)
     (defmacro with-eval-after-load (feature &rest body)
       (declare (indent 1))
       `(eval-after-load ,feature
          '(progn ,@body))))
-
-(add-to-list 'load-path "~/Dropbox/GitHub/emacs-lisp/")
 
 (load "config/package")
 
