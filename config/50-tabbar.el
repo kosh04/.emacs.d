@@ -1,4 +1,4 @@
-;;; config/pkg-tabbar.el
+;;; config/tabbar.el
 
 (require 'tabbar)
 (tabbar-mode)

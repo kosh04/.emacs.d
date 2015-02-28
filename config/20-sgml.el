@@ -3,14 +3,12 @@
 ;; xml/xhtml/shml/html5?
 
 (autoload 'sgml-quote "sgml-mode" nil t)
-
 (fset 'sgml-quote-region #'sgml-quote)
 (fset 'html-quote-region #'sgml-quote)
 
-(with-eval-after-load "sgml-mode"
-  (define-key sgml-mode-map (kbd "C-,") 'sgml-tag)
-  (define-key sgml-mode-map (kbd "C-.") 'sgml-close-tag)
-  t)
+(use-package "sgml-mode"
+  :bind (("C-," . sgml-tag)
+         ("C-." . sgml-close-tag)))
 
 (defun unhtml-region (start end)
   "HTMLタグを除去する."

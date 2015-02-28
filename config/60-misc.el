@@ -1,12 +1,21 @@
 ;; config/misc.el
 
+;; anzu
+(use-package anzu
+  :init (global-anzu-mode +1)
+  :ensure t)
+
+;; JSON
+(require 'json)
+(defalias 'json-decode 'json-read-from-string)
+
 (defadvice locate (around modify-buffer-name activate)
   (let ((locate-buffer-name (format "*Locate %s*" search-string)))
     ad-do-it))
 
-;; 日付と時刻の挿入
 ;; http://www.bookshelf.jp/texi/elisp-manual-20-2.5-jp/elisp_38.html#SEC610
 (defun my:insert-time ()
+  "日付と時刻の挿入."
   (interactive)
   (insert (let ((system-time-locale "C"))
             (format-time-string "%Y-%m-%dT%H:%M:%S"))))
@@ -15,6 +24,7 @@
 (global-set-key (kbd "C-c t") 'insert-time)
 
 (defun my:delete-backward-word (&optional n)
+  "直前の単語を削除する."
   (interactive "p")
   (unless (integerp n)
     (signal 'wrong-type-argument (list 'integerp n)))
@@ -39,10 +49,3 @@
 
 ;; font-lock
 (put 'font-lock-add-keywords 'lisp-indent-function 1)
-
-(use-package nyan-mode
-  :if window-system
-  :config (progn
-            (setq nyan-bar-length 12)
-            (nyan-mode +1))
-  :ensure t)

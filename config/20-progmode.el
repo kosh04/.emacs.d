@@ -37,6 +37,8 @@
     (add-hook 'php-mode-hook #'php-user-hook))
   :ensure nil)
 
+(use-package batch-mode)
+
 ;; newLISP
 (use-package newlisp-mode
   :init
