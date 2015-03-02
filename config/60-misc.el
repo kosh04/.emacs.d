@@ -1,5 +1,9 @@
 ;; config/misc.el
 
+(add-hook 'emacs-startup-hook
+          #'(lambda ()
+              (message "Emacs init time: %s" (emacs-init-time))))
+
 ;; anzu
 (use-package anzu
   :init (global-anzu-mode +1)

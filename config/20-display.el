@@ -22,6 +22,7 @@
 (line-number-mode)
 (column-number-mode)
 (size-indication-mode)
+;(display-battery-mode t)
 
 (let ((system-time-locale "C"))
   (setq display-time-format "%Y-%m-%d(%a) %H:%M")
@@ -44,3 +45,7 @@
 ;; (set-fringe-mode 5)
 (setq-default indicate-empty-lines t)
 (set-face-background 'fringe "gray80")
+
+;; 行カーソル
+(require 'hl-line)
+(set-face-background 'hl-line "#DEEDFF")

@@ -5,6 +5,8 @@
 ;;(prefer-coding-system 'utf-8-unix)
 ;;(prefer-coding-system 'cp932)
 
+;;(setq save-buffer-coding-system 'utf-8)
+
 (defun detect-and-decode-string (string)
   (mapcar #'(lambda (encoding)
               (cons encoding (decode-coding-string string encoding)))

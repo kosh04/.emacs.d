@@ -1,7 +1,10 @@
 ;;; config/emacs-lisp.el
 
-(define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
-(define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
+;; `git clone https://github.com/emacs-mirror/emacs ~/src/gitrepo/emacs`
+(setq find-function-C-source-directory "~/src/gitrepo/emacs/src/")
+
+;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
+;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
 
 (define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent)
 (define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
@@ -19,10 +22,12 @@
       eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
 
 ;; elisp-slime-nav [M-.] [M-,]
-(add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
-(add-hook 'lisp-interaction-mode-hook #'elisp-slime-nav-mode)
-
-;; (setq find-function-C-source-directory "~/src/emacs-22.2/src")
+(use-package elisp-slime-nav
+  :config
+  (progn
+    (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
+    (add-hook 'lisp-interaction-mode-hook 'turn-on-elisp-slime-nav-mode))
+  :ensure t)
 
 (define-key help-map (kbd "j") 'find-function) ; or #'find-variable
 (define-key help-map (kbd "C-l") 'find-library)

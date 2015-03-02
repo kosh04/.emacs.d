@@ -15,11 +15,13 @@
       `(eval-after-load ,feature
          '(progn ,@body))))
 
+;; load config/nn-xxx.el
 ;; TODO: use init-loader
 (dolist (config (directory-files 
                  (file-name-as-directory
                   (expand-file-name "config/" my:user-init-directory))
 		 t "[[:digit:]]\\{2\\}+-.+\\.el\\'"))
+  ;;(setq config (file-relative-name (file-name-sans-extension config) my:user-init-directory))
   (load config))
 
 (use-package "config/osx" :if (eq system-type 'darwin))

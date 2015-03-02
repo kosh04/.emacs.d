@@ -16,9 +16,17 @@
 ## Requirements
 
 - Emacs 24 or lator
-- use-package.el
+- [use-package](https://github.com/jwiegley/use-package)
 
 ## Rules
 
-- なるべく、各ライブラリのデフォルト設定を利用する
+- なるべくデフォルト設定を利用する (覚えることが少ない方がよい)
 - Emacs と xyzzy の操作感を共存させる
+- `config/nn-xxx.el` の番号付けルール一覧
+
+```
+10. パッケージなど優先的に設定すべきもの
+20. 組み込みライブラリの基本設定
+50. 外部ライブラリの設定
+60. 自作ライブラリの設定 (他の設定に依存させない)
+```

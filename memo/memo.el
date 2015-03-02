@@ -1915,3 +1915,5 @@ user
 
 ;;-> sgml-quote で代用可能
 
+;; yank時にプロパティを取り除く
+(setq yank-excluded-properties t)

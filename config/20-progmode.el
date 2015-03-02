@@ -14,6 +14,9 @@
 (global-set-key (kbd "C-c C-l") 'imenu)
 (add-hook 'emacs-lisp-mode-hook #'imenu-add-menubar-index)
 
+;; flyspell
+(add-hook 'c-mode-hook 'flyspell-prog-mode)
+
 (defun indent-and-next-line (&optional args)
   "インデントして次の行へ."
   (interactive "p")
@@ -27,7 +30,7 @@
 (use-package php-mode
   :init
   (progn
-    (define-key php-mode-map (kbd "RET") #'newline-and-indent)
+    (bind-keys :map php-mode-map ("RET" . newline-and-indent))
     (defun php-user-hook ()
       (define-abbrev php-mode-abbrev-table "ex" "extends")
       ;; (setq comment-start "// " comment-end "")
@@ -37,17 +40,26 @@
     (add-hook 'php-mode-hook #'php-user-hook))
   :ensure nil)
 
-(use-package batch-mode)
+;; Batch mode
+(use-package batch-mode
+  :defer t)
 
 ;; newLISP
 (use-package newlisp-mode
   :init
   (progn
-    (bind-key "C-c h" 'newlisp-lookup-manual newlisp-mode-map)
+    (bind-keys :map newlisp-mode-map ("C-c h" . newlisp-lookup-manual))
     (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))
   :ensure t)
 
+;; Wandbox
 (use-package wandbox
   :bind (("C-c w w" . wandbox)
          ("C-c w e" . wandbox-eval-last-sexp))
   :ensure t)
+
+;; Smart Compile
+(use-package smart-compile
+  :defer t
+  ;; :bind ("C-c c" . smart-compile)
+  :ensure nil)
