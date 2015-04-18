@@ -1917,3 +1917,13 @@ user
 
 ;; yank時にプロパティを取り除く
 (setq yank-excluded-properties t)
+
+;; モードラインの改行コード表示
+(setq eol-mnemonic-dos "\\"
+      eol-mnemonic-unix "(Unix)"
+      eol-mnemonic-mac "(Mac)"
+      eol-mnemonic-undecided ":")
+(setq eol-mnemonic-dos "d"
+      eol-mnemonic-unix "u"
+      eol-mnemonic-mac "m"
+      eol-mnemonic-undecided "?")

@@ -28,7 +28,7 @@
 
 ;; PHP
 (use-package php-mode
-  :init
+  :config
   (progn
     (bind-keys :map php-mode-map ("RET" . newline-and-indent))
     (defun php-user-hook ()
@@ -46,7 +46,7 @@
 
 ;; newLISP
 (use-package newlisp-mode
-  :init
+  :config
   (progn
     (bind-keys :map newlisp-mode-map ("C-c h" . newlisp-lookup-manual))
     (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))

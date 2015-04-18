@@ -23,6 +23,6 @@
 
 ;; Cask - Project management for Emacs package development
 (use-package cask
-  :init (cask-initialize)
-  :ensure nil)
+  :defer t
+  :config (cask-initialize))
 

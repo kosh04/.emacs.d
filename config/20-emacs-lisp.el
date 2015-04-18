@@ -59,3 +59,19 @@
 ;; 両立が難しい
 (setq lisp-indent-function #'lisp-indent-function)
 ;;(setq lisp-indent-function #'common-lisp-indent-function)
+
+;; ParEdit
+;; http://www.emacswiki.org/emacs/ParEdit
+(use-package paredit
+  :disabled t
+  :config
+  (progn
+    (dolist (hook '(emacs-lisp-mode-hook
+                    ;;lisp-interaction-mode-hook
+                    lisp-mode-hook
+                    ielm-mode-hook
+                    scheme-mode-hook))
+      (add-hook hook 'enable-paredit-mode))
+    (require 'eldoc)
+    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
+    ))

@@ -22,9 +22,9 @@
                   (expand-file-name "config/" my:user-init-directory))
 		 t "[[:digit:]]\\{2\\}+-.+\\.el\\'"))
   ;;(setq config (file-relative-name (file-name-sans-extension config) my:user-init-directory))
-  (load config))
+  (load config t))
 
-(use-package "config/osx" :if (eq system-type 'darwin))
-(use-package "config/w32" :if (eq system-type 'windows-nt))
+(use-package "osx-conf" :if (eq system-type 'darwin))
+(use-package "w32-conf" :if (eq system-type 'windows-nt))
 
 ;;; init.el ends here

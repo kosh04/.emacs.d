@@ -1,6 +1,7 @@
 ;;; config/dired.el
 
 (require 'dired)
+(require 'dired-x)
 (require 'dired-aux)
 
 (setq dired-dwim-target t)                ; 二窓用
@@ -9,7 +10,9 @@
 
 (add-hook 'dired-mode-hook 'hl-line-mode) ; 行カーソル
 
-;; FIXME: dired-other-window に使うなら、同じ形で別定義する必要あり
+;; dired-x で代用可能
+;; [C-x C-j]   dired-jump
+;; [C-x 4 C-j] dired-jump-other-window
 (defadvice dired (around set-forcus-on-filename activate)
   "作業中のファイルにカーソルを当てる."
   (let ((file (buffer-file-name)))

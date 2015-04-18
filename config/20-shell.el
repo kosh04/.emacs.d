@@ -16,7 +16,7 @@
 ;; shell-command(M-!) のコマンド入力に補完を効かせる
 ;; http://namazu.org/~tsuchiya/
 (use-package "shell-command"
-  :init (shell-command-completion-mode t)
+  :config (shell-command-completion-mode t)
   :ensure nil)
 
 (with-eval-after-load 'shell

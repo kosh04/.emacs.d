@@ -6,7 +6,7 @@
 
 ;; anzu
 (use-package anzu
-  :init (global-anzu-mode +1)
+  :config (global-anzu-mode +1)
   :ensure t)
 
 ;; JSON
