@@ -19,6 +19,7 @@
     ad-do-it
     (and file (dired-goto-file file))))
 
+;; [v] dired-view-file
 (defadvice dired-find-file (after read-only-mode activate)
   "読み込み専用でファイルを開く."
   (read-only-mode))
