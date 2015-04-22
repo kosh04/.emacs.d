@@ -3,6 +3,7 @@
 \.emacs\.desktop
 \.emacs\.desktop\.lock
 elpa
+el-get/
 history
 request/
 url/
