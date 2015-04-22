@@ -16,7 +16,13 @@
 ## Requirements
 
 - Emacs 24 or lator
+- [init-loader](https://github.com/emacs-jp/init-loader)
 - [use-package](https://github.com/jwiegley/use-package)
+
+## Installation
+
+1. Clone thie repository. (recommended `~/.emacs.d/`)
+2. Put `(load "/path/to/init.el" t)` into your `.eamcs`.
 
 ## Rules
 
