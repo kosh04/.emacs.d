@@ -1,4 +1,6 @@
-;;; config/osx-conf.el
+;;; config/cocoa-emacs-conf.el
+
+(add-to-list 'exec-path "/usr/local/bin")
 
 ;; Font
 (set-face-attribute 'default nil :family "Menlo" :height 150)
