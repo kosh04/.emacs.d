@@ -1,2 +1,16 @@
+# emacs
 *.elc
+\.emacs\.desktop
+\.emacs\.desktop\.lock
+elpa
+history
+request/
+url/
+tramp
+
+# cask
+.cask
+
+# backup
 *~
+backup/
