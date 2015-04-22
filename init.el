@@ -18,7 +18,8 @@
 
 ;; load config/nn-xxx.el
 (require 'init-loader)
-(init-loader-load (file-name-as-directory
-		   (expand-file-name "config/" my:user-init-directory)))
+(setq init-loader-directory
+      (expand-file-name "config/" my:user-init-directory))
+(init-loader-load)
 
 ;;; init.el ends here
