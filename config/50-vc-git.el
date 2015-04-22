@@ -1,4 +1,4 @@
-;;; config/vc.el --- version control systems
+;;; config/vc-git.el --- version control systems
 
 ;; TODO: wdired モードで `vc-rename-file' を 使いたい
 

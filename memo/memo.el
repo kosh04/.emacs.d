@@ -1927,3 +1927,7 @@ user
       eol-mnemonic-unix "u"
       eol-mnemonic-mac "m"
       eol-mnemonic-undecided "?")
+
+(defsetf lookup-key (keymap key) (def)
+  `(define-key ,keymap ,key ,def))
+(setf (lookup-key minibuffer-local-map (kbd "C-w")) 'delete-backward-word)
