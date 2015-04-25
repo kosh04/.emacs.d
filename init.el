@@ -8,9 +8,10 @@
 ;; available in Emacs24.4+
 (or (fboundp 'with-eval-after-load)
     (defmacro with-eval-after-load (feature &rest body)
-      (declare (indent 1))
+      "Execute BODY after FEATURE is loaded."
+      (declare (indent 1) (debug t))
       `(eval-after-load ,feature
-         '(progn ,@body))))
+         (lambda () ,@body))))
 
 ;; for bootstrap init-loader
 (require 'package)
