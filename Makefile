@@ -5,7 +5,7 @@ CASK ?= cask
 CASK := EMACS=$(EMACS) $(CASK)
 CASK_PACKAGE_DIR := $(shell $(CASK) package-directory)
 
-default: cask_install test
+default: test
 
 cask_install $(CASK_PACKAGE_DIR): Cask
 	$(CASK) install
