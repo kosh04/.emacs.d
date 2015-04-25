@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kosh04/emacs-lisp.svg)](https://travis-ci.org/kosh04/emacs-lisp)
+
 ## Files
 
 ```
