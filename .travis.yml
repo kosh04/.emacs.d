@@ -14,6 +14,7 @@ install:
     sudo apt-get install -qq &&
     sudo apt-get install ${EMACS} ${EMACS}-el
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
+  - ${CASK} install
 
 script:
-  - make cask_install test
+  - make test
