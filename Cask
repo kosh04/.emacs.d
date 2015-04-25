@@ -1,11 +1,8 @@
-;; not worked yet
-
 (source gnu)
 (source melpa)
-(source "marmalade" "http://melpa-stable.milkbox.net/packages/")
 
-(depends-on "js2-mode")
-(depends-on "tabbar")
+(depends-on "init-loader")
+(depends-on "use-package")
 
 ;;; Local Variables:
 ;;; mode: emacs-lisp
