@@ -3,7 +3,7 @@
 (defvar my:user-init-directory
   (file-name-directory (or load-file-name ".")))
 
-(add-to-list 'load-path my:user-init-directory)
+(add-to-list 'load-path (expand-file-name "site-lisp" my:user-init-directory))
 
 ;; available in Emacs24.4+
 (or (fboundp 'with-eval-after-load)
@@ -19,8 +19,7 @@
 
 ;; load config/nn-xxx.el
 (require 'init-loader)
-(setq init-loader-directory
-      (expand-file-name "config/" my:user-init-directory))
+(setq init-loader-directory (expand-file-name "config" my:user-init-directory))
 (init-loader-load)
 
 ;;; init.el ends here

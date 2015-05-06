@@ -1,8 +1,8 @@
 ;;; config/site-lisp.el
 
-(load "site-lisp/cl-compatible")
-(load "site-lisp/xyzzy")
-(load "site-lisp/xyzzy-keymap")
-(load "site-lisp/unicode-escape")
-(load "site-lisp/google")
-(load "site-lisp/misc")
+(require 'cl-compatible)
+(require 'xyzzy)
+(require 'xyzzy-keymap)
+(require 'unicode-escape)
+(require 'google)
+(require 'user-utils)

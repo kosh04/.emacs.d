@@ -1931,3 +1931,20 @@ user
 (defsetf lookup-key (keymap key) (def)
   `(define-key ,keymap ,key ,def))
 (setf (lookup-key minibuffer-local-map (kbd "C-w")) 'delete-backward-word)
+
+;; Emacs Part 48
+;; 55: これやったら標準の補完がちょっとリッチになった
+(add-hook 'minibuffer-setup-hook 
+          (lambda () 
+            (when (cl-loop with c = (current-local-map) 
+                           for m = c then (keymap-parent m) 
+                           while m 
+                           when (eq m minibuffer-local-completion-map) 
+                           return t 
+                           finally return nil) 
+              (add-hook 'post-command-hook 
+                        (lambda () 
+                          (cl-letf (((symbol-function 'message) 
+                                     'ignore)) 
+                            (minibuffer-completion-help))) 
+                        nil t))))

@@ -1,4 +1,4 @@
-;;; site-lisp/misc.el
+;;; site-lisp/user-utils.el
 
 (defun sequence (from to &optional step)
   (if (< from to)
@@ -39,3 +39,6 @@
 
 (defalias 'sha1sum #'sha1-file)
 
+(provide 'user-utils)
+
+;;; user-utils.el ends here
