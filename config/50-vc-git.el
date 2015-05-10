@@ -4,9 +4,10 @@
 
 ;; Magit
 (use-package magit
+  :defer t
   :ensure t)
 
-;; GitGutter
 (use-package git-gutter
+  :diminish git-gutter-mode
   :config (global-git-gutter-mode +1)
   :ensure t)

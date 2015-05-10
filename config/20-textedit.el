@@ -17,3 +17,7 @@
 (use-package flymake-yaml
   :config (add-hook 'yaml-mode-hook 'flymake-yaml-load)
   :ensure t)
+
+(use-package flycheck
+  :config (add-hook 'after-init-hook #'global-flycheck-mode)
+  :defer t)

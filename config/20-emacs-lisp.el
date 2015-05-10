@@ -10,19 +10,23 @@
 (define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
 
 ;; Eldoc
-(require 'eldoc)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-;; 引数表示をSLIME風にする
-(set-face-attribute 'eldoc-highlight-function-argument nil
-                    :background "darkseagreen2"
-                    :underline nil
-                    :bold nil)
-(setq eldoc-idle-delay 0.2
-      eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
+(use-package eldoc
+  :diminish eldoc-mode
+  :config
+  (progn
+    (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+    (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+    ;; 引数表示をSLIME風にする
+    (set-face-attribute 'eldoc-highlight-function-argument nil
+                        :background "darkseagreen2"
+                        :underline nil
+                        :bold nil)
+    (setq eldoc-idle-delay 0.2
+          eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)))
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
+  :diminish elisp-slime-nav-mode
   :config
   (progn
     (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)

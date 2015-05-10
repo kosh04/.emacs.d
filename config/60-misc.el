@@ -4,9 +4,12 @@
           #'(lambda ()
               (message "Emacs init time: %s" (emacs-init-time))))
 
-;; anzu
+;; anzu (isearch utility)
 (use-package anzu
+  :diminish anzu-mode
   :config (global-anzu-mode +1)
+  :bind (([remap query-replace] . anzu-query-replace)
+         ([remap query-replace-regexp] . anzu-query-replace-regexp))
   :ensure t)
 
 ;; JSON

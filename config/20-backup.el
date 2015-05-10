@@ -11,12 +11,13 @@
 
 
 ;; EmacsWiki: Backup Directory - http://www.emacswiki.org/emacs/BackupDirectory
-(setq make-backup-file-name-function
-      #'(lambda (file)
-          (let ((dirname (file-name-as-directory
-                          (format-time-string
-                           (expand-file-name "backup/%Y-%m-%d/" user-emacs-directory)))))
-            (or (file-directory-p dirname)
-                ;; mkdir -p DIRNAME
-                (make-directory dirname t))
-            (expand-file-name (file-name-nondirectory file) dirname))))
+(defun my:make-backup-file-name (file)
+  (let ((dirname (file-name-as-directory
+                  (format-time-string
+                   (expand-file-name "backup/%Y-%m-%d/" user-emacs-directory)))))
+    (or (file-directory-p dirname)
+        ;; mkdir -p DIRNAME
+        (make-directory dirname t))
+    (expand-file-name (file-name-nondirectory file) dirname)))
+
+(setq make-backup-file-name-function #'my:make-backup-file-name)

@@ -4,5 +4,6 @@
 (require 'xyzzy)
 (require 'xyzzy-keymap)
 (require 'unicode-escape)
-(require 'google)
+(use-package google
+  :bind (("C-c g" . google-search)))
 (require 'user-utils)
