@@ -28,5 +28,7 @@
     (desktop-read dirname)
     ))
 
+;; セッションの復元ならば `recover-session' も有効
+
 (fset 'restore-desktop #'desktop-revert)
 ;; (defalias 'restore-desktop #'my:restore-desktop)
