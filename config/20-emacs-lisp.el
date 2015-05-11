@@ -53,15 +53,18 @@
 ;; インデント
 (load "cl-indent")
 (with-eval-after-load 'cl-indent
-  (put 'cl-flet 'common-lisp-indent-function (get 'flet 'common-lisp-indent-function))
-  (put 'cl-labels 'common-lisp-indent-function (get 'labels 'common-lisp-indent-function))
-  ;;(put 'cl-macrolet 'common-lisp-indent-function (get 'macrolet 'common-lisp-indent-function))
+  (setf (get 'cl-flet 'common-lisp-indent-function)
+        (get 'flet 'common-lisp-indent-function))
+  (setf (get 'cl-labels 'common-lisp-indent-function)
+        (get 'labels 'common-lisp-indent-function))
+  (setf (get 'cl-macrolet 'common-lisp-indent-function)
+        (get 'macrolet 'common-lisp-indent-function))
   t)
 
 ;; elisp 特有の関数のインデントには lisp-indent-function
 ;; cl-labels 等の複雑なインデントには common-lisp-indent-function
 ;; 両立が難しい
-(setq lisp-indent-function #'lisp-indent-function)
+;;(setq lisp-indent-function #'lisp-indent-function)
 ;;(setq lisp-indent-function #'common-lisp-indent-function)
 
 ;; ParEdit
