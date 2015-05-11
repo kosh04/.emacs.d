@@ -17,4 +17,4 @@ install:
   - ${CASK} install
 
 script:
-  - make test
+  - make
