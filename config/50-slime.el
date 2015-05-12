@@ -3,7 +3,8 @@
 (use-package slime
   :config (progn
             (setq inferior-lisp-program "sbcl")
-            (slime-setup '(slime-repl))))
+            (slime-setup '(slime-repl
+                           slime-fancy))))
 
 (with-eval-after-load 'slime-repl
   ;; NOTE: type [,] runs the command slime-handle-repl-shortcut
