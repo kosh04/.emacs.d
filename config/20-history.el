@@ -6,6 +6,7 @@
 
 (savehist-mode)
 (recentf-mode)
+(setq recentf-save-file (locate-user-emacs-file "recentf"))
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop

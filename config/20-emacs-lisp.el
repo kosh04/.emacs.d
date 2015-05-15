@@ -1,6 +1,7 @@
 ;;; config/emacs-lisp.el
 
 ;; `git clone https://github.com/emacs-mirror/emacs ~/src/gitrepo/emacs`
+;;(setq find-function-C-source-directory "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/")
 (setq find-function-C-source-directory "~/src/gitrepo/emacs/src/")
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)

@@ -1948,3 +1948,25 @@ user
                                      'ignore)) 
                             (minibuffer-completion-help))) 
                         nil t))))
+
+;; 2015-05-13
+;; NTEmacs がバッファ切り替え/ファイル読み書き時にプチフリーズする問題(10秒程度)
+;; 設定ファイルを読み込まない状態(-Q)でも同様
+;; エラーメッセージは特にないため原因がどこにあるのか分からない...
+
+;; ファイルの書き込みのタイミングでNTEmacsがフリーズする？
+;; http://ksugita.blog62.fc2.com/blog-entry-11.html
+
+(setq make-backup-files nil
+      version-control nil)
+(add-to-list 'auto-save-file-name-transforms
+             (list ".*" temporary-file-directory t))
+;; ~/.emacs.d/auto-save-list/
+'(setq auto-save-list-file-name nil
+      auto-save-list-file-prefix nil)
+
+;; カーソルの点滅とIME変換の相性？
+;; http://osdn.jp/projects/gnupack/forums/22824/33700/
+;; http://d.hatena.ne.jp/ksugita0510/20130316/p1
+(setq ime-enable-reconversion nil
+      ime-enable-document-feed nil)
