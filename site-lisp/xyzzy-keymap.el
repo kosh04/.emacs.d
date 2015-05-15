@@ -1,14 +1,8 @@
-;;; -*- coding:utf-8 -*-
 ;;; xyzzy-keymap.el - キーバインド関連
 
 ;; This file is NOT part of Emacs.
 
-;; Time-stamp: <2010-07-07T04:25:36>
-
 ;;; Code:
-(provide 'xyzzy-keymap)
-
-;; (eval-when-compile (require 'cl))
 
 ;; lisp-mode-map
 ;; lisp-mode-shared-map
@@ -20,10 +14,11 @@
 	      emacs-lisp-mode-map))
   def) 
 
-;; @@標準関数から
-(dolist (key '(?\C-1 ?\C-2 ?\C-3 ?\C-4 ?\C-5 ?\C-6 ?\C-7 ?\C-8 ?\C-9 ?\C-0))
-  (and (eq (lookup-key global-map (vector key)) 'digit-argument)
-       (global-set-key (vector key) nil)))
+;; Built-in
+
+(dolist (key '("C-1" "C-2" "C-3" "C-4" "C-5" "C-6" "C-7" "C-8" "C-9" "C-0"))
+  (and (eq (lookup-key global-map (kbd key)) 'digit-argument)
+       (global-set-key (kbd key) nil)))
 
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
@@ -34,25 +29,25 @@
 (global-set-key (kbd "C-x C-z") 'shrink-window)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 
-(global-set-key [f10] 'first-error)
-(global-set-key [f11] 'next-error)
+(global-set-key (kbd "<f10>") 'first-error)
+(global-set-key (kbd "<f11>") 'next-error)
 
-;; @@Frame
+;; Frame
+
 ;; (define-key ctl-x-map "6" 'ctl-x-5-prefix)
 ;; (define-key ctl-x-map "5" 'split-window-horizontally)
 ;; (define-key ctl-x-map "3" 'undefined)
 
-;; @@SLIME
+;; SLIME
+
 ;; slime-compile-and-load-file
 (elisp:define-key (kbd "C-c C-k") 'emacs-lisp-byte-compile-and-load)
 (elisp:define-key (kbd "C-c C-i") 'lisp-complete-symbol) ; C-c TAB
 
-;(global-set-key (kbd "<M-f4>") 'kill-emacs)     ; Alt-F4
-(global-set-key (kbd "<M-f4>") 'save-buffers-kill-emacs)
-(global-set-key (kbd "<ESC> <f4>") 'kill-emacs) ; Esc-F4
+(global-set-key (kbd "<M-f4>") 'save-buffers-kill-terminal)
+(global-set-key (kbd "<ESC> <f4>") 'save-buffers-kill-terminal)
 
-;; @@自分で定義したもの
-(when (featurep 'xyzzy)
+(with-eval-after-load 'xyzzy
   (global-set-key (kbd "C-x p") 'move-previous-window)
   ;; (global-set-key "\C-xp" "\C-u-1\C-xo") == move-previous-window
   (global-set-key (kbd "<S-C-down>") 'scroll-up-both-window)
@@ -60,6 +55,7 @@
   (global-set-key (kbd "<down-mouse-3>") 'bingalls-edit-menu)
   (global-set-key (kbd "M-]") 'goto-matched-parenthesis)
   (global-set-key (kbd "C-x |") 'filter-region)
+  (global-set-key (kbd "C-x c") 'run-console)
 
   (global-set-key (kbd "<RET>") 'newline-and-indent)
 
@@ -70,5 +66,7 @@
 
 (if (fboundp 'elisp:define-key)
     (fmakunbound 'elisp:define-key))
+
+(provide 'xyzzy-keymap)
 
 ;;; xyzzy-keymap.el ends here.
