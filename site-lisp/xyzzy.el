@@ -484,7 +484,7 @@
 ;; #'toggle-mode は便利か？
 
 ;;; @@ Syntax
-(defparameter syntax-char-alist
+(defvar syntax-char-alist
   '(
     ;; emacs/xyzzy共通
     (?\  . whitespace-syntax)           ; ?\s
