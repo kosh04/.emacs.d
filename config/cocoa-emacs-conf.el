@@ -15,3 +15,6 @@
 ;; Frame
 ;;(add-to-list 'default-frame-alist '(alpha . (0.75 0.75)))
 (set-frame-parameter nil 'alpha 90)
+
+;; たまに <s-p> ns-print-buffer を誤爆してしまう
+(setq use-dialog-box nil)

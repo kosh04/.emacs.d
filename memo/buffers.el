@@ -21,3 +21,7 @@
 (call-interactively 'electric-buffer-list)
 (iswitchb-buffer)
 (call-interactively 'bs-show)
+
+(require 'uniquify)
+;; forward 形式は見易いが、ファイル名が先頭でなくなるためバッファ切り替え操作に向いてない
+(setq uniquify-buffer-name-style 'forward)

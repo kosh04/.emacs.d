@@ -21,3 +21,10 @@
         (replace-match "")))))
 
 ;;(define-key html-mode-map (kbd "C-c C-q") 'sgml-quote)
+
+(use-package emmet-mode
+  :defer t
+  :init (progn
+          ;;(custom-set-variables '(emmet-indentation 2))
+          (add-hook 'sgml-mode-hook 'emmet-mode)
+          (add-hook 'css-mode-hook  'emmet-mode)))

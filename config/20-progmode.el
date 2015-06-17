@@ -9,6 +9,24 @@
 ;; 自動改行と欲張りな削除
 (add-hook 'c-mode-common-hook 'c-toggle-auto-hungry-state)
 
+;; (global-set-key (kbd "(") 'insert-pair)     ; ()
+;; (global-set-key (kbd "[") 'insert-pair)     ; []
+;; (global-set-key (kbd "{") 'insert-pair)     ; {}
+;; (global-set-key (kbd "<") 'insert-pair)     ; <>
+;; (global-set-key (kbd "\"") 'insert-pair)    ; ""
+;; (global-set-key (kbd "ESC '") 'insert-pair) ; ''
+;; (global-set-key (kbd "ESC `") 'insert-pair) ; `'
+
+(require 'electric)
+
+(electric-pair-mode +1)
+(electric-layout-mode +1)
+
+(add-to-list 'electric-pair-pairs '(?< . ?>))
+(add-to-list 'electric-pair-pairs '(?{ . ?}))
+
+;;(add-to-list 'electric-layout-rules '(?{ . around))
+
 ;; 関数一覧
 (require 'imenu)
 (global-set-key (kbd "C-c C-l") 'imenu)
@@ -52,11 +70,16 @@
     (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))
   :ensure t)
 
+;; TypeScript
+(use-package tss
+  :defer t
+  :mode ("\\.ts\\'" . typescrip-mode))
+
 ;; Wandbox
 (use-package wandbox
+  :defer t
   :bind (("C-c w w" . wandbox)
-         ("C-c w e" . wandbox-eval-last-sexp))
-  :ensure t)
+         ("C-c w e" . wandbox-eval-last-sexp)))
 
 ;; Smart Compile
 (use-package smart-compile

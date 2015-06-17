@@ -802,28 +802,28 @@
 ;; (defun launch-application (cmd)
 ;;   (start-process "launch-application" nil shell-file-name cmd))
 ;; (ed::shell-command-line ...) コマンドライン処理関数が欲しいところ
-(when (fboundp 'w32-shell-execute)
+
 (defun launch-application (app)
   "外部プログラムを実行します."
   (interactive "s%% ")
-  (let ((w32-start-process-show-window t)) ; ?
-    (w32-shell-execute "open" app)))
+  (case system-type
+    (windows-nt
+     (let ((w32-start-process-show-window t)) ; ?
+       (w32-shell-execute "open" app)))
+    (dawrin
+     (start-process "" nil "open" app))
+    (gnu/linux
+     (let ((process-connection-type nil))
+       (start-process "" nil "xdg-open" app)))))
 
 (defun shell-execute (filename &optional directory params)
-  "FILENAMEを関連付けられたプログラムで起動する."
-  ;; $ cmd /c start http://www.google.com/
-  ;; (call-process "cmd.exe" nil 0 nil "\\/c" "start" FILENAME)
-  (w32-shell-execute "open" (if (file-exists-p filename)
-                                (expand-file-name filename)
-                                filename)))
-;; (defvar *eshell* shell-file-name)
+  "FILENAMEを関連付けられたプログラムで起動します."
+  (launch-application (expand-file-name filename)))
+
 (defun run-console ()
+  "外部コンソールを起動します."
   (interactive)
-  (launch-application (or (and (boundp 'explicit-shell-file-name)
-                               (symbol-value 'explicit-shell-file-name))
-                          (getenv "ESHELL")
-                          shell-file-name)))
-)                                  ; end of `(fboundp 'w32-shell-execute)'
+  (launch-application shell-file-name))
 
 ;; (fset 'process-exit-code #'process-exit-status)
 
@@ -1061,7 +1061,6 @@
 ;;; ? Warning: the function `cl-prettyexpand' might not be defined at runtime.
 (autoload 'cl-prettyexpand "cl-extra")
 (autoload 'cl-prettyprint "cl-extra")
-(autoload 'cl-macroexpand-all "cl-extra")
 (eval-when-compile (load "cl-extra"))
 
 ;; slime-macroexpand-1
@@ -1098,7 +1097,7 @@
         (if *elisp-macroexpand-require-cl-function*
             (cl-prettyexpand form repeatedly)
             (cl-prettyprint (funcall (if repeatedly
-                                         #'cl-macroexpand-all
+                                         #'macroexpand-all
                                          #'macroexpand)
                                      form)))
         (copy-to-buffer #1# (point-min) (point-max))))

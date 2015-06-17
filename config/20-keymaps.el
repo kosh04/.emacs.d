@@ -10,15 +10,6 @@
 ;;(ffap-bindings)
 (global-set-key (kbd "C-x C-f") 'find-file-at-point)
 
-(electric-pair-mode +1)
-;; (global-set-key (kbd "(") 'insert-pair)     ; ()
-;; (global-set-key (kbd "[") 'insert-pair)     ; []
-;; (global-set-key (kbd "{") 'insert-pair)     ; {}
-;; (global-set-key (kbd "<") 'insert-pair)     ; <>
-;; (global-set-key (kbd "\"") 'insert-pair)    ; ""
-;; (global-set-key (kbd "ESC '") 'insert-pair) ; ''
-;; (global-set-key (kbd "ESC `") 'insert-pair) ; `'
-
 (global-set-key (kbd "C-c C-o") 'browse-url-at-point)
 
 ;; toggle

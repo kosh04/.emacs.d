@@ -24,13 +24,6 @@
 (size-indication-mode)
 ;(display-battery-mode t)
 
-(let ((system-time-locale "C"))
-  (setq display-time-format "%Y-%m-%d(%a) %H:%M")
-  (setq display-time-default-load-average nil
-        display-time-24hr-format t
-        display-time-day-and-date t)
-  (display-time-mode))
-
 (set-face-background 'mode-line "black")
 (set-face-foreground 'mode-line "gray95")
 
@@ -49,3 +42,4 @@
 ;; 行カーソル
 (require 'hl-line)
 (set-face-background 'hl-line "#DEEDFF")
+(add-hook 'help-mode-hook 'hl-line-mode)

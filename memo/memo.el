@@ -803,8 +803,16 @@ user-login-name
                   (prin1 symbol)
                   (terpri)))))
 
+;; Display Time
 (setq display-time-string-forms '(month"/"day"("dayname") "24-hours":"minutes))
 (display-time)
+
+(setq display-time-format "%Y-%m-%d(%a) %H:%M")
+(setq display-time-default-load-average nil
+      display-time-24hr-format t
+      display-time-day-and-date t)
+(let ((system-time-locale "C"))
+  (display-time-mode))
 
 ;;; 端末から起動した時 (emacs -nw) にメニューバーを消す
 (menu-bar-mode (if window-system 1 -1))

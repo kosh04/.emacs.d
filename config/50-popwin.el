@@ -2,6 +2,8 @@
 
 (use-package popwin
   :config
-  (custom-set-variables
-   '(display-buffer-function #'popwin:display-buffer)
-   '(popwin:popup-window-position 'bottom)))
+  (progn
+    (popwin-mode +1)
+    (custom-set-variables
+     '(display-buffer-function #'popwin:display-buffer)
+     '(popwin:popup-window-position 'bottom))))

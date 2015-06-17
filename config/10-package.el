@@ -21,6 +21,9 @@
       "Dummy definition `use-package'."
       `(message "Ignore Package: %s" ',name)))
 
+(custom-set-variables
+ '(use-package-verbose t))
+
 ;; Cask - Project management for Emacs package development
 (use-package cask
   :defer t
