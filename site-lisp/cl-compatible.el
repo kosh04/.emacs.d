@@ -66,6 +66,13 @@
 (defun find-symbol (string)
   (intern-soft string))
 
+(cl-defmacro do-all-symbols ((var &optional result-form) &body body)
+  "Iterates on every symbols."
+  (declare (indent 1))
+  `(progn
+     (mapatoms #'(lambda (,var) ,@body))
+     ,result-form))
+
 ;; symbol-function ~= indirect-function
 
 ;; @@ Number
