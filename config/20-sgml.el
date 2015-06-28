@@ -6,7 +6,8 @@
 (fset 'sgml-quote-region #'sgml-quote)
 (fset 'html-quote-region #'sgml-quote)
 
-(use-package "sgml-mode"
+(use-package sgml-mode
+  :defer t
   :bind (("C-," . sgml-tag)
          ("C-." . sgml-close-tag)))
 
@@ -28,3 +29,13 @@
           ;;(custom-set-variables '(emmet-indentation 2))
           (add-hook 'sgml-mode-hook 'emmet-mode)
           (add-hook 'css-mode-hook  'emmet-mode)))
+
+(use-package web-mode
+  :defer t
+  :ensure emmet-mode
+  ;; :mode (("\\.html?\\'" . web-mode)
+  ;;        ("\\.tpl\\.php\\'" . web-mode))
+  ;; :config (setq web-mode-script-padding 0
+  ;;               web-mode-style-padding 0)
+  :config (add-hook 'web-mode-hook 'emmet-mode))
+

@@ -46,6 +46,7 @@
 
 ;; PHP
 (use-package php-mode
+  :defer t
   :config
   (progn
     (bind-keys :map php-mode-map ("RET" . newline-and-indent))
@@ -59,11 +60,14 @@
   :ensure nil)
 
 ;; Batch mode
-(use-package batch-mode
-  :defer t)
+(use-package batch-mode  
+  :defer t
+  :mode (("\\.bat\\'" . batch-mode)
+         ("\\.cmd\\'" . batch-mode)))
 
 ;; newLISP
 (use-package newlisp-mode
+  :defer t
   :config
   (progn
     (bind-keys :map newlisp-mode-map ("C-c h" . newlisp-lookup-manual))
@@ -85,4 +89,4 @@
 (use-package smart-compile
   :defer t
   ;; :bind ("C-c c" . smart-compile)
-  :ensure nil)
+  )

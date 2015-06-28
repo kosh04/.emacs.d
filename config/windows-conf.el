@@ -20,3 +20,10 @@
 (w32-ime-initialize)
 (add-hook 'w32-ime-on-hook #'(lambda () (set-cursor-color "brown")))
 (add-hook 'w32-ime-off-hook #'(lambda () (set-cursor-color "black")))
+
+;; VC-Git
+;; 外部プロセスを抑制する
+(with-eval-after-load 'vc-hooks
+  (setq vc-handled-backends (delete 'Git vc-handled-backends))
+  (remove-hook 'find-file-hook 'vc-find-file-hook)
+  (remove-hook 'kill-buffer-hook 'vc-kill-buffer-hook))

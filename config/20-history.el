@@ -5,8 +5,13 @@
 (setq history-length 250)               ; default 30
 
 (savehist-mode)
-(recentf-mode)
+
+;; recentf
+(recentf-mode +1)
 (setq recentf-save-file (locate-user-emacs-file "recentf"))
+(setq recentf-max-saved-items 2000)
+(add-to-list 'recentf-exclude "recentf")
+(add-to-list 'recentf-exclude ".git")
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop

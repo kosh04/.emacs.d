@@ -1,6 +1,7 @@
 ;;; config/slime.el
 
 (use-package slime
+  :defer t
   :config (progn
             (setq inferior-lisp-program "sbcl")
             (slime-setup '(slime-repl

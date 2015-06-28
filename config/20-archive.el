@@ -1,4 +1,4 @@
-;;; config/archive.le
+;;; config/archive.el
 
 ;; gzファイルも編集できるように
 (auto-compression-mode +1)

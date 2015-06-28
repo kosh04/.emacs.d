@@ -5,8 +5,8 @@
 
 (global-set-key (kbd "C-l") 'recenter)
 
-(require 'ffap)
 ;; [C-x C-v] 等は通常通り使いたいので全部載せはいらない
+;;(require 'ffap)
 ;;(ffap-bindings)
 (global-set-key (kbd "C-x C-f") 'find-file-at-point)
 

@@ -9,6 +9,7 @@
   :ensure t)
 
 (use-package git-gutter
+  :defer t
   :diminish git-gutter-mode
   :config (global-git-gutter-mode +1)
   :ensure t)

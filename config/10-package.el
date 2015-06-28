@@ -27,5 +27,6 @@
 ;; Cask - Project management for Emacs package development
 (use-package cask
   :defer t
+  :mode ("Cask\\'" . emacs-lisp-mode)
   :config (cask-initialize))
 

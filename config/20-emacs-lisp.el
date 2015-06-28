@@ -1,8 +1,12 @@
 ;;; config/emacs-lisp.el
 
-;; `git clone https://github.com/emacs-mirror/emacs ~/src/gitrepo/emacs`
-;;(setq find-function-C-source-directory "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/")
-(setq find-function-C-source-directory "~/src/gitrepo/emacs/src/")
+;; Emacs Source Repository
+;; http://git.savannah.gnu.org/cgit/emacs.git
+
+(setq find-function-C-source-directory
+      (if (file-directory-p #1="~/src/gitrepo/emacs/src/")
+          #1#
+          "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/"))
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
 ;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
@@ -71,6 +75,7 @@
 ;; ParEdit
 ;; http://www.emacswiki.org/emacs/ParEdit
 (use-package paredit
+  :defer t
   :disabled t
   :config
   (progn
@@ -81,5 +86,4 @@
                     scheme-mode-hook))
       (add-hook hook 'enable-paredit-mode))
     (require 'eldoc)
-    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
-    ))
+    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)))

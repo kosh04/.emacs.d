@@ -4,7 +4,7 @@
 
 (tabbar-mode +1)
 
-(global-set-key (kbd "C-x C-.")  'tabbar-forward-tab)
+(global-set-key (kbd "C-x C-.") 'tabbar-forward-tab)
 (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
 
 ;; kill-buffer した後に戻るバッファが変わるのを抑える
