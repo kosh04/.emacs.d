@@ -39,6 +39,13 @@
 
 (defalias 'sha1sum #'sha1-file)
 
+(defun describe-bindings-anymap (keymap)
+  (interactive (list (intern (completing-read "Keymap: " (apropos-internal "-map\\'")))))
+  (cl-assert (keymapp (symbol-value keymap)))
+  (with-help-window (help-buffer)
+    (with-current-buffer (help-buffer)
+      (insert (substitute-command-keys (format "\\{%s}" keymap))))))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here
