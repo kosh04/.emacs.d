@@ -1081,15 +1081,7 @@
         (print-circle t)
         (temp-buffer-setup-hook '(emacs-lisp-mode))
         ;; FIXME: なぜ色付けが効かない?
-        (temp-buffer-show-hook '(font-lock-fontify-buffer))
-        ;; (temp-buffer-show-hook  (copy-sequence temp-buffer-show-hook))
-        )
-    ;; (add-hook 'temp-buffer-show-hook 'font-lock-fontify-buffer)
-    ;; (add-hook 'temp-buffer-show-hook
-    ;;           (lambda ()
-    ;;             (emacs-lisp-mode)
-    ;;             ;; (font-lock-fontify-buffer)
-    ;;             ))
+        (temp-buffer-show-hook '(font-lock-fontify-buffer)))
     (unless form
       (return-from elisp-macroexpand-1))
     (with-output-to-temp-buffer #1=" *ELISP macroexpantion*"
