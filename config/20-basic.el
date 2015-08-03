@@ -12,5 +12,11 @@
 
 (url-handler-mode +1)
 
-;; use what-cursor-position [C-u C-x =]
-(setq describe-char-unicodedata-file "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
+;; use `what-cursor-position' [C-u C-x =]
+(setq describe-char-unicodedata-file
+      (let ((unicode-data-txt (locate-user-emacs-file "UnicodeData.txt")))
+        (if (file-exists-p unicode-data-txt)
+            unicode-data-txt
+            "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")))
+
+(setq use-dialog-box nil)

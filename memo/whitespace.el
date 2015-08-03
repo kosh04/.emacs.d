@@ -7,6 +7,7 @@
 ;; 全角スペース
 (setq whitespace-space-regexp "\\(\x3000+\\)")
 (setq whitespace-style '(trailing empty spaces tab-mark face))
+(setq whitespace-action '(auto-cleanup))
 ;; 強調色をおとなしめにする
 (set-face-background 'whitespace-trailing "LemonChiffon4")
 (set-face-background 'whitespace-empty "LemonChiffon4")

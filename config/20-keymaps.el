@@ -5,6 +5,8 @@
 
 (global-set-key (kbd "C-l") 'recenter)
 
+(global-set-key [remap just-one-space] 'cycle-spacing)
+
 ;; [C-x C-v] 等は通常通り使いたいので全部載せはいらない
 ;;(require 'ffap)
 ;;(ffap-bindings)

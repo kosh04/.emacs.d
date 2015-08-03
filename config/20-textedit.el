@@ -19,8 +19,10 @@
 (use-package flymake-yaml
   :defer t
   :config (add-hook 'yaml-mode-hook 'flymake-yaml-load)
-  :ensure t)
+  :ensure yaml-mode)
 
 (use-package flycheck
   :defer t
+  :init (custom-set-variables
+         '(flycheck-emacs-lisp-load-path 'inherit))
   :config (add-hook 'after-init-hook #'global-flycheck-mode))

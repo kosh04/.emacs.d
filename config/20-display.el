@@ -8,6 +8,10 @@
 (menu-bar-mode)
 (show-paren-mode)
 
+;; Frame
+;;(add-to-list 'default-frame-alist '(alpha . (0.75 0.75)))
+(set-frame-parameter nil 'alpha 90)
+
 ;; アクティブでないウィンドウのカーソルを表示/非表示
 ;;(setq-default cursor-in-non-selected-windows nil)
 

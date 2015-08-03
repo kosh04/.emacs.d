@@ -1,7 +1,7 @@
 # emacs
 *.elc
-\.emacs\.desktop
-\.emacs\.desktop\.lock
+.emacs.desktop
+.emacs.desktop.lock
 elpa
 el-get/
 history
@@ -9,10 +9,15 @@ request/
 url/
 recentf
 tramp
+abbrev_defs
 
 # cask
 .cask
 
 # backup
+\#*\#
 *~
 backup/
+
+# misc
+UnicodeData.txt

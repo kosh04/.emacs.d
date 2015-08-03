@@ -62,8 +62,8 @@
 ;; Batch mode
 (use-package batch-mode  
   :defer t
-  :mode (("\\.bat\\'" . batch-mode)
-         ("\\.cmd\\'" . batch-mode)))
+  :mode ("\\.bat\\'"
+         "\\.cmd\\'"))
 
 ;; newLISP
 (use-package newlisp-mode

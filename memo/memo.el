@@ -1987,3 +1987,14 @@ user
 ;; http://d.hatena.ne.jp/ksugita0510/20130316/p1
 (setq ime-enable-reconversion nil
       ime-enable-document-feed nil)
+
+;; eww
+(setq-default eww-search-prefix "https://www.google.co.jp/search?q=")
+;; `shr-render-buffer' でHTMLファイルをレンダリングすると面白い
+
+;; gdb
+(custom-set-variables
+ '(gdb-many-windows t)                  ;情報表示
+ '(gud-tooltip-echo-area t)             ;mini bufferに値を表示
+ '(gud-tooltip-mode t)                  ;ポップアップで情報
+ )

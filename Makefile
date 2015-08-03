@@ -22,6 +22,9 @@ test: $(CASK_PACKAGE_DIR)
 $(CASK_PACKAGE_DIR): Cask
 	$(CASK) install
 
+UnicodeData.txt:
+	curl -Os  "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"
+
 clean:
 	$(RM) $(SRC.el:.el=.elc)
 
