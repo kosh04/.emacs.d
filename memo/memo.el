@@ -609,13 +609,6 @@ completion-ignore-case                  ; t (補完時の大文字小文字の�
   (apply #'string char-list))
 (list-to-string (string-to-list "これは漢字文字列")) ; "これは漢字文字列"
 
-;; Y combinator ぽいの
-(defun f (q)
-  (lexical-let ((q q))
-    (lambda (n)
-      (if (= n 0) 1 (* n (funcall (funcall q q) (- n 1)))))))
-(funcall (f 'f) 10)                     ; 3628800
-
 ;;; help-fns.el:describe-function-1:253
 (defun function-truename (def)
   "DEFが関数のエイリアスならば、関数の実体名を返す."
@@ -1718,6 +1711,10 @@ coding-system-alist
 ;; nobreak-space (U+00A0) をハイライトする (デフォルトで t)
 (setq nobreak-char-display t)
 
+;; Unicode文字(U+XXXX)を入力する
+(insert #x00a0)
+(insert-char #x00a0)                    ; C-x 8 RET
+
 ;; tcl-mode
 ;; http://www.opensource.apple.com/source/gcc3/gcc3-1161/dejagnu/tcl-mode.el
 
@@ -1936,6 +1933,7 @@ user
 (setq yank-excluded-properties t)
 
 ;; モードラインの改行コード表示
+;; デフォルト
 (setq eol-mnemonic-dos "\\"
       eol-mnemonic-unix "(Unix)"
       eol-mnemonic-mac "(Mac)"
@@ -1998,3 +1996,12 @@ user
  '(gud-tooltip-echo-area t)             ;mini bufferに値を表示
  '(gud-tooltip-mode t)                  ;ポップアップで情報
  )
+
+;; load-path 以下のファイルはview-modeで開く (未完成)
+(add-hook 'find-file-hook
+          (lambda ()
+            (let ((dir (file-name-directory (buffer-file-name))))
+              (when (cl-some (lambda (path)
+                               (sub-directory-p dir path))
+                             load-path)
+                (view-mode)))))

@@ -18,8 +18,12 @@
 ## Requirements
 
 - Emacs 24 or lator
-- [init-loader](https://github.com/emacs-jp/init-loader)
-- [use-package](https://github.com/jwiegley/use-package)
+- Library
+  - [init-loader](https://github.com/emacs-jp/init-loader)
+  - [use-package](https://github.com/jwiegley/use-package)
+- Platform
+  - Windows ([NTEmacs64](https://github.com/chuntaro/NTEmacs64))
+  - OSX (Cocoa Emacs)
 
 ## Installation
 

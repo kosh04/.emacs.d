@@ -1,4 +1,6 @@
 ;;; config/ruby.el
 
 (use-package inf-ruby
-  :defer t)
+  :defer t
+  :init (defalias 'irb 'inf-ruby)
+  )

@@ -9,20 +9,12 @@
 ;; 自動改行と欲張りな削除
 (add-hook 'c-mode-common-hook 'c-toggle-auto-hungry-state)
 
-;; (global-set-key (kbd "(") 'insert-pair)     ; ()
-;; (global-set-key (kbd "[") 'insert-pair)     ; []
-;; (global-set-key (kbd "{") 'insert-pair)     ; {}
-;; (global-set-key (kbd "<") 'insert-pair)     ; <>
-;; (global-set-key (kbd "\"") 'insert-pair)    ; ""
-;; (global-set-key (kbd "ESC '") 'insert-pair) ; ''
-;; (global-set-key (kbd "ESC `") 'insert-pair) ; `'
-
 (require 'electric)
 
 (electric-pair-mode +1)
 (electric-layout-mode +1)
 
-(add-to-list 'electric-pair-pairs '(?< . ?>))
+;;(add-to-list 'electric-pair-pairs '(?< . ?>))
 (add-to-list 'electric-pair-pairs '(?{ . ?}))
 
 ;;(add-to-list 'electric-layout-rules '(?{ . around))
@@ -48,15 +40,17 @@
 (use-package php-mode
   :defer t
   :config
-  (progn
-    (bind-keys :map php-mode-map ("RET" . newline-and-indent))
-    (defun php-user-hook ()
-      (define-abbrev php-mode-abbrev-table "ex" "extends")
-      ;; (setq comment-start "// " comment-end "")
-      (c-set-offset 'arglist-intro '+) ; array(...) インデントをスマートにする
-      (c-set-offset 'arglist-close 0)
-      t)
-    (add-hook 'php-mode-hook #'php-user-hook))
+  (setq php-search-url "http://www.php.net/ja/")        ; C-c C-f
+  (setq php-manual-url "http://www.php.net/manual/ja/") ; C-c C-m
+  (setq php-mode-force-pear t)
+  (bind-keys :map php-mode-map ("RET" . newline-and-indent))
+  (defun php-user-hook ()
+    (define-abbrev php-mode-abbrev-table "ex" "extends")
+    ;; (setq comment-start "// " comment-end "")
+    (c-set-offset 'arglist-intro '+) ; array(...) インデントをスマートにする
+    (c-set-offset 'arglist-close 0)
+    t)
+  (add-hook 'php-mode-hook #'php-user-hook)
   :ensure nil)
 
 ;; Batch mode

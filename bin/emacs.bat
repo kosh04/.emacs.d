@@ -11,7 +11,7 @@ rem set PATH=%PATH%;%ProgramFiles(x86)%\PuTTY
 set PATH=%PATH%;%HOME%\opt\putty-0.64-jp20150301
 
 rem == Ruby ==
-set PATH=%PATH%;C:\Ruby200-x64\bin
+set PATH=%PATH%;C:\Ruby22-x64\bin
 
 rem == Zeal ==
 set PATH=%PATH%;%ProgramFiles(x86)%\Zeal
