@@ -25,4 +25,5 @@
   (custom-set-variables
    '(flycheck-emacs-lisp-load-path 'inherit)
    '(flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-  (add-hook 'after-init-hook #'global-flycheck-mode))
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :ensure t)
