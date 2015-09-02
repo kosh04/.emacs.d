@@ -3,6 +3,9 @@ setlocal
 
 set EMACS_HOME=%userprofile%\opt\emacs-24.5-IME-patched-generic-cpu
 
+rem == C/Migemo ==
+set PATH=%PATH%;%HOME%\opt\cmigemo
+
 rem == Git ==
 set PATH=%PATH%;C:\opt\Git\bin
 
