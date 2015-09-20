@@ -1,5 +1,6 @@
 EMACS ?= emacs
-EMACS_BATCH = $(EMACS) -batch -no-site-file
+EMACSFLAGS = -L site-lisp
+EMACS_BATCH = $(EMACS) -batch -no-site-file $(EMACSFLAGS)
 
 CASK ?= cask
 CASK_PACKAGE_DIR := $(shell $(CASK) package-directory)
