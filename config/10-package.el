@@ -2,8 +2,8 @@
 
 ;; Package
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ; OLD
 ;;(add-to-list 'package-archives '("marmalade" . "http://melpa-stable.milkbox.net/packages/") t)
 ;;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
@@ -12,7 +12,9 @@
 (add-hook 'package-menu-mode-hook 'hl-line-mode)
 
 (with-eval-after-load "package"
-  (define-key package-menu-mode-map (kbd "?") 'package-menu-quick-help)
+  (define-key package-menu-mode-map (kbd "I") 'package-install)
+  (define-key package-menu-mode-map (kbd "?") 'describe-package)
+  (define-key package-menu-mode-map (kbd "/") 'occur)
   t)
 
 ;; use-package

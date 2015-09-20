@@ -21,6 +21,7 @@
   (progn
     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
     (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+    (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
     ;; 引数表示をSLIME風にする
     (set-face-attribute 'eldoc-highlight-function-argument nil
                         :background "darkseagreen2"
@@ -72,6 +73,20 @@
 ;;(setq lisp-indent-function #'lisp-indent-function)
 ;;(setq lisp-indent-function #'common-lisp-indent-function)
 
+(defun toggle-scratch-buffer (&optional other-window)
+  (interactive "P")
+  (let ((scratch (get-buffer-create "*scratch*")))
+    (if other-window
+        (pop-to-buffer scratch t)
+      (switch-to-buffer scratch))
+    (or (eq major-mode initial-major-mode)
+        (funcall initial-major-mode))))
+
+(global-set-key (kbd "C-x t s") 'toggle-scratch-buffer)
+
+;; REPL
+(global-set-key (kbd "C-x t l") 'ielm)
+
 ;; ParEdit
 ;; http://www.emacswiki.org/emacs/ParEdit
 (use-package paredit
@@ -87,3 +102,23 @@
       (add-hook hook 'enable-paredit-mode))
     (require 'eldoc)
     (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)))
+
+;; interactive macroexpand
+(use-package macrostep
+  :defer t
+  :bind ("C-c RET" . macrostep-expand)
+  :ensure t)
+
+;; prettify-symbol
+;; Emacs24.4 以降で利用可能
+(defun user:prettify-lambda ()
+  (setq prettify-symbols-alist
+        '(("lambda" . "\u03BB")         ; λ
+          ("/=" . "\u2260")             ; ≠
+          ("<=" . "\u2264")             ; ≤
+          (">=" . "\u2267")             ; ≧
+          ))
+  t)
+
+(add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
+(add-hook 'lisp-interaction-mode-hook 'user:prettify-lambda)

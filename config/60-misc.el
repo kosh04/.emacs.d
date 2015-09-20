@@ -10,6 +10,7 @@
   :config (progn
             (global-anzu-mode +1)
             (setq anzu-search-threshold 1000)
+            (setq anzu-use-migemo (featurep 'migemo))
             (setq anzu-replace-to-string-separator " => "))
   :bind (([remap query-replace] . anzu-query-replace)
          ([remap query-replace-regexp] . anzu-query-replace-regexp))
@@ -23,14 +24,18 @@
   (let ((locate-buffer-name (format "*Locate %s*" search-string)))
     ad-do-it))
 
+(defun iso8601 (&optional time universal)
+  "Return ISO 8601 format time."
+  ;; (format-time-string "%Y-%m-%dT%H:%M:%S")
+  (format-time-string "%FT%T%z" time universal))
+
 ;; http://www.bookshelf.jp/texi/elisp-manual-20-2.5-jp/elisp_38.html#SEC610
-(defun my:insert-time ()
+(defun user:insert-time ()
   "日付と時刻の挿入."
   (interactive)
-  (insert (let ((system-time-locale "C"))
-            (format-time-string "%Y-%m-%dT%H:%M:%S"))))
+  (insert (iso8601)))
 
-(defalias 'insert-time #'my:insert-time)
+(defalias 'insert-time #'user:insert-time)
 (global-set-key (kbd "C-c t") 'insert-time)
 
 (defun my:delete-backward-word (&optional n)

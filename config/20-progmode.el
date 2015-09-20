@@ -77,7 +77,8 @@
 (use-package wandbox
   :defer t
   :bind (("C-c w w" . wandbox)
-         ("C-c w e" . wandbox-eval-last-sexp)))
+         ("C-c w e" . wandbox-eval-last-sexp)
+         ("C-c w l" . wandbox-list-compilers)))
 
 ;; Smart Compile
 (use-package smart-compile

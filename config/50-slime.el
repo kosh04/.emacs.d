@@ -1,11 +1,12 @@
 ;;; config/slime.el
 
+(custom-set-variables
+ '(inferior-lisp-program "sbcl"))
+
 (use-package slime
   :defer t
-  :config (progn
-            (setq inferior-lisp-program "sbcl")
-            (slime-setup '(slime-repl
-                           slime-fancy))))
+  :config (slime-setup '(slime-repl
+                         slime-fancy)))
 
 (with-eval-after-load 'slime-repl
   ;; NOTE: type [,] runs the command slime-handle-repl-shortcut

@@ -30,6 +30,19 @@
   ;; With a zero prefix arg, use the absolute file name of each marked file.
   (dired-copy-filename-as-kill 0))
 
+;; ファイル一覧の最上部/最下部に移動するコマンドはデフォルトでないの？
+(defun user:dired-beginning-of-buffer ()
+  "Jump to the first listed in Dired."
+  (interactive)
+  (goto-char (point-min))
+  (dired-next-line 2))
+
+(defun user:dired-end-of-buffer ()
+  "Jump to the last file listed in Dired."
+  (interactive)
+  (goto-char (point-max))
+  (dired-next-line -1))
+
 ;; (defun dired-shell-execute ()
 ;;   "ファイルを関連付けられたプログラムで開く."
 ;;   (interactive)
@@ -73,6 +86,10 @@
   ;;(define-key dired-mode-map "X" 'dired-shell-execute)
   (define-key dired-mode-map (kbd "C-s") 'dired-isearch-filenames)
   (define-key dired-mode-map (kbd "C-x C-q") 'wdired-change-to-wdired-mode)
+  (define-key dired-mode-map [remap beginning-of-buffer] 'user:dired-beginning-of-buffer)
+  (define-key dired-mode-map [remap backward-page] 'user:dired-beginning-of-buffer)
+  (define-key dired-mode-map [remap end-of-buffer] 'user:dired-end-of-buffer)
+  (define-key dired-mode-map [remap forward-page] 'user:dired-end-of-buffer)
   t)
 
 (with-eval-after-load "wdired"

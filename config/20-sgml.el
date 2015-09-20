@@ -23,6 +23,7 @@
 
 ;;(define-key html-mode-map (kbd "C-c C-q") 'sgml-quote)
 
+;; Zen Coding
 (use-package emmet-mode
   :defer t
   :init (progn

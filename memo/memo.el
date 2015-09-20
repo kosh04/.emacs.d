@@ -1990,6 +1990,8 @@ user
 (setq-default eww-search-prefix "https://www.google.co.jp/search?q=")
 ;; `shr-render-buffer' でHTMLファイルをレンダリングすると面白い
 
+;; [d] `eww-download'  はヘッダー部分を除去しないバグがあるため使用に注意 (2015-09-09)
+
 ;; gdb
 (custom-set-variables
  '(gdb-many-windows t)                  ;情報表示
@@ -1997,11 +1999,68 @@ user
  '(gud-tooltip-mode t)                  ;ポップアップで情報
  )
 
-;; load-path 以下のファイルはview-modeで開く (未完成)
-(add-hook 'find-file-hook
-          (lambda ()
-            (let ((dir (file-name-directory (buffer-file-name))))
-              (when (cl-some (lambda (path)
-                               (sub-directory-p dir path))
-                             load-path)
-                (view-mode)))))
+(mapc #'funcall kill-emacs-hook)
+
+;; desktop-save に循環リスト入り変数を食わせると無限再帰でemacsが終了しない (or メモリを食い荒らす)
+;; -> print-circle が原因？
+(setf search-ring '("first" "second" "third"))
+(setf (cdr (last search-ring)) search-ring)
+
+(setf command-history nil)
+;; M-x eval-expression #1=[#1#]
+command-history                   ;=> ((eval-expression [#2] nil))
+(desktop-outvar 'command-history) ;-> (error "Lisp nesting exceeds `max-lisp-eval-depth'")
+
+;; ラベルが参照するS式に自分自身が含まれると再帰的に評価される。無限ループはバグというより仕様？
+(identity #1=(vector #1#)) ;-> (error "Lisp nesting exceeds `max-lisp-eval-depth'")
+(identity #1=[#1#])        ;=> [#0]
+
+;; プロパティ付き文字列？
+#("/ssh:localhost:~/.bashrc" 1 6 (tramp-default t))
+(type-of #("HELLO"))                    ;=> string
+
+;; `plist-put' はリストを破壊的に更新するが、
+;; 元の値がnilの場合のみ値が反映されない。
+;; -> 必ず (setq x (plist-put x ...)) か (setf (cl-getf x ...) ..) を利用すること
+(let ((plist-el '())
+      (plist-cl '()))
+  (plist-put plist-el :key 10)
+  (setf (cl-getf plist-cl :key) 10)
+  (list plist-el plist-cl))
+;=> (nil (:key 10))
+
+;; NTEmacs+Cygwin/aspell の組み合わせにてプロセス起動時に `NUL' ファイルが作成される
+;; > cygwin\bin\rm.exe NUL で削除する
+
+(defun user:find-all (re obj)
+  (let (acc)
+    (with-temp-buffer
+      (insert (cl-typecase obj
+                (buffer (with-current-buffer obj (buffer-string)))
+                (string obj)
+                (otherwise (error "buffer or string expected"))))
+      (goto-char (point-min))
+      (while (re-search-forward re nil t)
+        (push (match-string-no-properties 0) acc)))
+    (nreverse acc)))
+
+(user:find-all cfirchat-url-regexp (current-buffer))
+
+;; 便利だが package-install 時に誤爆してコケるので却下
+(defun in-load-path-p (dir)
+  (cl-some #'(lambda (path)
+               (sub-directory-p dir path))
+           load-path))
+
+(defvar auto-view-mode-directories load-path)
+
+(defun auto-view-mode ()
+  "指定されたディレクト以下のファイルを`view-mode'で開きます."
+  (let ((dir (file-name-directory (buffer-file-name))))
+    (if (cl-some #'(lambda (path)
+                     (sub-directory-p dir path))
+                 auto-view-mode-directories)
+        (view-mode))))
+
+(add-hook 'find-file-hook 'auto-view-mode)
+(remove-hook 'find-file-hook 'auto-view-mode)

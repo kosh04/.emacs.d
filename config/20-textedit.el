@@ -11,6 +11,7 @@
   :config
   (defun user:markdown-preview-buffer ()
     (interactive)
+    (require 'shr)
     (shr-render-buffer (markdown-standalone markdown-output-buffer-name)))
   (defalias 'markdown-preview-buffer 'user:markdown-preview-buffer)
   :ensure t)

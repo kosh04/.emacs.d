@@ -43,3 +43,16 @@ c-style-alist
 
 ;; 現在の関数名をモードラインに表示 (M-x: which-function-mode)
 (which-function-mode t)
+
+;; キャメルケース移動用マイナーモード
+(add-hook 'c-mode-hook 'subword-mode)
+
+;; prolog
+;; fixme: 別ウィンドウが開いて使いものにならない
+(defun run-gprolog ()
+  "GNU Prolog を起動する."
+  (interactive)
+  (let ((exec-path (copy-sequence exec-path))
+        (prolog-system 'gnu))
+    (add-to-list 'exec-path "/opt/GNU-Prolog/bin")
+    (call-interactively #'run-prolog)))
