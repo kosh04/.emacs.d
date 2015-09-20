@@ -46,7 +46,10 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(eval-when-compile
+  (require 'cl))
+(require 'dired)
+(require 'japan-util)
 (require 'cl-compatible)
 ;; (require 'ielm)
 
@@ -452,9 +455,6 @@
 (put 'downcase-region 'disabled nil)    ; C-x C-l
 (put 'narrow-to-region 'disabled nil)   ; C-x n n
 
-(eval-when-compile
-  (require 'japan-util))
-
 ;; japanese-katakana                       ; ひらがな→カタカナ
 ;; japanese-hiragana                       ; カタカナ→ひらがな
 ;; japanese-hankaku                        ; 全角→半角
@@ -720,8 +720,6 @@
 
 ;;; @@ Filer
 ;;; filer [xyzzy] <-> dired [emacs]
-(eval-when-compile
-  (require 'dired))
 
 (defvaralias 'filer-keymap 'dired-mode-map)
 
@@ -1061,10 +1059,8 @@
 (defvar *elisp-macroexpand-require-cl-function* t)
 ;; (setq *elisp-macroexpand-require-cl-function* nil)
 
-;;; ? Warning: the function `cl-prettyexpand' might not be defined at runtime.
-(autoload 'cl-prettyexpand "cl-extra")
-(autoload 'cl-prettyprint "cl-extra")
-(eval-when-compile (load "cl-extra"))
+(declare-function cl-prettyexpand "cl-extra" (form &optional full))
+(declare-function cl-prettyprint "cl-extra" (form))
 
 ;; slime-macroexpand-1
 (defun elisp-macroexpand-1 (&optional repeatedly)
@@ -1089,14 +1085,8 @@
       (return-from elisp-macroexpand-1))
     (with-output-to-temp-buffer #1=" *ELISP macroexpantion*"
       (with-temp-buffer
-        (if *elisp-macroexpand-require-cl-function*
-            (cl-prettyexpand form repeatedly)
-            (cl-prettyprint (funcall (if repeatedly
-                                         #'macroexpand-all
-                                         #'macroexpand)
-                                     form)))
-        (copy-to-buffer #1# (point-min) (point-max))))
-    ))
+        (cl-prettyexpand form repeatedly)
+        (copy-to-buffer #1# (point-min) (point-max))))))
 
 (defun elisp-macroexpand-all ()
   (interactive)
