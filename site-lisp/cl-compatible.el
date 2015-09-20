@@ -75,7 +75,8 @@
 
 ;; symbol-function ~= indirect-function
 
-;; @@ Number
+;; @@ Number (Math)
+;; Bignumber を扱えない点に注意
 
 (fset 'rem #'%)
 (defun logandc1 (x y) (logand (lognot y) y))

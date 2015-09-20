@@ -47,6 +47,7 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
+(require 'cl-compatible)
 ;; (require 'ielm)
 
 ;;; @@ Data-Type
@@ -63,6 +64,9 @@
 ;;            引数有りで実行            引数なしで実行される
 (defvaralias '*query-kill-buffer-hook* 'kill-buffer-query-functions)
 (defvaralias '*query-kill-xyzzy-hook* 'kill-emacs-query-functions)
+
+(defvaralias 'buffer-mode 'major-mode)
+(defvaralias '*initial-buffer-mode* initial-major-mode)
 
 (defmacro defvar-local (symbol value &optional docstring)
   `(progn
@@ -167,23 +171,22 @@
 (and (fboundp 'w32-short-file-name)
      (fset 'get-short-path-name #'w32-short-file-name))
 
-;; (sub-directory-p "~/lib/emacs/" "~/lib/emacs/") => t
-;; (sub-directory-p "~/lib/emacs/" "~/lib/emacs")  => t
-;; (sub-directory-p "~/lib/emacs" "~/lib/emacs/")  => t
 (defun sub-directory-p (dir parent)
   "DIRECTORYがPARENTのサブディレクトリならt、そうでなければnilを返す。"
   (do ((x (pathname-directory (file-name-as-directory dir)) (cdr x))
        (y (pathname-directory (file-name-as-directory parent)) (cdr y)))
       ((null y) t)
     (if (or (null x)
-            (not (string-equal (car x) (car y))))
+            (not (compare-strings (car x) nil nil
+                                  (car y) nil nil
+                                  :ignore-case)))
         (return nil))))
 
 ;; (defun sub-directory-p (dir parent)
-;;   (let ((case-fold-search t))
-;;     (string-match (concat "^" (regexp-quote
-;;                                (file-name-as-directory parent)))
-;;                   (file-name-as-directory dir))))
+;;   (let ((dir*    (file-name-as-directory dir))
+;;         (parent* (file-name-as-directory parent))
+;;         (case-fold-search t))
+;;     (string-match (concat "^" (regexp-quote parent*)) dir*)))
 
 ;; シンボリックリンク考慮なし
 (defun path-equal (pathname1 pathname2)

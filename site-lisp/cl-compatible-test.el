@@ -1,0 +1,57 @@
+;;; site-lisp/cl-compatible-test.el
+
+;;; 充実度が足りない
+
+(require 'ert)
+(require 'cl-compatible)
+
+(ert-deftest logcount ()
+  (should (= (logcount  0) 0))
+  (should (= (logcount -1) 0))
+  (should (= (logcount  7) 3))
+  (should (= (logcount  13) 3))
+  (should (= (logcount -13) 2))
+  (should (= (logcount  30) 4))
+  (should (= (logcount -30) 4))
+  (should (= (logcount (expt 2 10)) 1))
+  (should (= (logcount (- (expt 2 10))) 10))
+  (should (= (logcount (- (1+ (expt 2 10)))) 1))
+  )
+
+(ert-deftest integer-length ()
+  (should (= (integer-length 0) 0))
+  (should (= (integer-length 1) 1))
+  (should (= (integer-length 3) 2))
+  (should (= (integer-length 4) 3))
+  (should (= (integer-length 7) 3))
+  (should (= (integer-length -1) 0))
+  (should (= (integer-length -4) 2))
+  (should (= (integer-length -7) 3))
+  (should (= (integer-length -8) 3))
+  (should (= (integer-length (expt 2 9)) 10))
+  (should (= (integer-length (1- (expt 2 9))) 9))
+  (should (= (integer-length (- (expt 2 9))) 9))
+  (should (= (integer-length (- (1+ (expt 2 9)))) 10))
+  )
+
+(ert-deftest logbitp ()
+  (should (eq (logbitp 1 1) nil))
+  (should (eq (logbitp 0 1) t))
+  (should (eq (logbitp 3 10) t))
+  ;;(should (eq (logbitp 1000000 -1) t)) ; overflow
+  (should (eq (logbitp 2 6) t))
+  (should (eq (logbitp 0 6) nil))
+  )
+
+(ert-deftest pathname-directory ()
+  (should (equal (pathname-directory "/usr/local/bin")
+                 '("usr" "local")))
+  (should (equal (pathname-directory "/usr/local/bin/")
+                 '("usr" "local" "bin")))
+  (should (equal (pathname-directory "/")
+                 nil))
+  )
+
+(ert-deftest compile-file-pathname ()
+  (should (string= (compile-file-pathname "foo.el") "foo.elc"))
+  (should (string= (compile-file-pathname "foo.el.gz") "foo.elc")))

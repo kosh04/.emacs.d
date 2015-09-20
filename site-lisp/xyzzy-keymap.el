@@ -42,6 +42,7 @@
 
 ;; slime-compile-and-load-file
 (elisp:define-key (kbd "C-c C-k") 'emacs-lisp-byte-compile-and-load)
+(elisp:define-key (kbd "C-c C-b") 'eval-buffer)
 (elisp:define-key (kbd "C-c C-i") 'lisp-complete-symbol) ; C-c TAB
 
 (global-set-key (kbd "<M-f4>") 'save-buffers-kill-terminal)
@@ -59,8 +60,8 @@
 
   (global-set-key (kbd "<RET>") 'newline-and-indent)
 
-  (elisp:define-key (kbd "C-c C-m") 'elisp-macroexpand-1)
-  (elisp:define-key (kbd "C-c M-m") 'elisp-macroexpand-all)
+  ;; (elisp:define-key (kbd "C-c C-m") 'elisp-macroexpand-1)
+  ;; (elisp:define-key (kbd "C-c M-m") 'elisp-macroexpand-all)
   ;; (elisp:define-key (kbd "C-c h") 'info-lookup-symbol) ; help-S
   )
 

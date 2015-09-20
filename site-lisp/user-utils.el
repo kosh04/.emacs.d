@@ -1,5 +1,7 @@
 ;;; site-lisp/user-utils.el
 
+;;; 雑多な関数群 or 自作関数に依存するもの
+
 (defun sequence (from to &optional step)
   (if (< from to)
       (number-sequence from to step)
@@ -40,11 +42,22 @@
 (defalias 'sha1sum #'sha1-file)
 
 (defun describe-bindings-anymap (keymap)
-  (interactive (list (intern (completing-read "Keymap: " (apropos-internal "-map\\'")))))
+  "あらゆる KEYMAP のキーマップを表示します."
+  (interactive (list (intern
+                      (completing-read
+                       "Keymap: "
+                       (cl-remove-if-not (lambda (s)
+                                           (and (boundp s) (keymapp (symbol-value s))))
+                                         (apropos-internal "-map\\'"))))))
   (cl-assert (keymapp (symbol-value keymap)))
   (with-help-window (help-buffer)
     (with-current-buffer (help-buffer)
       (insert (substitute-command-keys (format "\\{%s}" keymap))))))
+
+(defun circular-list-p (object)
+  "Returns true if OBJECT is a circular list, NIL otherwise."
+  (and (listp object)
+       (eq (cl-list-length object) nil)))
 
 (provide 'user-utils)
 
