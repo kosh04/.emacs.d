@@ -15,6 +15,7 @@
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop
+;; FIXME: NTEmacs(win)/Cygwin(unix) は .emacs.desktop を共有できないため分ける必要がある
 (require 'desktop)
 (desktop-save-mode)
 ;(setq desktop-load-locked-desktop nil)

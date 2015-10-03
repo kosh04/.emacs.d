@@ -21,4 +21,4 @@ backup/
 
 # misc
 UnicodeData.txt
-/share/dict/utf-8/migemo-dict
+/share/dict/*/migemo-dict
