@@ -24,6 +24,7 @@
 - Platform
   - Windows ([NTEmacs64](https://github.com/chuntaro/NTEmacs64))
   - OSX (Cocoa Emacs)
+- Cask (optional. for develop site-lisp)
 
 ## Installation
 

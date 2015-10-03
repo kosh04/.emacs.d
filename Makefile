@@ -1,18 +1,18 @@
+# todo: use NTEmacs+Cask
+
 EMACS ?= emacs
 EMACSFLAGS = -L site-lisp
-EMACS_BATCH = $(EMACS) -batch -no-site-file $(EMACSFLAGS)
+EMACS_BATCH = $(EMACS) -batch -no-site-file
 
 CASK ?= cask
 CASK_PACKAGE_DIR := $(shell $(CASK) package-directory)
 
-COMPILE.el = $(EMACS_BATCH) -f batch-byte-compile
+COMPILE.el = $(EMACS_BATCH) $(EMACSFLAGS) -f batch-byte-compile
 
 SRC.el := $(filter-out %-test.el, $(wildcard site-lisp/*.el))
 
-TESTS := $(basename $(notdir $(wildcard site-lisp/*-test.el)))
 
-
-default: compile test-startup test-lisp
+default: compile test
 
 compile: $(SRC.el:.el=.elc)
 
@@ -22,18 +22,14 @@ compile: $(SRC.el:.el=.elc)
 
 
 test-startup: $(CASK_PACKAGE_DIR)
-	$(CASK) exec $(EMACS_BATCH) -l test-startup.el
+	$(CASK) exec $(EMACS_BATCH) $(EMACSFLAGS) -l test-startup.el
 
-test-lisp: $(TESTS)
+test: test-lisp
 
-# usage: $(call define-test,$(TEST_NAME))
-define define-test
-.PHONY: $1
-$1: site-lisp/$1.el
-	$$(CASK) exec $$(EMACS_BATCH) -l $$^ -f ert-run-tests-batch-and-exit
-endef
+test-lisp: $(basename $(notdir $(wildcard site-lisp/*-test.el)))
 
-$(foreach test, $(TESTS), $(eval $(call define-test,$(test))))
+%-test: site-lisp/%-test.el
+	$(CASK) exec $(EMACS_BATCH) $(EMACSFLAGS) -l $^ -f ert-run-tests-batch-and-exit
 
 
 $(CASK_PACKAGE_DIR): Cask
