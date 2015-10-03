@@ -3,7 +3,8 @@
 ;; Original: https://gist.github.com/kosh04/568800
 ;; Package-Requires: ((emacs "24") (names "0.5"))
 
-(require 'names)
+(eval-when-compile
+  (require 'names))
 
 (define-namespace unicode-escape-
 

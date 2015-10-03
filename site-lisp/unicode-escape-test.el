@@ -4,6 +4,7 @@
 (require 'unicode-escape)
 
 (ert-deftest unicode-escape ()
+  (should (string= (unicode-escape "") ""))
   (should (string= (unicode-escape "\u3053\u3093\u306b\u3061\u306f")
                    "\\u3053\\u3093\\u306b\\u3061\\u306f"))
   (should (string= (unicode-escape "Hello, World!")
