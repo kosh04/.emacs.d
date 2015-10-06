@@ -13,6 +13,19 @@
 
 (fset 'compiled-function-p #'byte-code-function-p)
 
+;; @@ Documentation
+
+(defun cl-documentaiotn (x doc-type)
+  "Get documentation string assosiated with X depends on DOC-TYPE."
+  (cl-case doc-type
+    (function (documentation x))
+    (variable (or (documentation-property x 'variable-documentation)
+                  (documentation-property (ignore-errors
+                                            (indirect-variable x))
+                                          'variable-documentation)))
+    ;; ...
+    ))
+
 ;; @@ Variable
 
 (defvaralias '*modules* 'features)

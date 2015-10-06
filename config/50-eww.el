@@ -21,10 +21,12 @@
 
 (use-package eww
   :defer t
-  :bind (("=" . eww-view-source)
-         ("[" . eww-back-url)
-         ("]" . eww-forward-url)
-         ("<M-left>" . eww-back-url)
-         ("<M-right>" . eww-forward-url)
-         ("<backspace>" . eww-back-url)
-         ("Q" . kill-this-buffer)))
+  :config
+  (bind-keys :map eww-mode-map
+             ("=" . eww-view-source)
+             ("[" . eww-back-url)
+             ("]" . eww-forward-url)
+             ("<M-left>" . eww-back-url)
+             ("<M-right>" . eww-forward-url)
+             ("<backspace>" . eww-back-url)
+             ("Q" . kill-this-buffer)))

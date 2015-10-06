@@ -916,8 +916,6 @@
 (fset 'quit-recursive-edit #'abort-recursive-edit) ; ? exit-recursive-edit
 ;; (fset 'toggle-trace-on-error #'toggle-debug-on-error)
 
-;; (fset 'documentation #'documentation-property)
-
 (defun goto-column (column)
   (move-to-column column nil))
 

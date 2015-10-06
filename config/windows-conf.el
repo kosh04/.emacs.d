@@ -27,3 +27,8 @@
   (setq vc-handled-backends (delete 'Git vc-handled-backends))
   (remove-hook 'find-file-hook 'vc-find-file-hook)
   (remove-hook 'kill-buffer-hook 'vc-kill-buffer-hook))
+
+;; プチフリーズはGCが原因かもしれない
+;;(setq gc-cons-threshold 800000 gc-cons-percentage 0.1)
+(setq gc-cons-threshold (* gc-cons-threshold 4))
+(setq gc-cons-percentage 0.5)

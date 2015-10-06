@@ -59,6 +59,15 @@
   (and (listp object)
        (eq (cl-list-length object) nil)))
 
+(defun arglist (def)
+  "Get DEF arguments."
+  (when (fboundp def)
+    (or (car (help-split-fundoc (documentation def) def))
+        (help-function-arglist def))))
+
+;; (arglist 'lambda)  => "(lambda ARGS [DOCSTRING] [INTERACTIVE] BODY)"
+;; (arglist 'arglist) => (def)
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here
