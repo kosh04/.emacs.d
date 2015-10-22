@@ -2,9 +2,11 @@
 
 (use-package go-mode
   :defer t
-  :init (add-hook 'before-save-hook 'gofmt-before-save)
-  :config (custom-set-variables
-           '(go-play-browse-function #'browse-url)))
+  :config
+  (progn
+    (add-hook 'before-save-hook 'gofmt-before-save)
+    (custom-set-variables
+     '(go-play-browse-function #'browse-url))))
 
 ;; go-playground
 ;; https://github.com/kosh04/emacs-go-playground
