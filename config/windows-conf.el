@@ -30,5 +30,5 @@
 
 ;; プチフリーズはGCが原因かもしれない
 ;;(setq gc-cons-threshold 800000 gc-cons-percentage 0.1)
-(setq gc-cons-threshold (* gc-cons-threshold 4))
+(setq gc-cons-threshold (* gc-cons-threshold 5))
 (setq gc-cons-percentage 0.5)

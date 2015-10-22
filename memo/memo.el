@@ -170,10 +170,9 @@ system-type                             ; windows-nt
 temporary-file-directory                ; "c:/Users/kosh/AppData/Local/Temp/"
                                         ; "c:/tmp/"
 
-;; == exec-path
-`("." ,exec-directory
-      ,@(mapcar 'expand-file-name (split-string (getenv "PATH") path-separator t))
-      )
+;; (split-string (getenv "PATH") path-separator) に近い
+(setq exec-path (parse-colon-path (getenv "PATH")))
+
 
 (defun windows-p ()
   (if (memq system-type '(ms-dos windows-nt)) t nil))
@@ -888,21 +887,6 @@ user-login-name
 ;; ミニバッファリサイズの挙動 (nil t grow-only)
 resize-mini-windows
 
-;;; @@emacs-server
-;; http://www.emacswiki.org/cgi-bin/wiki/EmacsClient
-server-mode
-server-visit-hook
-server-done-hook
-server-window
-server-process
-(process-status server-process)         ; listen / closed
-
-;; emacsclientを使って動的にサーバの状態を変更する
-(server-mode 1)
-$ emacsclient -e '(message "Hello!")'
-
-(server-start)
-
 ;; ファイルのロード中に(exit)関数があるとうれしい気がするんだが
 ;; インデントされたくない
 (when (boundp 'hoge)
@@ -1091,12 +1075,9 @@ M-x: ff-find-other-file
 ;; つかえないよ
 (defun switch-to-mode (mode)
   (interactive (list (completing-read "Mode: "
-                                      (mapcar #'(lambda (lst)
-                                                  (let ((mode (cdr lst)))
-                                                    (if (consp mode)
-                                                        (car (cdr mode))
-                                                        mode)))
-                                              auto-mode-alist)
+                                      (-map (-lambda ((re . mode))
+                                              (if (consp mode) (cadr mode) mode))
+                                            auto-mode-alist)
                                       nil t)))
   (funcall mode))
 
@@ -1107,15 +1088,6 @@ M-x: ff-find-other-file
 普段使わないどうでもいい関数はmemo.elに
 windows/linuxでパス名が異なるのも何とかしたい (setq hoge-command "/bin/bash")
 
-;; emacsclient
-;; http://www.emacswiki.org/cgi-bin/wiki/EmacsClient
-(expand-file-name "emacs.bash" data-directory)
-
-(add-hook 'server-visit-hook
-          (defun topmost ()
-            (frame-first-window)
-            (x-focus-frame (selected-frame))
-            (frame-focus (selected-frame))))
 
 (defvar radix64 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
 (mapconcat #'string
@@ -1199,7 +1171,7 @@ global-mark-ring
     (coding-system ,(process-coding-system process))
     (command ,(process-command process))
     (contact ,(process-contact process))
-    (datagram-address  ,(process-datagram-address process))
+    (datagram-address ,(ignore-errors (process-datagram-address process)))
     (exit-status  ,(process-exit-status process))
     (filter  ,(process-filter process))
     (sentinel  ,(process-sentinel process))
@@ -2064,3 +2036,16 @@ command-history                   ;=> ((eval-expression [#2] nil))
 
 (add-hook 'find-file-hook 'auto-view-mode)
 (remove-hook 'find-file-hook 'auto-view-mode)
+
+;; SUB-FEATURE とは?
+(featurep 'make-network-process '(:family local))
+
+;; パッケージからインストールしたものを列挙する
+(let (acc)
+  (mapatoms (lambda (s)
+              (let* ((source (ignore-errors (feature-file s))))
+                (when (and (stringp source)
+                           (sub-directory-p source package-user-dir))
+                  (pushnew (file-name-base source) acc :test #'equal)))))
+  (nreverse acc))
+;;=> ("anzu" "paredit-autoloads" "request-deferred" "elisp-slime-nav")

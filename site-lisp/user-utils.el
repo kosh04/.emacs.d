@@ -43,12 +43,7 @@
 
 (defun describe-bindings-anymap (keymap)
   "あらゆる KEYMAP のキーマップを表示します."
-  (interactive (list (intern
-                      (completing-read
-                       "Keymap: "
-                       (cl-remove-if-not (lambda (s)
-                                           (and (boundp s) (keymapp (symbol-value s))))
-                                         (apropos-internal "-map\\'"))))))
+  (interactive (list (intern (completing-read "Keymap: " obarray 'keymapp))))
   (cl-assert (keymapp (symbol-value keymap)))
   (with-help-window (help-buffer)
     (with-current-buffer (help-buffer)

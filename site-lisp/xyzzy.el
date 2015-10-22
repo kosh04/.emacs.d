@@ -175,21 +175,13 @@
      (fset 'get-short-path-name #'w32-short-file-name))
 
 (defun sub-directory-p (dir parent)
-  "DIRECTORYがPARENTのサブディレクトリならt、そうでなければnilを返す。"
-  (do ((x (pathname-directory (file-name-as-directory dir)) (cdr x))
-       (y (pathname-directory (file-name-as-directory parent)) (cdr y)))
-      ((null y) t)
-    (if (or (null x)
-            (not (compare-strings (car x) nil nil
-                                  (car y) nil nil
-                                  :ignore-case)))
-        (return nil))))
-
-;; (defun sub-directory-p (dir parent)
-;;   (let ((dir*    (file-name-as-directory dir))
-;;         (parent* (file-name-as-directory parent))
-;;         (case-fold-search t))
-;;     (string-match (concat "^" (regexp-quote parent*)) dir*)))
+  (cl-labels ((sublistp (prefix list &key (test #'equal))
+                "PREFIX が LIST の先頭要素をカバーするかどうかを判定する."
+                (let ((list* (cl-subseq list 0 (min (length prefix) (length list)))))
+                  (funcall test prefix list*))))
+    (sublistp (pathname-directory (file-name-as-directory parent))
+              (pathname-directory (file-name-as-directory dir))
+              :test #'cl-equalp)))
 
 ;; シンボリックリンク考慮なし
 (defun path-equal (pathname1 pathname2)
@@ -988,7 +980,7 @@
   (redraw-frame (selected-frame)))
 
 (defun autoload-function-p (def)
-  (eq 'autoload (car-safe (symbol-function def))))
+  (autoloadp (symbol-function def)))
 
 (defvaralias '*expected-fileio-encoding* 'coding-system-for-read
   "エンコードを指定してファイルの読み込み")

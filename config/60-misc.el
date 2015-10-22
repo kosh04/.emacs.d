@@ -48,3 +48,16 @@
 
 ;; font-lock
 (put 'font-lock-add-keywords 'lisp-indent-function 1)
+
+
+;; elnode
+(with-eval-after-load 'elnode
+
+(defun elnode--http-send-bytes (f httpcon text)
+  "[user] monkey patch for `elnode-http-send-string' as raw bytes.
+see also https://github.com/nicferrier/elnode/pull/101"
+  (funcall f httpcon (encode-coding-string text 'raw-text)))
+
+(advice-add 'elnode-http-send-string :around 'elnode--http-send-bytes)
+;;(advice-remove 'elnode-http-send-string 'elnode--http-send-as-bytes)
+)

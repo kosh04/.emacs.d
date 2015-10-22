@@ -74,10 +74,19 @@
 (require 'elp)
 (require 'disass)
 (require 'debug)
-;; a source-level debugger for Emacs Lisp
-(require 'edebug)
 ;;; pp.el --- pretty printer for Emacs Lisp
 (require 'pp)
+
+;; a source-level debugger for Emacs Lisp
+;; C-u C-M-x で関数をデバッグ定義. 関数を再定義すればデバッグは解除される.
+(require 'edebug)
+
+;; trace.el ---  CL の trace/untrace に近いトレース評価
+;; http://clhs.lisp.se/Body/m_tracec.htm
+(defun fact (n) (if (zerop n) 1 (* n (fact (- n 1)))))
+(trace-function 'fact)
+(fact 3)
+(untrace-function 'fact)
 
 (defmacro d (expr)
  `(let ((_var (eval ',expr)))
@@ -113,6 +122,17 @@
 (symbol-file 'xyzzy)                    ; "c:/home/lxuser/lib/emacs/xyzzy.el"
 (symbol-file 'symbol-file)              ; "c:/home/emacs/22.1/lisp/subr.elc"
 
+(defun symbol-source-file (symbol)
+  "[user] SYMBOL が定義されているファイル名を返します."
+  (let ((type (cond ((fboundp symbol) (symbol-function symbol))
+                    ((boundp symbol) 'defvar)
+                    (t nil))))
+    (find-lisp-object-file-name symbol type)))
+
+;; (symbol-source-file 'car)       ;=> C-source (symbol)
+;; (symbol-source-file 'dired)     ;=> "/path/to/lisp/dired.el"
+;; (symbol-source-file 'foo)       ;=> nil
+
 (add-to-list 'minor-mode-alist '(debug-on-error " (ﾟдﾟ)"))
 (toggle-debug-on-error)
 
@@ -120,9 +140,18 @@
 (exit-recursive-edit)
 (quit-recursive-edit)                   ; alias for `abort-recursive-edit'
 
-;;; @@compile
+;;; byte-compile / byte-code
+;;; ------------------------
+;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Byte-Compilation.html
+
 ;; 指定したディレクトリ以下を再バイトコンパイル
 (byte-recompile-directory "~/lib/emacs/" t) ; *.elcのないファイルも強制的に？
+
+(defun fact (n) (if (zerop n) 1 (* n (fact (- n 1)))))
+(byte-compile 'fact)
+;; バイトコードは実行可能
+(#[(n) "\301\010!\203\010\000\302\207\010\303\010S!_\207" [n zerop 1 fact] 3]
+ 10) ;;=> 3628800
 
 ;; C-u C-M-x (eval-defun) で edebug 起動
 

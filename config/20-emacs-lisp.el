@@ -3,6 +3,8 @@
 ;; Emacs Source Repository
 ;; http://git.savannah.gnu.org/cgit/emacs.git
 
+;; NOTE: lisp-interaction-mode は emacs-lisp-mode の子モードのため hook が継承される
+
 (setq find-function-C-source-directory
       (if (file-directory-p #1="~/src/gitrepo/emacs/src/")
           #1#
@@ -20,7 +22,6 @@
   :config
   (progn
     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-    (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
     (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
     ;; 引数表示をSLIME風にする
     (set-face-attribute 'eldoc-highlight-function-argument nil
@@ -35,8 +36,7 @@
   :diminish elisp-slime-nav-mode
   :config
   (progn
-    (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
-    (add-hook 'lisp-interaction-mode-hook 'turn-on-elisp-slime-nav-mode))
+    (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode))
   :ensure t)
 
 (define-key help-map (kbd "j") 'find-function) ; or #'find-variable
@@ -121,4 +121,4 @@
   t)
 
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
-(add-hook 'lisp-interaction-mode-hook 'user:prettify-lambda)
+

@@ -55,3 +55,18 @@
 (ert-deftest compile-file-pathname ()
   (should (string= (compile-file-pathname "foo.el") "foo.elc"))
   (should (string= (compile-file-pathname "foo.el.gz") "foo.elc")))
+
+(ert-deftest cl-string= ()
+  (should     (cl-string= "foo" "foo"))
+  (should-not (cl-string= "foo" "Foo"))
+  (should-not (cl-string= "foo" "bar"))
+  (should     (cl-string= "together" "frog" :start1 1 :end1 3 :start2 2))
+  (should-not (cl-string= "together" "frOG" :start1 1 :end1 3 :start2 2))
+  (should     (cl-string= "abcd" "01234abcd9012" :start2 5 :end2 9)))
+
+(ert-deftest cl-string-equal ()
+  (should     (cl-string-equal "foo" "foo"))
+  (should     (cl-string-equal "foo" "Foo"))
+  (should-not (cl-string-equal "foo" "bar"))
+  (should     (cl-string-equal "together" "frog" :start1 1 :end1 3 :start2 2))
+  (should     (cl-string-equal "together" "frOG" :start1 1 :end1 3 :start2 2)))

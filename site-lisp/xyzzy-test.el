@@ -12,4 +12,7 @@
   (should (sub-directory-p "~/.emacs.d/" "~/.emacs.d"))
   (should (sub-directory-p "~/.emacs.d" "~/.emacs.d"))
   (should-not (sub-directory-p "/" "/bin"))
+  (should-not (sub-directory-p "/bin" "/usr/bin"))
+  (should-not (sub-directory-p "/usr/bin" "/usr/sbin"))
+  (should-not (sub-directory-p "/usr/local/bin" "/usr/bin"))
   (should-error (sub-directory-p nil "")))

@@ -1,6 +1,6 @@
 ;;; cl-compatible.el --- Common Lisp flavor functions/variables
 
-;; Author: KOBAYASHI Shigeru (kosh) <shigeru.kb@gmailcom>
+;; Author: KOBAYASHI Shigeru (kosh) <shigeru.kb@gmail.com>
 ;; Version: 0.1
 ;; Created: 2015-02-23
 ;; Keywords: lisp,common-lisp
@@ -196,15 +196,32 @@
           (downcase (substring string start end))
           (if end (substring string end) "")))
 
-;; 大文字小文字を区別して文字列の比較
-;; string-equalのエイリアスとして定義されている(subr.el)ので上書きすると問題があるかも
-;; (defun* string= (string1 string2 &key (start1 0) end1 (start2 0) end2)
-;;   (check-type string1 string)
-;;   (check-type string2 string)
-;;   (eq (compare-strings string1 start1 end1
-;;                        string2 start2 end2
-;;                        nil)
-;;       t))
+;; NOTE: Emacs-Lisp において string= は string-equal のエイリアス.
+;; おまけに大文字小文字を区別しない
+
+(when (and (not (featurep 'cl-compatible))
+           (fboundp 'cl-string=))
+  (warn "cl-string= is already defined."))
+
+(cl-defun cl-string= (string1 string2 &key (start1 0) end1 (start2 0) end2)
+  "大文字小文字を区別して文字列を比較する."
+  (eq (compare-strings string1 start1 end1
+                       string2 start2 end2
+                       nil)
+      t))
+
+(cl-defun cl-string-equal (string1 string2 &key (start1 0) end1 (start2 0) end2)
+  "大文字小文字を区別せずに文字列を比較する."
+  (eq (compare-strings string1 start1 end1
+                       string2 start2 end2
+                       t)
+      t))
+
+;; (cl-defun cl-string-equal (string1 string2 &key (start1 0) end1 (start2 0) end2)
+;;   (cl-check-type string1 string)
+;;   (cl-check-type string2 string)
+;;   (cl-equalp (substring string1 start1 end1)
+;;              (substring string2 start2 end2)))
 
 ;; (defun* string/= (string1 string2 &key (start1 0) end1 (start2 0) end2)
 ;;   (not (string= string1 string2
@@ -360,8 +377,9 @@
   (if function-name
       `(mapc #'trace-function ',function-name)
       `(let (fns)
-         (ad-do-advised-functions (fn)
-           (if (trace-is-traced fn) (push fn fns)))
+         (mapatoms (lambda (s)
+                     (if (trace-is-traced s)
+                         (push s fns))))
          (nreverse fns))))
 
 (defmacro untrace (&rest function-name)
