@@ -47,3 +47,6 @@
 (require 'hl-line)
 (set-face-background 'hl-line "#DEEDFF")
 (add-hook 'help-mode-hook 'hl-line-mode)
+
+(add-hook 'tabulated-list-mode-hook 'hl-line-mode)
+(add-hook 'finder-mode-hook 'hl-line-mode)

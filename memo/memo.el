@@ -2049,3 +2049,13 @@ command-history                   ;=> ((eval-expression [#2] nil))
                   (pushnew (file-name-base source) acc :test #'equal)))))
   (nreverse acc))
 ;;=> ("anzu" "paredit-autoloads" "request-deferred" "elisp-slime-nav")
+
+;; コマンドライン文字列のテンプレート
+(require 'format-spec)
+
+(let ((host "localhost")
+      (port "https")
+      (cmd "gnutls-cli --insecure -p %p %h"))
+  (format-spec cmd `((?h . ,host)
+                     (?p . ,(if (integerp port) (int-to-string port) port)))))
+;;=> "gnutls-cli --insecure -p https localhost"

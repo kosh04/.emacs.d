@@ -21,3 +21,7 @@
 ;; disable
 (global-unset-key (kbd "C-x m"))        ; compose-mail
 (global-unset-key (kbd "C-x C-n"))      ; set-goal-column
+
+(define-key completion-list-mode-map "q"
+  (lambda () (interactive) (quit-window t)))
+

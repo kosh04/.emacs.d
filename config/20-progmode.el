@@ -64,7 +64,9 @@
   :defer t
   :config
   (progn
-    (bind-keys :map newlisp-mode-map ("C-c h" . newlisp-lookup-manual))
+    (bind-keys :map newlisp-mode-map
+               ("C-M-i" . newlisp-complete-symbol)
+               ("C-c h" . newlisp-lookup-manual))
     (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))
   :ensure t)
 
@@ -72,13 +74,6 @@
 (use-package tss
   :defer t
   :mode ("\\.ts\\'" . typescrip-mode))
-
-;; Wandbox
-(use-package wandbox
-  :defer t
-  :bind (("C-c w w" . wandbox)
-         ("C-c w e" . wandbox-eval-last-sexp)
-         ("C-c w l" . wandbox-list-compilers)))
 
 ;; Smart Compile
 (use-package smart-compile

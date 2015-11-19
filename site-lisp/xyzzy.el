@@ -76,7 +76,6 @@
      (defvar ,symbol ,value ,docstring)
      (make-variable-buffer-local ',symbol)))
 
-
 ;;; @@ Character
 (fset 'char-columns #'char-width)
 

@@ -30,6 +30,7 @@
 
 1. Clone thie repository. (recommended `~/.emacs.d/`)
 2. Put `(load "/path/to/init.el" t)` into your `.eamcs`.
+3. `cask install`
 
 ## Rules
 

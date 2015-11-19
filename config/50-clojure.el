@@ -10,5 +10,9 @@
             (defun user:end-of-symbol (&rest args)
               (skip-syntax-forward "w_"))
             (advice-add 'cider-eval-last-sexp :before 'user:end-of-symbol)
-            (setq cider-repl-result-prefix ";;=> "))
+            (setq cider-repl-result-prefix ";;=> ")
+            (setq nrepl-buffer-name-show-port nil) ; [PROJECT/NAME@PORT]
+            (setq nrepl-hide-special-buffers t)
+            (add-hook 'clojure-mode-hook 'cider-mode)
+            (add-hook 'cider-mode-hook 'eldoc-mode))
   :ensure clojure-mode)

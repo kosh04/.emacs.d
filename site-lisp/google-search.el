@@ -1,4 +1,9 @@
-;;; google.el --- 簡易 Google 検索		-*- coding: utf-8 -*-
+;;; google.el --- 簡易 Google 検索   -*- coding: utf-8; lexical-binding: t -*-
+
+;;; Example:
+
+;; (require 'google-search)
+;; (global-set-key (kbd "C-c g") 'google-search)
 
 ;; 元ネタ: 自慢の.emacsを貼り付けよう スレ 198
 ;; http://www.geocities.co.jp/SiliconValley-SanJose/7225/log/1001393679.html#R198
@@ -7,7 +12,7 @@
   (setq str (encode-coding-string str 'utf-8))
   (let* ((len (length str))
          (ret (make-string (* len 3) ?a))
-         (i 0) (j 0) char type)
+         (i 0) (j 0) char)
     (while (< i len)
       (setq char (aref str i))
       (if (< char 126)
@@ -19,9 +24,6 @@
         (aset ret j (aref "0123456789ABCDEF" (logand char 15))))
       (setq i (1+ i) j (1+ j)))
     (substring ret 0 j)))
-
-(if (fboundp 'url-hexify-string)
-    (fset 'google-encoding #'url-hexify-string))
 
 ;; ブラウザをw3mに変更する場合は
 ;; (require 'w3m)
@@ -53,6 +55,6 @@
 
 ;; (global-set-key (kbd "C-c g") 'google-search)
 
-(provide 'google)
+(provide 'google-search)
 
 ;;; google.el ends here.

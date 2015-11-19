@@ -2,20 +2,26 @@
 
 ;; Package
 (require 'package)
+
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-;;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ; OLD
-;;(add-to-list 'package-archives '("marmalade" . "http://melpa-stable.milkbox.net/packages/") t)
-;;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(package-initialize)
+;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 
-(add-hook 'package-menu-mode-hook 'hl-line-mode)
+;;(package-initialize t)
 
 (with-eval-after-load "package"
   (define-key package-menu-mode-map (kbd "I") 'package-install)
   (define-key package-menu-mode-map (kbd "?") 'describe-package)
   (define-key package-menu-mode-map (kbd "/") 'occur)
   t)
+
+(defun package-uninstall (pkg)
+  "Uninstall the package PKG."
+  (interactive (list (intern (completing-read "Uninstall package: " package-alist))))
+  (-let (((_ pkg-desc)
+          (assq pkg package-alist)))
+    (if (package-desc-p pkg-desc)
+        (package-delete pkg-desc))))
 
 ;; use-package
 (or (require 'use-package nil t)
@@ -24,11 +30,13 @@
       `(message "Ignore Package: %s" ',name)))
 
 (custom-set-variables
- '(use-package-verbose t))
+ '(use-package-verbose t)
+ ;; すべて自動インストールしたい場合
+ ;;'(use-package-always-ensure t)
+ )
 
-;; Cask - Project management for Emacs package development
-(use-package cask
-  :defer t
-  :mode ("Cask\\'" . emacs-lisp-mode)
-  :config (cask-initialize))
-
+;; ~/.emacs.d./Cask を同期させる
+(use-package pallet
+  ;;:defer t
+  :config (pallet-mode t)
+  :ensure cask)

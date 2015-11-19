@@ -1,14 +1,16 @@
 ;;; config/shell.el
 
-(defun my:shell-other-window ()
+(defun user:shell-other-window ()
+  "[user] シェルを別ウィンドウで開きます."
   (interactive)
   (let ((buffer (save-window-excursion
                   ;; Enable current-prefix-arg
                   (call-interactively 'shell))))
+    ;; FIXME: 分割済みウィンドウでは機能していない
     (or (eq buffer (current-buffer))
         (switch-to-buffer-other-window buffer))))
 
-(global-set-key (kbd "C-c s") 'my:shell-other-window)
+(global-set-key (kbd "C-c s") 'user:shell-other-window)
 
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)

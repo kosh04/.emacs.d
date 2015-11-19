@@ -22,15 +22,15 @@
 (defalias 'insert-time #'user:insert-time)
 (global-set-key (kbd "C-c t") 'insert-time)
 
-(defun my:delete-backward-word (&optional n)
-  "直前の単語を削除する."
+(defun delete-backward-word (&optional n)
+  "[user] 直前の単語を削除する."
   (interactive "p")
   (unless (integerp n)
     (signal 'wrong-type-argument (list 'integerp n)))
   (delete-region (point)
                  (progn (backward-word n) (point))))
 
-(defalias 'delete-backward-word 'my:delete-backward-word)
+;; C-w で直前の単語を削除する (bash)
 (define-key minibuffer-local-map (kbd "C-w") 'delete-backward-word)
 
 ;;; find-file-at-point
@@ -46,11 +46,11 @@
   (let ((ffap-url-fetcher #'find-file))
     (call-interactively #'ffap)))
 
-;; font-lock
-(put 'font-lock-add-keywords 'lisp-indent-function 1)
+;; elisp インデントを調整
+(setf (get 'font-lock-add-keywords 'lisp-indent-function) 1)
+(setf (get 'completing-read 'lisp-indent-function) 1)
 
-
-;; elnode
+;; Elnode パッチ
 (with-eval-after-load 'elnode
 
 (defun elnode--http-send-bytes (f httpcon text)
