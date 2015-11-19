@@ -1,7 +1,7 @@
 (source "gnu" "https://elpa.gnu.org/packages/")
-(source "marmalade" "https://marmalade-repo.org/packages/")
 (source "melpa" "https://melpa.org/packages/")
 (source "melpa-stable" "https://stable.melpa.org/packages/")
+;;(source "marmalade" "https://marmalade-repo.org/packages/")
 
 (depends-on "ag")
 (depends-on "anzu")
