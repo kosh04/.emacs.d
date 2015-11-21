@@ -12,14 +12,20 @@
 ;; インストール元を固定する. 安定版を利用したいときに.
 (setq package-pinned-packages
       '((cider . "melpa-stable")
+        (magit . "melpa-stable")
         (elnode . "marmalade")))
 
 ;; Cask - Project management for Emacs package development
 (require 'cask "~/.cask/cask.el" t)
 
-;; コマンドライン以外から読み込んでも多分意味ない
+;; コマンドライン以外から読み込んでも多分意味ないのでは…？
 (use-package cask
   :defer t
   :mode ("Cask\\'" . emacs-lisp-mode)
   :config (cask-initialize))
 
+;; ~/.emacs.d./Cask を同期させる
+(use-package pallet
+  ;;:defer t
+  :config (pallet-mode t)
+  :ensure cask)

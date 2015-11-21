@@ -34,9 +34,3 @@
  ;; すべて自動インストールしたい場合
  ;;'(use-package-always-ensure t)
  )
-
-;; ~/.emacs.d./Cask を同期させる
-(use-package pallet
-  ;;:defer t
-  :config (pallet-mode t)
-  :ensure cask)
