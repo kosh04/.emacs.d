@@ -50,3 +50,4 @@
 
 (add-hook 'tabulated-list-mode-hook 'hl-line-mode)
 (add-hook 'finder-mode-hook 'hl-line-mode)
+(add-hook 'occur-mode-hook 'hl-line-mode)

@@ -1,6 +1,6 @@
 language: emacs-lisp
 
-sudo: requied
+sudo: required
 
 env:
   matrix:

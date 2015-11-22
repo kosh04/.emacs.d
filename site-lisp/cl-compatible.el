@@ -228,7 +228,7 @@
 ;;                 :start1 start1 :end1 end1
 ;;                 :start2 start2 :end2 end2)))
 
-(defun string-left-trim (char-bag string)
+(defun cl-string-left-trim (char-bag string)
   (setq char-bag (let (acc)
                    (dotimes (n (length char-bag))
                      (push (elt char-bag n) acc))
@@ -240,7 +240,7 @@
              (null (memq (elt string index) char-bag)))
          (substring string index)))))
 
-(defun string-right-trim (char-bag string)
+(defun cl-string-right-trim (char-bag string)
   ;; (setq char-bag (coerce char-bag 'list))
   (setq char-bag (let (acc)
                    (dotimes (n (length char-bag))
@@ -253,7 +253,7 @@
              (null (memq (elt string index) char-bag)))
          (substring string start (1+ index))))))
 
-(defun string-trim (char-bag string)
+(defun cl-string-trim (char-bag string)
   (string-left-trim char-bag (string-right-trim char-bag string)))
 
 (defun* parse-integer (string &key start end radix junk-allowed)

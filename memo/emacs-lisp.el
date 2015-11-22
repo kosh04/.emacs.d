@@ -285,3 +285,17 @@ max-specpdl-size
 ;; `call-interactively' is by adding an extra optional argument,
 ;; and making the `interactive' spec specify non-nil unconditionally
 ;; for that argument.  (`p' is a good way to do this.)
+
+;; ## 出力関数 (print, prin1, princ)
+
+;; 出力する文字毎に関数を呼び出す
+(print :こんにちは (lambda (c) (message "recv: %c" c)))
+;; recv: \n
+;; recv: :
+;; recv: こ
+;; recv: ん
+;; recv: に
+;; recv: ち
+;; recv: は
+;; recv: \n
+;; -> :こんにちは

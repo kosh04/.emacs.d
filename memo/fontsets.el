@@ -15,3 +15,8 @@
     (dolist (font (x-list-fonts "*"))   ; or (w32-select-font)
       (princ font)
       (terpri))))
+
+(with-output-to-temp-buffer "*Font Family*"
+  (dolist (font (font-family-list))
+    (princ font)
+    (terpri)))

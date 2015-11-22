@@ -73,7 +73,7 @@
 ;; TypeScript
 (use-package tss
   :defer t
-  :mode ("\\.ts\\'" . typescrip-mode))
+  :mode ("\\.ts\\'" . typescript-mode))
 
 ;; Smart Compile
 (use-package smart-compile
