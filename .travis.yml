@@ -9,6 +9,10 @@ env:
   global:
     - CASK=${HOME}/.cask/bin/cask
 
+matrix:
+  allow_failures:
+    - EMACS: emacs-snapshot
+
 cache:
   directories:
     - ${HOME}/.emacs.d/.cask
