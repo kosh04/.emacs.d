@@ -299,3 +299,11 @@ max-specpdl-size
 ;; recv: は
 ;; recv: \n
 ;; -> :こんにちは
+
+;; ## Emacsに関する環境変数
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/General-Variables.html
+
+;; $EMACSPATH
+;; 設定されていれば exec-path にパスとして追加される
+(length exec-path)                          ;=> 57
+(length (parse-colon-path (getenv "PATH"))) ;=> 48

@@ -14,5 +14,10 @@
             (setq nrepl-buffer-name-show-port nil) ; [PROJECT/NAME@PORT]
             (setq nrepl-hide-special-buffers t)
             (add-hook 'clojure-mode-hook 'cider-mode)
-            (add-hook 'cider-mode-hook 'eldoc-mode))
+            (add-hook 'cider-mode-hook 'eldoc-mode)
+            ;; cider-repl
+            (custom-set-variables
+             `(cider-repl-history-file ,(locate-user-emacs-file "nrepl-history"))
+             `(cider-repl-use-pretty-printing t))
+            )
   :ensure clojure-mode)

@@ -10,6 +10,8 @@
           #1#
           "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/"))
 
+(add-to-list 'auto-mode-alist '("Cask" . emacs-lisp-mode))
+
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
 ;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
 

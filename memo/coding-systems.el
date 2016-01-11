@@ -114,3 +114,7 @@ current-language-environment
 (defun what-charset-region (from to)
   (interactive "r")
   (message "%s" (find-charset-region from to)))
+
+;; [2016-01-11]
+;; BOM あり UTF-8 な html ファイルの中身に <meta charset="utf-8"> が
+;; 含まれているとファイル保存時に BOM が取り除かれてしまう
