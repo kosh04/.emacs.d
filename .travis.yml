@@ -11,7 +11,7 @@ addons:
 
 install:
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
-  - export PATH=${PATH}:${HOME}/.cask/bin/cask
+  - export PATH=${PATH}:${HOME}/.cask/bin
 
 script:
   - emacs --version
