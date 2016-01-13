@@ -2,18 +2,17 @@ language: emacs-lisp
 
 sudo: false
 
-env:
-  - EMACS=emacs24
-  - CASK=${HOME}/.cask/bin/cask
-
 addons:
   apt:
+    sources:
+      - cassou-emacs
     packages:
       - emacs24
 
 install:
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
+  - export PATH=${PATH}:${HOME}/.cask/bin/cask
 
 script:
-  - ${EMACS} --version
+  - emacs --version
   - make compile test-lisp test-startup
