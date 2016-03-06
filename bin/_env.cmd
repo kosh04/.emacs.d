@@ -18,9 +18,13 @@ set EMACSPATH=%EMACSPATH%;C:\opt\ecl
 rem == Git ==
 set EMACSPATH=%EMACSPATH%;C:\opt\Git\bin
 
+rem == Go ==
+set EMACSPATH=%EMACSPATH%;%HOME%\opt\go\bin
+
 rem == PuTTY ==
 rem set EMACSPATH=%EMACSPATH%;%ProgramFiles(x86)%\PuTTY
-set EMACSPATH=%EMACSPATH%;%HOME%\opt\putty-0.64-jp20150301
+rem set EMACSPATH=%EMACSPATH%;%HOME%\opt\putty-0.66-jp20151110
+set PATH=%PATH%;%HOME%\opt\putty-0.66-jp20151110
 
 rem == Ruby ==
 set EMACSPATH=%EMACSPATH%;C:\Ruby22-x64\bin

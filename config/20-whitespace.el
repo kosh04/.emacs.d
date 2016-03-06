@@ -1,8 +1,8 @@
 ;;; config/whitespace.el
 
 (custom-set-variables
- '(whitespace-style '(face lines-tail))
+ `(whitespace-style '(tabs face trailing lines-tail))
  ;; N+1行目以降をハイライト (lines-tail)
- '(whitespace-line-column 80))
+ `(whitespace-line-column ,fill-column))
 
 ;;(add-hook 'prog-mode-hook 'whitespace-mode)

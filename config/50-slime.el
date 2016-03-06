@@ -17,10 +17,16 @@
   ;; NOTE: type [,] runs the command slime-handle-repl-shortcut
   (define-key slime-repl-mode-map (kbd "C-c C-q") 'slime-repl-sayoonara))
 
+(with-eval-after-load "hyperspec"
+  (let ((clhs-root (expand-file-name "~/Dropbox/Downloads/HyperSpec-7-0/HyperSpec/")))
+    (setq common-lisp-hyperspec-root (concat "file://" clhs-root)
+          common-lisp-hyperspec-symbol-table (expand-file-name "Data/Map_Sym.txt" clhs-root))))
+
 ;; SLY is Sylvester the Cat's Common Lisp IDE
 ;; https://github.com/capitaomorte/sly
 (use-package sly
   :defer t
+  :init (remove-hook 'lisp-mode-hook 'slime-lisp-mode-hook)
   :config
   (progn
     (setq sly-lisp-implementations
@@ -30,3 +36,9 @@
           sly-default-lisp 'sbcl)
     (sly-setup '(sly-fancy)))
   :ensure nil)
+
+(use-package sly-comapny
+  :config
+  (add-hook 'sly-mode-hook 'sly-company-mode)
+  (add-to-list 'company-backends 'sly-company)
+  :ensure company)

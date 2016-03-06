@@ -29,8 +29,5 @@
   :ensure t)
 
 (use-package flycheck-pos-tip
-  :if window-system
-  :config
-  (custom-set-variables
-   '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+  :config (flycheck-pos-tip-mode +1)
   :ensure flycheck)

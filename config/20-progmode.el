@@ -59,17 +59,6 @@
   :mode ("\\.bat\\'"
          "\\.cmd\\'"))
 
-;; newLISP
-(use-package newlisp-mode
-  :defer t
-  :config
-  (progn
-    (bind-keys :map newlisp-mode-map
-               ("C-M-i" . newlisp-complete-symbol)
-               ("C-c h" . newlisp-lookup-manual))
-    (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))
-  :ensure t)
-
 ;; TypeScript
 (use-package tss
   :defer t

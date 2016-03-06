@@ -68,14 +68,23 @@
 ;; elispのデバッグ関数色々
 ;; デバッガ (debug, edebug)
 ;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_18.html#Edebug
-;; プロファイラ (profile) -> (OBSOLETE; use elp.el instead)
-;; http://www.mew.org/~kazu/doc/elisp/profile.html
-(require 'profiler)
-(require 'elp)
 (require 'disass)
 (require 'debug)
 ;;; pp.el --- pretty printer for Emacs Lisp
 (require 'pp)
+
+;; プロファイラ (profile) -> (OBSOLETE; use elp.el instead)
+;; http://www.mew.org/~kazu/doc/elisp/profile.html
+(require 'elp)
+(require 'benchmark)
+(require 'profiler)
+
+;; Emacs Native Profiler
+;; http://cx4a.org/pub/tokyo-emacs/emacs-native-profiler.pdf
+(progn
+  (profiler-start 'cpu)
+  (list-packages)
+  (profiler-report))
 
 ;; a source-level debugger for Emacs Lisp
 ;; C-u C-M-x で関数をデバッグ定義. 関数を再定義すればデバッグは解除される.
@@ -103,7 +112,7 @@
 (quote #1=(#1# x))                      ; (#0 x)
 
 ;;; @@dependence
-;;; elispの依存関係を調べる
+;;; 依存関係を調べる
 (require 'loadhist)
 (feature-file 'google)                  ; "c:/home/lxuser/lib/emacs/google.elc"
 (feature-file 'cl)                      ; "c:/home/emacs/22.1/lisp/emacs-lisp/cl.elc"
@@ -307,3 +316,12 @@ max-specpdl-size
 ;; 設定されていれば exec-path にパスとして追加される
 (length exec-path)                          ;=> 57
 (length (parse-colon-path (getenv "PATH"))) ;=> 48
+
+;; シンボル補完 HOWTO
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Completion-in-Buffers.html#Completion-in-Buffers
+;; 参考
+(makefile-completions-at-point)
+(lisp-completion-at-point)
+
+;; How do I write a simple `completion-at-point`
+;; http://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function

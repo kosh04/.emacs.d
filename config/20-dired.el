@@ -95,3 +95,7 @@
 (with-eval-after-load "wdired"
   (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit)
   t)
+
+;; interactive filter
+(use-package dired-narrow
+  :bind (:map dired-mode-map ("/" . dired-narrow)))

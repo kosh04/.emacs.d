@@ -31,9 +31,13 @@ test-lisp: $(basename $(notdir $(wildcard site-lisp/*-test.el)))
 %-test: site-lisp/%-test.el
 	$(CASK) exec $(EMACS_BATCH) $(EMACSFLAGS) -l $^ -f ert-run-tests-batch-and-exit
 
-
 $(CASK_PACKAGE_DIR): Cask
 	$(CASK) install
+
+update: update-package
+
+update-update:
+	$(EMACS) --script script/update-package.el
 
 UnicodeData.txt:
 	curl -Os  "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"
@@ -43,3 +47,4 @@ clean:
 
 .PHONY: compile clean
 .PHONY: test test-startup test-lisp
+.PHONY: update update-package

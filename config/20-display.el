@@ -8,6 +8,10 @@
 (menu-bar-mode)
 (show-paren-mode)
 
+;; since Emacs25
+(if (fboundp 'horizontal-scroll-bar-mode)
+    (horizontal-scroll-bar-mode -1))
+
 ;; Frame
 ;;(add-to-list 'default-frame-alist '(alpha . (0.75 0.75)))
 (set-frame-parameter nil 'alpha 90)

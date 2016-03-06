@@ -25,6 +25,7 @@
   (progn
     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
     (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+    (add-hook 'eval-expression-minibuffer-setup-hook 'eldoc-mode)
     ;; 引数表示をSLIME風にする
     (set-face-attribute 'eldoc-highlight-function-argument nil
                         :background "darkseagreen2"
@@ -123,4 +124,3 @@
   t)
 
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
-

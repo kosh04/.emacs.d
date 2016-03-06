@@ -19,6 +19,9 @@ abbrev_defs
 *~
 backup/
 
+# clojure
+nrepl-history
+
 # misc
 UnicodeData.txt
 share/dict/*/migemo-dict
