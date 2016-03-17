@@ -6,9 +6,10 @@
 ;; NOTE: lisp-interaction-mode は emacs-lisp-mode の子モードのため hook が継承される
 
 (setq find-function-C-source-directory
-      (if (file-directory-p #1="~/src/gitrepo/emacs/src/")
-          #1#
-          "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/"))
+      (if (file-directory-p #1="~/src/gitrepo/emacs/src/") #1#
+          ;; 常に最新版を取得するため参照するソース元が一致しないかも
+          ;; "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/"
+          "https://github.com/emacs-mirror/emacs/raw/emacs-24/src/"))
 
 (add-to-list 'auto-mode-alist '("Cask" . emacs-lisp-mode))
 

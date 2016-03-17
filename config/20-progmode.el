@@ -12,7 +12,7 @@
 (require 'electric)
 
 (electric-pair-mode +1)
-(electric-layout-mode +1)
+;;(electric-layout-mode +1)
 
 ;;(add-to-list 'electric-pair-pairs '(?< . ?>))
 (add-to-list 'electric-pair-pairs '(?{ . ?}))
@@ -58,11 +58,6 @@
   :defer t
   :mode ("\\.bat\\'"
          "\\.cmd\\'"))
-
-;; TypeScript
-(use-package tss
-  :defer t
-  :mode ("\\.ts\\'" . typescript-mode))
 
 ;; Smart Compile
 (use-package smart-compile

@@ -1,12 +1,21 @@
-;;; config/golang.el
+;;; config/Go
+
+;; 事前に補助コマンドをインストールしておく
+;; $ go get -u github.com/nsf/gocode (コード補完)
+;; $ go get -u github.com/rogpeppe/godef (定義ジャンプ)
+;; $ go get -u golang.org/x/tools/cmd/goimports (import をいい感じにする)
 
 (use-package go-mode
   :defer t
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
   (custom-set-variables
-   '(go-play-browse-function #'browse-url))
-  :bind (:map go-mode-map ("C-c h" . godoc)))
+   '(go-play-browse-function #'browse-url)
+   '(gofmt-command "goimports"))
+  :bind (:map go-mode-map
+              ("C-c h" . godoc)         ; or "C-c C-j"
+              ("M-." . godef-jump)
+              ))
 
 (use-package go-eldoc
   :config (add-hook 'go-mode-hook 'go-eldoc-setup))

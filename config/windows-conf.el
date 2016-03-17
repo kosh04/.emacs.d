@@ -32,3 +32,9 @@
 ;;(setq gc-cons-threshold 800000 gc-cons-percentage 0.1)
 (setq gc-cons-threshold (* gc-cons-threshold 5))
 (setq gc-cons-percentage 0.5)
+
+;; image-dired
+(customize-variable
+ ;; 公式のバイナリを拾ってくるか、以下のmagick.exeを利用する
+ ;; http://opensourcepack.blogspot.jp/p/converter.html
+ '(image-dired-cmd-create-thumbnail-program "magick convert"))

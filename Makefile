@@ -36,7 +36,7 @@ $(CASK_PACKAGE_DIR): Cask
 
 update: update-package
 
-update-update:
+update-package:
 	$(EMACS) --script script/update-package.el
 
 UnicodeData.txt:

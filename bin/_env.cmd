@@ -1,4 +1,4 @@
-rem bin/_env.cmd --- Setup NTEmacs environment
+rem Setup NTEmacs environment
 
 set EMACS_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
 
@@ -8,6 +8,9 @@ set EMACSPATH=
 rem == GNU Aspell ==
 rem http://aspell.net/win32/
 set EMACSPATH=%EMACSPATH%;C:\opt\Aspell\bin
+
+rem == LLVM/Clang ==
+set EMACSPATH=%EMACSPATH%;C:\opt\LLVM\bin
 
 rem == C/Migemo ==
 set EMACSPATH=%EMACSPATH%;%HOME%\opt\cmigemo
@@ -19,7 +22,7 @@ rem == Git ==
 set EMACSPATH=%EMACSPATH%;C:\opt\Git\bin
 
 rem == Go ==
-set EMACSPATH=%EMACSPATH%;%HOME%\opt\go\bin
+set EMACSPATH=%EMACSPATH%;%GOROOT%\bin
 
 rem == PuTTY ==
 rem set EMACSPATH=%EMACSPATH%;%ProgramFiles(x86)%\PuTTY

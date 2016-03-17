@@ -81,7 +81,7 @@
 (define-dired-sort-by reverse "r")      ; 逆順
 
 (with-eval-after-load "dired"
-  (define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
+  ;;(define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
   (define-key dired-mode-map "q" 'kill-this-buffer)
   ;;(define-key dired-mode-map "X" 'dired-shell-execute)
   (define-key dired-mode-map (kbd "C-s") 'dired-isearch-filenames)
@@ -98,4 +98,10 @@
 
 ;; interactive filter
 (use-package dired-narrow
+  :defer t
   :bind (:map dired-mode-map ("/" . dired-narrow)))
+
+;; ファイルの中身を覗き見る (peep)
+(use-package peep-dired
+  :defer t
+  :bind (:map dired-mode-map ("W" . peep-dired)))

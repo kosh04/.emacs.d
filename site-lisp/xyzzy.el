@@ -763,20 +763,22 @@
 
 ;; 子プロセスの生成
 ;; start-process[emacs] <-> make-process[xyzzy]
-(defun* make-process (cmd-line &key environ output exec-directory
-                               incode outcode eol-code)
-  (declare (ignore eol-code))
-  (setq cmd-line (split-string cmd-line " "))
-  (let* ((default-directory (or exec-directory default-directory))
-         (program (car cmd-line))
-         (args (cdr cmd-line))
-         (proc (apply #'start-process "xyzzy-process"
-                      (or output (current-buffer))
-                      program args)))
-    (set-process-coding-system proc
-                               (or incode (car default-process-coding-system))
-                               (or outcode(cdr default-process-coding-system)))
-    proc))
+;; Emacs25より実装された`make-process'を上書きしない
+(when (version< emacs-version "25.1")
+  (defun* make-process (cmd-line &key environ output exec-directory
+                                 incode outcode eol-code)
+    (declare (ignore eol-code))
+    (setq cmd-line (split-string cmd-line " "))
+    (let* ((default-directory (or exec-directory default-directory))
+           (program (car cmd-line))
+           (args (cdr cmd-line))
+           (proc (apply #'start-process "xyzzy-process"
+                        (or output (current-buffer))
+                        program args)))
+      (set-process-coding-system proc
+                                 (or incode (car default-process-coding-system))
+                                 (or outcode(cdr default-process-coding-system)))
+      proc)))
 
 ;; decoding=incode;encoding=outcode
 (defun process-incode (process) (car (process-coding-system process)))
