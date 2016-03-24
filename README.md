@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kosh04/emacs-lisp.svg)](https://travis-ci.org/kosh04/emacs-lisp)
+[![Build Status](https://travis-ci.org/kosh04/.emacs.d.svg)](https://travis-ci.org/kosh04/.emacs.d)
 
 ## Files
 
