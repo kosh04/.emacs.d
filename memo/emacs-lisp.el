@@ -325,3 +325,7 @@ max-specpdl-size
 
 ;; How do I write a simple `completion-at-point`
 ;; http://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
+
+;; Docstring の書式
+;; \[command] -> コマンドに割り当てられたキー : \[forward-char] -> C-f
+;; 引数は大文字で書く : (lambda (column arg) "Set COLUMN with ARG." ...)

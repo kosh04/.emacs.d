@@ -14,13 +14,21 @@
   (format-time-string "%FT%T%z" time universal))
 
 ;; http://www.bookshelf.jp/texi/elisp-manual-20-2.5-jp/elisp_38.html#SEC610
-(defun user:insert-time ()
+(defun user/insert-time ()
   "日付と時刻の挿入."
   (interactive)
   (insert (iso8601)))
 
-(defalias 'insert-time #'user:insert-time)
+(defalias 'insert-time #'user/insert-time)
 (global-set-key (kbd "C-c t") 'insert-time)
+
+(defun point-of (fn)
+  "[user] FN 実行後のポイント位置を返す.
+Example: (point-of #'beginning-of-buffer) => 1"
+  (save-window-excursion
+    (save-excursion
+      (funcall fn)
+      (point))))
 
 (defun delete-backward-word (&optional n)
   "[user] 直前の単語を削除する."

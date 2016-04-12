@@ -822,6 +822,8 @@
 ;; (fset 'process-exit-code #'process-exit-status)
 
 (defun filter-region (command &optional start end)
+  "Call process COMMAND on region and replace it.
+You can use key command as C-u \\[shell-command-on-region]"
   (interactive "*s| \nr")
   (shell-command-on-region start end command nil 'replace))
 

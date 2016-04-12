@@ -4,7 +4,9 @@
 (add-to-list 'load-path "~/Downloads/gitrepo/newlisp-mode/")
 
 (use-package newlisp-mode
+  :mode ("\\.lsp$" . newlisp-mode)
+  :bind (:map newlisp-mode-map
+              ("C-c h" . newlisp-lookup-manual))
   :config
-  (progn
-    (bind-keys :map newlisp-mode-map ("C-c h" . newlisp-lookup-manual))
-    (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt")))
+  (add-hook 'newlisp-mode-hook 'eldoc-mode)
+  (setq newlisp-manual-text "~/Dropbox/Public/newlisp/newlisp_manual.txt"))

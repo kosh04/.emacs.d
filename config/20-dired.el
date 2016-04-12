@@ -82,7 +82,7 @@
 
 (with-eval-after-load "dired"
   ;;(define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
-  (define-key dired-mode-map "q" 'kill-this-buffer)
+  ;;(define-key dired-mode-map "q" 'kill-this-buffer) ; use C-u q
   ;;(define-key dired-mode-map "X" 'dired-shell-execute)
   (define-key dired-mode-map (kbd "C-s") 'dired-isearch-filenames)
   (define-key dired-mode-map (kbd "C-x C-q") 'wdired-change-to-wdired-mode)
