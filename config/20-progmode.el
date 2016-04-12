@@ -7,12 +7,13 @@
 (setq comment-style 'multi-line)
 
 ;; 自動改行と欲張りな削除
-(add-hook 'c-mode-common-hook 'c-toggle-auto-hungry-state)
+;; (add-hook 'c-mode-common-hook 'c-toggle-auto-hungry-state)
 
 (require 'electric)
 
 (electric-pair-mode +1)
-;;(electric-layout-mode +1)
+(electric-layout-mode +1)
+;;(electric-indent-mode -1)
 
 ;;(add-to-list 'electric-pair-pairs '(?< . ?>))
 (add-to-list 'electric-pair-pairs '(?{ . ?}))

@@ -1,7 +1,8 @@
 ;;; config/newlisp-mode
 
 ;; 開発版
-(add-to-list 'load-path "~/Downloads/gitrepo/newlisp-mode/")
+;;(add-to-list 'load-path "~/Downloads/gitrepo/newlisp-mode/")
+(add-to-list 'load-path "~/src/gitrepo/newlisp-mode/")
 
 (use-package newlisp-mode
   :mode ("\\.lsp$" . newlisp-mode)

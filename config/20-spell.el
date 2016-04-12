@@ -26,6 +26,9 @@
    '(flycheck-emacs-lisp-load-path 'inherit)
    '(flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
   (add-hook 'after-init-hook #'global-flycheck-mode)
+  :config
+  (add-to-list 'flycheck-clang-include-path "/usr/include/")
+  ;;(add-to-list 'flycheck-clang-include-path "/usr/local/include/")
   :ensure t)
 
 (use-package flycheck-pos-tip

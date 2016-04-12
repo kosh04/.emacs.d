@@ -96,6 +96,9 @@
   (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit)
   t)
 
+;; ファイル表示をマスク
+;;(add-hook 'dired-mode-hook 'dired-omit-mode)
+
 ;; interactive filter
 (use-package dired-narrow
   :defer t
