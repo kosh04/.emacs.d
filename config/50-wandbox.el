@@ -8,4 +8,6 @@
          ("C-c w e" . wandbox-eval-last-sexp)
          ("C-c w l" . wandbox-list-compilers))
   :config
-  (wandbox-add-server "fetus" "https://wandbox.fetus.jp"))
+  ;; 通信環境の問題でHTTPSがたまに失敗することがある
+  (ignore-errors
+    (wandbox-add-server "fetus" "https://wandbox.fetus.jp")))

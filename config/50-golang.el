@@ -18,10 +18,15 @@
               ))
 
 (use-package go-eldoc
-  :config (add-hook 'go-mode-hook 'go-eldoc-setup))
+  :defer t
+  :init (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package company-go
-  :config (add-to-list 'company-backends 'company-go))
+  :defer t
+  :init
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-go))
+  :ensure company)
 
 ;; go-playground client
 ;; https://github.com/kosh04/emacs-go-playground
