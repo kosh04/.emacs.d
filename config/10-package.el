@@ -1,11 +1,11 @@
-;;; config/package.el
+;;; config/package
 
 ;; Package
 (require 'package)
 (require 'dash)
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 
 ;;(package-initialize t)
@@ -32,6 +32,7 @@
 
 (custom-set-variables
  '(use-package-verbose t)
- ;; すべて自動インストールしたい場合
+ ;; 初回起動時は自動インストールしたい
  ;;'(use-package-always-ensure t)
+ '(use-package-always-defer t)
  )

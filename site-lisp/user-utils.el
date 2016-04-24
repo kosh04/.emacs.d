@@ -55,13 +55,48 @@
        (eq (cl-list-length object) nil)))
 
 (defun arglist (def)
-  "Get DEF arguments."
+  "Get DEF arguments.
+
+(arglist 'lambda)  => \"(lambda ARGS [DOCSTRING] [INTERACTIVE] BODY)\"
+(arglist 'arglist) => (def)
+"
   (when (fboundp def)
     (or (car (help-split-fundoc (documentation def) def))
         (help-function-arglist def))))
 
-;; (arglist 'lambda)  => "(lambda ARGS [DOCSTRING] [INTERACTIVE] BODY)"
-;; (arglist 'arglist) => (def)
+(defun iso8601 (&optional time universal)
+  "Return ISO 8601 format time string."
+  ;; (format-time-string "%Y-%m-%dT%H:%M:%S")
+  (format-time-string "%FT%T%z" time universal))
+
+(defun point-of (fn)
+  "FN 実行後のポイント位置を返す.
+
+(point-of #'beginning-of-buffer) => 1"
+  (save-window-excursion
+    (save-excursion
+      (funcall fn)
+      (point))))
+
+(defun delete-backward-word (&optional n)
+  "直前の単語を削除する."
+  (interactive "p")
+  (unless (integerp n)
+    (signal 'wrong-type-argument (list 'integerp n)))
+  (delete-region (point)
+                 (progn (backward-word n) (point))))
+
+(defun plist->alist (plist)
+  (let (alist)
+    (cl-loop for (key value) on plist by #'cddr
+             do (push (cons key value) alist))
+    alist))
+
+(defun alist->plist (alist)
+  (let (plist)
+    (cl-loop for (key . value) in alist
+             do (setf (cl-getf plist key) value))
+     plist))
 
 (provide 'user-utils)
 

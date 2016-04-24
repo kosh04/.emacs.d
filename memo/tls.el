@@ -57,3 +57,8 @@
 ;; Failed to download `melpa-stable' archive.
 ;; 1 package can be upgraded; type `U' to mark it for upgrading.
 ;; 1 package marked for upgrading.
+
+;; 組み込みGnuTLSを無効化してgnutls-cli.exeを利用してみたがプロセス処理が終了しなくて困る
+(defun user/disable-gnutls (f &rest args) nil)
+(advice-add 'gnutls-available-p :around #'user/disable-gnutls)
+;;(advice-remove 'gnutls-available-p #'user/disable-gnutls)

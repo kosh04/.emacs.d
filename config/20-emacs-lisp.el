@@ -1,4 +1,4 @@
-;;; config/emacs-lisp.el
+;;; config/emacs-lisp
 
 ;; Emacs Source Repository
 ;; http://git.savannah.gnu.org/cgit/emacs.git
@@ -23,25 +23,21 @@
 (use-package eldoc
   :diminish eldoc-mode
   :config
-  (progn
-    (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-    (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook 'eldoc-mode)
-    ;; 引数表示をSLIME風にする
-    (set-face-attribute 'eldoc-highlight-function-argument nil
-                        :background "darkseagreen2"
-                        :underline nil
-                        :bold nil)
-    (setq eldoc-idle-delay 0.2
-          eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)))
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook 'eldoc-mode)
+  ;; 引数表示をSLIME風にする
+  (set-face-attribute 'eldoc-highlight-function-argument nil
+                      :background "darkseagreen2"
+                      :underline nil
+                      :bold nil)
+  (setq eldoc-idle-delay 0.2
+        eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit))
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
-  :config
-  (progn
-    (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode))
-  :ensure t)
+  :config (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode))
 
 (define-key help-map (kbd "j") 'find-function) ; or #'find-variable
 (define-key help-map (kbd "C-l") 'find-library)
@@ -77,7 +73,13 @@
 ;;(setq lisp-indent-function #'lisp-indent-function)
 ;;(setq lisp-indent-function #'common-lisp-indent-function)
 
+;; インデントを調整
+(setf (get 'font-lock-add-keywords 'lisp-indent-function) 1)
+(setf (get 'completing-read 'lisp-indent-function) 1)
+
 (defun toggle-scratch-buffer (&optional other-window)
+  "scratchバッファを表示する.
+引数(OTHER-WINDOW)を指定した場合はポップアップ表示する."
   (interactive "P")
   (let ((scratch (get-buffer-create "*scratch*")))
     (if other-window
@@ -125,3 +127,10 @@
   t)
 
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
+
+;; less is more
+(use-package nameless
+  :config
+  (custom-set-variables
+   '(nameless-global-aliases nil))
+  (add-hook 'emacs-lisp-mode-hook #'nameless-mode))

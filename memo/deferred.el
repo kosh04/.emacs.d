@@ -1,16 +1,16 @@
-;;; memo/deferred.el
+;;; memo/deferred -*- lexical-binding: t -*-
 
+(require 'deferred)
+(load "~/Documents/GitHub/emacs-deferred/test-deferred.el")
 
 ;; テストはどうやって書く？
-(load "~/Documents/GitHub/emacs-deferred/test-deferred.el")
 (progn
   (clear)
-  (lexical-let
-      (last-value)
+  (let (last-value)
     (nextc
      ($ (parallel
-         (lambda nil 0)
-         (lambda nil 1)))
+         (lambda () 0)
+         (lambda () 1)))
      (setq last-value x))
     (flush)
     last-value))

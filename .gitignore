@@ -5,6 +5,7 @@
 elpa
 el-get/
 history
+games/*-scores
 request/
 url/
 image-dired/

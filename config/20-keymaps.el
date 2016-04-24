@@ -1,4 +1,4 @@
-;;; config/keymaps.el
+;;; config/keymaps
 
 (global-set-key (kbd "C-h") 'backward-delete-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
@@ -25,3 +25,9 @@
 (define-key completion-list-mode-map "q"
   (lambda () (interactive) (quit-window t)))
 
+;; prefixキーのコマンド一覧を表示
+(use-package which-key
+  :diminish which-key-mode
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 1.5))

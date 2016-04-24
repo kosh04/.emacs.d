@@ -327,5 +327,16 @@ max-specpdl-size
 ;; http://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
 
 ;; Docstring の書式
-;; \[command] -> コマンドに割り当てられたキー : \[forward-char] -> C-f
+;; ================
+(defun docstring-example (&optional command)
+  "`forward-char' is bind to \\[forward-char]."
+  (interactive)
+  (message "%s" (documentation 'docstring-example)))
+;; `SYMBOL'   -> シンボルのdocstringへのリンク
+;; \[COMMAND] -> コマンドに割り当てられたキー
+;; \{KEYMAP}  -> キーマップ一覧
 ;; 引数は大文字で書く : (lambda (column arg) "Set COLUMN with ARG." ...)
+;; M-x checkdoc を参考
+
+(substitute-command-keys "\\[foward-char]") ;;=> "M-x foward-char"
+(substitute-command-keys "\\{ctl-x-map}")

@@ -26,7 +26,7 @@
 ;; go-playground client
 ;; https://github.com/kosh04/emacs-go-playground
 
-(require 'go-playground-cli "~/Documents/GitHub/emacs-go-playground/go-playground-cli.el" t)
-
-(with-eval-after-load 'go-playground-cli
-  (define-key go-mode-map (kbd "C-c w w") 'go-playground-cli-run-current-file))
+(use-package go-playground-cli
+  :load-path "~/Documents/GitHub/emacs-go-playground"
+  :bind (:map go-mode-map
+              ("C-c w w" . go-playground-cli-run-current-file)))

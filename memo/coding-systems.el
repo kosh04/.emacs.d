@@ -118,3 +118,6 @@ current-language-environment
 ;; [2016-01-11]
 ;; BOM あり UTF-8 な html ファイルの中身に <meta charset="utf-8"> が
 ;; 含まれているとファイル保存時に BOM が取り除かれてしまう
+
+;; 文字コード判定
+;; -> (apropos "auto-coding")

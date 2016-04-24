@@ -38,3 +38,13 @@
  ;; 公式のバイナリを拾ってくるか、以下のmagick.exeを利用する
  ;; http://opensourcepack.blogspot.jp/p/converter.html
  '(image-dired-cmd-create-thumbnail-program "magick convert"))
+
+;; cygwinにパスを通したくないけど
+;; diredのy(ファイルタイプ判別)ではfileコマンドを利用したい
+(defun user/with-cygwin-path (f &rest args)
+  (let ((exec-path  exec-path)
+        (cygwin/bin (expand-file-name "bin" (getenv "CYGWIN_HOME"))))
+    (push cygwin/bin exec-path)
+    (apply f args)))
+
+(advice-add 'dired-show-file-type :around #'user/with-cygwin-path)

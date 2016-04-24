@@ -1,17 +1,22 @@
-;; config/misc.el
+;; config/misc
 
-(add-hook 'emacs-startup-hook
-          #'(lambda ()
-              (message "Emacs init time: %s" (emacs-init-time))))
+(require 'cl-compatible)
+(require 'xyzzy)
+(require 'xyzzy-keymap)
+(require 'unicode-escape)
+(require 'google-search)
+(require 'user-utils)
+
+(global-set-key (kbd "C-c g") 'google-search)
+
+(defun user/emacs-init-time ()
+  (message "Emacs init time %s" (emacs-init-time)))
+
+(add-hook 'emacs-startup-hook #'user/emacs-init-time)
 
 (defadvice locate (around modify-buffer-name activate)
   (let ((locate-buffer-name (format "*Locate %s*" search-string)))
     ad-do-it))
-
-(defun iso8601 (&optional time universal)
-  "Return ISO 8601 format time."
-  ;; (format-time-string "%Y-%m-%dT%H:%M:%S")
-  (format-time-string "%FT%T%z" time universal))
 
 ;; http://www.bookshelf.jp/texi/elisp-manual-20-2.5-jp/elisp_38.html#SEC610
 (defun user/insert-time ()
@@ -21,22 +26,6 @@
 
 (defalias 'insert-time #'user/insert-time)
 (global-set-key (kbd "C-c t") 'insert-time)
-
-(defun point-of (fn)
-  "[user] FN 実行後のポイント位置を返す.
-Example: (point-of #'beginning-of-buffer) => 1"
-  (save-window-excursion
-    (save-excursion
-      (funcall fn)
-      (point))))
-
-(defun delete-backward-word (&optional n)
-  "[user] 直前の単語を削除する."
-  (interactive "p")
-  (unless (integerp n)
-    (signal 'wrong-type-argument (list 'integerp n)))
-  (delete-region (point)
-                 (progn (backward-word n) (point))))
 
 ;; C-w で直前の単語を削除する (bash)
 (define-key minibuffer-local-map (kbd "C-w") 'delete-backward-word)
@@ -53,10 +42,6 @@ Example: (point-of #'beginning-of-buffer) => 1"
   (url-handler-mode t)
   (let ((ffap-url-fetcher #'find-file))
     (call-interactively #'ffap)))
-
-;; elisp インデントを調整
-(setf (get 'font-lock-add-keywords 'lisp-indent-function) 1)
-(setf (get 'completing-read 'lisp-indent-function) 1)
 
 ;; Elnode パッチ
 (with-eval-after-load 'elnode
