@@ -1,12 +1,13 @@
-;;; cl-compatible.el --- Common Lisp flavor functions/variables
+;;; cl-compatible.el --- Common Lisp flavor functions/variables -*- lexical-binding: t -*-
 
 ;; Author: KOBAYASHI Shigeru (kosh) <shigeru.kb@gmail.com>
 ;; Version: 0.1
 ;; Created: 2015-02-23
 ;; Keywords: lisp,common-lisp
 
-(eval-when-compile
-  (require 'cl))
+;; Related package:
+;; * http://www.lisp.se/emacs-cl/
+
 (require 'cl-lib)
 
 ;; @@ Data-Type
@@ -44,16 +45,6 @@
          ',symbol)
        (defvar ,symbol ,value ,docstring)))
 
-;; 代入する変数が束縛されているかどうかは実行時まで分からない
-;; (defmacro defparameter (symbol value &optional doc-string)
-;;   (if (boundp symbol)
-;;       `(progn
-;;          (set ',symbol ,value)
-;;          ,(if doc-string
-;;               `(put ',symbol 'variable-documentation ,doc-string))
-;;          ',symbol)
-;;       `(defvar ,symbol ,value ,doc-string)))
-
 ;; cl-macs.el:1716
 ;; Some more Emacs-related place types.
 ;; (defsetf ...)
@@ -68,7 +59,7 @@
 ;; @@ Macro
 
 (defun macro-function (symbol &optional environment)
-  (declare (ignore environment))
+  (cl-declare (ignore environment))
   (and (fboundp symbol)
        (let ((fn (symbol-function symbol)))
          (and (eq (car-safe fn) 'macro)
@@ -92,27 +83,27 @@
 ;; Bignumber を扱えない点に注意
 
 (fset 'rem #'%)
-(defun logandc1 (x y) (logand (lognot y) y))
+(defun logandc1 (x y) (logand (lognot x) y))
 (defun logandc2 (x y) (logand x (lognot y)))
 
 ;; from Corman Lisp
 ;; http://www.cormanlisp.com/CormanLisp/patches/2_5/math2.lisp
 (defun logcount (integer)
-  (check-type integer integer)
+  (cl-check-type integer integer)
   ;; if negative, use two's complement to flip
-  (do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
-       (count 0 (+ count (logand x 1))))
+  (cl-do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
+          (count 0 (+ count (logand x 1))))
       ((= x 0) count)))
 
 (defun integer-length (integer)
-  (check-type integer integer)
-  (do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
-       (count 0 (1+ count)))
+  (cl-check-type integer integer)
+  (cl-do ((x (if (< integer 0) (- (+ integer 1)) integer) (ash x -1))
+          (count 0 (1+ count)))
       ((= x 0) count)))
 
 (defun logbitp (index integer)
-  (check-type index (integer 0 *))
-  (check-type integer integer)
+  (cl-check-type index (integer 0 *))
+  (cl-check-type integer integer)
   (< 0 (logand integer (expt 2 index))))
 
 ;; @@ Character
@@ -126,23 +117,23 @@
   (integerp (string-match "[A-Za-z0-9]" (char-to-string char))))
 
 ;; (digit-char-p ?f 16) => 15
-(defun* digit-char-p (char &optional (radix 10))
+(cl-defun digit-char-p (char &optional (radix 10))
   (let ((pos (string-match (string (upcase char))
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")))
     (and pos (<= pos radix) pos)))
 
 ;; (digit-char 15 16) => 70 (?F)
-(defun* digit-char (weight &optional (radix 10))
+(cl-defun digit-char (weight &optional (radix 10))
   (and (<= 0 weight) (< weight radix)
        (< 0 radix) (<= radix 36)        ; (length "012...WYX") => 36
        (elt "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" weight)))
 
 (defun char-downcase (char)
-  (check-type char character)
+  (cl-check-type char character)
   (downcase char))
 
 (defun char-upcase (char)
-  (check-type char character)
+  (cl-check-type char character)
   (upcase char))
 
 (defun standard-char-p (char)
@@ -179,19 +170,19 @@
 
 ;; (defun name-char (name) ?)
 
-(defun char= (char &rest more-chars)
+(cl-defun char= (char &rest more-chars)
   (let ((case-fold-search nil))
-    ;; (every (lambda (c) (char-equal c char)) more-chars)
-    (do* ((chars more-chars (cdr chars))
-          (c #1=(car chars) #1#))
-         ((null chars) t)
+    ;; (cl-every (lambda (c) (char-equal c char)) more-chars)
+    (cl-do* ((chars more-chars (cdr chars))
+             (c #1=(car chars) #1#))
+        ((null chars) t)
       (if (not (char-equal c char))
-          (return nil)))
+          (cl-return nil)))
     ))
 
 ;; @@ Sequence
 
-(defun* string-downcase (string &key (start 0) end)
+(cl-defun string-downcase (string &key (start 0) end)
   (concat (substring string 0 start)
           (downcase (substring string start end))
           (if end (substring string end) "")))
@@ -223,7 +214,7 @@
 ;;   (cl-equalp (substring string1 start1 end1)
 ;;              (substring string2 start2 end2)))
 
-;; (defun* string/= (string1 string2 &key (start1 0) end1 (start2 0) end2)
+;; (cl-defun string/= (string1 string2 &key (start1 0) end1 (start2 0) end2)
 ;;   (not (string= string1 string2
 ;;                 :start1 start1 :end1 end1
 ;;                 :start2 start2 :end2 end2)))
@@ -235,7 +226,7 @@
                    (nreverse acc)))
   (let ((start 0)
         (end (length string)))
-    (do ((index start (1+ index)))
+    (cl-do ((index start (1+ index)))
         ((or (= index end)
              (null (memq (elt string index) char-bag)))
          (substring string index)))))
@@ -248,16 +239,16 @@
                    (nreverse acc)))
   (let ((start 0)
         (end (length string)))
-    (do ((index (1- end) (1- index)))
+    (cl-do ((index (1- end) (1- index)))
         ((or (= index start)
              (null (memq (elt string index) char-bag)))
          (substring string start (1+ index))))))
 
 (defun cl-string-trim (char-bag string)
-  (string-left-trim char-bag (string-right-trim char-bag string)))
+  (cl-string-left-trim char-bag (cl-string-right-trim char-bag string)))
 
-(defun* parse-integer (string &key start end radix junk-allowed)
-  (declare (ignore junk-allowed))
+(cl-defun parse-integer (string &key start end radix junk-allowed)
+  (cl-declare (ignore junk-allowed))
   (string-to-number (substring string (or start 0) end) radix))
 
 ;; @@ Input/Output
@@ -275,29 +266,37 @@
 (defun user-homedir-pathname ()
   (expand-file-name "~/"))
 
-;; CLにファイルのリンク先を参照する関数はあるのか？
-;; file-truename, file-chase-links
-(defun* directory (pathname &key absolute recursive wild depth file-only
-                            show-dots count directory-only callback file-info)
-  (declare (ignore recursive depth show-dots count))
-  (cl-labels ((filter (f seq)
-                (let (acc)
-                  (dolist (x seq acc)
-                    (if (funcall f) x)))))
-    (let (files)
-      (dolist (file (if file-info
-                        (directory-files-and-attributes pathname absolute wild)
-                        (directory-files pathname absolute wild)))
-        (if (cond (file-only
-                   (and (file-exists-p file)
-                        (not (file-directory-p file))))
-                  (directory-only
-                   (file-directory-p file))
-                  (t t))
-            (push (funcall (if callback callback #'identity)
-                           file)
-                  files)))
-      (nreverse files))))
+;; Common-lisp にファイルのリンク先を参照する関数はある？
+
+(defun turename (pathname)
+  "Find PATHNAME file and returns its truename."
+  ;;(file-chase-links pathname)
+  (file-truename pathname))
+
+(cl-defun directory (pathname &key absolute recursive wild (depth 1) file-only
+                     show-dots count directory-only (callback #'identity) file-info)
+  "List file or directory entries."
+  (cl-declare (ignore recursive depth))
+  (let* ((dir-func (if file-info
+                       #'directory-files-and-attributes
+                     #'directory-files))
+         (files-orig (funcall dir-func pathname absolute wild))
+         (files nil))
+    (unless show-dots
+      (setq files-orig (delete "." (delete ".." files-orig))))
+    (when (numberp count)
+      (setq files-orig (cl-subseq files-orig 0 count)))
+    (dolist (path files-orig)
+      (if (cond (file-only (not (file-directory-p path)))
+                (directory-only (file-directory-p path))
+                ;; ((and (file-directory-p path)
+                ;;       recursive
+                ;;       (> depth 0))
+                ;;  (setq path (directory path :depth (1- depth))))
+                (t t))
+          (push (funcall callback path) files)))
+    (nreverse files)))
+
 ;; (directory ".")
 
 (defun pathname-name (pathname)
@@ -354,8 +353,8 @@
 (defsubst find-condition-variable (handlers)
   (let (e)
     (dolist (handler handlers)
-      (pushnew (car (nth 1 handler)) e :test #'equal))
-    ;; condition-case のエラー用変数は1つだけなので注意を促す
+      (cl-pushnew (car (nth 1 handler)) e :test #'equal))
+    ;; condition-case のエラー変数は1つだけ
     (if (/= 1 (length e)) (warn "plural condition variable are not allowed: %s" e))
     (car e)))
 
