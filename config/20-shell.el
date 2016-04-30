@@ -1,7 +1,7 @@
 ;;; config/shell.el
 
 (defun user:shell-other-window ()
-  "[user] シェルを別ウィンドウで開きます."
+  "シェルを別ウィンドウで開きます."
   (interactive)
   (let ((buffer (save-window-excursion
                   ;; Enable current-prefix-arg

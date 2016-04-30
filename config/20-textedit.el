@@ -9,11 +9,12 @@
 (use-package markdown-mode
   :defer t
   :config
-  (defun user:markdown-preview-buffer ()
+  (defun user:markdown-preview-in-buffer ()
+    "作業中のMarkdownファイルをバッファにプレビュー表示する."
     (interactive)
     (require 'shr)
-    (shr-render-buffer (markdown-standalone markdown-output-buffer-name)))
-  (defalias 'markdown-preview-buffer 'user:markdown-preview-buffer)
+    (shr-render-buffer (markdown-standalone)))
+  (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer)
   :ensure t)
 
 (use-package yaml-mode

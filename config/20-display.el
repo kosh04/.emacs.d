@@ -1,4 +1,4 @@
-;;; config/display.el --- 表示関係
+;;; config/display --- 表示関係
 
 ;(setq inhibit-startup-screen t)
 
@@ -37,10 +37,10 @@
 
 (use-package nyan-mode
   :if window-system
-  :config (progn
-            (setq nyan-bar-length 12)
-            (nyan-mode +1))
-  :ensure t)
+  :config
+  (nyan-mode +1)
+  (custom-set-variables
+   '(nyan-bar-length 12)))
 
 ;; バッファ末尾の可視化 (fringe)
 ;; (set-fringe-mode 5)

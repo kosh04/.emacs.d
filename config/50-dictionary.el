@@ -1,4 +1,4 @@
-;; config/translate.el
+;; config/translate
 
 (use-package google-translate
   :defer t
@@ -11,7 +11,6 @@
            (google-translate-default-source-language (if asciip "en" "ja"))
            (google-translate-default-target-language (if asciip "ja" "en")))
       (google-translate-at-point)))
-
-  (when (boundp 'popwin:special-display-config)
-     (add-to-list 'popwin:special-display-config '("*Google Translate*")))
+  (with-eval-after-load 'popwin
+    (add-to-list 'popwin:special-display-config '("*Google Translate*")))
   :ensure popwin)

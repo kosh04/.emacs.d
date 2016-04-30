@@ -79,7 +79,7 @@
 
 (defun toggle-scratch-buffer (&optional other-window)
   "scratchバッファを表示する.
-引数(OTHER-WINDOW)を指定した場合はポップアップ表示する."
+引数 OTHER-WINDOW を指定した場合はポップアップ表示する."
   (interactive "P")
   (let ((scratch (get-buffer-create "*scratch*")))
     (if other-window

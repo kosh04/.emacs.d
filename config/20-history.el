@@ -6,7 +6,7 @@
 
 (savehist-mode)
 
-;; recentf
+(require 'recentf)
 (recentf-mode +1)
 (setq recentf-save-file (locate-user-emacs-file "recentf"))
 (setq recentf-max-saved-items 2000)
@@ -23,7 +23,7 @@
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 (add-to-list 'desktop-globals-to-save 'command-history)
 
-(defun my:restore-desktop (&optional dirname)
+(defun user:restore-desktop (&optional dirname)
   ".emacs.desktop ファイルを基にセッションを復元します."
   ;;(interactive (list (read-file-name "Desktop file: " (desktop-full-file-name))))
   (interactive (list (read-directory-name "Desktop directory: " desktop-dirname)))

@@ -12,7 +12,10 @@
 (when (eq system-type 'windows-nt)
   (defun user:ispell-killall ()
     (ispell-kill-ispell t))
-  (add-hook 'kill-emacs-hook 'user:ispell-killall))
+  (add-hook 'kill-emacs-hook #'user:ispell-killall))
+
+;; flyspell
+(add-hook 'c-mode-hook 'flyspell-prog-mode)
 
 (use-package flymake-yaml
   :defer t

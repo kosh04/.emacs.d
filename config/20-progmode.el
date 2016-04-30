@@ -1,4 +1,4 @@
-;;; config/progmode.el
+;;; config/progmode
 
 ;; スペースでインデント
 (setq-default indent-tabs-mode nil)
@@ -25,9 +25,6 @@
 (global-set-key (kbd "C-c C-l") 'imenu)
 (add-hook 'emacs-lisp-mode-hook #'imenu-add-menubar-index)
 
-;; flyspell
-(add-hook 'c-mode-hook 'flyspell-prog-mode)
-
 (defun indent-and-next-line (&optional args)
   "インデントして次の行へ."
   (interactive "p")
@@ -36,23 +33,6 @@
     (line-move 1)))
 
 (global-set-key (kbd "M-n") 'indent-and-next-line)
-
-;; PHP
-(use-package php-mode
-  :defer t
-  :config
-  (setq php-search-url "http://www.php.net/ja/")        ; C-c C-f
-  (setq php-manual-url "http://www.php.net/manual/ja/") ; C-c C-m
-  (setq php-mode-force-pear t)
-  (bind-keys :map php-mode-map ("RET" . newline-and-indent))
-  (defun php-user-hook ()
-    (define-abbrev php-mode-abbrev-table "ex" "extends")
-    ;; (setq comment-start "// " comment-end "")
-    (c-set-offset 'arglist-intro '+) ; array(...) インデントをスマートにする
-    (c-set-offset 'arglist-close 0)
-    t)
-  (add-hook 'php-mode-hook #'php-user-hook)
-  :ensure nil)
 
 ;; Batch mode
 (use-package batch-mode  

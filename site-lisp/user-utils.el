@@ -2,6 +2,8 @@
 
 ;;; 雑多な関数群 or 自作関数に依存するもの
 
+(require 'cl-lib)
+
 (defun sequence (from to &optional step)
   (if (< from to)
       (number-sequence from to step)
@@ -86,17 +88,29 @@
   (delete-region (point)
                  (progn (backward-word n) (point))))
 
+(defun println (object &optional stream)
+  (princ object stream)
+  (terpri stream))
+
 (defun plist->alist (plist)
-  (let (alist)
+  "Translate PLIST to alist.
+property list (:key value ...)
+association list ((key . value) ...)"
+  (cl-labels ((symbol (sym)
+                (if (keywordp sym) (intern (substring (symbol-name sym) 1)) sym)))
     (cl-loop for (key value) on plist by #'cddr
-             do (push (cons key value) alist))
-    alist))
+           collect (cons (symbol key) value))))
 
 (defun alist->plist (alist)
-  (let (plist)
-    (cl-loop for (key . value) in alist
-             do (setf (cl-getf plist key) value))
-     plist))
+  "Translate ALIST to plist.
+property list (:key value ...)
+association list ((key . value) ...)"
+  (cl-labels ((keyword (sym)
+                (if (keywordp sym) sym (intern (format ":%s" sym)))))
+    (let (plist)
+      (cl-loop for (key . value) in alist
+               do (setq plist (plist-put plist (keyword key) value)))
+      plist)))
 
 (provide 'user-utils)
 

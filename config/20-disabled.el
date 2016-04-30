@@ -1,4 +1,4 @@
-;;; config/disabled.l
+;;; config/disabled
 
 (put 'upcase-region 'disabled nil)    ; C-x C-u
 (put 'downcase-region 'disabled nil)  ; C-x C-l

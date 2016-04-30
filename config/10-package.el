@@ -34,5 +34,5 @@
  '(use-package-verbose t)
  ;; 初回起動時は自動インストールしたい
  ;;'(use-package-always-ensure t)
- '(use-package-always-defer t)
+ ;;'(use-package-always-defer t)
  )

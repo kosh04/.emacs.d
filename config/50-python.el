@@ -9,11 +9,6 @@
 (add-hook 'python-mode-hook 'eldoc-mode t)
 (add-hook 'python-mode-hook 'company-mode t)
 
-(defun user/python-setting ()
-  nil)
-
-(add-hook 'python-mode-hook 'user/python-setting t)
-
 ;; PEP 0008 -- Style Guide for Python Code
 ;; https://www.python.org/dev/peps/pep-0008/
 (use-package py-autopep8

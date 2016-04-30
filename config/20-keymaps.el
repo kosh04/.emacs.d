@@ -28,6 +28,5 @@
 ;; prefixキーのコマンド一覧を表示
 (use-package which-key
   :diminish which-key-mode
-  :config
-  (which-key-mode)
-  (setq which-key-idle-delay 1.5))
+  :init (which-key-mode)
+  :config (setq which-key-idle-delay 1.5))

@@ -8,8 +8,9 @@
 
 (use-package sgml-mode
   :defer t
-  :bind (("C-," . sgml-tag)
-         ("C-." . sgml-close-tag)))
+  :bind (:map html-mode-map
+              ("C-," . sgml-tag)
+              ("C-." . sgml-close-tag)))
 
 (defun unhtml-region (start end)
   "HTMLタグを除去する."
