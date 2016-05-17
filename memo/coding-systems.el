@@ -61,13 +61,12 @@ coding-category-list
 (decode-sjis-char (encode-sjis-char ?こ)) ; 53811 (#o151063, #xd233, ?こ)
 
 ;; 同じはずなのだが...この仕様のおかげでデコードできない文字列がある
-(equalp "" "\201")                  ; nil
-(string-equal "" "\201")            ; nil
-(decode-coding-string "y" 'sjis)    ; "y"
-(decode-coding-string "\201y" 'sjis)    ; "【"
+(string-equal (string ?\201) "\201")           ; nil
 
-(decode-coding-string "\201y('A`)\202\273\202\3143\201z\202P\202Q\214\216\202R\202Q\223\372.mp3"
-                      'sjis)
+(decode-coding-string (string ?\201 ?y) 'sjis) ; "y"
+(decode-coding-string "\201y" 'sjis)           ; "【"
+
+(decode-coding-string "\201y('A`)\202\273\202\3143\201z\202P\202Q\214\216\202R\202Q\223\372.mp3" 'sjis)
 ;;=> "【('A`)その3】１２月３２日.mp3"
 
 (coding-system-list 'base-only)

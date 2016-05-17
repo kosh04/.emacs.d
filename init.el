@@ -1,7 +1,7 @@
 ;;; init.el --- .emacs
 
 (custom-set-variables
- `(custom-file ,(locate-user-emacs-file "init-custom.el")))
+ '(custom-file (locate-user-emacs-file "init-custom.el")))
 
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))

@@ -9,6 +9,8 @@
 ;; M-x cider-jack-in
 (use-package cider
   :defer t
+  :init
+  (fset 'lein-repl #'cider-jack-in)
   :config
   (defun user:end-of-symbol (&rest args)
     (skip-syntax-forward "w_"))
@@ -21,6 +23,6 @@
   (add-hook 'cider-repl-mode-hook 'eldoc-mode)
   ;; cider-repl
   (custom-set-variables
-   `(cider-repl-history-file ,(locate-user-emacs-file "nrepl-history"))
-   `(cider-repl-use-pretty-printing t))
+   '(cider-repl-history-file (locate-user-emacs-file "nrepl-history"))
+   '(cider-repl-use-pretty-printing t))
   :ensure clojure-mode)

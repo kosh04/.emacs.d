@@ -29,3 +29,4 @@ UnicodeData.txt
 share/dict/*/migemo-dict
 site-lisp/vendor/
 etc/
+/emojis/

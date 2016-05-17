@@ -67,3 +67,5 @@
   (trim-trailing-whitespace (point-min) (point-max)))
 
 ;; (add-hook 'write-file-hooks 'trim-tail-whitespace)
+
+(add-hook 'before-save-hook 'whitespace-cleanup)

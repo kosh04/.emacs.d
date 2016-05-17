@@ -250,21 +250,21 @@ max-specpdl-size
   (append string nil))
 (append "こんにちは" nil)                 ; (53811 53840 53860 53815)
 
-(let (acc)
-  (dolist (sym '(most-negative-fixnum
-                 most-negative-short-float
-                 most-negative-double-float
-                 most-negative-single-float
-                 most-positive-single-float
-                 most-positive-long-float
-                 most-positive-short-float
-                 most-positive-fixnum
-                 most-negative-long-float
-                 most-positive-double-float))
-    (if (boundp sym)
-        (push (cons sym (symbol-value sym)) acc)))
-  (nreverse acc))
+(cl-loop for sym
+         in '(most-negative-fixnum
+              most-negative-short-float
+              most-negative-double-float
+              most-negative-single-float
+              most-positive-single-float
+              most-positive-long-float
+              most-positive-short-float
+              most-positive-fixnum
+              most-negative-long-float
+              most-positive-double-float)
+         if (boundp sym)
+         collect (cons sym (symbol-value sym)))
 ;;=> ((most-negative-fixnum . -268435456) (most-positive-fixnum . 268435455))
+;;=> ((most-negative-fixnum . -2305843009213693952) (most-positive-fixnum . 2305843009213693951))
 
 ;;; 2つの関数の違いは?
 (interactive-p)
@@ -317,15 +317,6 @@ max-specpdl-size
 (length exec-path)                          ;=> 57
 (length (parse-colon-path (getenv "PATH"))) ;=> 48
 
-;; シンボル補完 HOWTO
-;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Completion-in-Buffers.html#Completion-in-Buffers
-;; 参考
-(makefile-completions-at-point)
-(lisp-completion-at-point)
-
-;; How do I write a simple `completion-at-point`
-;; http://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
-
 ;; Docstring の書式
 ;; ================
 (defun docstring-example (&optional command)
@@ -340,3 +331,87 @@ max-specpdl-size
 
 (substitute-command-keys "\\[foward-char]") ;;=> "M-x foward-char"
 (substitute-command-keys "\\{ctl-x-map}")
+
+;; 排他制御
+(setq create-lockfiles nil)
+
+;; syntax / 構文解析
+;; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Position-Parse.html
+;; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Parser-State.html
+
+(cl-defstruct (parser-state
+               (:constructor parser-state
+                (&aux
+                 (_state (syntax-ppss))
+                 (depth (nth 0 _state))
+                 (bos (nth 1 _state))
+                 (eos (nth 2 _state))
+                 ;;...
+                 )))
+  "State of the syntactic parser."
+  depth                                 ; 括弧の深さ
+  bos ; 最も内側のリストの開始位置 (position of the start of the innermost parenthetical grouping containing the stopping point)
+  eos ; 最後のS式の開始位置 (position of the start of the last complete subexpression terminated)
+  stringp                               ; 文字列内部にいるかどうか
+  non-nextable-comment-p                ; コメントの内部にいるかどうか?
+  end-point-is-just-after-a-quote-character
+  minimum-parenhesis-depth
+  comment-style
+  string-or-comment-start-position
+  internal-data
+  )
+
+;; Base64 符号化ついでにエンコードorデコードも行う
+(defun base64-encode-region* (start end coding-system)
+  (interactive "*r\nzCoding system: ")
+  (save-restriction
+    (narrow-to-region start end)
+    (encode-coding-region start end coding-system)
+    (base64-encode-region (point-min) (point-max))))
+
+;; 型と構文
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Type-Predicates.html
+;; http://www.geocities.co.jp/SiliconValley-Bay/9285/ELISP-JA/elisp_57.html
+
+- atom nil t
+- array []
+- bool-vector (make-bool-vector 5 t) #&5""
+- buffer #<buffer *scratch*>
+- compiled-function  #[257 "..." [...] 9 "docstring"]
+- case-table (standard-case-table) #^[...]
+- char-or-string
+- char-table (make-char-table 'foo) #^[nil ...]
+- command
+- cons (X . Y)
+- custom-variable
+- display-table (make-display-table) #^[nil ...]
+- float pi => 3.141592653589793
+- font
+- frame-configuragion
+- frame-live
+- frame
+- function #'(lambda () ...) #'car
+- hash-table (make-hash-table) #s(hash-table ...)
+- integer-or-marker
+- integer
+- keymap (keymap #^[...]) global-map
+- keyword :keyword
+- list (a b c ...)
+- marker
+- wholenum
+- nilst (nlistp OBJ) == (not (nlistp OBJ))
+- number
+- number-or-marker
+- overlay (make-overlay 0 0) #<overlay from 1 to 1 in emacs-lisp.el>
+- process #<process ielm>
+- sequence (LIST or VECTOR or STRING)
+- string "Hello, World!"
+- subr #'car
+- symbol
+- syntax-table
+- vector
+- window-configuration
+- window-live
+- window
+- boolean nil t
+- string-or-null

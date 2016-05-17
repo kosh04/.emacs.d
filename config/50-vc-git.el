@@ -10,7 +10,6 @@
   :config (add-to-list 'magit-no-confirm 'stage-all-changes))
 
 (use-package git-gutter
-  :defer t
   :diminish git-gutter-mode
   :config (global-git-gutter-mode +1)
   :bind (("M-g p" . git-gutter:previous-hunk)
