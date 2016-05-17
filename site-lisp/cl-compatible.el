@@ -166,9 +166,20 @@
   "Return a list of Unicode data for unicode CHAR.")
 
 (defun char-name (character)
-  (nth 1 (assoc "Name" (describe-char-unicode-data character))))
+  "Returns a string that is the name of the CHARACTER or nil.
 
-;; (defun name-char (name) ?)
+(char-name ?a) => \"LATIN SMALL LETTER A\"
+(char-name ?\\a) => \"BELL (BEL)\"
+(char-name ?\\U0001F363) => \"SUSHI\""
+  ;;(nth 1 (assoc "Name" (describe-char-unicode-data character)))
+  (car (rassoc character (ucs-names))))
+
+(defun name-char (name)
+  "Return the character object whose name is NAME.
+see also `read-char-by-name'
+
+(name-char \"SUSHI\") => 127843 (U+0001F363)"
+  (cdr (assoc-string name (ucs-names) t)))
 
 (cl-defun char= (char &rest more-chars)
   (let ((case-fold-search nil))
