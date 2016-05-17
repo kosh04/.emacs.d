@@ -112,6 +112,20 @@ association list ((key . value) ...)"
                do (setq plist (plist-put plist (keyword key) value)))
       plist)))
 
+;; http://ja.stackoverflow.com/a/24433/2391
+(defun get-in (object keys)
+  "Returns the value in a nested assoc or vector OBJECT used by KEYS.
+
+Example:
+(get-in object [key1 key2 0]) => value"
+  (cl-reduce #'(lambda (obj key)
+                 (cl-typecase key
+                   (integer (elt obj key))
+                   ((or symbol string) (cdr (assoc key obj)))
+                   (otherwise (user-error "Unknown key type: %S" key))))
+             keys
+             :initial-value object))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

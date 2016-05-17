@@ -319,14 +319,29 @@ max-specpdl-size
 
 ;; Docstring の書式
 ;; ================
-(defun docstring-example (&optional command)
-  "`forward-char' is bind to \\[forward-char]."
+
+;; - http://www.gnu.org/software/emacs/manual/html_node/elisp/Documentation-Tips.html
+;; - https://www.emacswiki.org/emacs/DocString
+;; - http://ergoemacs.org/emacs/inline_doc.html
+
+(defun docstring-example-mode (&optional command)
+  "`forward-char' is bind to \\[forward-char].
+
+The following commands are available:
+
+\\{help-mode-map}"
   (interactive)
   (message "%s" (documentation 'docstring-example)))
 ;; `SYMBOL'   -> シンボルのdocstringへのリンク
 ;; \[COMMAND] -> コマンドに割り当てられたキー
 ;; \{KEYMAP}  -> キーマップ一覧
-;; 引数は大文字で書く : (lambda (column arg) "Set COLUMN with ARG." ...)
+;; \<KEYMAP>  -> ??
+;; ARGS -> 関数の引数は大文字 : (lambda (column arg) "Set COLUMN with ARG." ...)
+;; URL `http://~'  -> Clickable URL
+;; `(emacs) Dired' -> Info へのリンク
+;; 先頭に `*' があるのはどういう場合？
+;;   -> https://www.gnu.org/software/emacs/manual/html_node/eintr/defvar-and-asterisk.html
+;;   -> https://www.emacswiki.org/emacs/VariableDefinition
 ;; M-x checkdoc を参考
 
 (substitute-command-keys "\\[foward-char]") ;;=> "M-x foward-char"
@@ -415,3 +430,42 @@ max-specpdl-size
 - window
 - boolean nil t
 - string-or-null
+
+;; tetris.el のソースを読むと参考になる
+;; http://d.hatena.ne.jp/goinger/20070713/1184316777
+(describe-function #'tetris)
+
+;;; Customization
+
+(info "(elisp) Customization")
+
+;; かんたん assoc list
+(defmacro @ (&rest kvs)
+  (let ((key (cl-gensym "key"))
+        (value (cl-gensym "value")))
+    `(cl-loop for (,key ,value) in ',kvs
+              collect (cons ,key (eval ,value)))))
+
+(defun describe-url-generic (url)
+  (let ((x (url-generic-parse-url url)))
+    (list :type (url-type x)
+          :user (url-user x)
+          :password (url-password x)
+          :host (url-host x)
+          :portspec (url-portspec x)
+          :port (url-port x)
+          :filename (url-filename x)
+          :path-and-query (url-path-and-query x)
+          :target (url-target x)
+          :attributes (url-attributes x)
+          :fullness (url-fullness x))))
+
+;; 静的束縛と動的束縛の違い
+;; https://www.reddit.com/r/emacs/comments/4f7q0f
+(setq lexical-binding t)
+(let (xx)
+  (setq xx :setq)
+  (set 'xx :set) ;; set global
+  xx)
+;;=> :set  (eq lexical-binding nil)
+;;=> :setq (eq lexical-binding t)

@@ -53,7 +53,12 @@ coding-category-list
 (encode-coding-string "こんにちは" 'utf-16)
 (decode-coding-string (encode-coding-string "こんにちは" 'utf-8) 'utf-8)
 
+;; Emacsの内部文字列に変換する (UTF-8 らしい)
+(string= (string-as-unibyte "こんにちは")
+         (encode-coding-string "こんにちは" 'utf-8))
+
 (string-as-multibyte (string-as-unibyte "こんにちは")) ; "こんにちは"
+
 (unibyte-char-to-multibyte (multibyte-char-to-unibyte ?あ)) ; #:ERR
 (apply #'make-char (split-char ?あ))    ; 53794 (#o151042, #xd222, ?あ)
 
@@ -120,3 +125,7 @@ current-language-environment
 
 ;; 文字コード判定
 ;; -> (apropos "auto-coding")
+
+;; バッファ内のマルチバイト表示を切り替える (デフォルトは t)
+(set-buffer-multibyte enable-multibyte-characters)
+(set-buffer-multibyte nil)

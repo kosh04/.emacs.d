@@ -52,3 +52,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   (advice-add 'elnode-http-send-string :around 'elnode--http-send-bytes)
   ;;(advice-remove 'elnode-http-send-string 'elnode--http-send-as-bytes)
   nil)
+
+(with-eval-after-load 'help-mode
+  (define-key help-mode-map "[" #'help-go-back)
+  (define-key help-mode-map "]" #'help-go-forward))

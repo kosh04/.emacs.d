@@ -10,6 +10,9 @@
 
 (add-hook 'dired-mode-hook 'hl-line-mode) ; 行カーソル
 
+;; ファイル名のみ表示するマイナーモード (since 24.4)
+(declare-function 'dired-hide-details-mode "dired")
+
 ;; dired-x で代用可能
 ;; [C-x C-j]   dired-jump
 ;; [C-x 4 C-j] dired-jump-other-window

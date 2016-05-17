@@ -12,6 +12,7 @@ image-dired/
 recentf
 tramp
 abbrev_defs
+init-custom.el
 
 # cask
 .cask

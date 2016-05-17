@@ -1,5 +1,8 @@
 ;;; config/basics.el
 
+(custom-set-variables
+ '(custom-file (locate-user-emacs-file "init-custom.el")))
+
 (setq kill-whole-line t)
 
 ;; 行の切り捨て (non-nil ならば行の折り返し無効)

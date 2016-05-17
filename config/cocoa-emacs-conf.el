@@ -8,13 +8,13 @@
 (global-set-key (kbd "C-¥") 'toggle-input-method)
 
 ;; Path
-;;(add-to-list 'exec-path "/usr/local/bin")
-;;(add-to-list 'exec-path "~/bin")
+(setf (getenv "PATH") (concat "/usr/local/bin" path-separator (getenv "PATH")))
+;;(setf (getenv "PATH") (concat (expand-file-name "~/bin") path-separator (getenv "PATH")))
 
 ;; $GOPATH / exe-path-from-shell でなんとかならんかね
 (unless (getenv "GOPATH")
   (setf (getenv "GOPATH")
-        (concat (expand-file-name "~/opt/go") ":"
+        (concat (expand-file-name "~/opt/go") path-separator
                 (expand-file-name "~/prog/go"))))
 
 (progn
@@ -29,7 +29,8 @@
 ;;(set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 `("Hiragino Maru Gothic Pro" . "iso10646-1"))
 
 ;; FIXME
-(setq ispell-program-name "aspell")
+(custom-set-variables
+ '(ispell-program-name "aspell"))
 
 ;; Tramp
 ;; リモートファイルを開く時に`vc-svn-registered'が邪魔をする場合がある
