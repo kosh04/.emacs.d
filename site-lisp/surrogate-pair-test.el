@@ -9,7 +9,8 @@
     (?\U00010001 . [?\uD800 ?\uDC01])
     (?\U00010401 . [?\uD801 ?\uDC01])
     (?\U00010E6D . [?\uD803 ?\uDE6D])
-    (?\U0001D11E . [?\uD834 ?\uDD1E])
+    (?\U0001D11E . [?\uD834 ?\uDD1E])   ; "MUSICAL SYMBOL G CLEF"
+    (?\U0001f363 . [?\uD83C ?\uDF63])   ; "SUSHI"
     (?\U0010FFFF . [?\uDBFF ?\uDFFF]))
   "List of set (code-point . surrogate-pair).
 Type is (Char . Vector[Char Char]).")
