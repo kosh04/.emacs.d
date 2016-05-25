@@ -2,18 +2,23 @@
 
 ## Files
 
-```
-+- init.el              - ここから
-+- config/xxx.el        - 各種設定ファイル
-+- memo/xxx.el          - 雑多なEmacsLispメモ
-`- site-lisp/           - 自作ライブラリいろいろ
-   +- cl-compatible.el  - Common Lispのような関数と変数のまとめ
-   +- gnome-util.el     - GNOME端末やファイルブラウザを呼び出すユーティリティ
-   +- google.el         - 簡易Google検索
-   +- unicode-escape.el - Unicodeエスケープ文字列のエンコードとデコード
-   +- xyzzy.el          - xyzzy lisp移植キットのようなもの。逆引き用ライブラリ
-   `- xyzzy-keymap.el   - xyzzyのキーマップを模倣する
-```
+- `init.el` : ここから
+- `config/*.el` : 各種設定ファイル
+- `memo/*` : 雑多なEmacsメモ
+- `site-lisp/*.el` : 自作ライブラリいろいろ
+
+### site-lisp
+
+設定ファイルとは別に分離させた自作ライブラリ
+
+- `cl-compatible.el` : Common Lispのような関数と変数のまとめ (`cl.el` 拡張)
+- `gnome-util.el` : GNOME端末やファイルブラウザを呼び出すユーティリティ
+- `google.el` : 簡易Google検索
+- `unicode-escape.el` : Unicodeエスケープ文字列の変換と復元
+- `xyzzy.el` : xyzzy lisp移植キットのようなもの。逆引き用ライブラリ
+- `xyzzy-keymap.el` : xyzzyのキーマップを模倣する
+
+MELPAに登録してあるものは[リポジトリ参照](https://github.com/search?l=Emacs+Lisp&q=user%3Akosh04)
 
 ## Requirements
 
@@ -23,14 +28,14 @@
   - [use-package](https://github.com/jwiegley/use-package)
 - Platform
   - Windows ([NTEmacs64](https://github.com/chuntaro/NTEmacs64))
-  - OSX (Cocoa Emacs)
+  - OS X (Cocoa Emacs)
 - Cask (optional. for develop site-lisp)
 
 ## Installation
 
-1. Clone thie repository. (recommended `~/.emacs.d/`)
-2. Put `(load "/path/to/init.el" t)` into your `.eamcs` if exists
-3. `cask install`
+1. Clone this repository. (recommended `~/.emacs.d/`)
+2. `cask install`
+3. `make compile` (byte-compile site-lisp/*.el)
 
 ## Rules
 

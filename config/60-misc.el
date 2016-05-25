@@ -56,3 +56,6 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 (with-eval-after-load 'help-mode
   (define-key help-mode-map "[" #'help-go-back)
   (define-key help-mode-map "]" #'help-go-forward))
+
+;; OpenVPN 接続設定ファイル
+(add-to-list 'auto-mode-alist '("\\.ovpn\\'" . conf-mode))

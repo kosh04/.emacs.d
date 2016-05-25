@@ -37,7 +37,9 @@
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
-  :config (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode))
+  :config
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-elisp-slime-nav-mode))
 
 (define-key help-map (kbd "j") 'find-function) ; or #'find-variable
 (define-key help-map (kbd "C-l") 'find-library)

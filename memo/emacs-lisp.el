@@ -430,6 +430,7 @@ The following commands are available:
 - window
 - boolean nil t
 - string-or-null
+- font-spec (font-spec ...) #<font-spec ...>
 
 ;; tetris.el のソースを読むと参考になる
 ;; http://d.hatena.ne.jp/goinger/20070713/1184316777
@@ -469,3 +470,10 @@ The following commands are available:
   xx)
 ;;=> :set  (eq lexical-binding nil)
 ;;=> :setq (eq lexical-binding t)
+
+;; バイナリデータの読み込み
+(require 'bindat)
+
+(bindat-unpack '((:signature str 8)
+                 (:ihdr str 25))
+               (f-read-bytes "~/Pictures/bg.png"))
