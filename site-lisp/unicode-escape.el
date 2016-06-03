@@ -54,26 +54,24 @@
        (ash (logand lo #x03FF)  0)
        #x10000)))
 
-(defun -escape (obj &optional surrogate-pair)
-  "Escape object OBJ (character or string)."
-  (cl-typecase obj
-    (sequence
-     (cl-labels ((escape (c) (-escape c surrogate-pair)))
-       (apply #'concat (mapcar #'escape (vconcat obj)))))
-    (character
-     ;; (-escape ?\U00002603)   => "\\u2603"
-     ;; (-escape ?\U0001F363)   => "\\uD83C\\uDF63"
-     ;; (-escape ?\U0001F363 t) => "\\U0001F363"
-     (let ((non-BMP (and (<= #x10000 obj) (<= obj #x10FFFF))))
-       (cond ((and non-BMP surrogate-pair)
-              (let ((pair (-unicode-to-pair obj)))
-                (format "\\u%04X\\u%04X" (aref pair 0) (aref pair 1))))
-             (non-BMP
-              (format "\\U%08X" obj))
-             (t
-              (format "\\u%04X" obj)))))
-    (otherwise
-     (signal 'wrong-type-argument `(char-or-string-p ,obj)))))
+(defsubst -escape-char (char &optional surrogate-pair)
+  ;; (-escape-char ?\U00002603)   => "\\u2603"
+  ;; (-escape-char ?\U0001F363)   => "\\uD83C\\uDF63"
+  ;; (-escape-char ?\U0001F363 t) => "\\U0001F363"
+  (let ((non-BMP (and (<= #x10000 char) (<= char #x10FFFF))))
+    (cond ((and non-BMP surrogate-pair)
+           (let ((pair (-unicode-to-pair char)))
+             (format "\\u%04X\\u%04X" (aref pair 0) (aref pair 1))))
+          (non-BMP
+           (format "\\U%08X" char))
+          (t
+           (format "\\u%04X" char)))))
+
+(defun -escape (string &optional surrogate-pair)
+  "Escape each STRING characters."
+  (cl-check-type string string)
+  (cl-labels ((escape (c) (-escape-char c surrogate-pair)))
+    (apply #'concat (mapcar #'escape (vconcat string)))))
 
 (defun -parse-escaped-string (s)
   "Separate unicode notation string S to character set."
@@ -103,7 +101,7 @@
            (-parse-escaped-string notations)
            :initial-value nil)))
 
-(cl-defun -escape-string (string &key unescape (surrogate-pair unicode-escape-enable-surrogate-pair))
+(cl-defun -escape-string (string &key unescape (surrogate-pair enable-surrogate-pair))
   "Escape STRING to unicode notation (\\uNNNN).
 If SURROGATE-PAIR is non-nil, non-BMP characters (U+0000..U+10FFFF)
 convet a 2-byte seqeunce such as surrogate pair."
@@ -114,7 +112,7 @@ convet a 2-byte seqeunce such as surrogate pair."
         (case-fold-search nil))
     (replace-regexp-in-string regexp replace string t t)))
 
-(cl-defun -unescape-string (string &key (surrogate-pair unicode-escape-enable-surrogate-pair))
+(cl-defun -unescape-string (string &key (surrogate-pair enable-surrogate-pair))
   "Unescape unicode string in STR.
 If SURROGATE-PAIR is non-nil, Surrogate pairs will be converted to
 original code point."
@@ -126,7 +124,7 @@ If argument UNESCAPE is non-nil, switch to unescape converter."
   (interactive "*r\nP")
   (let ((regexp  (if unescape -re-escaped -re-unicode))
         (replace (if unescape #'-unescape #'-escape))
-        (surrogate-pair unicode-escape-enable-surrogate-pair)
+        (surrogate-pair enable-surrogate-pair)
         (case-fold-search nil))
     (save-excursion
       (save-restriction
