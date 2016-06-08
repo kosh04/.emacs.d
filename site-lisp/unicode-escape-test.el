@@ -10,7 +10,8 @@
     ("\uFEFF" . "\\uFEFF")
     ("\u3053\u3093\u306B\u3061\u306F" . "\\u3053\\u3093\\u306B\\u3061\\u306F")
     ("Hello, World!" . "Hello, World!")
-    ("SUSHI(\u5BFF\u53F8)=\U0001F363" . "SUSHI(\\u5BFF\\u53F8)=\\uD83C\\uDF63"))
+    ("SUSHI,\u5BFF\u53F8,\U0001F363" . "SUSHI,\\u5BFF\\u53F8,\\uD83C\\uDF63") ; surrogate=t
+    )
   "List of string pairs (raw . escaped).
 Type is (String . String).")
 
@@ -38,13 +39,17 @@ Type is (Char . Vector[Char Char]).")
            do
            (should (string= (unicode-escape raw) escaped))
            (should (string= (unicode-unescape escaped) raw)))
-  (should (string= (unicode-escape "\U0001F363" :surrogate-pair nil) "\\U0001F363"))
+  (should (string= (unicode-escape "\U0001F363" nil) "\\U0001F363"))
+  (should (string= (unicode-escape "\U0001F363" t) "\\uD83C\\uDF63"))
   )
 
 (ert-deftest unicode-escape-hello ()
-  "Test using built-in HELLO file."
-  (let ((hello (f-read (expand-file-name "HELLO" data-directory) 'iso-2022-7bit)))
-    (should (string= (unicode-unescape (unicode-escape hello)) hello))))
+  "Test escape/unescape using built-in HELLO file."
+  (let* ((hello-file (expand-file-name "HELLO" data-directory))
+         (hello (f-read hello-file 'iso-2022-7bit)))
+    (should (string= (unicode-unescape (unicode-escape hello)) hello))
+    (should (string= (unicode-unescape (unicode-escape hello t) t) hello)) ; surrogate=t
+    ))
 
 (ert-deftest unicode-escape-region ()
   "Test `unicode-escape-region' command."
