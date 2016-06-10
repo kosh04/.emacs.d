@@ -3,9 +3,14 @@
 (require 'cl-compatible)
 (require 'xyzzy)
 (require 'xyzzy-keymap)
-(require 'unicode-escape)
 (require 'google-search)
 (require 'user-utils)
+
+(use-package unicode-escape
+  :defer t
+  :load-path "~/Documents/GitHub/unicode-escape.el/"
+  :init (require 'unicode-escape-autoload nil t))
+
 
 (global-set-key (kbd "C-c g") 'google-search)
 

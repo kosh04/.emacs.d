@@ -1,10 +1,13 @@
 ;;; config/Python
 
+;; https://www.emacswiki.org/emacs/PythonProgrammingInEmacs
 ;; https://www.emacswiki.org/emacs/ProgrammingWithPythonModeDotEl
 
 (cl-case system-type
   (darwin (custom-set-variables
-           '(python-shell-interpreter "/usr/local/bin/python3"))))
+           '(python-shell-interpreter "/usr/local/bin/python3")
+           ;; M-x pdb
+           '(gud-pdb-command-name "python3 -m pdb"))))
 
 (unless (getenv "PYTHONIOENCODING")
   (setf (getenv "PYTHONIOENCODING") "utf-8"))

@@ -36,10 +36,9 @@
 COMMAND requires (input: string) -> string."
   (interactive "*aFilter command: \nr")
   ;; FIXME: 変換後のポイント位置がずれる
-  (save-excursion
-    (let ((text (buffer-substring start end)))
-      (delete-region start end)
-      (insert (funcall command text)))))
+  (insert (let ((text (buffer-substring start end)))
+            (delete-region start end)
+            (funcall command text))))
 
 ;; (save-restriction
 ;;   (narrow-to-region start end)

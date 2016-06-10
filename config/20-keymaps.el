@@ -17,6 +17,7 @@
 ;; toggle
 (global-set-key (kbd "C-x t f") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x t e") 'toggle-debug-on-error)
+(global-set-key (kbd "C-x t v") 'toggle-viper-mode)
 
 ;; disable
 (global-unset-key (kbd "C-x m"))        ; compose-mail

@@ -130,6 +130,16 @@
 
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
 
+(with-eval-after-load 'dash
+  (dash-enable-font-lock))
+
+(with-eval-after-load 'names
+  ;; font-lock や eval-last-sexp を names 開発用に拡張
+  (use-package names-dev)
+  ;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
+  ;; (defalias 'names--convert-cl-defun 'names--convert-defun)
+  )
+
 ;; less is more
 (use-package nameless
   :config
