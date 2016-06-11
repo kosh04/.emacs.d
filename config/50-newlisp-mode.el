@@ -3,6 +3,7 @@
 (use-package newlisp-mode
   ;; 開発版
   :load-path "~/src/gitrepo/newlisp-mode/"
+  :init (require 'newlisp-mode-autoloads nil t)
   :mode ("\\.lsp$" . newlisp-mode)
   :bind (:map newlisp-mode-map
               ("C-c h" . newlisp-lookup-manual))

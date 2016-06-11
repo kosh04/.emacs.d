@@ -340,8 +340,9 @@ The following commands are available:
 ;; URL `http://~'  -> Clickable URL
 ;; `(emacs) Dired' -> Info へのリンク
 ;; 先頭に `*' があるのはどういう場合？
-;;   -> https://www.gnu.org/software/emacs/manual/html_node/eintr/defvar-and-asterisk.html
-;;   -> https://www.emacswiki.org/emacs/VariableDefinition
+;;   `set-variable' 時に区別するため(?)
+;;   - https://www.gnu.org/software/emacs/manual/html_node/eintr/defvar-and-asterisk.html
+;;   - https://www.emacswiki.org/emacs/VariableDefinition
 ;; M-x checkdoc を参考
 
 (substitute-command-keys "\\[foward-char]") ;;=> "M-x foward-char"
@@ -442,10 +443,13 @@ The following commands are available:
 
 ;; かんたん assoc list
 (defmacro @ (&rest kvs)
-  (let ((key (cl-gensym "key"))
-        (value (cl-gensym "value")))
-    `(cl-loop for (,key ,value) in ',kvs
-              collect (cons ,key (eval ,value)))))
+  `(cl-loop for (#1=#:key . #2=#:value) in ',kvs
+            collect (cons #1# (eval #2#))))
+
+(@ (num . (+ 1 2 3))
+   (key . #'number-to-string)
+   (#1=lisp . (format "%s" '#1#)))
+;;=> ((num . 6) (key . number-to-string) (lisp . "lisp"))
 
 (defun describe-url-generic (url)
   (let ((x (url-generic-parse-url url)))

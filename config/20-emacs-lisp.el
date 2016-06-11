@@ -146,3 +146,5 @@
   (custom-set-variables
    '(nameless-global-aliases nil))
   (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
+
+(use-package erefactor)

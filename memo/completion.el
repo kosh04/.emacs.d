@@ -22,3 +22,10 @@
 (let* ((my-completions '(("a" "description of a") ("b" "b's description")))
        (completion-extra-properties '(:annotation-function my-annotation-function)))
   (completing-read "Prompt: " my-completions))
+
+;; 補完用シンボルを絞る
+;; - 正規表現で絞る
+(let ((completion-regexp-list '("-mode\\'")))
+  (completing-read "Mode: " obarray))
+;; - predicateで絞る
+(completing-read "Keymap: " obarray 'keymapp)

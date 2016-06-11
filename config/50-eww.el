@@ -17,11 +17,19 @@
 ;; q - quit-window
 ;; &rest (help-xref-interned 'eww-mode-map)
 
-;; (set qeww-search-prefix "http://www.google.co.jp/search?q=")
+;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
 
 (use-package eww
   :defer t
   :config
+  (defun user:eww-show-url-at-point ()
+    (get-text-property (point) 'shr-url))
+  (defun user:eww-setup ()
+    (setq-local eldoc-documentation-function #'user:eww-show-url-at-point)
+    (eldoc-mode))
+
+  (add-hook 'eww-mode-hook 'user:eww-setup)
+
   (bind-keys :map eww-mode-map
              ("=" . eww-view-source)
              ("[" . eww-back-url)
@@ -29,4 +37,5 @@
              ("<M-left>" . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("<backspace>" . eww-back-url)
+             ("C-k" . eww)
              ("Q" . kill-this-buffer)))

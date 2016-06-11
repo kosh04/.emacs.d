@@ -4,6 +4,10 @@
 
 (require 'cl-lib)
 
+(defun println (obj &optional out)
+  (princ obj out)
+  (terpri out))
+
 (defun sequence (from to &optional step)
   (if (< from to)
       (number-sequence from to step)
@@ -46,7 +50,7 @@
 (defun describe-bindings-anymap (keymap)
   "あらゆる KEYMAP のキーマップを表示します."
   (interactive (list (intern (completing-read "Keymap: " obarray 'keymapp))))
-  (cl-assert (keymapp (symbol-value keymap)))
+  (cl-check-type (symbol-value keymap) keymap)
   (with-help-window (help-buffer)
     (with-current-buffer (help-buffer)
       (insert (substitute-command-keys (format "\\{%s}" keymap))))))

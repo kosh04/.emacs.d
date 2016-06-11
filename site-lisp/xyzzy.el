@@ -755,10 +755,11 @@
 ;; BUFFER; 0 means discard output and don't wait
 
 (defmacro with-setenv (environ &rest body)
+  (declare (indent 1))
   `(let ((process-environment (copy-sequence process-environment)))
      (mapc (lambda (x)
              (setenv (car x) (cdr x)))
-           ,environ)
+           ',environ)
      ,@body))
 
 ;; 子プロセスの生成

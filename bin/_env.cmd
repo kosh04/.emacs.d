@@ -15,7 +15,7 @@ set EMACSPATH=%EMACSPATH%;C:\opt\LLVM\bin
 rem == C/Migemo ==
 set EMACSPATH=%EMACSPATH%;%HOME%\opt\cmigemo
 
-rem == Embeddable Common-Lisp ==
+rem == Common-Lisp ==
 set EMACSPATH=%EMACSPATH%;C:\opt\ecl
 
 rem == Git ==
@@ -23,6 +23,7 @@ set EMACSPATH=%EMACSPATH%;C:\opt\Git\bin
 
 rem == Go ==
 set EMACSPATH=%EMACSPATH%;%GOROOT%\bin
+set EMACSPATH=%EMACSPATH%;%GOPATH%\bin
 
 rem == PuTTY ==
 rem set EMACSPATH=%EMACSPATH%;%ProgramFiles(x86)%\PuTTY

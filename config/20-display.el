@@ -55,3 +55,11 @@
 (add-hook 'tabulated-list-mode-hook 'hl-line-mode)
 (add-hook 'finder-mode-hook 'hl-line-mode)
 (add-hook 'occur-mode-hook 'hl-line-mode)
+
+;; \C-x $ `set-selective-display'
+;; 指定した桁数以上字下げしている行を隠す
+
+;; Hide/Show (コメントを非表示にするマイナーモード)
+(defalias 'hideshow-minor-mode #'hs-minor-mode)
+(with-eval-after-load 'hideshow
+  (add-hook 'hs-minor-mode-hook 'hs-hide-all))

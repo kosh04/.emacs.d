@@ -1,10 +1,9 @@
 @echo off
 setlocal
 
-set PATH=C:\opt\Gow\bin;%PATH%
-set PATH=C:\Python27;%PATH%
-
-set EMACS=%~dp0bin\emacs.bat
-set CASK=python %HOME%\.cask\bin\cask
+set PATH=%PATH%;C:\opt\Gow\bin
+set PATH=%PATH%;C:\Python27
+set PATH=%PATH%;%~dp0bin
+set PATH=%PATH%;%USERPROFILE%\.cask\bin
 
 make.exe %*
