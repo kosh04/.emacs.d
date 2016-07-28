@@ -6,10 +6,12 @@
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
 (use-package magit
   :defer t
+  :pin melpa-stable
   :bind ("C-x g" . magit-status)
   :config (add-to-list 'magit-no-confirm 'stage-all-changes))
 
 (use-package git-gutter
+  :pin melpa-stable
   :diminish git-gutter-mode
   :config (global-git-gutter-mode +1)
   :bind (("M-g p" . git-gutter:previous-hunk)

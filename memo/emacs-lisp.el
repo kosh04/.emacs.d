@@ -160,7 +160,43 @@
 (byte-compile 'fact)
 ;; バイトコードは実行可能
 (#[(n) "\301\010!\203\010\000\302\207\010\303\010S!_\207" [n zerop 1 fact] 3]
- 10) ;;=> 3628800
+ 10)
+;;=> 3628800
+
+;; 逆アセンブラ
+(require 'disass)
+
+(disassemble #'fact)
+;; byte code for fact:
+;;   args: (n)
+;; 0	constant  zerop
+;; 1	varref	  n
+;; 2	call	  1
+;; 3	goto-if-nil 1
+;; 6	constant  1
+;; 7	return	  
+;; 8:1	varref	  n
+;; 9	constant  fact
+;; 10	varref	  n
+;; 11	sub1	  
+;; 12	call	  1
+;; 13	mult	  
+;; 14	return	  
+
+;; Elisp Bytecode アセンブラ (non-official)
+(require 'easm)
+(equal (easm '(x)
+	     '((varref x)
+	       (add1)
+	       (varref x)
+	       (sub1)
+	       (cons)
+	       (return)))
+       (byte-compile
+	#'(lambda (x)
+	    (cons (+ x 1) (- x 1)))))
+;;=> t
+
 
 ;; C-u C-M-x (eval-defun) で edebug 起動
 

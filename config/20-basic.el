@@ -13,6 +13,11 @@
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 
+(add-to-list 'completion-ignored-extensions ".exe")
+
+;; クリックで URL を開く
+(add-hook 'find-file-hook 'goto-address-mode)
+
 (url-handler-mode +1)
 
 ;; use `what-cursor-position' [C-u C-x =]

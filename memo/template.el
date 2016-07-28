@@ -10,3 +10,5 @@
 (auto-insert-mode +1)
 
 (require 'skeleton)
+
+;;; tempo.el --- Flexible template insertion

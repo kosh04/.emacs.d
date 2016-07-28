@@ -5,13 +5,14 @@
 (require 'dash)
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 
 ;;(package-initialize t)
 
 (with-eval-after-load "package"
   (define-key package-menu-mode-map (kbd "I") 'package-install)
+  (define-key package-menu-mode-map (kbd "D") 'package-uninstall)
   (define-key package-menu-mode-map (kbd "?") 'describe-package)
   (define-key package-menu-mode-map (kbd "/") 'occur)
   t)

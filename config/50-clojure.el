@@ -1,6 +1,7 @@
 ;;; config/clojure.el
 
 (use-package clojure-mode
+  :pin melpa-stable
   :defer t
   :config
   (setq clojure-align-forms-automatically nil) ; or clojure-align <C-c SPC>
@@ -8,6 +9,7 @@
 
 ;; M-x cider-jack-in
 (use-package cider
+  :pin melpa-stable
   :defer t
   :init
   (fset 'lein-repl #'cider-jack-in)

@@ -1,7 +1,9 @@
 ;;; config/slime.el
 
 (use-package slime
-  :disabled t
+  ;;:disabled t
+  :defer t
+  :pin melpa-stable
   :config
   (progn
     (slime-setup '(slime-repl slime-fancy))
@@ -26,6 +28,7 @@
 ;; https://github.com/capitaomorte/sly
 (use-package sly
   :defer t
+  :pin melpa-stable
   :init (remove-hook 'lisp-mode-hook 'slime-lisp-mode-hook)
   :config
   (progn

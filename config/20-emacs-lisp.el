@@ -130,8 +130,8 @@
 
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
 
-(with-eval-after-load 'dash
-  (dash-enable-font-lock))
+(use-package dash
+  :config (dash-enable-font-lock))
 
 (with-eval-after-load 'names
   ;; font-lock や eval-last-sexp を names 開発用に拡張

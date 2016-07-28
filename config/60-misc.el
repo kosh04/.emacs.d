@@ -8,8 +8,7 @@
 
 (use-package unicode-escape
   :defer t
-  :load-path "~/Documents/GitHub/unicode-escape.el/"
-  :init (require 'unicode-escape-autoload nil t))
+  :pin #:manual)
 
 
 (global-set-key (kbd "C-c g") 'google-search)

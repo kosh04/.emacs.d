@@ -65,6 +65,7 @@ Original URL `https://www.emacswiki.org/emacs/NxmlMode'"
           (add-hook 'css-mode-hook  'emmet-mode)))
 
 (use-package web-mode
+  :pin melpa-stable
   :defer t
   :ensure emmet-mode
   ;; :mode (("\\.html?\\'" . web-mode)

@@ -18,7 +18,8 @@
 ;; PEP 0008 -- Style Guide for Python Code
 ;; https://www.python.org/dev/peps/pep-0008/
 (use-package py-autopep8
-  :defer t
+  :after python
   :init (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
   :config (custom-set-variables
-           '(py-autopep8-options '("--max-line-length=100"))))
+           '(py-autopep8-options '("--max-line-length=100"))
+           '(flycheck-flake8-maximum-line-length 100)))

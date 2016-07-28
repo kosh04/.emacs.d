@@ -15,6 +15,9 @@
         (magit . "melpa-stable")
         (elnode . "marmalade")))
 
+;; バージョンを固定する. それ以外のバージョンは無視される
+(add-to-list 'package-load-list '(muse "3.20"))
+
 ;; Cask - Project management for Emacs package development
 (require 'cask "~/.cask/cask.el" t)
 

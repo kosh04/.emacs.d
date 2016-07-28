@@ -4,6 +4,7 @@
   :defer t
   ;; 開発版
   :load-path "~/Documents/GitHub/emacs-wandbox/"
+  :pin #:manual
   :bind (("C-c w w" . wandbox)
          ("C-c w e" . wandbox-eval-last-sexp)
          ("C-c w l" . wandbox-list-compilers))

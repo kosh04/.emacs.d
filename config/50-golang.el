@@ -18,20 +18,18 @@
               ))
 
 (use-package go-eldoc
-  :defer t
+  :after go-mode
   :init (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package company-go
-  :defer t
-  :init
-  (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-go))
-  :ensure company)
+  :after (go-mode company)
+  :config
+  (add-to-list 'company-backends 'company-go))
 
 ;; go-playground client
 ;; https://github.com/kosh04/emacs-go-playground
 
 (use-package go-playground-cli
-  :load-path "~/Documents/GitHub/emacs-go-playground"
+  :after go-mode
   :bind (:map go-mode-map
               ("C-c w w" . go-playground-cli-run-current-file)))
