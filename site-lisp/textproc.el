@@ -33,7 +33,7 @@
 ;;;###autoload
 (defun textproc-filter-region (command start end)
   "Convert text on current region by using filter COMMAND.
-COMMAND requires (input: string) -> string."
+COMMAND requires method ((input string)) -> string."
   (interactive "*aFilter command: \nr")
   ;; FIXME: 変換後のポイント位置がずれる
   (insert (let ((text (buffer-substring start end)))
@@ -47,7 +47,18 @@ COMMAND requires (input: string) -> string."
 ;;     (while (re-search-forward REGEXP nil t)
 ;;       (replace-match NEWTEXT nil t))))
 
+(defun textproc-filter-string (regionf string)
+  "Convert STRING by using filter REGIONF.
+REGIONF requires method ((beg point) (end point))."
+  (with-temp-buffer
+    (insert string)
+    (funcall regionf (point-min) (point-max))
+    (buffer-string)))
+
 ;; Example
+
+;;(require 'url-util)
+;;(require 'morse)
 
 (defun textproc-urlencode-region (start end)
   (interactive "*r")
@@ -56,6 +67,9 @@ COMMAND requires (input: string) -> string."
 (defun textproc-urldecode-region (start end)
   (interactive "*r")
   (textproc-filter-region #'url-unhex-string start end))
+
+(defun textproc-morse-string (string)
+  (textproc-filter-string #'morse-region string))
 
 (provide 'textproc)
 

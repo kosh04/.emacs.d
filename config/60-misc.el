@@ -10,6 +10,8 @@
   :defer t
   :pin #:manual)
 
+(use-package textproc
+  :pin #:manual)
 
 (global-set-key (kbd "C-c g") 'google-search)
 
