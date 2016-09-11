@@ -37,3 +37,6 @@
  ;;'(use-package-always-ensure t)
  ;;'(use-package-always-defer t)
  )
+
+(use-package paradox
+  :pin "melpa-stable")

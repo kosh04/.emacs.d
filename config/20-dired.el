@@ -111,4 +111,8 @@
 ;; ファイルの中身を覗き見る (peep)
 (use-package peep-dired
   :defer t
-  :bind (:map dired-mode-map ("W" . peep-dired)))
+  :bind (:map dired-mode-map
+              ("W" . peep-dired)
+         :map peep-dired-mode-map
+              ("n" . peep-dired-next-file)
+              ("p" . peep-dired-prev-file)))

@@ -11,7 +11,11 @@ rem http://aspell.net/win32/
 set EMACSPATH=%EMACSPATH%;C:\opt\Aspell\bin
 
 rem == LLVM/Clang ==
-set EMACSPATH=%EMACSPATH%;C:\opt\LLVM\bin
+rem set EMACSPATH=%EMACSPATH%;C:\opt\LLVM\bin
+set PATH=%PATH%;C:\opt\LLVM\bin
+
+rem == CMake ==
+set EMACSPATH=%EMACSPATH%;C:\opt\cmake\bin
 
 rem == C/Migemo ==
 set EMACSPATH=%EMACSPATH%;%HOME%\opt\cmigemo

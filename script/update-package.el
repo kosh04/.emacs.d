@@ -1,8 +1,12 @@
-;;; batch-package.el
+;;; update-package.el
 
 ;;; Usage:
 
-;; $ emacs --script package-upgrade.el
+;; $ emacs --script update-package.el
+
+;;; TODO
+
+;; - confirm pinned-package
 
 (require 'package)
 
@@ -20,7 +24,7 @@
         (progn
           (list-packages)
           (package-menu-mark-upgrades)
-          (package-menu-execute :noquery))
+          (package-menu-execute ))
       (error
        (message "Error: %s" (error-message-string e))
        (setq err t)))
