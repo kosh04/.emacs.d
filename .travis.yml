@@ -1,19 +1,30 @@
-language: emacs-lisp
+language: generic
 
-sudo: false
+sudo: required
+dist: trusty
 
 addons:
   apt:
     sources:
-      - cassou-emacs
+      - sourceline: 'ppa:ubuntu-elisp/ppa'
     packages:
-      - emacs24
+      - emacs
+      - emacs-snapshot
+
+env:
+  - EMACS=emacs
+  - EMACS=emacs-snapshot
+
+allow_failures:
+  # Emacs Daily Snapshot is not stable release.
+  - env: EMACS=emacs-snapshot
 
 install:
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
-  - export PATH=${PATH}:${HOME}/.cask/bin
+  - export PATH=$PATH:$HOME/.cask/bin
   - cask install
 
 script:
-  - emacs --version
-  - make compile test-lisp test-startup
+  - $EMACS --version
+  - make compile test-lisp
+  - make test-startup
