@@ -15,9 +15,10 @@ env:
   - EMACS=emacs
   - EMACS=emacs-snapshot
 
-allow_failures:
-  # Emacs Daily Snapshot is not stable release.
-  - env: EMACS=emacs-snapshot
+matrix:
+  allow_failures:
+    # Daily Snapshot is not stable release (and other libs may not support)
+    - env: EMACS=emacs-snapshot
 
 install:
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
