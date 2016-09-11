@@ -22,6 +22,7 @@
 (require 'cask "~/.cask/cask.el" t)
 
 ;; コマンドライン以外から読み込んでも多分意味ないのでは…？
+;; -> `cask exec emacs ...' と同じ効果が期待できる（のかもしれない）
 (use-package cask
   :defer t
   :mode ("Cask\\'" . emacs-lisp-mode)

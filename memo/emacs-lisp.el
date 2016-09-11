@@ -1,4 +1,4 @@
-;;; memo/emacs-lisp.el
+;;; memo/emacs-lisp.el          -*- mode: emacs-lisp; lexical-binding: t; -*-
 
 ;;; ELisp/CL の違い
 ;; 102: Emacs Lisp と Common Lisp は似ているのですか?
@@ -517,3 +517,58 @@ The following commands are available:
 (bindat-unpack '((:signature str 8)
                  (:ihdr str 25))
                (f-read-bytes "~/Pictures/bg.png"))
+
+(defun process-describe (proc)
+  (list :attributes (process-attributes proc)
+        :buffer (process-buffer proc)
+        :coding-system (process-coding-system proc)
+        :command (process-command proc)
+        :contact (process-contact proc)
+        :datagram-address (process-datagram-address proc)
+        :exit-status (process-exit-status proc)
+        :filter (process-filter proc)
+        :sentinel (process-send-eof proc)
+        :status (process-status proc)
+        :type (process-type proc)
+        :plist (process-plist proc)
+        ))
+
+;; 行頭のプロパティを取得
+(hack-local-variables-prop-line)
+;;=> ((lexical-binding . t) (mode . emacs-lisp))
+
+;; パッケージのメタデータを取得 (lisp-mnt.el)
+
+(lm-get-package-name) ;;=> "memo/emacs-lisp.el"
+(lm-summary)
+(lm-authors)
+(lm-maintainer)
+(lm-creation-date)
+(lm-last-modified-date)
+(lm-version)
+(lm-keywords)
+(lm-keywords-list)
+(lm-keywords-finder-p)
+(lm-adapted-by)
+(lm-commentary)
+(lm-homepage)
+
+(save-excursion
+  (lm-header "version"))
+
+(lm-verify file showok verbose non-fsf-ok)
+
+(locate-library "lisp-mnt")
+
+;; ファイルあるいはディレクトリのelispパッケージの概要を表示する
+M-x lm-synopsis
+
+;; バグレポート
+M-x report-emacs-bug ;; GNU Emacs に関するバグレポート
+M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
+
+;; パッケージの依存関係をツリー表示
+;; https://www.emacswiki.org/emacs/lib-requires.el
+
+;; lisp-mnt 拡張
+;; https://github.com/tarsius/elx

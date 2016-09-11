@@ -148,3 +148,7 @@
   (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
 
 (use-package erefactor)
+
+(use-package flycheck-package
+  :after flycheck
+  :config (flycheck-package-setup))

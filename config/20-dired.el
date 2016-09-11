@@ -93,6 +93,7 @@
   (define-key dired-mode-map [remap backward-page] 'user:dired-beginning-of-buffer)
   (define-key dired-mode-map [remap end-of-buffer] 'user:dired-end-of-buffer)
   (define-key dired-mode-map [remap forward-page] 'user:dired-end-of-buffer)
+  ;; (define-key dired-mode-map "e" #'(lambda () "Open file via EWW." (interactive) (eww-open-file (dired-get-file-for-visit))))
   t)
 
 (with-eval-after-load "wdired"

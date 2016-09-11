@@ -14,3 +14,16 @@
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-c-headers))
   :ensure company)
+
+(use-package irony
+  :defer t
+  :init
+  (add-hook 'c-mode-common-hook 'irony-mode))
+
+(use-package irony-eldoc
+  :after irony
+  :config (add-to-list 'irony-mode-hook 'irony-eldoc))
+
+(use-package company-irony
+  :after company
+  :config (add-to-list 'company-backends 'company-irony))

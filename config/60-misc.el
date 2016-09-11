@@ -1,20 +1,5 @@
 ;; config/misc
 
-(require 'cl-compatible)
-(require 'xyzzy)
-(require 'xyzzy-keymap)
-(require 'google-search)
-(require 'user-utils)
-
-(use-package unicode-escape
-  :defer t
-  :pin #:manual)
-
-(use-package textproc
-  :pin #:manual)
-
-(global-set-key (kbd "C-c g") 'google-search)
-
 (defun user:emacs-init-time ()
   (message "Emacs init time %s" (emacs-init-time)))
 
@@ -65,3 +50,6 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 
 ;; OpenVPN 接続設定ファイル
 (add-to-list 'auto-mode-alist '("\\.ovpn\\'" . conf-mode))
+
+;; (use-package helm
+;;   :pin melpa-stable)
