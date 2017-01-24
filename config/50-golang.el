@@ -30,6 +30,7 @@
 ;; https://github.com/kosh04/emacs-go-playground
 
 (use-package go-playground-cli
+  :load-path "~/Documents/GitHub/emacs-go-playground"
   :after go-mode
   :bind (:map go-mode-map
               ("C-c w w" . go-playground-cli-run-current-file)))

@@ -11,15 +11,18 @@
 (with-eval-after-load "gnutls"
   (setq gnutls-min-prime-bits 1024))
 
-;; NTEmacs64 24.5-IME-patched
+;; NTEmacs64 IME-patched
 ;; https://github.com/chuntaro/NTEmacs64
 
-(setq default-input-method "W32-IME")
-(setq-default w32-ime-mode-line-state-indicator "[－]")
-(setq w32-ime-mode-line-state-indicator-list '("[－]" "[あ]" "[－]"))
-(w32-ime-initialize)
-(add-hook 'w32-ime-on-hook #'(lambda () (set-cursor-color "brown")))
-(add-hook 'w32-ime-off-hook #'(lambda () (set-cursor-color "black")))
+(with-eval-after-load 'w32-ime
+  (setq default-input-method "W32-IME")
+  (setq-default w32-ime-mode-line-state-indicator "[－]")
+  (setq w32-ime-mode-line-state-indicator-list '("[－]" "[あ]" "[－]"))
+  (w32-ime-initialize)
+  (add-hook 'w32-ime-on-hook #'(lambda () (set-cursor-color "brown")))
+  (add-hook 'w32-ime-off-hook #'(lambda () (set-cursor-color "black")))
+  ;;(add-hook 'minibuffer-setup-hook 'deactivate-input-method)
+  )
 
 ;; VC-Git
 ;; 外部プロセスを抑制する

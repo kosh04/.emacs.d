@@ -18,7 +18,10 @@
 (use-package irony
   :defer t
   :init
-  (add-hook 'c-mode-common-hook 'irony-mode))
+  (add-hook 'c-mode-common-hook 'irony-mode)
+  :config
+  (if (boundp 'w32-pipe-read-delay)
+      (setq w32-pipe-read-delay 0)))
 
 (use-package irony-eldoc
   :after irony

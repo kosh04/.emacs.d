@@ -5,6 +5,7 @@
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
 (use-package magit
+  ;;:if (executable-find "git")
   :defer t
   :pin melpa-stable
   :bind ("C-x g" . magit-status)

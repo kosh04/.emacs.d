@@ -19,6 +19,8 @@
 (global-set-key (kbd "C-x t e") 'toggle-debug-on-error)
 (global-set-key (kbd "C-x t v") 'toggle-viper-mode)
 
+(global-set-key [f11] 'toggle-frame-fullscreen)
+
 ;; disable
 (global-unset-key (kbd "C-x m"))        ; compose-mail
 (global-unset-key (kbd "C-x C-n"))      ; set-goal-column

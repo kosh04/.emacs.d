@@ -5,7 +5,7 @@
 (require 'dired-aux)
 
 (setq dired-dwim-target t)                ; 二窓用
-(setq dired-isearch-filenames t)
+(setq dired-isearch-filenames t)          ; ファイル名だけをisearch
 ;;(setq dired-recursive-deletes 'always)
 
 (add-hook 'dired-mode-hook 'hl-line-mode) ; 行カーソル

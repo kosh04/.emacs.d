@@ -6,7 +6,7 @@
 
 ;;; TODO
 
-;; - confirm pinned-package
+;; - confirm package-pinned-packages
 
 (require 'package)
 

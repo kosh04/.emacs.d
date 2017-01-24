@@ -75,6 +75,11 @@
   ;; (format-time-string "%Y-%m-%dT%H:%M:%S")
   (format-time-string "%FT%T%z" time universal))
 
+(defun unix-time-at-point ()
+  (interactive)
+  (let ((n (thing-at-point 'number)))
+    (message "%d => %s" n (iso8601 n))))
+
 (defun point-of (fn)
   "FN 実行後のポイント位置を返す.
 
@@ -92,9 +97,6 @@
   (delete-region (point)
                  (progn (backward-word n) (point))))
 
-(defun println (object &optional stream)
-  (princ object stream)
-  (terpri stream))
 
 (defun plist->alist (plist)
   "Translate PLIST to alist.

@@ -1,5 +1,7 @@
 # todo: use NTEmacs+Cask
 
+USAGE := $(MAKE) [compile|test|update|clean|help]
+
 EMACS ?= emacs
 EMACSFLAGS = -L site-lisp
 EMACS_BATCH = $(EMACS) -batch -no-site-file
@@ -45,6 +47,10 @@ UnicodeData.txt:
 clean:
 	$(RM) $(SRC.el:.el=.elc)
 
+help usage:
+	$(info $(USAGE))
+
 .PHONY: compile clean
+.PHONY: help usage
 .PHONY: test test-startup test-lisp
 .PHONY: update update-package

@@ -1,10 +1,11 @@
 rem Setup NTEmacs environment
 
-set EMACS_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
+set EMACS24_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
+set EMACS25_HOME=%USERPROFILE%\opt\emacs-25.1
 
 rem TODO: do replace PATH to EMACSPATH ?
 set EMACSPATH=
-set EMACSPATH=%EMACS_HOME%\bin
+rem set EMACSPATH=%EMACS_HOME%\bin
 
 rem == GNU Aspell ==
 rem http://aspell.net/win32/

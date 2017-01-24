@@ -519,7 +519,7 @@ The following commands are available:
                (f-read-bytes "~/Pictures/bg.png"))
 
 (defun process-describe (proc)
-  (list :attributes (process-attributes proc)
+  (list ;;:attributes (process-attributes proc)
         :buffer (process-buffer proc)
         :coding-system (process-coding-system proc)
         :command (process-command proc)
@@ -572,3 +572,18 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
 
 ;; lisp-mnt 拡張
 ;; https://github.com/tarsius/elx
+
+;; 行番号
+(require 'linum)
+;; 行番号の表示にもう少しゆとりを
+(setq linum-format (lambda (line)
+                     (propertize (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+                                           (concat "%" (number-to-string w) "d "))
+                                         line)
+                                 'face 'linum)))
+
+;; obsolete
+(define-obsolete-function-alias 'foo-lold 'foo "25.1")
+(defun foo ()
+  (declare (obsolete foo-old "25.1"))
+  nil)

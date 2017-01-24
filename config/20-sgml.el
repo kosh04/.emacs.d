@@ -7,6 +7,8 @@
 (fset 'html-quote-region #'sgml-quote)
 
 (declare-function 'sgml-pretty-print "sgml-mode")
+(unless (symbol-function 'xml-pretty-print)
+  (setf (symbol-function 'xml-pretty-print) 'sgml-pretty-print))
 
 (use-package sgml-mode
   :defer t
