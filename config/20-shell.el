@@ -18,6 +18,7 @@
 ;; shell-command(M-!) のコマンド入力に補完を効かせる
 ;; http://namazu.org/~tsuchiya/
 (use-package "shell-command"
+  :disabled t
   :config (shell-command-completion-mode t)
   :ensure nil)
 
@@ -30,5 +31,4 @@
 ;; Eshell
 (with-eval-after-load 'eshell
   ;; (add-hook 'eshell-mode-hook 'eshell-user-setup-hook)
-  (setq eshell-ask-to-save-last-dir nil)
-  t)
+  (setq eshell-ask-to-save-last-dir nil))

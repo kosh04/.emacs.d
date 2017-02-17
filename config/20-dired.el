@@ -20,7 +20,7 @@
   "作業中のファイルにカーソルを当てる."
   (let ((file (buffer-file-name)))
     ad-do-it
-    (and file (dired-goto-file file))))
+    (if file (dired-goto-file file))))
 
 ;; [v] dired-view-file
 (defadvice dired-find-file (after read-only-mode activate)
@@ -82,6 +82,7 @@
 (define-dired-sort-by atime "u")        ; 最終アクセス時刻
 (define-dired-sort-by version "v")      ; バージョン名／番号
 (define-dired-sort-by reverse "r")      ; 逆順
+(define-dired-sort-by name "")
 
 (with-eval-after-load "dired"
   ;;(define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
@@ -97,8 +98,9 @@
   t)
 
 (with-eval-after-load "wdired"
-  (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit)
-  t)
+  (custom-set-variables
+   '(wdired-allow-to-change-permissions t))
+  (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit))
 
 ;; ファイル表示をマスク
 ;;(add-hook 'dired-mode-hook 'dired-omit-mode)

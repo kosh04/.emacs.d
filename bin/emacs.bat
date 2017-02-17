@@ -1,5 +1,1 @@
-@echo off
-setlocal
-
-call %~dp0\_env.cmd
-call "%EMACS_HOME%\bin\emacs.exe" %*
+@%~dp0\emacs25.bat %*

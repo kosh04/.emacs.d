@@ -1,1 +1,2 @@
+alias type which $1
 alias ll ls -l $*

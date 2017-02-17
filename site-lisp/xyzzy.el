@@ -71,10 +71,14 @@
 (defvaralias 'buffer-mode 'major-mode)
 (defvaralias '*initial-buffer-mode* initial-major-mode)
 
-(defmacro defvar-local (symbol value &optional docstring)
+(defmacro xyzzy-defvar-local (symbol value &optional docstring)
   `(progn
      (defvar ,symbol ,value ,docstring)
      (make-variable-buffer-local ',symbol)))
+
+;; since 24.3
+(unless (fboundp 'defvar-local)
+  (setf (symbol-function 'defvar-local) #'xyzzy-defvar-local))
 
 ;;; @@ Character
 (fset 'char-columns #'char-width)
