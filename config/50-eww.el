@@ -17,8 +17,6 @@
 ;; q - quit-window
 ;; &rest (help-xref-interned 'eww-mode-map)
 
-;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
-
 (use-package eww
   :defer t
   :config
@@ -30,10 +28,14 @@
 
   (add-hook 'eww-mode-hook 'user:eww-setup)
 
+  ;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
+
   (bind-keys :map eww-mode-map
              ("=" . eww-view-source)
              ("[" . eww-back-url)
              ("]" . eww-forward-url)
+             ("j" . forward-line)       ; hjkl
+             ("k" . previous-line)
              ("<M-left>" . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("<backspace>" . eww-back-url)

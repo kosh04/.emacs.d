@@ -11,6 +11,8 @@
 (setf (getenv "PATH") (concat "/usr/local/bin" path-separator (getenv "PATH")))
 ;;(setf (getenv "PATH") (concat (expand-file-name "~/bin") path-separator (getenv "PATH")))
 
+(setf (getenv "PS1") "[\\u@\\h:\\w]\\$ ")
+
 ;; $GOPATH / exe-path-from-shell でなんとかならんかね
 (unless (getenv "GOPATH")
   (setf (getenv "GOPATH")

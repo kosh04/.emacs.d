@@ -144,7 +144,8 @@
 (use-package nameless
   :config
   (custom-set-variables
-   '(nameless-global-aliases nil))
+   '(nameless-global-aliases nil)
+   '(nameless-private-prefix t))
   (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
 
 (use-package erefactor)

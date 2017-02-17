@@ -3,6 +3,7 @@
 ;; テキスト補完
 (use-package company
   :pin gnu
+  :diminish company-mode
   :init
   ;; TODO: 補完が重くなってきたらglobalをやめて個別にcompany-modeを指定する
   (add-hook 'after-init-hook 'global-company-mode)

@@ -24,6 +24,7 @@
 
 (use-package flycheck
   :defer t
+  ;;:diminish flycheck-mode
   :init
   (custom-set-variables
    '(flycheck-emacs-lisp-load-path 'inherit)
@@ -37,3 +38,5 @@
 (use-package flycheck-pos-tip
   :config (flycheck-pos-tip-mode +1)
   :ensure flycheck)
+
+;; https://github.com/Wilfred/flycheck-title

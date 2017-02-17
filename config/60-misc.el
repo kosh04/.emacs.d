@@ -1,5 +1,7 @@
 ;; config/misc
 
+(require 'user-utils)
+
 (defun user:emacs-init-time ()
   (message "Emacs init time %s" (emacs-init-time)))
 
@@ -53,3 +55,12 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 
 ;; (use-package helm
 ;;   :pin melpa-stable)
+
+(defun check-parens-local ()
+  (when buffer-file-name
+    (add-hook 'after-save-hook 'check-parens nil t)))
+
+;;(add-hook 'text-mode-hook 'check-parens-local)
+
+;; Language Template
+(auto-insert-mode +1)

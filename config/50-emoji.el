@@ -1,9 +1,11 @@
 ;;; config/emoji
 
-;; (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
-
 ;; 絵文字用のシステムフォントを適用する
 (use-package emoji-fontset
+  :if (cl-case window-system
+        ;; Emacs 25.1 からデフォルトでいい感じの設定が利用可能になった
+        (ns (version< emacs-version "25.1"))
+        (w32 t))
   :config (emoji-fontset-enable))
 
 ;; 豆腐な絵文字を画像で代用する

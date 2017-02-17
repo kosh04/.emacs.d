@@ -36,9 +36,8 @@
 COMMAND requires method ((input string)) -> string."
   (interactive "*aFilter command: \nr")
   ;; FIXME: 変換後のポイント位置がずれる
-  (insert (let ((text (buffer-substring start end)))
-            (delete-region start end)
-            (funcall command text))))
+  (let ((text (delete-and-extract-region start end)))
+    (insert (funcall command text))))
 
 ;; (save-restriction
 ;;   (narrow-to-region start end)
@@ -70,6 +69,9 @@ REGIONF requires method ((beg point) (end point))."
 
 (defun textproc-morse-string (string)
   (textproc-filter-string #'morse-region string))
+
+(defun textproc-unmorse-string (string)
+  (textproc-filter-string #'unmorse-region string))
 
 (provide 'textproc)
 

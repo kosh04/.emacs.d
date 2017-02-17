@@ -32,6 +32,7 @@
 
 (custom-set-variables
  '(use-package-verbose t)
+ '(use-package-enable-imenu-support t)
  ;; 初回起動時は自動インストールしたい
  ;;'(use-package-always-ensure t)
  ;;'(use-package-always-defer t)

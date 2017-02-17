@@ -587,3 +587,13 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
 (defun foo ()
   (declare (obsolete foo-old "25.1"))
   nil)
+
+;; クリップボードのデータをkillリングに保存する
+(setq save-interprogram-paste-before-kill t)
+
+;; http://stackoverflow.com/q/3072648
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)

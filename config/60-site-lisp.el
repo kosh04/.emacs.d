@@ -2,7 +2,7 @@
 
 (require 'unicode-escape)
 (require 'textproc)
-
+(require 'gitter-irc)
 (require 'cl-compatible)
 (require 'xyzzy)
 (require 'xyzzy-keymap)
