@@ -51,3 +51,11 @@
     (apply f args)))
 
 (advice-add 'dired-show-file-type :around #'user:with-cygwin-path)
+
+;; TODO: Replace with `ag' or `git-grep' command?
+(custom-set-variables
+ ;; M-x lgrep
+ '(grep-template "findstr /N /R <R> <F>")
+ ;; M-x rgrep
+ '(grep-find-template "findstr /S /N /R /D:<D> <R> <F>")
+ '(find-name-arg nil))

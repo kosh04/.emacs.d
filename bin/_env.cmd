@@ -49,3 +49,5 @@ rem == Cygwin ==
 rem NOTE: NOT recommended using Cygwin process in NTEmacs
 set CYGWIN_HOME=C:\cygwin64
 rem set EMACSPATH=%EMACSPATH%;%CYGWIN_HOME%\bin
+
+rem set EMACSPATH=%EMACSPATH%;C:\opt\Gow\bin

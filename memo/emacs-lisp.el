@@ -597,3 +597,5 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region (point-min) (point-max))))
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+;; emacs-lisp におけるバージョン番号の割り当て方法は `version-to-list' を参照

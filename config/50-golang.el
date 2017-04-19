@@ -24,6 +24,8 @@
 (use-package company-go
   :after (go-mode company)
   :config
+  ;; (custom-set-variables
+  ;;  '(company-go-insert-arguments nil))
   (add-to-list 'company-backends 'company-go))
 
 ;; go-playground client

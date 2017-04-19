@@ -2,7 +2,7 @@
 
 (use-package newlisp-mode
   ;; 開発版
-  ;; :load-path "~/src/gitrepo/newlisp-mode/"
+  :load-path "~/src/gitrepo/newlisp-mode"
   :pin #:manual
   :mode ("\\.lsp$" . newlisp-mode)
   :bind (:map newlisp-mode-map
