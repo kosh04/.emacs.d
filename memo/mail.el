@@ -1,10 +1,18 @@
-;;; memo/mail.el
+;;; memo/Mail
 
-(setq smtpmail-smtp-server "smtp.gmail.com")
-(setq smtpmail-mail-address "...")
+;; Link:
+;; - https://www.emacswiki.org/emacs/SendingMail
 
-(eval-after-load "mew"
-  (quote
-   (progn
-     (define-key mew-summary-mode-map "g" 'mew-status-update)
-     )))
+(require 'smtpmail)
+(custom-set-variables
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-mail-address "..."))
+
+;; Mew
+(with-eval-after-load "mew"
+  (define-key mew-summary-mode-map "g" 'mew-status-update)
+  )
+
+;; Gmail を利用したい
+
+;; http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-

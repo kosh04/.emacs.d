@@ -1914,6 +1914,10 @@ user
       eol-mnemonic-unix "u"
       eol-mnemonic-mac "m"
       eol-mnemonic-undecided "?")
+(setq eol-mnemonic-dos "crlf"
+      eol-mnemonic-unix "lf"
+      eol-mnemonic-mac "cr"
+      eol-mnemonic-undecided "?")
 
 (defsetf lookup-key (keymap key) (def)
   `(define-key ,keymap ,key ,def))

@@ -9,14 +9,17 @@
 
 ### site-lisp
 
-設定ファイルとは別に分離させた自作ライブラリ
+設定ファイルとは別に分離させた自作ライブラリ (NOT completed)
 
 - `cl-compatible.el` : Common Lispのような関数と変数のまとめ (`cl.el` 拡張)
+- `gitter-irc.el` : Gitter client using IRC
 - `gnome-util.el` : GNOME端末やファイルブラウザを呼び出すユーティリティ
 - `google.el` : 簡易Google検索
-- `unicode-escape.el` : Unicodeエスケープ文字列の変換と復元
+- `ssh-public-key-overlay.el` : `~/.ssh/authorized_keys` 等のBASE64鍵を見やすくする
+- `textproc.el` : テキスト変換
 - `xyzzy.el` : xyzzy lisp移植キットのようなもの。逆引き用ライブラリ
 - `xyzzy-keymap.el` : xyzzyのキーマップを模倣する
+- 他いろいろ
 
 MELPAに登録してあるものは[リポジトリ参照](https://github.com/search?l=Emacs+Lisp&q=user%3Akosh04)
 

@@ -18,7 +18,7 @@
 ;; @@list-buffers
 (list-buffers)
 (ibuffer)
-(call-interactively 'electric-buffer-list)
+(electric-buffer-list nil)
 (iswitchb-buffer)
 (call-interactively 'bs-show)
 

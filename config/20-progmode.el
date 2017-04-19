@@ -34,6 +34,9 @@
 
 (global-set-key (kbd "M-n") 'indent-and-next-line)
 
+;; Language Template
+(auto-insert-mode +1)
+
 ;; Batch mode
 (use-package batch-mode  
   :defer t
@@ -45,3 +48,6 @@
   :defer t
   ;; :bind ("C-c c" . smart-compile)
   )
+
+;; 関数上部のコメントをまとめて narrow
+(setq narrow-to-defun-include-comments t)

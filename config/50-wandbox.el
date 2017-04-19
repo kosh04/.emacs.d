@@ -7,6 +7,7 @@
   :pin #:manual
   :bind (("C-c w w" . wandbox)
          ("C-c w e" . wandbox-eval-last-sexp)
+         ("C-c w i" . wandbox-insert-template)
          ("C-c w l" . wandbox-list-compilers))
   :config
   ;; 通信環境の問題でHTTPSがたまに失敗することがある

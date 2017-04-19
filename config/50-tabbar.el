@@ -6,6 +6,8 @@
 
 (global-set-key (kbd "C-x C-.") 'tabbar-forward-tab)
 (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
+(global-set-key [C-tab]   'tabbar-forward-group)
+(global-set-key [C-S-tab] 'tabbar-backward-group)
 
 ;; kill-buffer した後に戻るバッファが変わるのを抑える
 (remove-hook 'kill-buffer-hook 'tabbar-buffer-track-killed)

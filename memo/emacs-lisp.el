@@ -597,3 +597,72 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region (point-min) (point-max))))
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+;; ## バグっぽい ##
+;; `eval-when-compile' を利用してバイトコンパイルを行う前に
+;; そのファイルが読み込み済みであった場合、内部の変数の値が古い可能性がある
+(defvar foo-x 10)
+(defvar foo-y (eval-when-compile (+ foo-x 20)))
+;; 上記のコードを読み込んだ後、(defvar foo-x 99) に変更してバイトコンパイルすると
+;; `foo-x' の値は defvar の性質上「更新されない」ため (defvar foo-y 30) となってしまう
+;;
+;; ## 起こりうる問題 ##
+;; パッケージの更新時。ファイルのダウンロード後にバイトコンパイルも行うため
+;; 上記の問題が起こるかもしれないため注意が必要
+;;
+;; ## 対策 ##
+;; (本来であればバイトコンパイルは状態を持たない素の Emacs で行うべき)
+;; * .elc ファイルを削除して Emacs を再起動後に改めてバイトコンパイルする
+;; * バイトコンパイルを外部プロセスを呼び出して行う (`emacs -Q -batch ...`)
+
+;; Group, Customization etc
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Customization.html
+
+;; ";;; Commentary:" 部分を抽出する (ヘルプ表示用)
+(finder-commentary (locate-library "bs"))
+
+;; コマンドを実行して文字列化
+(shell-command-to-string "gcc -v") ;;=> "..."
+(process-lines "gcc" "-v")         ;;=> ("..."  ...)
+
+
+(with-eval-after-load 'nameless
+  ;; which-function-mode でも強制的に nameless 表示にする
+  ;; 自作した (Elisp の命名規則に則っていない) 関数の表示がされなくなるバグあり
+  (require 'which-func)
+  (require 's)
+  (defun user/nameless-compose-name (prefix name)
+    (let ((name* (substring name (length prefix))))
+      (cond ((and (s-starts-with-p "--" name*) nameless-private-prefix)
+             (concat nameless-prefix nameless-prefix (substring name* 2)))
+            ((s-starts-with-p "-" name*)
+             (concat nameless-prefix (substring name* 1)))
+            (t name*))))
+  (defconst which-func-current
+    '(:eval (replace-regexp-in-string
+             "%" "%%"
+             (let ((prefix nameless-current-name)
+                   (name (gethash (selected-window) which-func-table)))
+               (if (and nameless-mode (s-starts-with-p prefix name))
+                   (user/nameless-compose-name prefix name)
+                 (or name which-func-unknown))))))
+  )
+
+(defun ffmetadata-show (file)
+  (setq file (expand-file-name file))
+  (let ((out "*METADATA*"))
+    (call-process "ffmpeg"
+                  nil out t
+                  "-i" file
+                  "-f" "ffmetadata"
+                  "-loglevel" "quiet"
+                  "-")
+    (display-buffer out)))
+
+;; (dired-map-dired-file-lines 'ffmetadata-show)
+
+;; ハッシュ構文はそのまま利用していいのか？
+(let ((h #s(hash-table data(:k1 "v1" :k2 "v2"))))
+  (gethash :k2 h))                      ;=> "v2"
+
+(interactive-form 'next-line) ;;=> (interactive "^p\np")

@@ -16,6 +16,9 @@
 (fset 'decode #'decode-coding-string)
 (fset 'detect #'detect-coding-string)
 
+;; BOMありUTF-8の表記を区別する
+(coding-system-put 'utf-8-with-signature :mnemonic ?u)
+
 ;; <meta charset="utf-8">
 (defun user/leave-utf-8-with-signature (coding-system)
   "[bug] UTF-8/UTF-16 BOM ファイルを保存する時に BOM が削られるのを回避する.

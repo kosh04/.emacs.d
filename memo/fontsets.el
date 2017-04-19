@@ -2,6 +2,8 @@
 
 ;; M-x list-fontsets
 
+;; http://ja.wikipedia.org/wiki/XLFD
+
 ;; フォント切り替え
 (set-frame-font
    "-outline-ＭＳ ゴシック-normal-r-normal-normal-16-120-96-96-c-*-iso8859-1"
