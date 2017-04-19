@@ -19,6 +19,8 @@
 (define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent)
 (define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
 
+(setq load-prefer-newer t)
+
 ;; Eldoc
 (use-package eldoc
   :diminish eldoc-mode
@@ -119,6 +121,9 @@
 
 ;; prettify-symbol
 ;; Emacs24.4 以降で利用可能
+(custom-set-variables
+ '(prettify-symbols-unprettify-at-point t))
+
 (defun user:prettify-lambda ()
   (setq prettify-symbols-alist
         '(("lambda" . "\u03BB")         ; λ

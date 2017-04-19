@@ -3,8 +3,9 @@
 ;; Copyright (C) 2016  KOBAYASHI Shigeru
 
 ;; Author: KOBAYASHI Shigeru <shigeru.kb@gmail.com>
-;; Keywords: comm
 ;; Version: 0.1snapshot
+;; Package-Requires: ((emacs "24"))
+;; Keywords: comm
 
 ;;; Commentary:
 
@@ -142,6 +143,7 @@
 
 ;;;###autoload
 (defun ipmsg-server-start ()
+  (interactive)
   (unless ipmsg-server-process
     (setq ipmsg-server-process
           (make-network-process
@@ -152,7 +154,8 @@
            :family 'ipv4
            :type 'datagram
            :coding '(raw-text . raw-text)
-           :filter #'ipmsg--server-filter))))
+           :filter #'ipmsg--server-filter)))
+  (message "Start %s ... done" ipmsg-server-process))
 
 (defun ipmsg-quit ()
   (interactive)

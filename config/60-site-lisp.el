@@ -4,6 +4,7 @@
 (require 'textproc)
 (require 'gitter-irc)
 (require 'cl-compatible)
+(require 'ssh-public-key)
 (require 'xyzzy)
 (require 'xyzzy-keymap)
 (require 'user-utils)

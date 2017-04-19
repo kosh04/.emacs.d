@@ -13,6 +13,9 @@ recentf
 tramp
 abbrev_defs
 custom.el
+/notes
+
+eshell/lastdir
 
 # cask
 .cask
@@ -32,4 +35,5 @@ site-lisp/vendor/
 etc/
 /emojis/
 /irony/
+.geiser_history.guile
 .auth.plist

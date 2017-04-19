@@ -61,6 +61,3 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
     (add-hook 'after-save-hook 'check-parens nil t)))
 
 ;;(add-hook 'text-mode-hook 'check-parens-local)
-
-;; Language Template
-(auto-insert-mode +1)

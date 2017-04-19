@@ -6,6 +6,8 @@
 ;(add-hook 'text-mode-hook 'turn-on-auto-fill)
 ;(add-hook 'html-mode-hook 'turn-off-auto-fill)
 
+(declare-function 'shr-render-buffer "shr")
+
 (use-package markdown-mode
   :defer t
   :config

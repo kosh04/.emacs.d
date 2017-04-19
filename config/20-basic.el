@@ -16,7 +16,8 @@
 (add-to-list 'completion-ignored-extensions ".exe")
 
 ;; クリックで URL を開く
-(add-hook 'find-file-hook 'goto-address-mode)
+(add-hook 'text-mode-hook 'goto-address-mode)
+(add-hook 'prog-mode-hook 'goto-address-prog-mode)
 
 (url-handler-mode +1)
 

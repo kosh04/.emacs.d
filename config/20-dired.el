@@ -113,8 +113,17 @@
 ;; ファイルの中身を覗き見る (peep)
 (use-package peep-dired
   :defer t
+  :config
+  (custom-set-variables
+   ;;'(peep-dired-cleanup-eagerly t)
+   '(peep-dired-ignored-extensions
+     (append peep-dired-ignored-extensions
+             completion-ignored-extensions))
+   )
   :bind (:map dired-mode-map
               ("W" . peep-dired)
          :map peep-dired-mode-map
               ("n" . peep-dired-next-file)
-              ("p" . peep-dired-prev-file)))
+              ("p" . peep-dired-prev-file)
+              ("<SPC>" . peep-dired-scroll-page-down)
+              ("<S-SPC>" . peep-dired-scroll-page-up)))

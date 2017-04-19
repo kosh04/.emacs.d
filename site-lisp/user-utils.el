@@ -134,6 +134,23 @@ Example:
              keys
              :initial-value object))
 
+(defun buffer-needs-save-p (buffer)
+  "[user] Return non-nil if the visited-file BUFFER is still modified."
+  (and (buffer-file-name buffer)
+       (buffer-modified-p buffer)))
+
+;;(seq-filter #'buffer-needs-save-p (buffer-list))
+
+(defun occur-all-buffers (regexp)
+  "[user] Search REGEXP in all buffers."
+  (interactive "sSearch buffers: ")
+  (multi-occur (buffer-list) regexp)
+  ;;(multi-occur-in-matching-buffers "." regexp t)
+  )
+
+(defun module-feature-p ()
+  (fboundp 'module-load))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

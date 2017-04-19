@@ -1,4 +1,4 @@
-;;; config/shell.el
+;;; config/Shell
 
 (defun user:shell-other-window ()
   "シェルを別ウィンドウで開きます."
@@ -11,6 +11,7 @@
         (switch-to-buffer-other-window buffer))))
 
 (global-set-key (kbd "C-c s") 'user:shell-other-window)
+(global-set-key (kbd "C-c s") 'eshell)
 
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
