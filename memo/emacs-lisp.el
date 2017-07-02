@@ -650,21 +650,18 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
                  (or name which-func-unknown))))))
   )
 
-(defun ffmetadata-show (file)
-  (setq file (expand-file-name file))
-  (let ((out "*METADATA*"))
-    (call-process "ffmpeg"
-                  nil out t
-                  "-i" file
-                  "-f" "ffmetadata"
-                  "-loglevel" "quiet"
-                  "-")
-    (display-buffer out)))
-
-;; (dired-map-dired-file-lines 'ffmetadata-show)
-
 ;; ハッシュ構文はそのまま利用していいのか？
 (let ((h #s(hash-table data(:k1 "v1" :k2 "v2"))))
   (gethash :k2 h))                      ;=> "v2"
 
 (interactive-form 'next-line) ;;=> (interactive "^p\np")
+
+(defun lipsum ()
+  "Create a Lorem Ipsum dummy text."
+  (with-temp-buffer
+    (url-insert-file-contents "http://loripsum.net/api")
+    (shr-render-region (point-min) (point-max))
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun disable-theme* ()
+  (mapc #'disable-theme custom-enabled-themes))

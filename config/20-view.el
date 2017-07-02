@@ -10,6 +10,8 @@
     (define-key map "l" 'forward-char)
     (define-key map "j" 'next-line)
     (define-key map "k" 'previous-line)
+    ;; less-like
+    (define-key map "N" 'View-search-last-regexp-backward)
 
     (define-key map (kbd "DEL") 'ignore)
     (define-key map (kbd "RET") 'ignore)

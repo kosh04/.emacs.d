@@ -11,7 +11,6 @@
         (switch-to-buffer-other-window buffer))))
 
 (global-set-key (kbd "C-c s") 'user:shell-other-window)
-(global-set-key (kbd "C-c s") 'eshell)
 
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -29,7 +28,8 @@
   (define-key shell-mode-map (kbd "<down>") 'comint-next-input)
   t)
 
-;; Eshell
-(with-eval-after-load 'eshell
-  ;; (add-hook 'eshell-mode-hook 'eshell-user-setup-hook)
-  (setq eshell-ask-to-save-last-dir nil))
+;; 端末内でlessが使えたりする反面、シェル内での編集に向かない
+(defun user:ansi-term ()
+  "端末エミュレータを開きます."
+  (interactive)
+  (ansi-term shell-file-name))

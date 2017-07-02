@@ -12,7 +12,8 @@
   :pin melpa-stable
   :defer t
   :init
-  (fset 'lein-repl #'cider-jack-in)
+  (fset 'lein-repl   #'cider-jack-in)
+  (fset 'run-clojure #'cider-jack-in)
   :config
   (defun user:end-of-symbol (&rest args)
     (skip-syntax-forward "w_"))
