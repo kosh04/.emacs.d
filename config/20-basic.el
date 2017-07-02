@@ -1,7 +1,4 @@
-;;; config/basics.el
-
-(custom-set-variables
- '(custom-file (locate-user-emacs-file "init-custom.el")))
+;;; config/Basic
 
 (setq kill-whole-line t)
 
@@ -30,9 +27,3 @@
          "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"))))
 
 (setq use-dialog-box nil)
-
-;; 不要なバッファは定期的に掃除 (M-x clean-buffer-list)
-(require 'midnight)
-(custom-set-variables
- '(midnight-mode t))
-(midnight-delay-set 'midnight-delay "3:30am")

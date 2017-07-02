@@ -69,3 +69,8 @@
 ;; (add-hook 'write-file-hooks 'trim-tail-whitespace)
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
+
+;; 改行を強調表示↵
+(require 'whitespace)
+(add-to-list 'whitespace-style 'newline-mark)
+(setf (cdr (assq 'newline-mark whitespace-display-mappings)) '(?\n [?↵ ?\n] [?$ ?\n]))

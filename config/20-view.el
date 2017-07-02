@@ -1,7 +1,7 @@
 ;;; config/View
 
 ;; デフォルトは読み取り専用で開く
-(setq view-read-only nil)
+(setq view-read-only t)
 
 (with-eval-after-load 'view
   (let ((map view-mode-map))
