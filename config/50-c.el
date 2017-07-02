@@ -36,3 +36,7 @@
 (use-package company-irony
   :after company
   :config (add-to-list 'company-backends 'company-irony))
+
+;; TODO: rtags
+;; http://www.rtags.net/
+(use-package rtags)

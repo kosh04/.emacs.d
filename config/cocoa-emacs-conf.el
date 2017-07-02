@@ -10,6 +10,11 @@
 
 (global-set-key (kbd "C-¥") 'toggle-input-method)
 
+;; ゴミ箱に入れる
+(custom-set-variables
+ '(delete-by-moving-to-trash t)
+ '(trash-directory "~/.Trash/"))
+
 ;; Path
 (setf (getenv "PATH") (concat "/usr/local/bin" path-separator (getenv "PATH")))
 ;;(setf (getenv "PATH") (concat (expand-file-name "~/bin") path-separator (getenv "PATH")))
@@ -18,9 +23,7 @@
 
 ;; $GOPATH / exe-path-from-shell でなんとかならんかね
 (unless (getenv "GOPATH")
-  (setf (getenv "GOPATH")
-        (concat (expand-file-name "~/opt/go") path-separator
-                (expand-file-name "~/prog/go"))))
+  (setf (getenv "GOPATH") (expand-file-name "~/opt/go")))
 
 (progn
   (dolist (path (parse-colon-path (getenv "GOPATH")))
@@ -42,3 +45,6 @@
 (setq vc-handled-backends nil)
 ;;(setq vc-handled-backends '(RCS CVS SVN SCCS SRC Bzr Git Hg Mtn))
 ;;(setq vc-handled-backends '(Git))
+
+(custom-set-variables
+ '(locate-command "mdfind"))

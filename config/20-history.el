@@ -1,6 +1,4 @@
-;;; config/history.el
-
-;; ファイルの履歴等の管理
+;;; config/History --- ファイルの履歴等の管理
 
 (setq history-length 250)               ; default 30
 
@@ -12,6 +10,8 @@
 (setq recentf-max-saved-items 2000)
 (add-to-list 'recentf-exclude "recentf")
 (add-to-list 'recentf-exclude ".git")
+(add-to-list 'recentf-exclude "^/ssh:")
+(add-to-list 'recentf-exclude "^/sudo:")
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop

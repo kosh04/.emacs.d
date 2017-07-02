@@ -28,9 +28,11 @@
   ;;  '(company-go-insert-arguments nil))
   (add-to-list 'company-backends 'company-go))
 
+(use-package golint
+  :after go-mode)
+
 ;; go-playground client
 ;; https://github.com/kosh04/emacs-go-playground
-
 (use-package go-playground-cli
   :load-path "~/Documents/GitHub/emacs-go-playground"
   :after go-mode

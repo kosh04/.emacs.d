@@ -54,7 +54,7 @@ REGIONF requires method ((beg point) (end point))."
     (funcall regionf (point-min) (point-max))
     (buffer-string)))
 
-;; Example
+;; Example:
 
 ;;(require 'url-util)
 ;;(require 'morse)
@@ -72,6 +72,19 @@ REGIONF requires method ((beg point) (end point))."
 
 (defun textproc-unmorse-string (string)
   (textproc-filter-string #'unmorse-region string))
+
+(defvar textproc-filter-commands
+  '(md5 sha1))
+
+(defmacro textproc-define-command (command)
+  "Define command `textproc-COMMAND-region'."
+  (let ((name (intern (format "textproc-%s-region" command))))
+    `(defun ,name (start end)
+       (interactive "*r")
+       (textproc-filter-region #',command start end))))
+
+(textproc-define-command md5)
+(textproc-define-command sha1)
 
 (provide 'textproc)
 
