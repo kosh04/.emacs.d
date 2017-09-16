@@ -151,6 +151,50 @@ Example:
 (defun module-feature-p ()
   (fboundp 'module-load))
 
+(defun Math.random ()
+  "Return [0.0, 1.0) real number."
+  (/ (random) (+ 1.0 most-positive-fixnum)))
+
+(defun rand (min max)
+  "Return [MIN, MAX] random number."
+  (+ min (% (random) (+ max 1 (- min))))
+  ;;(+ min (floor (* (random) (+ max (- min) 1.0)) (+ 1.0 most-positive-fixnum)))
+  )
+
+(defun rand* (min max)
+  "Return [MIN, MAX) random number."
+  (error "Not implement yet"))
+
+(defun zalgo (text &optional depth)
+  "Zalgo Text Generator (incomplete)."
+  (replace-regexp-in-string
+   ;;"[a-zA-Z0-9]"
+   (rx alnum)
+   (lambda (s)
+     (concat s (with-output-to-string
+                 (dotimes (_ (or depth 30))
+                   (princ (string (rand #x0300 #x036F)))))))
+   text t t))
+
+(defun zalgo-buffer (&optional depth)
+  (interactive "*")
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "[A-Za-z0-9]" nil t)
+      (replace-match (concat (match-string 0)
+                             (with-output-to-string
+                               (dotimes (_ (or depth 5))
+                                 (princ (string (rand #x0300 #x036F))))))
+                     nil t))))
+
+(defun emacs-help-options ()
+  "[user] Display \"emacs --help\" text."
+  (interactive)
+  (let* ((emacs (expand-file-name (invocation-name) (invocation-directory)))
+         (text (mapconcat 'identity (process-lines emacs "--help") "\n")))
+    (with-help-window (help-buffer)
+      (princ text))))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

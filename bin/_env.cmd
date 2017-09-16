@@ -1,53 +1,51 @@
 rem Setup NTEmacs environment
 
 set EMACS24_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
-set EMACS25_HOME=%USERPROFILE%\opt\emacs-25.1
+set EMACS25_HOME=%USERPROFILE%\opt\emacs-25.2
 
-rem TODO: do replace PATH to EMACSPATH ?
-set EMACSPATH=
+rem set EMACSPATH=
 rem set EMACSPATH=%EMACS_HOME%\bin
 
 rem == GNU Aspell ==
 rem http://aspell.net/win32/
-set EMACSPATH=%EMACSPATH%;C:\opt\Aspell\bin
+set PATH=%PATH%;C:\opt\Aspell\bin
 
 rem == LLVM/Clang ==
-rem set EMACSPATH=%EMACSPATH%;C:\opt\LLVM\bin
 set PATH=%PATH%;C:\opt\LLVM\bin
 
 rem == CMake ==
-set EMACSPATH=%EMACSPATH%;C:\opt\cmake\bin
+set PATH=%PATH%;C:\opt\cmake\bin
 
 rem == C/Migemo ==
-set EMACSPATH=%EMACSPATH%;%HOME%\opt\cmigemo
+set PATH=%PATH%;%HOME%\opt\cmigemo
 
 rem == Common-Lisp ==
-set EMACSPATH=%EMACSPATH%;C:\opt\ecl
+set PATH=%PATH%;C:\opt\ecl
 
 rem == Git ==
-set EMACSPATH=%EMACSPATH%;C:\opt\Git\bin
+set PATH=%PATH%;C:\opt\Git\bin
 
 rem == Go ==
-set EMACSPATH=%EMACSPATH%;%GOROOT%\bin
-set EMACSPATH=%EMACSPATH%;%GOPATH%\bin
+set PATH=%PATH%;%GOROOT%\bin
+set PATH=%PATH%;%GOPATH%\bin
 
 rem == PuTTY ==
-rem set EMACSPATH=%EMACSPATH%;%ProgramFiles(x86)%\PuTTY
-rem set EMACSPATH=%EMACSPATH%;%HOME%\opt\putty-0.66-jp20151110
+rem set PATH=%PATH%;%ProgramFiles(x86)%\PuTTY
+rem set PATH=%PATH%;%HOME%\opt\putty-0.66-jp20151110
 set PATH=%PATH%;%HOME%\opt\putty-0.66-jp20151110
 
 rem == Ruby ==
-set EMACSPATH=%EMACSPATH%;C:\opt\Ruby23-x64\bin
+set PATH=%PATH%;C:\opt\Ruby23-x64\bin
 
 rem SWI-Prolog
-set EMACSPATH=%EMACSPATH%;C:\opt\swipl\bin
+set PATH=%PATH%;C:\opt\swipl\bin
 
 rem == Zeal ==
-set EMACSPATH=%EMACSPATH%;%ProgramFiles(x86)%\Zeal
+set PATH=%PATH%;%ProgramFiles(x86)%\Zeal
 
 rem == Cygwin ==
 rem NOTE: NOT recommended using Cygwin process in NTEmacs
 set CYGWIN_HOME=C:\cygwin64
-rem set EMACSPATH=%EMACSPATH%;%CYGWIN_HOME%\bin
+rem set PATH=%PATH%;%CYGWIN_HOME%\bin
 
-rem set EMACSPATH=%EMACSPATH%;C:\opt\Gow\bin
+rem set PATH=%PATH%;C:\opt\Gow\bin

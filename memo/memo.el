@@ -1602,17 +1602,6 @@ standard-input
 (read-png-header "~/Pictures/bknr_lisp.png")
 (read-png-header "memo.el")
 
-;; [skeleton.el] テンプレートを挿入する
-(define-skeleton html-headline-1
-  "HTML level 1 headline tags."
-  nil
-  "<h1>" _ "</h1>")
-
-;; unicode使えるらしい
-"\u685c\u6728\u674e\u674f"
-"\xdd79\xe65a\xe6fb\xd849"
-
-
 (defun asciidoc-buffer ()
   (interactive)
   (let ((filename buffer-file-name))
@@ -2058,8 +2047,9 @@ command-history                   ;=> ((eval-expression [#2] nil))
 (require 'format-spec)
 
 (let ((host "localhost")
-      (port "https")
-      (cmd "gnutls-cli --insecure -p %p %h"))
-  (format-spec cmd `((?h . ,host)
-                     (?p . ,(if (integerp port) (int-to-string port) port)))))
+      (port "https"))
+  (format-spec
+   "gnutls-cli --insecure -p %p %h"
+   `((?h . ,host)
+     (?p . ,(if (integerp port) (int-to-string port) port)))))
 ;;=> "gnutls-cli --insecure -p https localhost"
