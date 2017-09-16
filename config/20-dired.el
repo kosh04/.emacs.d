@@ -105,6 +105,12 @@
 ;; ファイル表示をマスク
 ;;(add-hook 'dired-mode-hook 'dired-omit-mode)
 
+(custom-set-variables
+ ;; 外部コマンドの関連付け
+ `(dired-guess-shell-alist-user
+   '((,(rx "." (or "mp3" "ogg" "wav" "aac") eos)
+      "ffplay"))))
+
 ;; interactive filter
 (use-package dired-narrow
   :defer t

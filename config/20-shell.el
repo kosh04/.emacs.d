@@ -15,6 +15,11 @@
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+(defun user/shell-mode-hook ()
+  (setq show-trailing-whitespace nil))
+
+;;(add-hook 'shell-mode-hook 'user/shell-mode-hook)
+
 ;; shell-command(M-!) のコマンド入力に補完を効かせる
 ;; http://namazu.org/~tsuchiya/
 (use-package "shell-command"

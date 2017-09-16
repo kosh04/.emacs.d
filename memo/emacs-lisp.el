@@ -665,3 +665,12 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
 
 (defun disable-theme* ()
   (mapc #'disable-theme custom-enabled-themes))
+
+;; Add ~/.emacs.d/vendor/*/ to load-path
+(let ((vendor-dir (locate-user-emacs-file "vendor")))
+  (dolist (name (directory-files vendor-dir))
+    (let ((path (expand-file-name name vendor-dir)))
+      (when (and (file-directory-p path)
+                 (not (member name '("." ".."))))
+        (message "add %s" path)
+        (add-to-list 'load-path path)))))

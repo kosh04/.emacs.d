@@ -21,11 +21,9 @@ matrix:
     - env: EMACS=emacs-snapshot
 
 install:
-  - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
-  - export PATH=$PATH:$HOME/.cask/bin
-  - cask install
+  - $EMACS --version
+  - $EMACS --script script/package-install.el
 
 script:
-  - $EMACS --version
   - make compile test-lisp
   - make test-startup

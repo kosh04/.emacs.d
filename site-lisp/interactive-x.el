@@ -61,7 +61,7 @@
 (defsubst interactive-x-parse (prompt)
   (cl-loop for (c . f) in interactive-x-function-list
            if (char-equal c (elt prompt 0))
-           do :TODO))
+           do (message "%s" :TODO)))
 
 ;; Examples
 (defun hello (&optional user)

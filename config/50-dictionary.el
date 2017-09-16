@@ -6,7 +6,7 @@
          ("M-g T" . google-translate-query-translate))
   :config
   (custom-set-variables
-   '(google-translate-default-source-language "en")
+   '(google-translate-default-source-language "auto")
    '(google-translate-default-target-language "ja"))
 
   (defun user:google-translate-at-point ()

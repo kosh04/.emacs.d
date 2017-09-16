@@ -4,7 +4,7 @@
 
 (use-package takt-mode
   :if (eq window-system 'w32)
-  :load-path "C:/Program Files (x86)/Takt/share/emacs/site-lisp/"
+  :load-path "C:/Program Files (x86)/Takt/share/emacs/site-lisp"
   :mode ("\\.takt\\'" . takt-mode)
   :config
   (add-to-list 'exec-path "C:/Program Files (x86)/Takt/bin"))
