@@ -1,4 +1,4 @@
-;;; gnome-util.el --- GNOME application utility	-*- encoding:utf-8 -*-
+;;; gnome-util.el --- GNOME application utility
 
 (defun nautilus (&optional dir)
   "Open nautilus - the GNOME File Manager."

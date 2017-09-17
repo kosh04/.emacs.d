@@ -1,8 +1,8 @@
-;;; update-package.el
+;;; package-update.el
 
 ;;; Usage:
 
-;; $ emacs --script update-package.el
+;; $ emacs --script package-update.el
 
 ;;; TODO
 

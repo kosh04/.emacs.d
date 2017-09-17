@@ -54,3 +54,7 @@ MELPAに登録してあるものは[リポジトリ参照](https://github.com/se
 50. 外部ライブラリの設定
 60. 自作ライブラリの設定 (他の設定に依存させない)
 ```
+
+## TODO
+
+- Better Directory Structure (refer to "Filesystem Hierarchy Standard")

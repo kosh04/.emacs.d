@@ -4,7 +4,9 @@
 
 (server-start)
 
+;; https://www.emacswiki.org/emacs/EmacsAsDaemon
 ;; http://www.emacswiki.org/cgi-bin/wiki/EmacsClient
+
 server-mode
 server-visit-hook
 server-done-hook

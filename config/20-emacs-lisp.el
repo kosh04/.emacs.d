@@ -116,8 +116,7 @@
 ;; interactive macroexpand
 (use-package macrostep
   :defer t
-  :bind ("C-c RET" . macrostep-expand)
-  :ensure t)
+  :bind ("C-c RET" . macrostep-expand))
 
 ;; prettify-symbol
 ;; Emacs24.4 以降で利用可能

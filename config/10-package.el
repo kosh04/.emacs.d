@@ -1,6 +1,5 @@
-;;; config/package
+;;; config/package-util
 
-;; Package
 (require 'package)
 (require 'dash)
 
@@ -15,7 +14,7 @@
      ("melpa" . 20)
      ("gnu" . 10))))
 
-(package-initialize)
+;;(package-initialize)
 
 (with-eval-after-load "package"
   (define-key package-menu-mode-map (kbd "I") 'package-install)
@@ -30,20 +29,3 @@
           (assq pkg package-alist)))
     (if (package-desc-p pkg-desc)
         (package-delete pkg-desc))))
-
-;; use-package
-(or (require 'use-package nil t)
-    (defmacro use-package (name &rest args)
-      "Dummy definition `use-package'."
-      `(message "Ignore Package: %s" ',name)))
-
-(custom-set-variables
- '(use-package-verbose t)
- '(use-package-enable-imenu-support t)
- ;; 初回起動時は自動インストールしたい
- ;;'(use-package-always-ensure t)
- ;;'(use-package-always-defer t)
- )
-
-(use-package paradox
-  :pin "melpa-stable")

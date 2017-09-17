@@ -21,6 +21,9 @@
 ;; Cask - Project management for Emacs package development
 (require 'cask "~/.cask/cask.el" t)
 
+;; Pallet - A package management tool for Emacs, built on Cask.
+;; https://github.com/rdallasgray/pallet
+
 ;; コマンドライン以外から読み込んでも多分意味ないのでは…？
 ;; -> `cask exec emacs ...' と同じ効果が期待できる（のかもしれない）
 (use-package cask

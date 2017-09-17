@@ -61,3 +61,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
     (add-hook 'after-save-hook 'check-parens nil t)))
 
 ;;(add-hook 'text-mode-hook 'check-parens-local)
+
+(custom-set-variables
+ ;; コンパイルバッファの出力を追う (M-x compile)
+ '(compilation-scroll-output 'first-error))

@@ -55,8 +55,15 @@
     (#x00001000 . CAPFILEENCOPT)
     ))
 
-(define-error 'ipmsg-error "IPMSG error")
-(define-error 'ipmsg-unknown-command "Unknown command" 'ipmsg-error)
+;; NOTE: `define-error' available emacs-24.4+
+;;(define-error 'ipmsg-error "IPMSG error")
+;;(define-error 'ipmsg-unknown-command "Unknown command" 'ipmsg-error)
+(progn
+  (put 'ipmsg-error 'error-conditions '(error))
+  (put 'ipmsg-error 'error-message "IPMSG error"))
+(progn
+  (put 'ipmsg-unknown-command 'error-conditions '(error ipmsg-error))
+  (put 'ipmsg-unknown-command 'error-message "Unknown command"))
 
 (defun ipmsg--command-to-number (cmds)
   (cl-labels ((to-num (cmd)

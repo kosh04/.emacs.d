@@ -1,5 +1,13 @@
 ;;; gitter-irc.el
 
+;; https://irc.gitter.im/
+
+;; Setup:
+;; write to .netrc:
+;; machine irc.gitter.im
+;;   login NICKNAME
+;;   password PASSWORD
+
 (require 'erc)
 (require 'auth-source)
 (require 'emojify nil t)
