@@ -4,22 +4,25 @@
 
 (require 'package)
 
+(defvar user/packages
+  '(names
+    init-loader
+    use-package))
+
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/"))
       package-archive-priorities
-      '(("melpa-stable" . 20)
-        ("gnu" . 10)
+      '(("gnu" . 20)
+        ("melpa-stable" . 10)
         ("melpa". 0))
       ;; package-pinned-packages
       )
+(setq debug-on-error t)
 
 (package-initialize)
-
-(defvar user/packages
-  '(f s dash names init-loader use-package))
+(package-refresh-contents)
 
 (dolist (x user/packages)
-  (or (package-installed-p x)
-      (package-install x)))
+  (package-install x))

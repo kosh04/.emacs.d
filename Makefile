@@ -1,10 +1,9 @@
 USAGE = Usage: $(notdir $(MAKE)) [compile|test|update|clean|help]
 
 EMACS ?= emacs
-EMACSFLAGS = -L site-lisp
-EMACS_BATCH = $(EMACS) -batch -no-site-file
+EMACSFLAGS =
 
-COMPILE.el = $(EMACS_BATCH) $(EMACSFLAGS) -f batch-byte-compile
+COMPILE.el = $(EMACS) -batch $(EMACSFLAGS) -f batch-byte-compile
 
 SRCS := $(filter-out %-test.el, $(wildcard site-lisp/*.el))
 
@@ -17,14 +16,14 @@ compile: $(SRCS:.el=.elc)
 	$(COMPILE.el) $<
 
 test-startup:
-	$(EMACS_BATCH) $(EMACSFLAGS) -l test-startup.el
+	$(EMACS) -batch $(EMACSFLAGS) -l test-startup.el
 
 test: test-lisp
 
 test-lisp: $(basename $(notdir $(wildcard site-lisp/*-test.el)))
 
 %-test: site-lisp/%-test.el
-	$(EMACS_BATCH) $(EMACSFLAGS) -l $^ -f ert-run-tests-batch-and-exit
+	$(EMACS) -batch -L site-lisp $(EMACSFLAGS) -l $^ -f ert-run-tests-batch-and-exit
 
 update: update-package
 

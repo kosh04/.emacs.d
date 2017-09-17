@@ -1,6 +1,8 @@
 ;;; config/site-lisp
 
-(require 'unicode-escape)
+(use-package unicode-escape
+  :load-path "~/Documents/GitHub/unicode-escape.el"
+  :pin #:manual)
 (require 'textproc)
 (require 'gitter-irc)
 (require 'cl-compatible)

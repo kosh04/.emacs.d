@@ -47,7 +47,8 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'cl))
+  (require 'cl)
+  (add-to-list 'load-path (expand-file-name ".")))
 (require 'dired)
 (require 'japan-util)
 (require 'cl-compatible)

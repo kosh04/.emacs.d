@@ -22,6 +22,6 @@
 (init-loader-load)
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file)
+(load custom-file t)
 
 ;;; init.el ends here
