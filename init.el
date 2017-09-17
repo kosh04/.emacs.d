@@ -1,8 +1,5 @@
 ;;; init.el --- .emacs
 
-(when load-file-name
-  (setq user-emacs-directory (file-name-directory load-file-name)))
-
 ;; available in Emacs24.4+
 (or (fboundp 'with-eval-after-load)
     (defmacro with-eval-after-load (feature &rest body)

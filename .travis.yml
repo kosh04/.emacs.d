@@ -22,7 +22,7 @@ matrix:
 
 install:
   - $EMACS --version
-  - $EMACS --script script/package-install.el
+  - make package-install
 
 script:
   - make compile test-lisp
