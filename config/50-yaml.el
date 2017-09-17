@@ -2,5 +2,4 @@
 
 (use-package yaml-mode
   :defer t
-  :mode "\\.yml\\'"
-  :ensure t)
+  :mode "\\.yml\\'")

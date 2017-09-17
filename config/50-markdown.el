@@ -12,5 +12,4 @@
     (interactive)
     (require 'shr)
     (shr-render-buffer (markdown-standalone)))
-  (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer)
-  :ensure t)
+  (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer))

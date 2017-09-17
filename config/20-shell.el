@@ -24,8 +24,7 @@
 ;; http://namazu.org/~tsuchiya/
 (use-package "shell-command"
   :disabled t
-  :config (shell-command-completion-mode t)
-  :ensure nil)
+  :config (shell-command-completion-mode t))
 
 (with-eval-after-load 'shell
   ;; 上下キーで補完したい
