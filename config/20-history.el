@@ -10,6 +10,7 @@
 (setq recentf-max-saved-items 2000)
 (add-to-list 'recentf-exclude "recentf")
 (add-to-list 'recentf-exclude ".git")
+(add-to-list 'recentf-exclude "/\\.emacs\\.d/elpa/")
 (add-to-list 'recentf-exclude "^/ssh:")
 (add-to-list 'recentf-exclude "^/sudo:")
 

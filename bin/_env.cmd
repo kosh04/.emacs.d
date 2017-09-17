@@ -22,9 +22,6 @@ set PATH=%PATH%;%HOME%\opt\cmigemo
 rem == Common-Lisp ==
 set PATH=%PATH%;C:\opt\ecl
 
-rem == Git ==
-set PATH=%PATH%;C:\opt\Git\bin
-
 rem == Go ==
 set PATH=%PATH%;%GOROOT%\bin
 set PATH=%PATH%;%GOPATH%\bin
@@ -49,3 +46,8 @@ set CYGWIN_HOME=C:\cygwin64
 rem set PATH=%PATH%;%CYGWIN_HOME%\bin
 
 rem set PATH=%PATH%;C:\opt\Gow\bin
+
+rem == The Unarchiver ==
+rem https://theunarchiver.com/command-line
+rem lsar.exe for dired *.rar
+set PATH=%PATH%;%HOME%\opt\unar

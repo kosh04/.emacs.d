@@ -270,6 +270,8 @@ max-specpdl-size
       eval-expression-debug-on-error)
 ;;=> (12 4 t)
 
+(setq print-circle nil)
+
 ;; (1 2 ...) <-> (1 2 3 4 5) の切り替え時にメッセージ
 ;; そもそも"..."の表示自体あまりいらないんだけど
 (defadvice last-sexp-toggle-display (after with-message activate)
