@@ -3,8 +3,9 @@
 ;; w3m.el のキーバインドとの互換性は特にない
 
 ;; KeyBinding
-;; n - eww-next-url
+;; n - eww-next-url (rel="next/prev/up" を行き来する)
 ;; p - eww-previous-url
+;; u - eww-up-url
 ;; l - eww-back-url
 ;; r - eww-forward-url
 ;; H - eww-list-histories
@@ -34,8 +35,10 @@
              ("=" . eww-view-source)
              ("[" . eww-back-url)
              ("]" . eww-forward-url)
-             ("j" . forward-line)       ; hjkl
-             ("k" . previous-line)
+             ;;("j" . forward-line)       ; hjkl
+             ;;("k" . previous-line)
+             ("j" . (lambda (&optional arg) (interactive "P") (scroll-up   (or arg 1))))
+             ("k" . (lambda (&optional arg) (interactive "P") (scroll-down (or arg 1))))
              ("<M-left>" . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("<backspace>" . eww-back-url)

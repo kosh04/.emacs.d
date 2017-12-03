@@ -20,6 +20,7 @@
       (with-current-buffer (create-file-buffer file)
         (call-process "javap" nil (current-buffer) nil "-verbose"
                       "-classpath" (file-name-directory file)
+                      "-J-Dfile.encoding=UTF-8"
                       (file-name-sans-extension
                        (file-name-nondirectory file)))
         (setq buffer-file-name file)

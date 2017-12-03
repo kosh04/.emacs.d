@@ -16,8 +16,9 @@
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
 ;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
 
-(define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent)
-(define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
+;;(define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent)
+;;(define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
+(add-hook 'emacs-lisp-mode 'auto-fill-mode)
 
 (setq load-prefer-newer t)
 

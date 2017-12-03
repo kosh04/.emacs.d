@@ -27,7 +27,7 @@
 ;; VC-Git
 ;; 外部プロセスを抑制する
 (with-eval-after-load 'vc-hooks
-  (setq vc-handled-backends (delete 'Git vc-handled-backends))
+  ;;(setq vc-handled-backends (delete 'Git vc-handled-backends))
   (remove-hook 'find-file-hook 'vc-find-file-hook)
   (remove-hook 'kill-buffer-hook 'vc-kill-buffer-hook))
 

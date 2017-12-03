@@ -19,6 +19,7 @@
 
 ;; PEP 0008 -- Style Guide for Python Code
 ;; https://www.python.org/dev/peps/pep-0008/
+;; $ pip install --upgrade autopep8
 (use-package py-autopep8
   :after python
   :init (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)

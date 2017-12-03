@@ -13,12 +13,12 @@
 
 (add-to-list 'load-path (locate-user-emacs-file "site-lisp"))
 
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file t)
+
 ;; Load config/nn-xxx.el
 (require 'init-loader)
 (setq init-loader-directory (locate-user-emacs-file "config"))
 (init-loader-load)
-
-(setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file t)
 
 ;;; init.el ends here

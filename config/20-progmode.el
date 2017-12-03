@@ -39,6 +39,8 @@
 
 ;; Language Template
 (auto-insert-mode +1)
+(custom-set-variables
+ '(auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
 
 ;; Batch mode
 (use-package batch-mode  

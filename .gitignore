@@ -8,6 +8,7 @@ history
 games/*-scores
 request/
 url/
+server/
 image-dired/
 recentf
 tramp
@@ -37,3 +38,5 @@ etc/
 /irony/
 .geiser_history.guile
 .auth.plist
+
+places

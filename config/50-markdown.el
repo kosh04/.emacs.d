@@ -12,4 +12,5 @@
     (interactive)
     (require 'shr)
     (shr-render-buffer (markdown-standalone)))
-  (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer))
+  (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer)
+  (add-hook 'markdown-mode-hook 'outline-minor-mode))

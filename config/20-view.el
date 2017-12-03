@@ -12,6 +12,7 @@
     (define-key map "k" 'previous-line)
     ;; less-like
     (define-key map "N" 'View-search-last-regexp-backward)
+    (define-key map "i" 'read-only-mode)
 
     (define-key map (kbd "DEL") 'ignore)
     (define-key map (kbd "RET") 'ignore)

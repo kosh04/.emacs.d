@@ -53,6 +53,9 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; OpenVPN 接続設定ファイル
 (add-to-list 'auto-mode-alist '("\\.ovpn\\'" . conf-mode))
 
+;; HTTP Archive (HAR)
+(add-to-list 'auto-mode-alist '("\\.har\\'" . json-mode))
+
 ;; (use-package helm
 ;;   :pin melpa-stable)
 
