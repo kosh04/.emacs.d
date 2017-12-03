@@ -676,3 +676,7 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
                  (not (member name '("." ".."))))
         (message "add %s" path)
         (add-to-list 'load-path path)))))
+
+;; パッケージに使えるキーバインドは C-c C-<key>
+;; ユーザ用に使うためのキーバインド C-c <key>
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html

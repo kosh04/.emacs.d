@@ -13,6 +13,8 @@
  '(gnus-use-full-window nil)
  '(gnus-use-trees t))
 
+;;(set-variable 'gnus-init-file "~/.gnus")
+
 (with-eval-after-load 'gnus
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   )

@@ -68,3 +68,5 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 (custom-set-variables
  ;; コンパイルバッファの出力を追う (M-x compile)
  '(compilation-scroll-output 'first-error))
+
+(diminish 'auto-revert-mode)

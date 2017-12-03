@@ -7,4 +7,7 @@
  ;;'(show-trailing-whitespace t)
  )
 
+(defun user/show-trailing-whitespace ()
+  (setq show-trailing-whitespace t))
+
 ;;(add-hook 'prog-mode-hook 'whitespace-mode)

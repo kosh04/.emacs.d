@@ -3,6 +3,8 @@
 ;; https://www.emacswiki.org/emacs/PythonProgrammingInEmacs
 ;; https://www.emacswiki.org/emacs/ProgrammingWithPythonModeDotEl
 
+;; (set-variable 'python-check-command (executable-find "flake8"))
+
 (cl-case system-type
   (darwin (custom-set-variables
            '(python-shell-interpreter "/usr/local/bin/python3")

@@ -4,6 +4,7 @@
 (setq view-read-only t)
 
 (with-eval-after-load 'view
+  (setq-default view-exit-action #'kill-buffer)
   (let ((map view-mode-map))
     ;; vi-like
     (define-key map "h" 'backward-char)
