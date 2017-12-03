@@ -11,13 +11,17 @@
           ;; "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/"
           "https://github.com/emacs-mirror/emacs/raw/emacs-24/src/"))
 
-(add-to-list 'auto-mode-alist '("Cask" . emacs-lisp-mode))
+(add-to-list
+ 'auto-mode-alist
+ `(,(rx (or "Cask" "abbrev_defs" "recentf") eos) . emacs-lisp-mode))
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
 ;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
 
-(define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent)
-(define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
+;; (define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent)
+;; (define-key lisp-interaction-mode-map (kbd "RET") 'newline-and-indent)
+
+(add-hook 'emacs-lisp-mode 'auto-fill-mode)
 
 (setq load-prefer-newer t)
 
@@ -38,6 +42,7 @@
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
+  :if (not (locate-library "xref")) ; or (not (version<= "25.1" emacs-version))
   :diminish elisp-slime-nav-mode
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)

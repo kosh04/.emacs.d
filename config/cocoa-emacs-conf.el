@@ -42,7 +42,7 @@
 
 ;; Tramp
 ;; リモートファイルを開く時に`vc-svn-registered'が邪魔をする場合がある
-(setq vc-handled-backends nil)
+;;(setq vc-handled-backends nil)
 ;;(setq vc-handled-backends '(RCS CVS SVN SCCS SRC Bzr Git Hg Mtn))
 ;;(setq vc-handled-backends '(Git))
 

@@ -17,7 +17,7 @@
 (fset 'decode #'decode-coding-string)
 (fset 'detect #'detect-coding-string)
 
-;; BOMありUTF-8の表記を区別する
+;; UTF-8の表記を区別する (BOMなし:?U / BOMあり:?u)
 (coding-system-put 'utf-8-with-signature :mnemonic ?u)
 
 ;; <meta charset="utf-8">

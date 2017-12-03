@@ -9,5 +9,5 @@
   (add-to-list 'completion-ignored-extensions ".aux")
   (add-to-list 'completion-ignored-extensions ".dvi")
   ;; (add-to-list 'completion-ignored-extensions ".log")
-  t)
+  (add-hook 'latex-mode-hook 'prettify-symbols-mode))
 

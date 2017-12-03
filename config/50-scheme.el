@@ -8,6 +8,7 @@
 ;; Scheme 開発環境
 ;; https://github.com/jaor/geiser
 (use-package geiser
+  :defer t
   :config
   (custom-set-variables
    '(geiser-active-implementations '(guile))

@@ -8,6 +8,8 @@
 ;;   login NICKNAME
 ;;   password PASSWORD
 
+;; shell alias gitter="emacs -q -nw -l ~/.emacs.d/site-lisp/gitter-irc.el -f gitter-irc"
+
 (require 'erc)
 (require 'auth-source)
 (require 'emojify nil t)

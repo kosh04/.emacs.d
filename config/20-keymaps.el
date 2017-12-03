@@ -18,6 +18,8 @@
 (global-set-key (kbd "C-x t f") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x t e") 'toggle-debug-on-error)
 (global-set-key (kbd "C-x t v") 'toggle-viper-mode)
+(global-set-key (kbd "C-x t p") 'list-packages)
+(global-set-key (kbd "C-x t w") 'whitespace-mode)
 
 (global-set-key [f11] 'toggle-frame-fullscreen)
 

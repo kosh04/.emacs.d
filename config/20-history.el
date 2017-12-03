@@ -2,7 +2,8 @@
 
 (setq history-length 250)               ; default 30
 
-(savehist-mode)
+;; ミニバッファの履歴を保存
+(savehist-mode +1)
 
 (require 'recentf)
 (recentf-mode +1)

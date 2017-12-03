@@ -10,6 +10,9 @@
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 
+;; 補完候補がN以下ならば循環補完
+(setq completion-cycle-threshold 3)
+
 (add-to-list 'completion-ignored-extensions ".exe")
 
 ;; クリックで URL を開く

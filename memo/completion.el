@@ -20,7 +20,8 @@
     (when item (concat "  -- " (second item)))))
 
 (let* ((my-completions '(("a" "description of a") ("b" "b's description")))
-       (completion-extra-properties '(:annotation-function my-annotation-function)))
+       (completion-extra-properties '(:annotation-function my-annotation-function))
+       (completion-cycle-threshold nil))
   (completing-read "Prompt: " my-completions))
 
 ;; 補完用シンボルを絞る

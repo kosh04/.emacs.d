@@ -105,11 +105,13 @@
 ;; ファイル表示をマスク
 ;;(add-hook 'dired-mode-hook 'dired-omit-mode)
 
-(custom-set-variables
- ;; 外部コマンドの関連付け
- `(dired-guess-shell-alist-user
-   '((,(rx "." (or "mp3" "ogg" "wav" "aac") eos)
-      "ffplay"))))
+;; 外部コマンドの関連付け
+(set-variable
+ 'dired-guess-shell-alist-user
+ `((,(rx "." (or "mp3" "ogg" "wav" "aac") eos)
+    "ffplay")
+   ("\\.class\\'"
+    "javap -verbose -private")))
 
 ;; interactive filter
 (use-package dired-narrow
@@ -122,9 +124,6 @@
   :config
   (custom-set-variables
    ;;'(peep-dired-cleanup-eagerly t)
-   '(peep-dired-ignored-extensions
-     (append peep-dired-ignored-extensions
-             completion-ignored-extensions))
    )
   :bind (:map dired-mode-map
               ("W" . peep-dired)

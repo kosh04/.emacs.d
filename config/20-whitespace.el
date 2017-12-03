@@ -4,6 +4,10 @@
  '(whitespace-style '(tabs face trailing lines-tail))
  ;; N+1行目以降をハイライト (lines-tail)
  '(whitespace-line-column fill-column)
- '(show-trailing-whitespace t))
+ ;;'(show-trailing-whitespace t)
+ )
+
+;; (defun user/show-trailing-whitespace ()
+;;   (setq show-trailing-whitespace t))
 
 ;;(add-hook 'prog-mode-hook 'whitespace-mode)

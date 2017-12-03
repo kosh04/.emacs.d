@@ -8,7 +8,7 @@
       `(eval-after-load ,feature
          (lambda () ,@body))))
 
-;; Enable installed external packages
+;; Enable installed packages
 (package-initialize)
 
 (add-to-list 'load-path (locate-user-emacs-file "site-lisp"))

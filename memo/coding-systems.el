@@ -129,3 +129,9 @@ current-language-environment
 ;; バッファ内のマルチバイト表示を切り替える (デフォルトは t)
 (set-buffer-multibyte enable-multibyte-characters)
 (set-buffer-multibyte nil)
+
+(set-charset-priority 'ascii 'japanese-jisx0208 'latin-jisx0201
+                      'katakana-jisx0201 'iso-8859-1 'cp1252 'unicode)
+(set-coding-system-priority 'utf-8 'euc-jp 'iso-2022-jp 'cp932)
+
+

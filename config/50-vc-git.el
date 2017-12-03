@@ -2,6 +2,8 @@
 
 ;; TODO: wdired モードで `vc-rename-file' を 使いたい
 
+(setf (symbol-function 'git-grep) #'vc-git-grep)
+
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
 (use-package magit

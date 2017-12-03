@@ -37,3 +37,6 @@ etc/
 /irony/
 .geiser_history.guile
 .auth.plist
+
+# nsm-settings-file
+network-security.data
