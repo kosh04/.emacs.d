@@ -12,7 +12,7 @@
 (require 'electric)
 
 (electric-pair-mode +1)
-(electric-layout-mode +1)
+;;(electric-layout-mode +1)
 ;;(electric-indent-mode -1)
 
 ;;(add-to-list 'electric-pair-pairs '(?< . ?>))

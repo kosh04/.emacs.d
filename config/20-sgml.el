@@ -61,20 +61,17 @@ Original URL `https://www.emacswiki.org/emacs/NxmlMode'"
 ;; Zen Coding
 (use-package emmet-mode
   :defer t
-  :init (progn
-          ;;(custom-set-variables '(emmet-indentation 2))
-          (add-hook 'sgml-mode-hook 'emmet-mode)
-          (add-hook 'css-mode-hook  'emmet-mode)))
+  :init
+  ;;(custom-set-variables '(emmet-indentation 2))
+  (add-hook 'sgml-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook  'emmet-mode))
 
 (use-package web-mode
   :pin melpa-stable
   :defer t
-  :pin melpa-stable
   :ensure emmet-mode
   ;; :mode (("\\.html?\\'" . web-mode)
   ;;        ("\\.tpl\\.php\\'" . web-mode))
   ;; :config (setq web-mode-script-padding 0
   ;;               web-mode-style-padding 0)
   :config (add-hook 'web-mode-hook 'emmet-mode))
-
-

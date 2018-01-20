@@ -1,4 +1,4 @@
-;;; config/slime.el
+;;; config/CommonLisp
 
 (use-package slime
   ;;:disabled t
@@ -40,8 +40,12 @@
     (sly-setup '(sly-fancy)))
   :ensure nil)
 
+(use-package sly-company)
+
+;; ??? "*Warnings*: Error (use-package): Cannot load sly-comapny"
+'
 (use-package sly-comapny
+  :ensure company
   :config
   (add-hook 'sly-mode-hook 'sly-company-mode)
-  (add-to-list 'company-backends 'sly-company)
-  :ensure company)
+  (add-to-list 'company-backends 'sly-company))

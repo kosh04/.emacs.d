@@ -680,3 +680,6 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
 ;; パッケージに使えるキーバインドは C-c C-<key>
 ;; ユーザ用に使うためのキーバインド C-c <key>
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
+
+focus-in-hook
+focus-out-hook

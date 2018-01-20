@@ -31,6 +31,11 @@
 (use-package golint
   :after go-mode)
 
+(use-package go-guru
+  :if (executable-find "guru")
+  :after go-mode
+  :config (add-hook 'go-mode-hook 'go-guru-hl-identifier-mode))
+
 ;; go-playground client
 ;; https://github.com/kosh04/emacs-go-playground
 (use-package go-playground-cli
