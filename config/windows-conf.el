@@ -59,3 +59,9 @@
  ;; M-x rgrep
  '(grep-find-template "findstr /S /N /R /D:<D> <R> <F>")
  '(find-name-arg nil))
+
+;; etags を使いたいだけ
+(let ((path #1=(getenv "PATH"))
+      (bindir (expand-file-name "../../../../bin" exec-directory)))
+  (unless (string-match bindir path)
+    (setf #1# (concat path path-separator bindir))))

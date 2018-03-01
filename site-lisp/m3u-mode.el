@@ -1,6 +1,6 @@
 ;;; m3u-mode.el --- Major mode for edit m3u/m3u8 format playlist.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017  KOBAYASHI Shigeru (kosh04)
+;; Copyright (C) 2017-2018  KOBAYASHI Shigeru (kosh)
 
 ;; Author: KOBAYASHI Shigeru <shigeru.kb@gmail.com>
 ;; Keywords: multimedia
@@ -20,59 +20,57 @@
 
 ;;; Commentary:
 
-;; 
-
-;;; TODO:
-
-;; - imenu 対応
+;; *TODO*
 
 ;;; Code:
-
-(require 'cl-lib)
 
 (defconst m3u-mode-font-lock-keywords
   (list
    '("^#\\(EXTM3U\\)$" 1 font-lock-keyword-face t)
-   '("^#\\(EXTINF\\):\\(-?[0-9]+\\),\\(.*\\)$" ; ? "ArtistName - TrackTitle"
+   '("^#\\(EXTINF\\):\\(-?[0-9]+\\.?[0-9]*\\),\\(.*\\)$" ; ? "ArtistName - TrackTitle"
      (1 'font-lock-keyword-face t)
      (2 'italic t)
-     (3 'highlight t))
-   ;;'("^#.*$" 0 font-lock-comment-face nil)
+     (3 'bold t))
+   (list (rx bol "#" (group (or
+                             "EXT-X-VERSION"
+                             "EXT-X-TARGETDURATION"
+                             "EXT-X-MEDIA-SEQUENCE"
+                             "EXT-X-PROGRAM-DATE-TIME"
+                             "EXT-X-ENDLIST"
+                             "EXT-X-DISCONTINUITY"
+                             "EXT-X-PLAYLIST-TYPE"
+                             "EXT-X-STREAM-INF"
+                             )))
+         1 font-lock-keyword-face t)
    ))
 
-(defvar m3u-mode-syntax-table
-  (let ((tbl (copy-syntax-table text-mode-syntax-table)))
-    (modify-syntax-entry ?# "<   " tbl)
-    tbl))
+(defconst m3u-mode-syntax-table
+  (let ((table (make-syntax-table text-mode-syntax-table)))
+    (modify-syntax-entry ?\# "<   " table)
+    (modify-syntax-entry ?\n ">   " table)
+    table))
 
+;;;###autoload
 (define-derived-mode m3u-mode text-mode "M3U"
   "Major mode for edit m3u/m3u8 format playlist."
   :syntax-table m3u-mode-syntax-table
   (setq font-lock-defaults '(m3u-mode-font-lock-keywords))
-  ;;(font-lock-add-keywords nil m3u-mode-font-lock-keywords)
   (setq comment-start "#" comment-end "")
+  (setq imenu-generic-expression
+        (list
+         '(nil "^#\\(EXTINF\\):\\(-?[0-9]+\\.?[0-9]*\\),\\(.*\\)$" 3)))
+  (setq imenu-case-fold-search nil)
   (goto-address-mode))
 
-(defconst m3u-mode-ext-regexp "\\.m3u8?\\'")
-
-(add-to-list 'auto-mode-alist `(,m3u-mode-ext-regexp . m3u-mode))
+;;;###autoload
+(progn
+  (add-to-list 'auto-mode-alist '("\\.m3u8?\\'" . m3u-mode))
+  (add-to-list 'file-coding-system-alist `("\\.m3u8\\'" . utf-8)))
 
 ;; autoinsert
-(define-auto-insert m3u-mode-ext-regexp
-  '(_ "#EXTM3U\n"))
+(define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))
 
-;; M3U8
-(add-to-list 'file-coding-system-alist `("\\.m3u8\\'" . utf-8))
-
-;;;###TODO
-
-(cl-defstruct (m3u-entry)
-  "M3U Entry Spec."
-  (title  :type string)
-  (length :type number)
-  (path   :type url))
-
-(defun m3u-add-new-entry (title path)
+(defun m3u-add-entry (title path)
   "Add M3U Entry."
   (interactive "sTitle: \nsPath: ")
   (insert (format "#EXTINF:%d,%s\n" -1 title))
