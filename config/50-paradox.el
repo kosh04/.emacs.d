@@ -4,5 +4,7 @@
   :pin "melpa-stable"
   :config
   (custom-set-variables
-   '(paradox-execute-asynchronously t))
+   '(paradox-execute-asynchronously t)
+   ;;'(paradox-homepage-button-string "⛺") ; why cannot use emoji?
+   )
   (paradox-enable))

@@ -48,3 +48,5 @@
 
 (custom-set-variables
  '(locate-command "mdfind"))
+
+(add-to-list 'completion-ignored-extensions ".dSYM")

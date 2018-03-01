@@ -683,3 +683,7 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
 
 focus-in-hook
 focus-out-hook
+
+;; コマンドライン文字列を分解
+(split-string-and-unquote "gcc -Wall \"hello.c\"")
+;;=> ("gcc" "-Wall" "hello.c")

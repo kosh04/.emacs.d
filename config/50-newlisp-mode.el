@@ -10,3 +10,12 @@
   :config
   (add-hook 'newlisp-mode-hook 'eldoc-mode)
   (setq newlisp-manual-text "~/Dropbox/Public/bookshelf/static/newlisp/newlisp_manual.txt"))
+
+;; `c-set-style' (C-c .)
+(dir-locals-set-class-variables
+ 'user/newlisp-c-source
+ '((c-mode . ((c-file-style . "whitesmith")))))
+
+(dir-locals-set-directory-class
+ "~/Documents/GitHub/newlisp/"
+ 'user/newlisp-c-source)

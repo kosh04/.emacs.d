@@ -59,6 +59,7 @@ REGIONF requires method ((beg point) (end point))."
 ;;(require 'url-util)
 ;;(require 'morse)
 
+;; urlencode
 (defun textproc-urlencode-region (start end)
   (interactive "*r")
   (textproc-filter-region #'url-hexify-string start end))
@@ -67,6 +68,15 @@ REGIONF requires method ((beg point) (end point))."
   (interactive "*r")
   (textproc-filter-region #'url-unhex-string start end))
 
+;; html/xml
+(defun textproc-parse-html (string)
+  (textproc-filter-string (lambda (start end)
+                    (let ((dom (libxml-parse-html-region start end)))
+                      (delete-region start end)
+                      (insert (dom-texts dom))))
+                  string))
+
+;; morse
 (defun textproc-morse-string (string)
   (textproc-filter-string #'morse-region string))
 

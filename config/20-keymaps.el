@@ -10,7 +10,7 @@
 ;; [C-x C-v] 等は通常通り使いたいので全部載せはいらない
 ;;(require 'ffap)
 ;;(ffap-bindings)
-(global-set-key (kbd "C-x C-f") 'find-file-at-point)
+;;(global-set-key (kbd "C-x C-f") 'find-file-at-point)
 
 (global-set-key (kbd "C-c C-o") 'browse-url-at-point)
 
@@ -20,6 +20,7 @@
 (global-set-key (kbd "C-x t p") 'list-packages)
 (global-set-key (kbd "C-x t v") 'toggle-viper-mode)
 (global-set-key (kbd "C-x t w") 'whitespace-mode)
+(global-set-key (kbd "C-x t o") 'ff-find-related-file)
 
 (global-set-key [f11] 'toggle-frame-fullscreen)
 
@@ -35,3 +36,8 @@
   :diminish which-key-mode
   :init (which-key-mode)
   :config (setq which-key-idle-delay 1.5))
+
+(with-eval-after-load 'xref
+  (let ((map xref--xref-buffer-mode-map))
+    (define-key map (kbd "TAB") 'xref-next-line)
+    (define-key map (kbd "DEL") 'xref-prev-line)))

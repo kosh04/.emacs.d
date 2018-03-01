@@ -70,3 +70,9 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
  '(compilation-scroll-output 'first-error))
 
 (diminish 'auto-revert-mode)
+
+(use-package csv-mode
+  ;; netscape cooke text is tsv format
+  :mode "/cookie.txt\\'"
+  :config
+  (add-hook 'csv-mode-hook 'hl-line-mode))

@@ -9,7 +9,7 @@
 (use-package magit
   ;;:if (executable-find "git")
   :defer t
-  :pin melpa-stable
+  :pin #:melpa-stable
   :bind ("C-x g" . magit-status)
   :config (add-to-list 'magit-no-confirm 'stage-all-changes))
 
@@ -24,4 +24,6 @@
 (use-package dired-k
   :defer t
   :init (add-hook 'dired-initial-position-hook 'dired-k)
-  :bind (:map dired-mode-map ("g" . dired-k)))
+  :bind (:map dired-mode-map ("g" . dired-k))
+  :config
+  (setq dired-k-human-readable t))

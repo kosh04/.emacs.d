@@ -56,3 +56,10 @@ c-style-alist
         (prolog-system 'gnu))
     (add-to-list 'exec-path "/opt/GNU-Prolog/bin")
     (call-interactively #'run-prolog)))
+
+(require 'smie)
+;; * SMIE (Simple Minded Indentation Engine)
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/SMIE.html
+;; * Emacs の Major Mode におけるインデント計算を楽にする smie.el
+;; https://qiita.com/kawabata@github/items/1a51ff1e22ad7ae824d5
+;; smieを利用しているメジャーモード例: sh-script.el, elixer-mode

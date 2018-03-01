@@ -25,7 +25,7 @@
 
 ;; 関数一覧
 (require 'imenu)
-(global-set-key (kbd "C-c C-l") 'imenu)
+(global-set-key (kbd "C-c l") 'imenu)
 (add-hook 'emacs-lisp-mode-hook #'imenu-add-menubar-index)
 
 (defun indent-and-next-line (&optional args)
