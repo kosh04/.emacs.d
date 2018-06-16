@@ -30,3 +30,6 @@
            '(flycheck-flake8-maximum-line-length 100))
   ;;(setf (getenv "PYFLAKES_NODOCTEST") "true")
   )
+
+(with-eval-after-load 'flycheck
+  (setq-default flycheck-python-flake8-executable "flake8"))

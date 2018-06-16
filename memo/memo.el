@@ -2053,3 +2053,10 @@ command-history                   ;=> ((eval-expression [#2] nil))
    `((?h . ,host)
      (?p . ,(if (integerp port) (int-to-string port) port)))))
 ;;=> "gnutls-cli --insecure -p https localhost"
+
+;; [DEPRECATED] https://github.com/joaotavora/sly-company
+(use-package sly-comapny
+  :ensure company
+  :config
+  (add-hook 'sly-mode-hook 'sly-company-mode)
+  (add-to-list 'company-backends 'sly-company))

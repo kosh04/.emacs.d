@@ -90,3 +90,6 @@
 
 (defun recenter-top () (interactive) (recenter 0))
 (defun recenter-bottom () (interactive) (recenter -1))
+
+;; 最大化
+(modify-frame-parameters (selected-frame) '((fullscreen . maximized)))

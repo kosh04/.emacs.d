@@ -76,3 +76,24 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :mode "/cookie.txt\\'"
   :config
   (add-hook 'csv-mode-hook 'hl-line-mode))
+
+;;  View Large Files
+;; https://github.com/m00natic/vlfi
+(use-package vlf)
+
+(defun user/execute-extended-command-other-frame ()
+  "Execute command (M-x) in other frame."
+  (interactive)
+  (make-frame)
+  (call-interactively 'execute-extended-command))
+
+(global-set-key (kbd "C-x 5 x") 'user/execute-extended-command-other-frame)
+
+;; (use-package tar-mode
+;;   :bind (:map tar-mode-map ("f" . tar-view)))
+
+(with-eval-after-load 'tar-mode
+  (advice-add 'tar-extract :after
+              (lambda (&rest args)
+                (when view-read-only
+                  (read-only-mode)))))

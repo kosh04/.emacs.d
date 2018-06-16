@@ -687,3 +687,10 @@ focus-out-hook
 ;; コマンドライン文字列を分解
 (split-string-and-unquote "gcc -Wall \"hello.c\"")
 ;;=> ("gcc" "-Wall" "hello.c")
+
+;; gitのリモートURLを取得/ブラウジングする
+;; https://github.com/rmuslimov/browse-at-remote
+(let ((url (with-temp-buffer
+             (vc-git--call t "ls-remote" "--get-url")
+             (s-trim (buffer-string)))))
+  (browse-url url))

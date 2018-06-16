@@ -13,8 +13,12 @@ image-dired/
 recentf
 tramp
 abbrev_defs
+bookmarks
 custom.el
-/notes
+notes
+var/
+vendor/
+tmp/
 
 eshell/lastdir
 
