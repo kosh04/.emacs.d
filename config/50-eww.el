@@ -21,8 +21,11 @@
 (use-package eww
   :defer t
   :config
+  (require 's)
   (defun user:eww-show-url-at-point ()
-    (get-text-property (point) 'shr-url))
+    (let ((url (get-text-property (point) 'shr-url))
+          (width (- (window-width) 3)))
+      (s-truncate width url)))
   (defun user:eww-setup ()
     (setq-local eldoc-documentation-function #'user:eww-show-url-at-point)
     (eldoc-mode))
@@ -39,8 +42,7 @@
              ;;("k" . previous-line)
              ("j" . (lambda (&optional arg) (interactive "P") (scroll-up   (or arg 1))))
              ("k" . (lambda (&optional arg) (interactive "P") (scroll-down (or arg 1))))
-             ("<M-left>" . eww-back-url)
+             ("<M-left>"  . eww-back-url)
              ("<M-right>" . eww-forward-url)
-             ("<backspace>" . eww-back-url)
              ("C-k" . eww)
              ("Q" . kill-this-buffer)))

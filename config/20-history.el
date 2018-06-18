@@ -1,6 +1,7 @@
 ;;; config/History --- ファイルの履歴等の管理
 
 (setq history-length 250)               ; default 30
+(setq history-length t)                 ; no truncation.
 
 ;; ミニバッファの履歴を保存
 (savehist-mode +1)

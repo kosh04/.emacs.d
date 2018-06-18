@@ -696,3 +696,10 @@ focus-out-hook
     ('fullboth  (toggle-frame-fullscreen))))
 
 (add-hook 'after-make-frame-functions 'user/frame-config)
+
+;; gitのリモートURLを取得/ブラウジングする
+;; https://github.com/rmuslimov/browse-at-remote
+(let ((url (with-temp-buffer
+             (vc-git--call t "ls-remote" "--get-url")
+             (s-trim (buffer-string)))))
+  (browse-url url))

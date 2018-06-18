@@ -24,9 +24,11 @@
     (if file (dired-goto-file file))))
 
 ;; [v] dired-view-file
-(defadvice dired-find-file (after read-only-mode activate)
-  "読み込み専用でファイルを開く."
+(defun user/read-only-mode (&rest r)
+  "読み取り専用でファイルを開く."
   (read-only-mode))
+(advice-add 'dired-find-file              :after 'user/read-only-mode)
+(advice-add 'dired-find-file-other-window :after 'user/read-only-mode)
 
 (defun dired-copy-pathname-as-kill ()
   "ファイルのフルパスを取得."
@@ -122,9 +124,6 @@
   :config
   (custom-set-variables
    ;;'(peep-dired-cleanup-eagerly t)
-   '(peep-dired-ignored-extensions
-     (append peep-dired-ignored-extensions
-             completion-ignored-extensions))
    )
   :bind (:map dired-mode-map
               ("W" . peep-dired)
@@ -133,3 +132,12 @@
               ("p" . peep-dired-prev-file)
               ("<SPC>" . peep-dired-scroll-page-down)
               ("<S-SPC>" . peep-dired-scroll-page-up)))
+
+;; ファイルに関連付けられたアイコンを表示する
+;; darwin: ~/Library/Fonts/*.ttf
+(use-package all-the-icons-dired
+  ;; NTEmacsだと描画が重いため見送り (追加で font-lock+.el が必要)
+  :if (eq system-type 'darwin)
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  (diminish 'all-the-icons-dired-mode " "))

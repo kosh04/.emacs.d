@@ -6,7 +6,9 @@
 (use-package cquery
   :config
   (add-hook 'c-mode-hook 'lsp-cquery-enable)
-  (setq cquery-executable "~/opt/bin/cquery"))
+  (setq cquery-executable "~/opt/bin/cquery")
+  ;;(setq cquery-extra-init-params '(:completion (:detailedLabel t)))
+  )
 
 (use-package c-eldoc
   :disabled (featurep 'cquery)

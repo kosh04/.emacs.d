@@ -1,8 +1,13 @@
 ;;; config/vc-git --- version control systems
 
-;; TODO: wdired モードで `vc-rename-file' を 使いたい
+;; TODO:
+;; - wdired モードで `vc-rename-file' を 使いたい
+;; - shell-mode で利用する Git コマンドでは PAGER を無効化したい
+;;   * git --no-pager $*
+;;   * git config core.pager cat 
 
 (setf (symbol-function 'git-grep) #'vc-git-grep)
+;;(setf (getenv "PAGER") "cat")
 
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)

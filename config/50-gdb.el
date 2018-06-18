@@ -12,3 +12,6 @@
   ;;(setq gud-tooltip-echo-area t)
   (add-hook 'gdb-mode-hook #'gud-tooltip-mode)
   (add-hook 'gdb-mode-hook #'tool-bar-mode))
+
+(use-package gud-lldb
+  :load-path "~/.emacs.d/vendor")
