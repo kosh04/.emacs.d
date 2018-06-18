@@ -1,6 +1,6 @@
 ;;; config/View
 
-;; デフォルトは読み取り専用で開く
+;; 読み取り専用時はViewModeを利用する
 (setq view-read-only t)
 
 (with-eval-after-load 'view

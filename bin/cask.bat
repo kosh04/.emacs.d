@@ -1,7 +1,9 @@
 @echo off
 setlocal
 
-set PATH=%PATH%;C:\Python27
+set PATH=C:\Python27;%PATH%
+set PATH=%PATH%;%USERPROFILE%\.cask\bin
+
 set EMACS=%~dp0\emacs.bat
 
-python %HOME%\.cask\bin\cask %*
+cask %*

@@ -30,3 +30,4 @@
          "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"))))
 
 (setq use-dialog-box nil)
+(setq print-quoted t)

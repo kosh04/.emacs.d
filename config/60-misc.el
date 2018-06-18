@@ -76,3 +76,6 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :mode "/cookie.txt\\'"
   :config
   (add-hook 'csv-mode-hook 'hl-line-mode))
+
+(use-package f)
+(use-package s)

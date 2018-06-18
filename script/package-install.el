@@ -7,7 +7,9 @@
 (defvar user/packages
   '(names
     init-loader
-    use-package))
+    use-package
+    let-alist
+    ))
 
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")

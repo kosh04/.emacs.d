@@ -5,7 +5,7 @@
 (require 'dired-aux)
 
 (setq dired-dwim-target t)                ; 二窓用
-(setq dired-isearch-filenames t)          ; ファイル名だけをisearch
+(setq dired-isearch-filenames 'dwim)      ; ファイル名だけをisearch
 ;;(setq dired-recursive-deletes 'always)
 (setq dired-listing-switches "-alh")
 
@@ -89,7 +89,6 @@
   ;;(define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
   ;;(define-key dired-mode-map "q" 'kill-this-buffer) ; use C-u q
   ;;(define-key dired-mode-map "X" 'dired-shell-execute)
-  (define-key dired-mode-map (kbd "C-s") 'dired-isearch-filenames)
   (define-key dired-mode-map (kbd "C-x C-q") 'wdired-change-to-wdired-mode)
   (define-key dired-mode-map [remap beginning-of-buffer] 'user:dired-beginning-of-buffer)
   (define-key dired-mode-map [remap backward-page] 'user:dired-beginning-of-buffer)

@@ -5,6 +5,7 @@
 (require 'cl-compatible)
 (require 'ssh-public-key-overlay)
 (require 'm3u-mode)
+(bind-key (kbd "C-c i") 'm3u-add-entry m3u-mode-map)
 (require 'xyzzy)
 (require 'xyzzy-keymap)
 (require 'user-utils)

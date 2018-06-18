@@ -687,3 +687,12 @@ focus-out-hook
 ;; コマンドライン文字列を分解
 (split-string-and-unquote "gcc -Wall \"hello.c\"")
 ;;=> ("gcc" "-Wall" "hello.c")
+
+(defun user/frame-config (frame)
+  "現在のフレームサイズと同じフレームを作成したい. (not worked yet)"
+  (message "prev:%S,frame:%S" (previous-frame) frame)
+  (pcase (frame-parameter (previous-frame) 'fullscreen)
+    ('maximized (toggle-frame-maximized))
+    ('fullboth  (toggle-frame-fullscreen))))
+
+(add-hook 'after-make-frame-functions 'user/frame-config)

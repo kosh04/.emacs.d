@@ -1,4 +1,4 @@
-;;; config/GDB
+;;; config/GDB -- GDB/MI migration
 
 (with-eval-after-load 'gdb-mi
   (custom-set-variables
@@ -10,4 +10,5 @@
    )
   ;;(setq gdb-use-separate-io-buffer t)
   ;;(setq gud-tooltip-echo-area t)
-  (add-hook 'gdb-mode-hook #'gud-tooltip-mode))
+  (add-hook 'gdb-mode-hook #'gud-tooltip-mode)
+  (add-hook 'gdb-mode-hook #'tool-bar-mode))
