@@ -5,6 +5,9 @@
 ;; Author:  KOBAYASHI Shigeru (kosh) <shigeru.kb@gmail.com>
 ;; Keywords: i18n
 ;; License: MIT
+;; Version: 0.1-beta
+;; Created: 2017-??-??
+;; Package-Requires: ((emacs "24.3"))
 
 ;;; Commentary:
 

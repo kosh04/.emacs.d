@@ -6,7 +6,7 @@
 ;; URL: https://github.com/kosh04/rust-playground.el
 ;; Keywords: programming, tools, rust
 ;; Version: 0.1-beta
-;; Package-Requires: ((emacs "24.4") (let-alist "1.0.5"))
+;; Package-Requires: ((emacs "24.4") (let-alist "1.0.5") (request "0.3.0") (f "0.20.0") (s "1.12.0"))
 ;; Created: 2018-01-29
 
 ;; This program is free software; you can redistribute it and/or modify

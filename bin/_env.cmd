@@ -2,13 +2,15 @@ rem Setup NTEmacs environment
 
 set EMACS24_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
 set EMACS25_HOME=%USERPROFILE%\opt\emacs-25.2
+set EMACS26_HOME=%USERPROFILE%\opt\emacs-26.1-simple_ime-no_symbol
 
 rem set EMACSPATH=
 rem set EMACSPATH=%EMACS_HOME%\bin
 
 rem == GNU Aspell ==
 rem http://aspell.net/win32/
-set PATH=%PATH%;C:\opt\Aspell\bin
+rem WARNING: aspell.exe release 0.60 or greater is required in Emacs26
+rem set PATH=%PATH%;C:\opt\Aspell\bin
 
 rem == LLVM/Clang ==
 set PATH=%PATH%;C:\opt\LLVM\bin

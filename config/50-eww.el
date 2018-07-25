@@ -32,6 +32,19 @@
 
   (add-hook 'eww-mode-hook 'user:eww-setup)
 
+  (defun user:eww-readable ()
+    "現在閲覧中のウェブページを読みやすくする."
+    (interactive)
+    (cl-assert (eww-current-url))
+    (let* ((url (format "https://outlineapi.com/parse_article?source_url=%s"
+                        (url-hexify-string (eww-current-url))))
+           (html (cdr (assoc 'html (assoc 'data (json-read-file url)))))
+           (dom (with-temp-buffer
+                  (insert html)
+                  (libxml-parse-html-region (point-min) (point-max)))))
+      (eww-save-history)
+      (eww-display-html nil nil dom nil (current-buffer))))
+
   ;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
 
   (bind-keys :map eww-mode-map
@@ -45,4 +58,5 @@
              ("<M-left>"  . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("C-k" . eww)
+             ("R" . user:eww-readable)
              ("Q" . kill-this-buffer)))

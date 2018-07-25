@@ -1,4 +1,4 @@
-;;; memo/emacs-lisp.el          -*- mode: emacs-lisp; lexical-binding: t; -*-
+;;; memo/emacs-lisp.el          -*- mode: lisp-interaction; lexical-binding: t; -*-
 
 ;;; ELisp/CL の違い
 ;; 102: Emacs Lisp と Common Lisp は似ているのですか?
@@ -703,3 +703,23 @@ focus-out-hook
              (vc-git--call t "ls-remote" "--get-url")
              (s-trim (buffer-string)))))
   (browse-url url))
+
+;; 変数バインディングいろいろ
+;; https://emacs-china.org/t/topic/5396
+
+;; Key-Value なデータをバインディング (assoc-list/property-list/hash-tablee)
+(map-let (one zero) '((one . 1) (two . 2) (three . 3))
+  (list one zero))
+;;=> (1 nil)
+(map-let (one zero) #s(hash-table data (one 1 two 2 three 3))
+  (list one zero))
+;; => (1 nil)
+(pcase-let (((map one zero) '((one . 1) (two . 2) (three . 3))))
+  (list one zero))
+;;=> (1 nil)
+(let-alist '((one . 1) (two . 2) (three . 3))
+  (list .one .zero))
+;;=> (1 nil)
+(-let [(&plist 'one one 'zero zero) '(one 1 two 2 three 3)]
+  (list one zero))
+;;=> (1 nil)

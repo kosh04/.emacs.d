@@ -1,4 +1,8 @@
-;;; gitter-irc.el
+;;; gitter-irc.el --- Gitter IRC client
+
+;; Version: 0.1-beta
+;; Created: 2017-02-17
+;; Package-Requires: ((emacs "24.4"))
 
 ;; https://irc.gitter.im/
 
@@ -33,3 +37,4 @@
              :password pass)))
 
 (provide 'gitter-irc)
+;;; gitter-irc.el ends here.
