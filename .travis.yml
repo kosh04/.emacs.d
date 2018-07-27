@@ -24,6 +24,10 @@ env:
 #     - env: EMACS=emacs-snapshot
 
 before_install:
+  # XXX: see details, etc/PROBLEMS [*** Segfault during 'make']
+  - cat /proc/sys/kernel/randomize_va_space
+  - sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"
+
   - git clone https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git makefiles
   - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/opt
   - export PATH=${HOME}/opt/bin:${PATH}
