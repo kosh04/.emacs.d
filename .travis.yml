@@ -1,27 +1,35 @@
 language: generic
 
-sudo: required
+sudo: false
 dist: trusty
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:ubuntu-elisp/ppa'
-    packages:
-      - emacs
-      - emacs-snapshot
+# addons:
+#   apt:
+#     sources:
+#       - sourceline: 'ppa:ubuntu-elisp/ppa'
+#     packages:
+#       - emacs
+#       - emacs-snapshot
 
 env:
-  - EMACS=emacs
-  - EMACS=emacs-snapshot
+  # - EMACS=emacs
+  # - EMACS=emacs-snapshot
+  - EMACS=emacs-24.4
+  - EMACS=emacs-25.3
+  - EMACS=emacs-26.1
 
-matrix:
-  allow_failures:
-    # Daily Snapshot is not stable release (and other libs may not support)
-    - env: EMACS=emacs-snapshot
+# matrix:
+#   allow_failures:
+#     # Daily Snapshot is not stable release (and other libs may not support)
+#     - env: EMACS=emacs-snapshot
 
+before_install:
+  - git clone https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git makefiles
+  - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/opt
+  - export PATH=${HOME}/opt/bin:${PATH}
+  - ${EMACS} --version
+    
 install:
-  - $EMACS --version
   - make package-install
 
 script:

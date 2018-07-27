@@ -34,6 +34,7 @@
 
 ;; prefixキーのコマンド一覧を表示
 (use-package which-key
+  :ensure t
   :diminish which-key-mode
   :init (which-key-mode)
   :config (setq which-key-idle-delay 1.5))

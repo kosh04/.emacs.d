@@ -190,10 +190,27 @@ Example:
 (defun emacs-help-options ()
   "[user] Display \"emacs --help\" text."
   (interactive)
-  (let* ((emacs (expand-file-name (invocation-name) (invocation-directory)))
-         (text (mapconcat 'identity (process-lines emacs "--help") "\n")))
+  (let ((emacs (expand-file-name invocation-name invocation-directory)))
     (with-help-window (help-buffer)
-      (princ text))))
+      (call-process emacs nil standard-output t "--help"))))
+
+(defun user/exec* (program infile &rest args)
+  (with-output-to-string
+    (apply #'call-process program infile standard-output t args)))
+
+(defun user/exec (program input &rest args)
+  "Execute PROGRAM+ARGS, then return the result as string.
+INPUT (filename/buffer/nil) is used as a process standard input."
+  (if (bufferp input)
+      (let ((infile (make-temp-file "xyz")))
+        (unwind-protect
+            (progn
+              (with-temp-file infile
+                (insert-buffer-substring input))
+              (apply #'user/exec* program infile args))
+          (and (file-exists-p infile)
+               (delete-file infile))))
+    (apply #'user/exec* program input args)))
 
 (provide 'user-utils)
 
