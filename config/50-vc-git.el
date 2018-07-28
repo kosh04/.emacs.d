@@ -24,7 +24,8 @@
   :init (global-git-gutter-mode +1)
   :bind (("M-g p" . git-gutter:previous-hunk)
          ("M-g n" . git-gutter:next-hunk)
-         ("M-g r" . git-gutter:revert-hunk)))
+         ("M-g r" . git-gutter:revert-hunk))
+  :ensure t)
 
 (use-package dired-k
   :defer t
