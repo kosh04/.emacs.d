@@ -1,19 +1,11 @@
 ;;; config/emacs-lisp
 
-;; Emacs Source Repository
-;; http://git.savannah.gnu.org/cgit/emacs.git
-
 ;; NOTE: lisp-interaction-mode は emacs-lisp-mode の子モードのため hook が継承される
-
-(setq find-function-C-source-directory
-      (if (file-directory-p #1="~/src/gitrepo/emacs/src/") #1#
-          ;; 常に最新版を取得するため参照するソース元が一致しないかも
-          ;; "http://git.savannah.gnu.org/cgit/emacs.git/plain/src/"
-          "https://github.com/emacs-mirror/emacs/raw/emacs-24/src/"))
 
 (add-to-list
  'auto-mode-alist
- `(,(rx (or "Cask" "abbrev_defs" "recentf") eos) . emacs-lisp-mode))
+ (cons (rx (or "Cask" "abbrev_defs" "recentf" "bookmarks") eos)
+       'emacs-lisp-mode))
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
 ;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
@@ -118,6 +110,55 @@
     (require 'eldoc)
     (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)))
 
+;; Debug
+
+;; debug.el (interpreter debugger)
+;; 主な用途は無限ループしている関数のデバッグ
+;; - d `debugger-step-through' ステップ実行
+;; - c `debugger-continue' Continue
+;; - b `debugger-frame' Request entry to debugger when this frame exits.
+;; - u `debugger-frame-clear'
+;; - e `debugger-eval-expression'
+;; - q `top-level'
+;; - r `debugger-return-value'
+;; - h `describe-mode'
+;; - j `debugger-jump'
+;; - l `debugger-list-functions'
+;; - v `debugger-toggle-locals'
+;; - R `debugger-record-expression' ?
+
+
+;; Edebug (source level debugger)
+;; (info "(elisp) Edebug")
+;; see Edebug menu commands
+;; - SPC `edebug-step-mode'
+;; - g `edebug-go-mode' Continue until break
+;; - c `edebug-continue-mode' Continue until C-g
+;; - d `edebug-backtrace' Display *Backtrace*
+;; - n `edebug-next-mode'
+;; - t `edebug-trace-mode' Step + Wait 1sec?
+;; - h `edebug-goto-here' Jump untill cursor position
+;; - f `edebug-forward-sexp'
+;; - o `edebug-step-out'
+;; - i `edebug-step-in'
+;; - C-] `abort-recursive-edit'
+;; - b `edebug-set-breakpoint'
+;; - u `edebug-unset-breakpoint'
+;; - x `edebug-set-conditional-breakpoint' 条件付きbreak
+;; - B `edebug-next-breakpoint' Show next breakpoint
+;; - w `edebug-where' Restore cursor position
+;; - e `edebug-eval-expression'
+;; - E `edebug-visit-eval-list' visit *scratch* like debug buffer
+
+(defun user:view-mode-off ()
+  (view-mode -1))
+
+(with-eval-after-load 'edebug
+  ;; FIXME: view-mode-map が優先されるのはバグ？ (type e `view-exit')
+  ;; (add-hook 'edebug-mode-hook 'user:view-mode-off)
+  ;;(setq edebug-trace t)
+  )
+
 ;; interactive macroexpand
 (use-package macrostep
   :defer t
@@ -142,12 +183,10 @@
 (use-package dash
   :config (dash-enable-font-lock))
 
-(with-eval-after-load 'names
-  ;; font-lock や eval-last-sexp を names 開発用に拡張
-  (use-package names-dev)
-  ;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
-  ;; (defalias 'names--convert-cl-defun 'names--convert-defun)
-  )
+;; font-lock や eval-last-sexp を names 開発用に拡張
+;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
+;; (defalias 'names--convert-cl-defun 'names--convert-defun)
+(use-package names-dev :after names)
 
 ;; less is more
 (use-package nameless
@@ -162,3 +201,8 @@
 (use-package flycheck-package
   :after flycheck
   :config (flycheck-package-setup))
+
+(defun user:enable-imenu-use-package ()
+  (add-to-list 'imenu-generic-expression
+               '("*use-package*" "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
+(add-hook 'emacs-lisp-mode-hook 'user:enable-imenu-use-package)

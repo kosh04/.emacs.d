@@ -42,3 +42,6 @@
   (let ((map xref--xref-buffer-mode-map))
     (define-key map (kbd "TAB") 'xref-next-line)
     (define-key map (kbd "DEL") 'xref-prev-line)))
+
+;; or C-u q (in view-mode)
+;;(global-set-key (kbd "C-x k") 'kill-this-buffer)

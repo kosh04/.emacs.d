@@ -383,6 +383,8 @@ see also `read-char-by-name'
 (autoload 'untrace-all "trace")
 (autoload 'untrace-function "trace")
 
+;; ? or `debug-on-entry', `cancel-debug-watch'
+
 (defmacro trace (&rest function-name)
   (if function-name
       `(mapc #'trace-function ',function-name)

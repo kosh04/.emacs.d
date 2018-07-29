@@ -17,13 +17,14 @@
   (add-hook 'kill-emacs-hook 'user:ispell-killall))
 
 ;; flyspell
-(add-hook 'c-mode-hook 'flyspell-prog-mode)
+;;(add-hook 'c-mode-hook 'flyspell-prog-mode)
 
 (use-package flymake-yaml
   :defer t
   :after yaml-mode
   :config (add-hook 'yaml-mode-hook 'flymake-yaml-load))
 
+;; C-c ! v `flycheck-verify-setup'
 (use-package flycheck
   :defer t
   ;;:diminish flycheck-mode
@@ -32,6 +33,7 @@
    '(flycheck-emacs-lisp-load-path 'inherit)
    '(flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
   (add-hook 'after-init-hook #'global-flycheck-mode)
+  ;;(global-flycheck-mode -1)
   :config
   (add-to-list 'flycheck-clang-include-path "/usr/include/")
   ;;(add-to-list 'flycheck-clang-include-path "/usr/local/include/")

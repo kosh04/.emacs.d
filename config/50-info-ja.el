@@ -10,7 +10,7 @@
   "emacs.infoへの参照を日本語Infoにする.
 URL `http://rubikitch.com/2016/07/06/emacs245-manual-ja/'"
   (let ((filename* (pcase filename
-                     ("emacs" "emacs-25.1-ja")
+                     ("emacs" "emacs-26.1-ja")
                      (_ filename))))
     (apply fn filename* args)))
 (advice-add 'Info-find-node :around 'Info-find-node--info-ja)

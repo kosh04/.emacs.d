@@ -5,16 +5,19 @@
 
 ;; ミニバッファの履歴を保存
 (savehist-mode +1)
+;; カーソル位置の復元
+(save-place-mode +1)
 
 (require 'recentf)
 (recentf-mode +1)
 (setq recentf-save-file (locate-user-emacs-file "recentf"))
 (setq recentf-max-saved-items 2000)
 (add-to-list 'recentf-exclude "recentf")
-(add-to-list 'recentf-exclude ".git")
+(add-to-list 'recentf-exclude "\\.git/")
 (add-to-list 'recentf-exclude "/\\.emacs\\.d/elpa/")
 (add-to-list 'recentf-exclude "^/ssh:")
 (add-to-list 'recentf-exclude "^/sudo:")
+(add-to-list 'recentf-exclude "^https?://")
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop

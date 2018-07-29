@@ -2,21 +2,37 @@
 
 ;; w3m.el のキーバインドとの互換性は特にない
 
+;; TODO:
+;;   - [ ] 文字コードの自動判別 `eww-display-html'
+
 ;; KeyBinding
-;; n - eww-next-url (rel="next/prev/up" を行き来する)
-;; p - eww-previous-url
-;; u - eww-up-url
-;; l - eww-back-url
-;; r - eww-forward-url
-;; H - eww-list-histories
-;; b - eww-add-bookmark
-;; B - eww-list-bookmarks
-;; & - eww-browse-with-external-browser
-;; w - eww-copy-page-url
-;; C - url-cookie-list
-;; d - eww-download (先頭にヘッダーが付属するのは仕様？)
-;; q - quit-window
+;; - M-s M-w `eww-search-words'
+;; ***
+;; - g `eww-reload'
+;; - n `eww-next-url' (rel="next/prev/up" を行き来する)
+;; - p `eww-previous-url'
+;; - u `eww-up-url'
+;; - l `eww-back-url'
+;; - r `eww-forward-url'
+;; - H `eww-list-histories'
+;; - b `eww-add-bookmark'
+;; - B `eww-list-bookmarks'
+;; - & `eww-browse-with-external-browser'
+;; - w `eww-copy-page-url'
+;; - C `url-cookie-list'
+;; - d `eww-download' (先頭にヘッダーが付属するのは仕様？:emacs-26.1にて修正済)
+;; - E `eww-set-character-encoding' (文字コードの指定)
+;; - q `quit-window'
 ;; &rest (help-xref-interned 'eww-mode-map)
+
+(defun user:eww-send-to-google-translate ()
+  "EWWで閲覧中のウェブページを外部ブラウザで翻訳する."
+  (interactive)
+  (unless (eww-current-url)
+    (error "not in EWW"))
+  (let ((url (concat "http://translate.google.com/translate?hl=ja&sl=auto&tl=ja&u="
+                     (url-hexify-string (eww-current-url)))))
+    (eww-browse-with-external-browser url)))
 
 (use-package eww
   :defer t
@@ -45,4 +61,6 @@
              ("<M-left>"  . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("C-k" . eww)
-             ("Q" . kill-this-buffer)))
+             ("Q" . kill-this-buffer)
+             ("e" . user:eww-send-to-google-translate)
+             ))

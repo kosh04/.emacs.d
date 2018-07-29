@@ -56,3 +56,7 @@
 
 ;; 関数上部のコメントをまとめて narrow
 (setq narrow-to-defun-include-comments t)
+
+(with-eval-after-load 'makefile-mode
+  ;; Visualize ^TAB
+  (add-hook 'makefile-mode-hook 'whitespace-mode))

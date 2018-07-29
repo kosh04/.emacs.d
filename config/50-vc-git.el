@@ -16,7 +16,11 @@
   :defer t
   :pin #:melpa-stable
   :bind ("C-x g" . magit-status)
-  :config (add-to-list 'magit-no-confirm 'stage-all-changes))
+  :config
+  (add-to-list 'magit-no-confirm 'stage-all-changes)
+  ;; see [$] `magit-process'
+  ;; (setq magit-git-debug (not magit-git-debug))
+  )
 
 (use-package git-gutter
   :pin melpa-stable

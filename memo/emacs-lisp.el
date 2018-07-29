@@ -73,6 +73,8 @@
 ;;; pp.el --- pretty printer for Emacs Lisp
 (require 'pp)
 
+;; https://vmi.jp/software/emacs/edebug.html
+
 ;; プロファイラ (profile) -> (OBSOLETE; use elp.el instead)
 ;; http://www.mew.org/~kazu/doc/elisp/profile.html
 (require 'elp)

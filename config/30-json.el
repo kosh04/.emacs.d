@@ -40,3 +40,15 @@
   "[user] Reformat JSON in the buffer."
   (interactive "*")
   (json-reformat-region (point-min) (point-max)))
+
+(defun user:copy-minibuffer-contents (&rest args)
+  (interactive)
+  (kill-new (minibuffer-contents))
+  (abort-recursive-edit))
+
+(use-package jq-mode
+  :after #:json
+  :bind (
+         :map json-mode-map ("C-c C-j" . jq-interactively)
+         :map jq-interactive-map ("RET" . user:copy-minibuffer-contents)
+         ))

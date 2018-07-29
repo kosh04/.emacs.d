@@ -3,7 +3,7 @@
 ;; https://irc.gitter.im/
 
 ;; Setup:
-;; write to .netrc:
+;; write to ~/.netrc (or ~/.authinfo.gpg):
 ;; machine irc.gitter.im
 ;;   login NICKNAME
 ;;   password PASSWORD
@@ -22,8 +22,8 @@
 (defun gitter-irc ()
   (interactive)
   (let* ((host "irc.gitter.im")
-         (auth (car (or (auth-source-search :host host)
-                        (error "%s: Host auth not found " host))))
+         (auth (or (nth 0 (auth-source-search :host host))
+                   (error "%s: authinfo not found" host)))
          (nick (plist-get auth :user))
          (pass (funcall (plist-get auth :secret))))
     (unless (and nick pass)

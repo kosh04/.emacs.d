@@ -21,7 +21,7 @@
 
 (url-handler-mode +1)
 
-;; use `what-cursor-position' [C-u C-x =]
+;; `what-cursor-position' [C-u C-x =]
 (custom-set-variables
  '(describe-char-unicodedata-file
    (let ((unicode-data-txt (locate-user-emacs-file "UnicodeData.txt")))
@@ -31,3 +31,6 @@
 
 (setq use-dialog-box nil)
 (setq print-quoted t)
+
+;; C-u C-SPC C-SPC ...
+(setq set-mark-command-repeat-pop t)

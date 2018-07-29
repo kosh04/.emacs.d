@@ -99,3 +99,8 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
               (lambda (&rest args)
                 (when view-read-only
                   (read-only-mode)))))
+
+(use-package pangu-spacing
+  :defer t
+  :diminish "Pangu"
+  :config (global-pangu-spacing-mode +1))

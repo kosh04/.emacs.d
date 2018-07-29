@@ -26,7 +26,7 @@
 ;; [v] dired-view-file
 (defun user/read-only-mode (&rest r)
   "読み取り専用でファイルを開く."
-  (read-only-mode))
+  (read-only-mode +1))
 (advice-add 'dired-find-file              :after 'user/read-only-mode)
 (advice-add 'dired-find-file-other-window :after 'user/read-only-mode)
 

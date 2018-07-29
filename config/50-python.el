@@ -33,3 +33,5 @@
 
 (with-eval-after-load 'flycheck
   (setq-default flycheck-python-flake8-executable "flake8"))
+
+;;(define-key python-mode-map (kbd "C-c m d") #'pydoc)
