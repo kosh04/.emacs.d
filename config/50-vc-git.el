@@ -21,7 +21,7 @@
 (use-package git-gutter
   :pin melpa-stable
   :diminish git-gutter-mode
-  :init (global-git-gutter-mode +1)
+  :config (global-git-gutter-mode +1)
   :bind (("M-g p" . git-gutter:previous-hunk)
          ("M-g n" . git-gutter:next-hunk)
          ("M-g r" . git-gutter:revert-hunk))
