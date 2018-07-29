@@ -72,17 +72,17 @@
   (should     (cl-string-equal "together" "frOG" :start1 1 :end1 3 :start2 2)))
 
 (ert-deftest cl-char-name ()
-  (should (string-equal (char-name ?\C-@) "NULL"))
-  (should (string-equal (char-name ?a)    "LATIN SMALL LETTER A"))
+  (should (string-equal (char-name ?a) "LATIN SMALL LETTER A"))
   ;; Note: The name of control character is undefined
-  ;;(should (string-equal (char-name ?\a) "BELL (BEL)"))
-  (should (string-equal (char-name ?\C-a) "START OF HEADING"))
+  ;;(should (string-equal (char-name ?\C-@) "NULL"))
+  ;;(should (string-equal (char-name ?\C-g) "BELL (BEL)"))
+  ;;(should (string-equal (char-name ?\C-a) "START OF HEADING"))
   (should (string-equal (char-name ?\U0001F363) "SUSHI")))
 
 (ert-deftest cl-name-char ()
   (let ((case-fold-search nil))
     (should (char-equal (name-char "NULL") ?\C-@))
     (should (char-equal (name-char "LATIN SMALL LETTER A") ?a))
-    ;;(should (char-equal (name-char "BELL (BEL)") ?\a))
+    ;;(should (char-equal (name-char "BELL (BEL)") ?\C-g))
     (should (char-equal (name-char "START OF HEADING")     ?\C-a))
     (should (char-equal (name-char "SUSHI") ?\U0001F363))))

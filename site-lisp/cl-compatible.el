@@ -172,14 +172,16 @@
 (char-name ?\\a) => \"BELL (BEL)\"
 (char-name ?\\U0001F363) => \"SUSHI\""
   ;;(nth 1 (assoc "Name" (describe-char-unicode-data character)))
-  (car (rassoc character (ucs-names))))
+  (get-char-code-property character 'name))
 
 (defun name-char (name)
   "Return the character object whose name is NAME.
 see also `read-char-by-name'
 
 (name-char \"SUSHI\") => 127843 (U+0001F363)"
-  (cdr (assoc-string name (ucs-names) t)))
+  (if (fboundp 'char-from-name)         ; since 26.1
+      (char-from-name name t)
+    (cdr (assoc-string name (ucs-names) t))))
 
 (cl-defun char= (char &rest more-chars)
   (let ((case-fold-search nil))

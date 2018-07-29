@@ -9,7 +9,11 @@
     init-loader
     use-package
     let-alist
-    ))
+    request
+    s
+    f
+    )
+  "初回起動時とsite-lispのバイトコンパイルに必要なパッケージ.")
 
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")

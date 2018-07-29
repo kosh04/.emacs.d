@@ -1,27 +1,46 @@
 language: generic
 
-sudo: required
 dist: trusty
+sudo: true
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:ubuntu-elisp/ppa'
-    packages:
-      - emacs
-      - emacs-snapshot
+# addons:
+#   apt:
+#     sources:
+#       - sourceline: 'ppa:ubuntu-elisp/ppa'
+#     packages:
+#       - emacs
+#       - emacs-snapshot
 
 env:
-  - EMACS=emacs
-  - EMACS=emacs-snapshot
+  global:
+    # XXX: see details, etc/NEWS.24
+    - NO_BIN_LINK=t
+  matrix:
+    # - EMACS=emacs
+    # - EMACS=emacs-snapshot
+    - EMACS=emacs-24.4
+    - EMACS=emacs-24.5
+    - EMACS=emacs-25.3
+    - EMACS=emacs-26.1
 
 matrix:
   allow_failures:
     # Daily Snapshot is not stable release (and other libs may not support)
-    - env: EMACS=emacs-snapshot
+    # - env: EMACS=emacs-snapshot
+    - env: EMACS=emacs-24.4
 
+before_install:
+  # XXX: see details, etc/PROBLEMS [*** Segfault during 'make']
+  - cat /proc/sys/kernel/randomize_va_space
+  - sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"
+
+  - git clone https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git makefiles
+  - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/opt
+  - ls -lh ${HOME}/opt/bin
+  - export PATH=${HOME}/opt/bin:${PATH}
+  - ${EMACS} --version
+    
 install:
-  - $EMACS --version
   - make package-install
 
 script:

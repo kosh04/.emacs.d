@@ -5,6 +5,7 @@
 ;; Version: 0.1
 ;; Created: 2016-05-16
 ;; Keywords: convenience, wp
+;; Package-Requires: ((emacs "24"))
 
 ;;; Commentary:
 

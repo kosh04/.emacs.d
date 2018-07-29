@@ -4,6 +4,9 @@
 
 ;; Author: KOBAYASHI Shigeru <shigeru.kb@gmail.com>
 ;; Keywords: multimedia
+;; Version: 0.1-beta
+;; Created: 2018-01-21
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -70,11 +73,11 @@
 ;; autoinsert
 (define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))
 
-(defun m3u-add-entry (title path)
+(defun m3u-add-entry (title path &optional length)
   "Add M3U Entry."
   (interactive "sTitle: \nsPath: ")
-  (insert (format "#EXTINF:%d,%s\n" -1 title))
-  (insert path))
+  (insert (format "#EXTINF:%d,%s\n" (or length -1) title))
+  (insert path "\n"))
 
 (provide 'm3u-mode)
 ;;; m3u-mode.el ends here

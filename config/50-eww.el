@@ -26,13 +26,25 @@
 ;; &rest (help-xref-interned 'eww-mode-map)
 
 (defun user:eww-send-to-google-translate ()
-  "EWWで閲覧中のウェブページを外部ブラウザで翻訳する."
+  "EWWで閲覧中のウェブページを外部ブラウザで翻訳します."
   (interactive)
-  (unless (eww-current-url)
-    (error "not in EWW"))
+  (cl-assert (eww-current-url))
   (let ((url (concat "http://translate.google.com/translate?hl=ja&sl=auto&tl=ja&u="
                      (url-hexify-string (eww-current-url)))))
     (eww-browse-with-external-browser url)))
+
+(defun user:eww-readable ()
+  "現在閲覧中のウェブページを読みやすくします."
+  (interactive)
+  (cl-assert (eww-current-url))
+  (let* ((url (format "https://outlineapi.com/parse_article?source_url=%s"
+                      (url-hexify-string (eww-current-url))))
+         (html (cdr (assoc 'html (assoc 'data (json-read-file url)))))
+         (dom (with-temp-buffer
+                (insert html)
+                (libxml-parse-html-region (point-min) (point-max)))))
+    (eww-save-history)
+    (eww-display-html nil nil dom nil (current-buffer))))
 
 (use-package eww
   :defer t
@@ -61,6 +73,7 @@
              ("<M-left>"  . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("C-k" . eww)
-             ("Q" . kill-this-buffer)
              ("e" . user:eww-send-to-google-translate)
-             ))
+             ("R" . user:eww-readable)
+             ("Q" . kill-this-buffer))
+  )
