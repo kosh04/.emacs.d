@@ -21,6 +21,7 @@
 ;; M-x `debbugs-gnu-search'
 ;; M-x `debbugs-gnu-manual'
 ;; M-x `report-emacs-bug'
+;; M-x `gnus-read-ephemeral-emacs-bug-group'
 (use-package debbugs
   :defer t
   :config

@@ -34,6 +34,7 @@
 
   ;; (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (add-hook 'gnus-server-mode-hook 'hl-line-mode)
+  (add-hook 'gnus-browse-mode-hook 'hl-line-mode)
   (add-hook 'gnus-summary-mode-hook 'hl-line-mode)
   (add-hook 'gnus-group-mode-hook 'hl-line-mode)
   )

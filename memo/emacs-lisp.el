@@ -725,3 +725,18 @@ focus-out-hook
 (-let [(&plist 'one one 'zero zero) '(one 1 two 2 three 3)]
   (list one zero))
 ;;=> (1 nil)
+(cl-loop for (x . y) in '((one . 1) (two . 2) (three . 3)) do ...)
+
+;; nntpプロトコルを開きたい
+(url-generic-parse-url "nntp://news.gmane.org/gmane.emacs.gnus.general")
+;;=> #s(url "nntp" nil nil "news.gmane.org" nil "/gmane.emacs.gnus.general" nil nil t nil t t)
+(defun url-nntp (url)
+  (let ((gnus-select-method
+         (list 'nntp (url-host url))))
+    (gnus)))
+
+;; Patch for `erefactor'
+(unless (fboundp 'elisp--preceding-sexp)
+  (setf (symbol-function 'elisp--preceding-sexp) #'preceding-sexp))
+
+;;(setq ffap-machine-p-known 'reject)

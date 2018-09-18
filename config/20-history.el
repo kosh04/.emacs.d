@@ -5,8 +5,18 @@
 
 ;; ミニバッファの履歴を保存
 (savehist-mode +1)
-;; カーソル位置の復元
+
+;; ファイルを開いたときのカーソル位置を復元
 (save-place-mode +1)
+(defun user/save-alist-skip-remote ()
+  "HTTPなどのリモートファイルの確認が煩わしいのでスキップする."
+  (setq save-place-alist
+        (seq-remove (lambda (x)
+                      (let ((file (car x))
+                            (pos_ (cdr x)))
+                        (file-remote-p file)))
+                    save-place-alist)))
+(advice-add 'save-place-alist-to-file :before #'user/save-alist-skip-remote)
 
 (require 'recentf)
 (recentf-mode +1)

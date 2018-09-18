@@ -103,6 +103,14 @@ current-language-environment
 (coding-system-doc-string 'utf-8)      ; "UTF-8 (no signature (BOM))"
 (coding-system-doc-string 'emacs-mule) ; "Emacs 21 internal format used in buffer and string."
 
+;; MIME用charset
+(defun mime-charset (coding-system)
+  (coding-system-get coding-system :mime-charset))
+
+(mime-charset 'japanese-shift-jis-dos)  ;=> shift_jis
+(mime-charset 'japanese-iso-8bit)       ;=> euc-jp
+(mime-charset 'mule-utf-8)              ;=> utf-8
+
 ;; なぜか utf-8 になっていた
 ;; (set-language-environment "japanese") のせいかな?
 (when (eq system-type 'windows-nt)
@@ -134,4 +142,17 @@ current-language-environment
                       'katakana-jisx0201 'iso-8859-1 'cp1252 'unicode)
 (set-coding-system-priority 'utf-8 'euc-jp 'iso-2022-jp 'cp932)
 
+;; ファイルの文字コードを判定する手段はいくつかある
+;; 1. `insert-file-contents' + `buffer-file-coding-system'
+;;    ファイルの挿入時に Emacs 内部で文字コード判定が行われるのを利用する
+;; 2. `insert-file-contents-literally' + `detect-coding-region'
+;;    ファイルをバイト列で流し込んで、後から判定を行う
+;;
+;; あとはファイル挿入時にすべて読み込むか、あるいはメモリ効率を優先して先頭Nバイトだけ読み込むかが悩みどころ
+(cl-defun detect-file-coding-system (file &optional (highest t))
+  (with-temp-buffer
+    (insert-file-contents-literally file nil #x0 #x800)
+    (detect-coding-region (point-min) (point-max) highest)))
 
+(detect-file-coding-system (expand-file-name "HELLO" data-directory))
+;;=> iso-2022-7bit-unix

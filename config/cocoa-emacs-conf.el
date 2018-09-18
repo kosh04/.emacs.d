@@ -50,3 +50,9 @@
  '(locate-command "mdfind"))
 
 (add-to-list 'completion-ignored-extensions ".dSYM")
+
+;; [2018-08-XX] <kbd>D</kbd> キーが押下できなくなったため回避方法いろいろ
+;; - C-x 8 RET 0064 (?\u0064 == ?d)
+;; - ソフトウェアキーボード
+(global-set-key [kp-delete]  "d")        ; fn+delete
+(global-set-key [deletechar] "d")        ; for -nw

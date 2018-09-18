@@ -16,6 +16,7 @@ abbrev_defs
 bookmarks
 custom.el
 notes
+debbugs
 var/
 vendor/
 tmp/

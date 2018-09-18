@@ -6,6 +6,7 @@
   :defer t
   :config
   (custom-set-variables
+   ;;'(markdown-fontify-code-blocks-natively t)
    '(markdown-url-compose-char ?\U0001F517)) ; 🔗 (LINK SYMBOL)
   (defun user:markdown-preview-in-buffer ()
     "作業中のMarkdownファイルをバッファにプレビュー表示する."

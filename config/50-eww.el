@@ -33,6 +33,8 @@
                      (url-hexify-string (eww-current-url)))))
     (eww-browse-with-external-browser url)))
 
+;;(concat "https://www.microsofttranslator.com/bv.aspx?from=en&to=ja" "&a=" (url-hexify-string url))
+
 (defun user:eww-readable ()
   "現在閲覧中のウェブページを読みやすくします."
   (interactive)
@@ -43,8 +45,10 @@
          (dom (with-temp-buffer
                 (insert html)
                 (libxml-parse-html-region (point-min) (point-max)))))
+    ;; TODO: w キーでURLをコピーしたい
+    ;;(plist-put eww-data :url url)
     (eww-save-history)
-    (eww-display-html nil nil dom nil (current-buffer))))
+    (eww-display-html nil url dom nil (current-buffer))))
 
 (use-package eww
   :defer t
