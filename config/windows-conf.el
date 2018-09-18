@@ -73,3 +73,6 @@
 (with-eval-after-load 'doc-view
   (add-to-list 'exec-path "c:/opt/gs9.21/bin")
   (set-variable 'doc-view-ghostscript-program (executable-find "gswin64c")))
+
+(with-eval-after-load 'curl
+  (setq request-curl-options '("--insecure")))

@@ -156,3 +156,7 @@ current-language-environment
 
 (detect-file-coding-system (expand-file-name "HELLO" data-directory))
 ;;=> iso-2022-7bit-unix
+
+;; バイト数を考慮した関数 (`XXX-bytes')
+(cons #1=(point-max) (byte-to-position (position-bytes #1#)))
+(cons (length #1="こんにちは WORLD 🍣") (string-bytes #1#))

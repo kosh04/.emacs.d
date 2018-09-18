@@ -735,8 +735,8 @@ focus-out-hook
          (list 'nntp (url-host url))))
     (gnus)))
 
-;; Patch for `erefactor'
+;; Surpress byte-compile warning (Patch for `erefactor')
 (unless (fboundp 'elisp--preceding-sexp)
-  (setf (symbol-function 'elisp--preceding-sexp) #'preceding-sexp))
+  (defalias 'elisp--preceding-sexp #'preceding-sexp))
 
 ;;(setq ffap-machine-p-known 'reject)

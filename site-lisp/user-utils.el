@@ -194,6 +194,13 @@ Example:
     (with-help-window (help-buffer)
       (call-process emacs nil standard-output t "--help"))))
 
+(defun emacsclient-help-options ()
+  "[user] Display \"emacsclient --help\" text."
+  (interactive)
+  (let ((emacs (expand-file-name "emacsclient" invocation-directory)))
+    (with-help-window (help-buffer)
+      (call-process emacs nil standard-output t "--help"))))
+
 (defun user/exec* (program infile &rest args)
   (with-output-to-string
     (apply #'call-process program infile standard-output t args)))
@@ -211,6 +218,14 @@ INPUT (filename/buffer/nil) is used as a process standard input."
           (and (file-exists-p infile)
                (delete-file infile))))
     (apply #'user/exec* program input args)))
+
+;; TODO: suppress other echo-area output (eldoc, etc)
+(define-minor-mode what-cursor-position-minor-mode
+  "Turn on/off `what-cursor-position'."
+  nil " 🔍" nil
+  (if what-cursor-position-minor-mode
+      (add-hook 'post-command-hook #'what-cursor-position t 'local)
+    (remove-hook 'post-command-hook #'what-cursor-position 'local)))
 
 (provide 'user-utils)
 

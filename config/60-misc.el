@@ -104,3 +104,25 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :defer t
   :diminish "Pangu"
   :config (global-pangu-spacing-mode +1))
+
+(defun init-loader-display-chart ()
+  "init-loader の読み込み時間をグラフ表示します."
+  (interactive)
+  (require 'chart)
+  (let (acc)
+    (with-current-buffer "*init log*"
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward "loaded \\(.*\\)[.] \\([0-9]*\\.?[0-9]+\\|[0-9]+\\)" nil t)
+          (push (cons (file-name-base (match-string 1))
+                      (* 1000 (string-to-number (match-string 2))))
+                acc))))
+    (chart-bar-quickie
+     'horizontal ;;'vertical
+     "Load time of init-loader"
+     (map-keys acc) "Name"
+     (map-values acc) "Time (ms)"
+     10
+     (lambda (x y) (> (cdr x) (cdr y))))
+    ))
+;;(add-hook 'after-init-hook 'init-loader-display-chart t)

@@ -26,7 +26,7 @@
   (add-to-list 'company-backends 'company-c-headers))
 
 (use-package irony
-  :disabled (featurep 'cquery)
+  ;;:disabled (featurep 'cquery)
   :defer t
   :init
   (add-hook 'c-mode-hook 'irony-mode)

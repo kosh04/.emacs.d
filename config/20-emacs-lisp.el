@@ -196,6 +196,10 @@
    '(nameless-private-prefix t))
   (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
 
+;; Surpress byte-compile warning
+;; (unless (fboundp 'elisp--preceding-sexp)
+;;   (defalias 'elisp--preceding-sexp 'preceding-sexp))
+
 (use-package erefactor)
 
 (use-package flycheck-package
