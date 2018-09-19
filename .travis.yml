@@ -28,6 +28,7 @@ matrix:
     # Daily Snapshot is not stable release (and other libs may not support)
     # - env: EMACS=emacs-snapshot
     - env: EMACS=emacs-24.4
+    - env: EMACS=emacs-24.5
 
 before_install:
   # XXX: see details, etc/PROBLEMS [*** Segfault during 'make']
