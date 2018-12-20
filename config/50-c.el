@@ -4,6 +4,7 @@
   (add-to-list 'completion-ignored-extensions ext))
 
 (use-package cquery
+  :defer t
   :config
   (add-hook 'c-mode-hook 'lsp-cquery-enable)
   (setq cquery-executable "~/opt/bin/cquery")

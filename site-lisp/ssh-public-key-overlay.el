@@ -52,7 +52,7 @@
 (make-variable-buffer-local '-overlays)
 
 (defun default-format (s)
-  (format "%s...#%d" (substring s 0 7) (length s)))
+  (format "%s...#%d" (substring s 0 (1- 32)) (length s)))
 
 (defvar format #'default-format
   "Function")

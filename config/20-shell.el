@@ -1,14 +1,17 @@
 ;;; config/Shell
 
-(defun user:shell-other-window ()
-  "シェルを別ウィンドウで開きます."
-  (interactive)
-  (let ((buffer (save-window-excursion
-                  ;; Enable current-prefix-arg
-                  (call-interactively 'shell))))
-    ;; FIXME: 分割済みウィンドウでは機能していない
-    (or (eq buffer (current-buffer))
-        (switch-to-buffer-other-window buffer))))
+(defun user:shell-other-window (&optional eshell)
+  "シェルを別ウィンドウで開きます.
+ESHELL (`C-u') を有効にすると `eshell' を開きます."
+  (interactive "P")
+  (if eshell
+      (call-interactively #'eshell)
+    (let ((buffer (save-window-excursion
+                    ;; Enable current-prefix-arg
+                    (call-interactively 'shell))))
+      ;; FIXME: 分割済みウィンドウでは機能していない
+      (or (eq buffer (current-buffer))
+          (switch-to-buffer-other-window buffer)))))
 
 (global-set-key (kbd "C-c s") 'user:shell-other-window)
 

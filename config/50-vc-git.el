@@ -9,7 +9,7 @@
 (setf (symbol-function 'git-grep) #'vc-git-grep)
 ;;(setf (getenv "PAGER") "cat")
 
-(defun user:browse-repository-url (&optional action)
+(defun user:open-repository-url (&optional action)
   "現在開いているgitリポジトリのリモートURLを表示します."
   (interactive)
   (unless action
@@ -32,10 +32,11 @@
   ;;:if (executable-find "git")
   :defer t
   :pin #:melpa-stable
-  :bind ("C-x g" . magit-status)
+  :bind (("C-x g" . magit-status)
+         ("C-x t g" . magit-list-repositories))
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes)
-  (bind-key "&" #'user:browse-repository-url magit-mode-map)
+  (bind-key "&" #'user:open-repository-url magit-mode-map)
   ;; see [$] `magit-process'
   ;; (setq magit-git-debug (not magit-git-debug))
   )

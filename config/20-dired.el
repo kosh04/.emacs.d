@@ -9,6 +9,9 @@
 ;;(setq dired-recursive-deletes 'always)
 (setq dired-listing-switches "-alh")
 
+;; Dired バッファ内に DnD でフツーに開く (ファイルコピーをしない)
+(setq dired-dnd-protocol-alist nil)
+
 (add-hook 'dired-mode-hook 'hl-line-mode) ; 行カーソル
 
 ;; ファイル名のみ表示するマイナーモード (since 24.4)

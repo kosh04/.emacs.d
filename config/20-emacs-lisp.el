@@ -34,7 +34,7 @@
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
-  :if (not (locate-library "xref")) ; or (not (version<= "25.1" emacs-version))
+  :if (not (locate-library "xref")) ; or (version< emacs-version "25.1")
   :diminish elisp-slime-nav-mode
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
@@ -113,6 +113,7 @@
 ;; Debug
 
 ;; debug.el (interpreter debugger)
+;; (info "(elisp) Debugger")
 ;; 主な用途は無限ループしている関数のデバッグ
 ;; - d `debugger-step-through' ステップ実行
 ;; - c `debugger-continue' Continue
@@ -150,12 +151,9 @@
 ;; - e `edebug-eval-expression'
 ;; - E `edebug-visit-eval-list' visit *scratch* like debug buffer
 
-(defun user:view-mode-off ()
-  (view-mode -1))
-
 (with-eval-after-load 'edebug
   ;; FIXME: view-mode-map が優先されるのはバグ？ (type e `view-exit')
-  ;; (add-hook 'edebug-mode-hook 'user:view-mode-off)
+  (add-hook 'edebug-mode-hook (lambda () (view-mode -1)))
   ;;(setq edebug-trace t)
   )
 

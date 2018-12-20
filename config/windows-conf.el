@@ -61,10 +61,10 @@
  '(find-name-arg nil))
 
 ;; etags を使いたいだけ
-(let ((path #1=(getenv "PATH"))
+(let ((path (getenv "PATH"))
       (bindir (expand-file-name "../../../../bin" exec-directory)))
   (unless (string-match bindir path)
-    (setf #1# (concat path path-separator bindir))))
+    (setf (getenv "PATH") (concat path path-separator bindir))))
 
 (with-eval-after-load 'ispell
   (custom-set-variables
@@ -74,5 +74,8 @@
   (add-to-list 'exec-path "c:/opt/gs9.21/bin")
   (set-variable 'doc-view-ghostscript-program (executable-find "gswin64c")))
 
-(with-eval-after-load 'curl
-  (setq request-curl-options '("--insecure")))
+;; (with-eval-after-load 'request
+;;   (setq request-curl-options '("--insecure")))
+
+(global-set-key [enlw] 'toggle-input-method)
+(global-set-key [auto] 'toggle-input-method)
