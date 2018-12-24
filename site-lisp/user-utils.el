@@ -234,6 +234,21 @@ INPUT (filename/buffer/nil) is used as a process standard input."
       (add-hook 'post-command-hook #'what-cursor-position t 'local)
     (remove-hook 'post-command-hook #'what-cursor-position 'local)))
 
+(defun user/process-environment-alist ()
+  (mapcar (lambda (e)
+            (if-let ((pos (seq-position e ?=)))
+                (cons (substring e 0 pos) (substring e (1+ pos)))
+              (cons e nil)))
+          process-environment))
+
+(defun user/jump-to-env-directory (env-name)
+  "環境変数 `ENV-NAME' が示すディレクトリにジャンプします."
+  (interactive
+   (list (completing-read "Jump to Env Directory: "
+           (let ((alist (user/process-environment-alist)))
+             (cl-remove-if-not 'file-directory-p alist :key #'cdr)))))
+  (dired (getenv env-name)))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

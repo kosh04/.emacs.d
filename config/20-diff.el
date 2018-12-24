@@ -1,7 +1,7 @@
-;;; confif/diff.el
+;;; config/diff
 
-(custom-set-variables
- '(diff-switches "-waru"))
+(with-eval-after-load 'diff
+  (setq diff-switches "-waru"))
 
 ;; Ediff
 (with-eval-after-load 'ediff

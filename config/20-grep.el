@@ -2,6 +2,13 @@
 
 ;; (できれば) M-x grep,lgrep,rgrep を活用したい
 
+;; Occur
+(with-eval-after-load 'replace
+  (let ((map occur-mode-map))
+    (define-key map "n" 'occur-next)
+    (define-key map "p" 'occur-prev))
+  (add-hook 'occur-mode-hook 'next-error-follow-minor-mode))
+
 (use-package ag
   :config
   (set-variable 'ag-highlight-search t)
