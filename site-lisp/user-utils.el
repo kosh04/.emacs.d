@@ -4,6 +4,13 @@
 
 (require 'cl-lib)
 
+(defalias 'standard-error-output #'external-debugging-output
+  "Standard error output (stderr).
+Example:
+  (print \"HELLO\" #\\='standard-error-output)
+  (let ((standard-output #\\='standard-error-output))
+    (message \"HELLO\"))")
+
 (defun println (obj &optional out)
   (princ obj out)
   (terpri out))

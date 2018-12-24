@@ -4,8 +4,6 @@
 (require 'gitter-irc)
 (require 'cl-compatible)
 (require 'ssh-public-key-overlay)
-(require 'm3u-mode)
-(bind-key (kbd "C-c i") 'm3u-add-entry m3u-mode-map)
 (require 'data-uri)
 (require 'xyzzy)
 (require 'xyzzy-keymap)
@@ -13,6 +11,10 @@
 
 (require 'google-search)
 (global-set-key (kbd "C-c g") 'google-search)
+
+(use-package m3u-mode
+  :config
+  (bind-key "C-c i" #'m3u-insert-entry  m3u-mode-map))
 
 (use-package unicode-escape
   :load-path "~/Documents/GitHub/unicode-escape.el"

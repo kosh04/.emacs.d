@@ -5,6 +5,9 @@
 
 ;; (set-variable 'python-check-command (executable-find "flake8"))
 
+(with-eval-after-load 'python
+  (add-hook 'python-mode-hook 'which-func-mode))
+
 (cl-case system-type
   (darwin (custom-set-variables
            '(python-shell-interpreter "/usr/local/bin/python3")

@@ -518,9 +518,12 @@ The following commands are available:
 ;; バイナリデータの読み込み
 (require 'bindat)
 
-(bindat-unpack '((:signature str 8)
-                 (:ihdr str 25))
-               (f-read-bytes "~/Pictures/bg.png"))
+(bindat-unpack
+ '((:signature str 8)
+   (:ihdr str 25))
+ (f-read-bytes
+  (expand-file-name "images/icons/hicolor/32x32/apps/emacs.png" data-directory)))
+;;=> ((:ihdr . "\0\0\0\015IHDR\0\0\0 \0\0\0 \010\006\0\0\0szz\364") (:signature . "\211PNG\015\n\032\n"))
 
 (defun process-describe (proc)
   (list ;;:attributes (process-attributes proc)
@@ -740,3 +743,20 @@ focus-out-hook
   (defalias 'elisp--preceding-sexp #'preceding-sexp))
 
 ;;(setq ffap-machine-p-known 'reject)
+
+;; a.txt の内容を正規表現で書き換えて b.txt に保存する
+((lambda (infile outfile)
+   (with-temp-buffer
+     (insert-file-contents infile)
+     (while (re-search-forward (rx "REGEXP") nil t)
+       (replace-match "NEWTEXT"))
+     (write-region (point-min) (point-max) outfile)))
+ "a.txt" "b.txt")
+
+;; コントロール文字等をできる限りエスケープして出力する
+(let ((print-escape-multibyte t)
+      (print-escape-nonascii t)
+      (print-escape-control-characters t)
+      (print-escape-newlines t))
+  (prin1 "\xfe\xff\n\0\a\b\c\d\e\f\g🍣\n"))
+;;-> "\376\377\n\0\007\010c\177\033\fg\x1f363\n"

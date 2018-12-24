@@ -47,8 +47,15 @@
   (abort-recursive-edit))
 
 (use-package jq-mode
-  :after #:json
+  :after #:json-mode
   :bind (
          :map json-mode-map ("C-c C-j" . jq-interactively)
          :map jq-interactive-map ("RET" . user:copy-minibuffer-contents)
          ))
+
+;; 現在位置のキー情報を表示
+;; C-c C-p jsons-print-path
+(use-package json-snatcher
+  :after #:json-mode
+  :config
+  (setq jsons-path-printer 'jsons-print-path-jq))

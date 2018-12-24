@@ -6,6 +6,7 @@
 ;; Created: 2016-05-16
 ;; Keywords: convenience, wp
 ;; Package-Requires: ((emacs "24"))
+;; URL: http://localhost
 
 ;;; Commentary:
 
@@ -50,6 +51,10 @@ COMMAND requires method ((input string)) -> string."
 (defun textproc-filter-string (regionf string)
   "Convert STRING by using filter REGIONF.
 REGIONF requires method ((beg point) (end point))."
+  (cl-assert
+   (pcase-let ((`(,_ ,spec) (interactive-form regionf)))
+     (or (string= spec "r")
+         (string= spec "*r"))))
   (with-temp-buffer
     (insert string)
     (funcall regionf (point-min) (point-max))

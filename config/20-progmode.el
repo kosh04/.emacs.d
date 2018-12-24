@@ -23,6 +23,8 @@
 (with-eval-after-load 'prog-mode
   (define-key prog-mode-map [f5] 'compile))
 
+(defalias 'make #'compile)
+
 ;; 関数一覧
 (require 'imenu)
 (global-set-key (kbd "C-c l") 'imenu)

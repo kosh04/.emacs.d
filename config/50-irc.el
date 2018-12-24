@@ -31,13 +31,15 @@
   ;; (erc-spelling-mode +1)
   (erc-timestamp-mode +1)
 
+  ;; FIXME: ログの設置場所が固定されない..
   (require 'erc-log)
-  (setq erc-log-channels-directory
-        (let ((dir (locate-user-emacs-file "var/log/erc")))
-          (unless (file-exists-p dir)
-            (make-directory dir t))
-          dir))
-  (setq erc-log-insert-log-on-open t)
+  (custom-set-variables
+   '(erc-log-channels-directory
+     (let ((dir (locate-user-emacs-file "var/log/erc")))
+       (unless (file-exists-p dir)
+         (make-directory dir t))
+       dir))
+   '(erc-log-insert-log-on-open t))
   (erc-log-enable)
   )
 

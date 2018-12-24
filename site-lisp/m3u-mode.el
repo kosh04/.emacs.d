@@ -59,6 +59,7 @@
   :syntax-table m3u-mode-syntax-table
   (setq font-lock-defaults '(m3u-mode-font-lock-keywords))
   (setq comment-start "#" comment-end "")
+  (setq comment-use-syntax t)           ; ?
   (setq imenu-generic-expression
         (list
          '(nil "^#\\(EXTINF\\):\\(-?[0-9]+\\.?[0-9]*\\),\\(.*\\)$" 3)))
@@ -73,11 +74,13 @@
 ;; autoinsert
 (define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))
 
-(defun m3u-add-entry (title path &optional length)
-  "Add M3U Entry."
+(defun m3u-new-entry (title path &optional length)
+  (format "#EXTINF:%d,%s\n%s" (or length -1) title path))
+
+(defun m3u-insert-entry (title path)
+  "Insert M3U Entry."
   (interactive "sTitle: \nsPath: ")
-  (insert (format "#EXTINF:%d,%s\n" (or length -1) title))
-  (insert path "\n"))
+  (insert (m3u-new-entry title path) "\n"))
 
 (provide 'm3u-mode)
 ;;; m3u-mode.el ends here

@@ -126,3 +126,6 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
      (lambda (x y) (> (cdr x) (cdr y))))
     ))
 ;;(add-hook 'after-init-hook 'init-loader-display-chart t)
+
+(add-to-list 'load-suffixes ".el.gpg")
+(load "50-lingr" t)

@@ -7,6 +7,11 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 
+;; Switch to Mirrors
+;; https://github.com/melpa/melpa#mirrors
+;;(setf (cdr (assoc "melpa"        package-archives)) "https://www.mirrorservice.org/sites/melpa.org/packages/")
+;;(setf (cdr (assoc "melpa-stable" package-archives)) "https://www.mirrorservice.org/sites/stable.melpa.org/packages/")
+
 (custom-set-variables
  ;; アーカイブの優先順位 (it works?)
  '(package-archive-priorities
