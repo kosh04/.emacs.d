@@ -1,9 +1,10 @@
-;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの関数/変数をEmacsで使うためのライブラリ
+;;; xyzzy.el --- CommonLisp/SLIME/xyzzyの関数/変数をEmacsで使うためのライブラリ -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009,2010,2015 Shigeru Kobayashi
+;; Copyright (C) 2009,2010,2015,2019 Shigeru Kobayashi
 
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
 ;; Version: 0.1
+;; Package-Requires: ((emacs "24.4"))
 ;; Created: 2009-03-11
 ;; Keywords: lisp,extensions
 ;; URL: http://github.com/kosh04/emacs-lisp/raw/master/site-lisp/xyzzy.el
@@ -40,6 +41,7 @@
 
 ;;; ChangeLog:
 
+;; - 2019-03-22 古い書式を更新＆バイトコンパイル時の警告を抑制 (Emacs 26.1)
 ;; - 2015-02-23 Common Lisp 由来のシンボル群を cl-compatible.el に移行
 ;; - 2010-10-09 Emacs21でもとりあえずバイトコンパイルできるように関数やシンタックスを修正
 ;; - 2009-04-19 初版作成
@@ -47,11 +49,12 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'cl)
   (add-to-list 'load-path (expand-file-name ".")))
+(require 'cl-lib)
 (require 'dired)
 (require 'japan-util)
 (require 'cl-compatible)
+(require 'pcase)
 ;; (require 'ielm)
 
 ;;; @@ Data-Type
@@ -115,8 +118,8 @@
 (defun map-slash-to-backslash (string) (subst-char-in-string ?/ ?\\ string))
 (defun map-backslash-to-slash (string) (subst-char-in-string ?\\ ?/ string))
 
-(defun* substitute-string (string pattern replacement
-                                  &key case-fold start end skip count)
+(cl-defun substitute-string (string pattern replacement
+                                    &key case-fold _start _end _skip _count)
   (let ((case-fold-search case-fold))
     (replace-regexp-in-string pattern replacement string 'fixedcase)))
 
@@ -138,11 +141,16 @@
 ;; Emacsのeval-regionの返り値が常にnil、出力はデフォルトでは破棄される
 ;; -> せめて出力は破棄せずにミニバッファに表示したい
 ;; できれば返り値も弄りたいが...
-(defadvice eval-region (before output-to-stdout activate)
+(defun eval-region--output-to-stdout (args)
   ;; Programs can pass third argument PRINTFLAG which controls output:
   ;; A value of nil means discard it; anything else is stream for printing it.
-  (or (ad-get-arg 2)
-      (ad-set-arg 2 standard-output)))
+  ;;`(,@args ,standard-output)
+  (pcase args
+    (`(,start ,end) `(,start ,end ,standard-output))
+    (_ args)))
+
+(advice-add 'eval-region :filter-args #'eval-region--output-to-stdout)
+;; (advice-remove 'eval-region #'eval-region--output-to-stdout)
 
 ;; (defvaralias 'hoge 'load-in-progress)
 
@@ -155,7 +163,7 @@
 
 ;; (apropos "network")
 
-;; (defun* xyzzy-open-network-stream
+;; (cl-defun xyzzy-open-network-stream
 ;;     (buffer host service &key incode outcode eol-code)
 ;;   (declare (ignore eol-code))
 ;;   (make-network-process :buffer buffer
@@ -250,7 +258,7 @@
 ;; (- (window-height) (window-body-height))
 ;; ? (window-line-height)
 (defun window-lines (&optional window)
-  (or (destructuring-bind (left top right bottom)
+  (or (cl-destructuring-bind (_left top _right bottom)
           (window-edges)
         (- bottom top
            (if mode-line-format 1 0)
@@ -261,7 +269,7 @@
   (not (pos-visible-in-window-p pos window partially)))
 
 (defun scroll-window (arg)
-  (check-type arg integer)
+  (cl-check-type arg integer)
   (ignore-errors (scroll-up arg)))
 
 (defun scroll-up-both-window ()
@@ -456,24 +464,24 @@
 ;; japanese-hankaku                        ; 全角→半角
 ;; japanese-zenkaku                        ; 半角→全角
 
-(defun* map-to-half-width-region (from to &key ascii hiragana katakana greek cyrillic)
+(cl-defun map-to-half-width-region (from to &key ascii _hiragana _katakana _greek _cyrillic)
   "指定したリージョンを半角文字に変換します."
   (interactive "*r")
   (japanese-hankaku-region from to ascii))
 ;; (fset 'map-to-half-width-region #'japanese-hankaku-region)
 
-;; FIXME: defun*-interactive を組み合わせるとインタラクティブに呼び出せない？
-(defun* map-to-full-width-region (from to &key ascii hiragana katakana greek cyrillic)
+;; FIXME: cl-defun-interactive を組み合わせるとインタラクティブに呼び出せない？
+(cl-defun map-to-full-width-region (from to &key _ascii _hiragana katakana _greek _cyrillic)
   "指定したリージョンを全角文字に変換します."
   (interactive "*r")
   (japanese-zenkaku-region from to katakana))
 ;; (fset 'map-to-full-width-region #'japanese-zenkaku-region)
 
-(defun* map-to-half-width-string (string &key ascii hiragana katakana greek cyrillic)
+(cl-defun map-to-half-width-string (string &key ascii _hiragana _katakana _greek _cyrillic)
   "文字列STRINGを半角に変換します."
   (japanese-hankaku string ascii))
 
-(defun* map-to-full-width-string (string &key ascii hiragana katakana greek cyrillic)
+(cl-defun map-to-full-width-string (string &key _ascii _hiragana _katakana _greek _cyrillic)
   "文字列STRINGを全角に変換します."
   (japanese-zenkaku string))
 
@@ -577,15 +585,15 @@
   (modify-syntax-entry (elt string 1) ". 4" syntax-table))
 
 ;; ? parse-sexp-ignore-comments
-(defun set-syntax-start-c++-comment (syntax-table char &optional parse-sexp-ignore-comment-p)
-  (declare (ignorable parse-sexp-ignore-comment-p))
+(defun set-syntax-start-c++-comment (syntax-table char &optional _parse-sexp-ignore-comment-p)
+  ;;(ignore parse-sexp-ignore-comment-p)
   (modify-syntax-entry char "< 12b" syntax-table))
 
-(defun set-syntax-end-c++-comment (syntax-table char &optional parse-sexp-ignore-comment-p)
+(defun set-syntax-end-c++-comment (syntax-table char &optional _parse-sexp-ignore-comment-p)
   (modify-syntax-entry char "> 4b" syntax-table))
 
-(defun* use-syntax-table (syntax-table &optional buffer (invalidate-p t))
-  (declare (ignorable invalidate-p))
+(cl-defun use-syntax-table (syntax-table &optional buffer (_invalidate-p t))
+  ;;(declare (ignorable invalidate-p))
   (with-current-buffer (or buffer (current-buffer))
     (set-syntax-table syntax-table)))
 
@@ -638,12 +646,12 @@
 (fset 'toggle-ime 'toggle-input-method)
 
 ;;; @@ Text
-(defun convert-encoding-to-internal (encoding input-string &optional output-stream)
+(defun convert-encoding-to-internal (encoding input-string &optional _output-stream)
   "convert string INPUT-STRING (internal -> ENCODING)"
-  (declare (ignore output-stream))
+  ;;(declare (ignore output-stream))
   (encode-coding-string input-string encoding))
 
-(defun convert-encoding-from-internal (encoding input-string &optional output-stream)
+(defun convert-encoding-from-internal (encoding input-string &optional _output-stream)
   "convert string INPUT-STRING (ENCODING -> internal)"
   (declare (ignore output-stream))
   (decode-coding-string input-string encoding))
@@ -709,7 +717,7 @@
 
 ;;; @@ Menu
 ;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=mouse%20click
-(defun bingalls-edit-menu (event)
+(defun bingalls-edit-menu (_event)
   "右クリックでメニュー"
   (interactive "e")
   (popup-menu menu-bar-edit-menu))
@@ -769,22 +777,21 @@
 
 ;; 子プロセスの生成
 ;; start-process[emacs] <-> make-process[xyzzy]
-;; Emacs25より実装された`make-process'を上書きしない
-(when (version< emacs-version "25.1")
-  (defun* make-process (cmd-line &key environ output exec-directory
-                                 incode outcode eol-code)
-    (declare (ignore eol-code))
-    (setq cmd-line (split-string cmd-line " "))
-    (let* ((default-directory (or exec-directory default-directory))
-           (program (car cmd-line))
-           (args (cdr cmd-line))
-           (proc (apply #'start-process "xyzzy-process"
-                        (or output (current-buffer))
-                        program args)))
-      (set-process-coding-system proc
-                                 (or incode (car default-process-coding-system))
-                                 (or outcode(cdr default-process-coding-system)))
-      proc)))
+;; Emacs25.1 より実装された`make-process'を上書きしない
+(cl-defun xyzzy-make-process (cmd-line &key _environ output exec-directory
+                                incode outcode _eol-code)
+  (declare (ignore eol-code))
+  (setq cmd-line (split-string cmd-line " "))
+  (let* ((default-directory (or exec-directory default-directory))
+         (program (car cmd-line))
+         (args (cdr cmd-line))
+         (proc (apply #'start-process "xyzzy-process"
+                      (or output (current-buffer))
+                      program args)))
+    (set-process-coding-system proc
+                               (or incode (car default-process-coding-system))
+                               (or outcode(cdr default-process-coding-system)))
+    proc))
 
 ;; decoding=incode;encoding=outcode
 (defun process-incode (process) (car (process-coding-system process)))
@@ -793,7 +800,7 @@
 (defun set-process-outcode (process code) (set-process-coding-system process code nil))
 
 ;; NOT Tested
-(defun execute-subprocess (cmd &optional arg bufname environ directory)
+(defun execute-subprocess (cmd &optional _arg bufname _environ directory)
   (interactive "s& ")
   (let ((default-directory (or directory default-directory)))
     (with-setenv environ
@@ -809,6 +816,7 @@
   (case system-type
     (windows-nt
      (let ((w32-start-process-show-window t)) ; ?
+       (ignore w32-start-process-show-window)
        (w32-shell-execute "open" app)))
     (dawrin
      (start-process "" nil "open" app))
@@ -816,7 +824,7 @@
      (let ((process-connection-type nil))
        (start-process "" nil "xdg-open" app)))))
 
-(defun shell-execute (filename &optional directory params)
+(defun shell-execute (filename &optional _directory _params)
   "FILENAMEを関連付けられたプログラムで起動します."
   (launch-application (expand-file-name filename)))
 
@@ -836,33 +844,6 @@ You can use key command as C-u \\[shell-command-on-region]"
 (defun filter-buffer (command)
   (interactive "*s# ")
   (filter-region command (point-min) (point-max)))
-
-;; shell-command.elがあればミニバッファからのコマンド補完が便利になる
-;; http://namazu.org/~tsuchiya/elisp/shell-command.el
-;; (require 'shell-command)
-;; (featurep 'shell-command)
-(eval-after-load "shell-command"
-'(progn
-  (defun filter-region (command &optional start end)
-    (interactive (progn
-                   (barf-if-buffer-read-only)
-                   (unless (mark)
-                     (error "The mark is not set now, so there is no region"))
-                   (list (shell-command-read-minibuffer
-                          "| " default-directory
-                          nil nil nil 'shell-command-history)
-                         (region-beginning)
-                         (region-end))))
-    (shell-command-on-region start end command nil 'replace))
-
-  (defun filter-buffer (command)
-    (interactive (progn
-                   (barf-if-buffer-read-only)
-                   (list (shell-command-read-minibuffer
-                          "| " default-directory
-                          nil nil nil 'shell-command-history))))
-    (filter-region command (point-min) (point-max)))
-  ))
 
 ;;; @@ System
 (defun find-load-path (filename)
@@ -927,8 +908,7 @@ You can use key command as C-u \\[shell-command-on-region]"
          t)
         (t #1#)))
 
-(defun si:base64-decode (string &optional output-stream fold-width)
-  (declare (ignore fold-width))
+(defun si:base64-decode (string &optional output-stream _fold-width)
   (cond (output-stream
          (print #1=(decode-coding-string (base64-decode-string string) 'emacs-mule)
                 output-stream)
@@ -949,20 +929,19 @@ You can use key command as C-u \\[shell-command-on-region]"
 ;; (set-difference (make-unreserved-chars "-A-Za-z0-9$_.+!*'(|),") url-unreserved-chars) => (?| ?, ?+ ?$)
 
 ;; url/url-util.el
-(defun si:www-url-encode (string &optional output-stream literal-char)
+(defun si:www-url-encode (string &optional _output-stream literal-char)
   "STRINGをURLエンコードします."
-  (declare (ignore output-stream))
   (require 'url-util)
   (let ((url-unreserved-chars
          (if (eq literal-char 't)
              nil
-             (make-unreserved-chars (or literal-char "-A-Za-z0-9$_.+!*'(|),")))))
+           (make-unreserved-chars (or literal-char "-A-Za-z0-9$_.+!*'(|),")))))
+    (declare (special url-unreserved-chars))
     (url-hexify-string (encode-coding-string string locale-coding-system))))
 
 ;; url-unhex-string
-(defun si:www-url-decode (input-string &optional output-stream)
+(defun si:www-url-decode (input-string &optional _output-stream)
   "STRINGをURLデコードします."
-  (declare (ignore output-stream))
   (require 'url-util)                   ; use `replace-regexp-in-string'
   (let ((decoded-url
          (replace-regexp-in-string "%\\([0-9A-Fa-f][0-9A-Fa-f]\\)"
@@ -984,7 +963,7 @@ You can use key command as C-u \\[shell-command-on-region]"
         (force-mode-line-update)
         )))
 
-(defun refresh-screen (&optional f)
+(defun refresh-screen (&optional _f)
   (redraw-display)
   (redraw-frame (selected-frame)))
 
@@ -1031,7 +1010,7 @@ You can use key command as C-u \\[shell-command-on-region]"
 (add-hook 'kill-buffer-query-functions 'kill-scratch-hook)
 
 ;; 正規表現のコンパイルってあったっけ？
-(defun compile-regexp (regexp &optional case-fold)
+(defun compile-regexp (regexp &optional _case-fold)
   (warn "Undefined `compile-regexp'")
   regexp)
 
