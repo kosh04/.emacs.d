@@ -760,3 +760,74 @@ focus-out-hook
       (print-escape-newlines t))
   (prin1 "\xfe\xff\n\0\a\b\c\d\e\f\g🍣\n"))
 ;;-> "\376\377\n\0\007\010c\177\033\fg\x1f363\n"
+
+;; 改行コード(U+23CE;⏎)を表示する
+(setq buffer-display-table (make-display-table))
+(aset buffer-display-table ?\^J
+      (vector (make-glyph-code ?\u23ce 'escape-glyph)
+              (make-glyph-code ?\^J 'escape-glyph)))
+
+;; [2018-08-XX] <kbd>D</kbd> キーが押下できなくなったため回避方法いろいろ
+;; - C-x 8 RET 0064 (?\u0064 == ?d)
+;; - ソフトウェアキーボード
+(global-set-key [kp-delete]  "d")        ; fn+delete
+(global-set-key [deletechar] "d")        ; for -nw
+
+;; バイトコンパイル時の警告 "Unused variable" を抑制する方法
+;; - `ignore' マクロを利用する (ignore varname)
+;; - 変数名の先頭にアンダーラインを付与する `_varname'
+
+;; shell-command.elがあればミニバッファからのコマンド補完が便利になる
+;; http://namazu.org/~tsuchiya/elisp/shell-command.el
+;; (require 'shell-command)
+;; (featurep 'shell-command)
+(with-eval-after-load "shell-command"
+  (defun filter-region (command &optional start end)
+    (interactive (progn
+                   (barf-if-buffer-read-only)
+                   (unless (mark)
+                     (error "The mark is not set now, so there is no region"))
+                   (list (shell-command-read-minibuffer
+                          "| " default-directory
+                          nil nil nil 'shell-command-history)
+                         (region-beginning)
+                         (region-end))))
+    (shell-command-on-region start end command nil 'replace))
+
+  (defun filter-buffer (command)
+    (interactive (progn
+                   (barf-if-buffer-read-only)
+                   (list (shell-command-read-minibuffer
+                          "| " default-directory
+                          nil nil nil 'shell-command-history))))
+    (filter-region command (point-min) (point-max)))
+  t)
+
+;; 補完関数のコレクション部分にベクタを与えると余計なシンボルが候補に混ざるのは仕様なのかどうか
+(completing-read "? " [1st 2nd 3rd 4th])
+;; ベクタが obarray として扱われるのが原因か？ (obarrayp [xxx]) ;=> t
+;; メモリ節約のために obarray 同士がアイテムを共有している可能性？
+
+;; こちらは意図通り動作する
+(let ((ob (obarray-make)))
+  (obarray-put ob "1st")
+  (obarray-put ob "2nd")
+  (obarray-put ob "3rd")
+  (obarray-put ob "4th")
+  (completing-read "? " ob))
+
+;; `use-package-enable-imenu-support' が有効なら必要なさそう
+(defun user:enable-imenu-use-package ()
+  (let ((re (rx bol "(use-package" (1+ space)
+                symbol-start
+                (group (1+ (or (syntax word) (syntax symbol))))
+                symbol-end)))
+    (add-to-list 'imenu-generic-expression (list "Package" re 1))))
+(add-hook 'emacs-lisp-mode-hook 'user:enable-imenu-use-package)
+
+;; Object#hashCode()
+(sxhash 'SYMBOL) ;;=> 4132108
+
+(eq A B)    ;;=== (= (sxhash-eq A) (sxhash-eq B))
+(eql A B)   ;;=== (= (sxhash-eql A) (sxhash-eql B))
+(equal A B) ;;=== (= (sxhash-equal A) (sxhash-equal B))

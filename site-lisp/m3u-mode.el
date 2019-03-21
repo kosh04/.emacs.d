@@ -71,15 +71,16 @@
   (add-to-list 'auto-mode-alist '("\\.m3u8?\\'" . m3u-mode))
   (add-to-list 'file-coding-system-alist `("\\.m3u8\\'" . utf-8)))
 
-;; autoinsert
-(define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))
+(with-eval-after-load 'autoinsert
+  (or (assoc "\\.m3u8?\\'" (symbol-value 'auto-insert-alist))
+      (define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))))
 
 (defun m3u-new-entry (title path &optional length)
   (format "#EXTINF:%d,%s\n%s" (or length -1) title path))
 
 (defun m3u-insert-entry (title path)
   "Insert M3U Entry."
-  (interactive "sTitle: \nsPath: ")
+  (interactive "*sTitle: \nsPath: ")
   (insert (m3u-new-entry title path) "\n"))
 
 (provide 'm3u-mode)

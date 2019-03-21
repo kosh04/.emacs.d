@@ -1,5 +1,6 @@
 # emacs
 *.elc
+*-autoloads.el
 .emacs.desktop
 .emacs.desktop.lock
 elpa
@@ -30,7 +31,6 @@ eshell/lastdir
 # backup
 \#*\#
 *~
-backup/
 
 # clojure
 nrepl-history
@@ -47,3 +47,4 @@ etc/
 places
 # nsm-settings-file
 network-security.data
+.lsp-session-*

@@ -63,6 +63,7 @@
     (eldoc-mode))
 
   (add-hook 'eww-mode-hook 'user:eww-setup)
+  (add-hook 'eww-history-mode-hook 'hl-line-mode)
 
   ;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
 

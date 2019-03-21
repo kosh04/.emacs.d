@@ -9,6 +9,7 @@ GNU Emacs Calc -- 高機能な電卓/数式処理ソフト
 - http://www.gnu.org/software/emacs/refcards/pdf/calccard.pdf [PDF]
 - https://www.emacswiki.org/emacs/Calc
 - https://florian.adamsky.it/2016/03/31/emacs-calc-for-programmers-and-cs.html
+- https://github.com/ahyatt/emacs-calc-tutorials
 
 ## 基本的な使い方
 
@@ -27,9 +28,9 @@ PRN(逆ポーランド記法)電卓を起動する (M-x `calc`)
 ## 扱える数と記法 (C-h f `calc-mode`)
 
 - 実数		10, 3.14e6, _23 (-23), 17:3 (17/3)
-- ベクタ	[1, 2, 3]
+- ベクタ		[1, 2, 3]
 - 行列		[[1,2], [3,4]]
-- 複素数	(1, 2) = 1+2i
+- 複素数		(1, 2) = 1+2i
 - 範囲		[1 .. 4) equal 1<= x < 4
 
 ### 計算例

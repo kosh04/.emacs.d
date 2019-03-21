@@ -9,29 +9,23 @@
 
 ;; M-x gnus
 (use-package gnus
-  :defer t
+  :custom
+  ;;(gnus-init-file "~/.gnus")
+  ;;(gnus-select-method '(nntp "news.gmane.org"))
+  (gnus-secondary-select-methods
+   '((nnml "")
+     (nntp "news.gmane.org")
+     ;; (nntp "news.eternal-september.org")
+     ;; (nntp "nntp.aioe.org")
+     ;; (nntp "news.gwene.org")
+     ))
+  (gnus-interactive-exit nil)         ; `q' quick exit
+  ;;(gnus-inhibit-images 'quiet)
+  ;;(gnus-use-full-window nil)
+  ;;(gnus-use-trees t)
+  ;;(gnus-auto-select-next 'quietly)
+
   :config
-  ;;(set-variable 'gnus-init-file "~/.gnus")
-
-  ;; '(gnus-select-method '(nntp "news.gmane.org"))
-  (setq gnus-secondary-select-methods
-        '(
-          (nnml "")
-          (nntp "news.gmane.org")
-          ;; (nntp "news.eternal-september.org")
-          ;; (nntp "nntp.aioe.org")
-          ;; (nntp "news.gwene.org")
-          ))
-
-  (custom-set-variables
-   '(gnus-interactive-exit nil)         ; `q' quick exit
-   ;;'(gnus-inhibit-images 'quiet)
-   ;;'(gnus-use-full-window nil)
-   ;;'(gnus-use-trees t)
-   )
-
-  ;;(setq gnus-auto-select-next 'quietly)
-
   ;; (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (add-hook 'gnus-server-mode-hook 'hl-line-mode)
   (add-hook 'gnus-browse-mode-hook 'hl-line-mode)

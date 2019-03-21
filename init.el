@@ -15,7 +15,7 @@
 
 ;; Separate customization setting (do not overwrite `user-init-file')
 (setq custom-file (locate-user-emacs-file "custom.el"))
-;;(load custom-file t)
+(load custom-file t)
 
 ;; Load config/nn-xxx.el
 (require 'init-loader)

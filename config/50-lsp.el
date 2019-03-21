@@ -1,0 +1,28 @@
+;;; config/LSP --- Language Server Protocol
+
+(use-package lsp
+  :hook (go-mode . lsp)
+  ;;:hook (before-save . lsp-format-buffer)
+  :custom
+  (lsp-auto-guess-root t)
+  (lsp-restart 'ignore)
+  ;;(lsp-document-sync-method 'incremental) ;; always send incremental document
+  ;;(lsp-prefer-flymake 'flymake)
+  ;;(lsp-enable-completion-at-point nil)
+  :bind (:map lsp-mode-map
+              ("C-c r" . lsp-rename))
+  )
+
+(use-package lsp-ui
+  :disabled t
+  :after lsp
+  :bind (:map lsp-mode-map
+              ("C-c l" . lsp-ui-imenu))
+  )
+
+(use-package company-lsp
+  :after lsp
+  :custom
+  (company-lsp-cache-candidates t) ;; always using cache
+  (company-lsp-async t)
+  (company-lsp-enable-recompletion nil))

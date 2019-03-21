@@ -10,14 +10,11 @@
     (google-translate-at-point)))
 
 (use-package google-translate
-  :defer t
-  :bind (("C-c e" . user:google-translate-at-point)
-         ("M-g T" . google-translate-query-translate))
-  :config
-  (custom-set-variables
-   '(google-translate-default-source-language "auto")
-   '(google-translate-default-target-language "ja"))
+  :custom
+  (google-translate-default-source-language "auto")
+  (google-translate-default-target-language "ja")
 
+  :preface
   (defun user:google-translate-at-point ()
     "カーソル位置の文字を判別してGoogle翻訳します."
     (interactive)
@@ -26,6 +23,10 @@
           (google-translate-at-point)
           (google-translate-at-point-reverse))))
 
+  :bind (("C-c e" . user:google-translate-at-point)
+         ("M-g T" . google-translate-query-translate))
+
+  :config
   (with-eval-after-load 'popwin
     (add-to-list 'popwin:special-display-config '("*Google Translate*" :height 0.5 :stick t)))
   )

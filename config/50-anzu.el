@@ -4,9 +4,10 @@
   :diminish anzu-mode
   :config
   (global-anzu-mode +1)
-  (setq anzu-search-threshold 1000)
-  (setq anzu-use-migemo (featurep 'migemo))
-  (setq anzu-replace-to-string-separator " => ")
+  :custom
+  (anzu-search-threshold 1000)
+  (anzu-use-migemo (featurep 'migemo))
+  (anzu-replace-to-string-separator " => ")
   :bind (([remap query-replace] . anzu-query-replace)
          ([remap query-replace-regexp] . anzu-query-replace-regexp)
          :map isearch-mode-map

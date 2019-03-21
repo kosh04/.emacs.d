@@ -40,6 +40,6 @@
          (make-directory dir t))
        dir))
    '(erc-log-insert-log-on-open t))
-  (erc-log-enable)
+  ;;(erc-log-enable)
   )
 

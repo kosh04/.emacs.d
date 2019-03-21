@@ -10,8 +10,9 @@
   (add-hook 'occur-mode-hook 'next-error-follow-minor-mode))
 
 (use-package ag
+  :custom
+  (ag-highlight-search t)
   :config
-  (set-variable 'ag-highlight-search t)
   (add-to-list 'ag-arguments "--word-regexp")
   ;;(add-hook 'ag-mode-hook 'next-error-follow-minor-mode)
   )

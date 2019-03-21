@@ -4,7 +4,7 @@
 
 ;; Author: KOBAYASHI Shigeru <shigeru.kb@gmail.com>
 ;; Created: 2018-08-20
-;; Version: 0.1.0
+;; Version: 0.1.0-git
 ;; Package-Requires: ((emacs "24.5"))
 ;; Keywords: convenience, tools
 

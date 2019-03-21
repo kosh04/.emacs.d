@@ -62,3 +62,8 @@
 (with-eval-after-load 'make-mode
   ;; Visualize ^TAB
   (add-hook 'makefile-mode-hook 'whitespace-mode))
+
+;; M-x which-function-mode
+(with-eval-after-load 'which-func
+  ;; 黒背景のモードラインに合わせる
+  (setf (face-foreground 'which-func) "skyblue"))

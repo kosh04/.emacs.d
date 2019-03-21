@@ -17,20 +17,19 @@
 
 (setq load-prefer-newer t)
 
+;; 暗号化ファイルを (load FILENAME) で読み込めるように
+(add-to-list 'load-suffixes ".el.gpg")
+
 ;; Eldoc
 (use-package eldoc
   :diminish eldoc-mode
-  :config
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook 'eldoc-mode)
+  :custom
+  (eldoc-idle-delay 0.3)
+  (eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
+  :custom-face
   ;; 引数表示をSLIME風にする
-  (set-face-attribute 'eldoc-highlight-function-argument nil
-                      :background "darkseagreen2"
-                      :underline nil
-                      :bold nil)
-  (setq eldoc-idle-delay 0.2
-        eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit))
+  (eldoc-highlight-function-argument
+   ((t (:background "darkseagreen2" :underline nil :bold nil)))))
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
@@ -58,15 +57,14 @@
 ;; (remove-hook 'after-save-hook 'recompile-and-load-file)
 
 ;; インデント
-(load "cl-indent")
+;;(load "cl-indent")
 (with-eval-after-load 'cl-indent
   (setf (get 'cl-flet 'common-lisp-indent-function)
         (get 'flet 'common-lisp-indent-function))
   (setf (get 'cl-labels 'common-lisp-indent-function)
         (get 'labels 'common-lisp-indent-function))
   (setf (get 'cl-macrolet 'common-lisp-indent-function)
-        (get 'macrolet 'common-lisp-indent-function))
-  t)
+        (get 'macrolet 'common-lisp-indent-function)))
 
 ;; elisp 特有の関数のインデントには lisp-indent-function
 ;; cl-labels 等の複雑なインデントには common-lisp-indent-function
@@ -128,6 +126,8 @@
 ;; - v `debugger-toggle-locals'
 ;; - R `debugger-record-expression' ?
 
+(with-eval-after-load 'debug
+  (add-hook 'debugger-mode-hook #'hl-line-mode))
 
 ;; Edebug (source level debugger)
 ;; (info "(elisp) Edebug")
@@ -179,6 +179,7 @@
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
 
 (use-package dash
+  :preface (declare-function dash-enable-font-lock "dash")
   :config (dash-enable-font-lock))
 
 ;; font-lock や eval-last-sexp を names 開発用に拡張
@@ -188,10 +189,10 @@
 
 ;; less is more
 (use-package nameless
+  :custom
+  (nameless-global-aliases nil)
+  (nameless-private-prefix t)
   :config
-  (custom-set-variables
-   '(nameless-global-aliases nil)
-   '(nameless-private-prefix t))
   (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
 
 ;; Surpress byte-compile warning
@@ -203,8 +204,3 @@
 (use-package flycheck-package
   :after flycheck
   :config (flycheck-package-setup))
-
-(defun user:enable-imenu-use-package ()
-  (add-to-list 'imenu-generic-expression
-               '("*use-package*" "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
-(add-hook 'emacs-lisp-mode-hook 'user:enable-imenu-use-package)

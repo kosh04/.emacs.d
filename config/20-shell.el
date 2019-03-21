@@ -33,7 +33,11 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
   ;; 上下キーで補完したい
   (define-key shell-mode-map (kbd "<up>")   'comint-previous-input)
   (define-key shell-mode-map (kbd "<down>") 'comint-next-input)
-  t)
+  (custom-set-variables
+   ;; $ TERM=ansi ls --color
+   '(comint-terminfo-terminal "ansi")
+   '(comint-prompt-read-only t))
+  )
 
 ;; 端末内でlessが使えたりする反面、シェル内での編集に向かない
 (defun user:ansi-term ()

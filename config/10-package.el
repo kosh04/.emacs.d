@@ -1,7 +1,6 @@
 ;;; config/package-util
 
 (require 'package)
-(require 'dash)
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
@@ -15,7 +14,8 @@
 (custom-set-variables
  ;; アーカイブの優先順位 (it works?)
  '(package-archive-priorities
-   '(("melpa-stable" . 30)
+   '(("manual" . 99)
+     ("melpa-stable" . 30)
      ("melpa" . 20)
      ("gnu" . 10))))
 
@@ -30,7 +30,37 @@
 (defun package-uninstall (pkg)
   "Uninstall the package PKG."
   (interactive (list (intern (completing-read "Uninstall package: " package-alist))))
-  (-let (((_ pkg-desc)
-          (assq pkg package-alist)))
-    (if (package-desc-p pkg-desc)
-        (package-delete pkg-desc))))
+  (pcase-let ((`(,_name ,desc)
+               (assq pkg package-alist)))
+    (if (package-desc-p desc)
+        (package-delete desc))))
+
+;; TODO:
+;; - try https://github.com/raxod502/straight.el
+;; - :config (というかトップレベル以外) で補助関数を定義するとソースジャンプができない
+
+;; use-package
+(or (require 'use-package nil t)
+    ;;(package-install 'use-package)
+    (defmacro use-package (name &rest args)
+      "Dummy definition `use-package'."
+      `(message "Ignore Package: %s" ',name)))
+
+(custom-set-variables
+ '(use-package-verbose t)
+ '(use-package-enable-imenu-support t)
+ ;; 初回起動時は自動インストールしたい
+ ;;'(use-package-always-ensure t)
+ ;; 遅延ロード
+ '(use-package-always-defer t)
+ )
+
+;; modernizing Emacs Package Menu
+(use-package paradox
+  :pin #:melpa-stable
+  :init (and (require 'paradox nil t)
+             (paradox-enable))
+  :custom
+  (paradox-execute-asynchronously t)
+  ;;(paradox-homepage-button-string "⛺") ; why cannot use emoji?
+  )

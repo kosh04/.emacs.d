@@ -37,10 +37,9 @@
 
 (use-package nyan-mode
   :if window-system
-  :config
-  (nyan-mode +1)
-  (custom-set-variables
-   '(nyan-bar-length 12)))
+  :hook (emacs-startup . nyan-mode)
+  :custom
+  (nyan-bar-length 12))
 
 ;; バッファ末尾の可視化 (fringe)
 ;; (set-fringe-mode 5)

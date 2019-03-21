@@ -109,6 +109,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   "init-loader の読み込み時間をグラフ表示します."
   (interactive)
   (require 'chart)
+  (require 'map)
   (let (acc)
     (with-current-buffer "*init log*"
       (save-excursion
@@ -127,5 +128,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
     ))
 ;;(add-hook 'after-init-hook 'init-loader-display-chart t)
 
-(add-to-list 'load-suffixes ".el.gpg")
-(load "50-lingr" t)
+;; カーソル移動時の見た目がちょっとだけスタイリッシュになる
+(use-package beacon
+  :disabled t
+  :init (beacon-mode +1))

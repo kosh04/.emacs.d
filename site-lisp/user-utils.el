@@ -2,6 +2,7 @@
 
 ;;; 雑多な関数群 or 自作関数に依存するもの
 
+(require 'subr-x)
 (require 'cl-lib)
 
 (defalias 'standard-error-output #'external-debugging-output
@@ -47,10 +48,9 @@ Example:
 (defun sha1-file (filename)
   "ファイルのチェックサムを出力します."
   (require 'sha1)
-  (sha1 (let ((coding-system-for-write 'binary))
-          (with-temp-buffer
-            (insert-file-contents filename)
-            (buffer-string)))))
+  (sha1 (with-temp-buffer
+          (insert-file-contents-literally filename)
+          (buffer-string))))
 
 (defalias 'sha1sum #'sha1-file)
 
@@ -85,9 +85,20 @@ Example:
   (format-time-string "%FT%T%z" time universal))
 
 (defun unix-time-at-point ()
+  "ポイント位置の数値を UNIX 時間とみなした場合の時刻を表示します."
   (interactive)
   (let ((n (thing-at-point 'number)))
     (message "%d => %s" n (iso8601 n))))
+
+(defun thing-at-point-to (thing fn)
+  "ポイント位置の情報を基に (funcall FN (thing-at-point THING)) の結果を表示する."
+  (interactive
+   (let ((things '(symbol list sexp defun filename url email word sentence whitespace line number page)))
+     (list (intern (completing-read "Thing at point as: " things nil t))
+           (intern (completing-read "To command: " obarray 'fboundp t)))))
+  (let* ((val (thing-at-point thing))
+         (ans (funcall fn val)))
+    (message "(funcall #'%S %S) ;=> %S" fn val ans)))
 
 (defun point-of (fn)
   "FN 実行後のポイント位置を返す.
@@ -245,8 +256,13 @@ INPUT (filename/buffer/nil) is used as a process standard input."
   "環境変数 `ENV-NAME' が示すディレクトリにジャンプします."
   (interactive
    (list (completing-read "Jump to Env Directory: "
-           (let ((alist (user/process-environment-alist)))
-             (cl-remove-if-not 'file-directory-p alist :key #'cdr)))))
+           (cl-remove-if-not
+            (lambda (e)
+              (pcase-let ((`(,name . ,val) e))
+                (message "name=%s,val=%s" name val)
+                (and (stringp val) (file-directory-p val))))
+            (user/process-environment-alist)
+            ))))
   (dired (getenv env-name)))
 
 (provide 'user-utils)

@@ -66,6 +66,7 @@
 (require 'ls-lisp)
 (setq ls-lisp-use-insert-directory-program nil)
 (setq ls-lisp-dirs-first t)
+;; (setq insert-directory-program (executable-find "gls"))
 ;; (setq dired-listing-switches "-al --group-directories-first")
 ;; (setq dired-listing-switches "-al")
 ;; (setq ls-lisp-emulation t ls-lisp-ignore-case t)
@@ -99,7 +100,11 @@
   (define-key dired-mode-map [remap backward-page] 'user:dired-beginning-of-buffer)
   (define-key dired-mode-map [remap end-of-buffer] 'user:dired-end-of-buffer)
   (define-key dired-mode-map [remap forward-page] 'user:dired-end-of-buffer)
-  ;; (define-key dired-mode-map "e" #'(lambda () "Open file via EWW." (interactive) (eww-open-file (dired-get-file-for-visit))))
+  (define-key dired-mode-map "e"
+    (lambda ()
+      "Open file via EWW."
+      (interactive)
+      (eww-open-file (dired-get-file-for-visit))))
   t)
 
 (with-eval-after-load "wdired"
@@ -118,16 +123,12 @@
 
 ;; interactive filter
 (use-package dired-narrow
-  :defer t
   :bind (:map dired-mode-map ("/" . dired-narrow)))
 
 ;; ファイルの中身を覗き見る (peep)
 (use-package peep-dired
-  :defer t
-  :config
-  (custom-set-variables
-   ;;'(peep-dired-cleanup-eagerly t)
-   )
+  :custom
+  (peep-dired-cleanup-eagerly nil)
   :bind (:map dired-mode-map
               ("W" . peep-dired)
          :map peep-dired-mode-map
@@ -139,6 +140,7 @@
 ;; ファイルに関連付けられたアイコンを表示する
 ;; darwin: ~/Library/Fonts/*.ttf
 (use-package all-the-icons-dired
+  :disabled t
   ;; NTEmacsだと描画が重いため見送り (追加で font-lock+.el が必要)
   :if (eq system-type 'darwin)
   :config
