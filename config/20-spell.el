@@ -26,13 +26,12 @@
 
 ;; C-c ! v `flycheck-verify-setup'
 (use-package flycheck
-  :defer t
   ;;:diminish flycheck-mode
-  :init
-  (custom-set-variables
-   '(flycheck-emacs-lisp-load-path 'inherit)
-   '(flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit)
+  (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  :hook
+  (emacs-startup . global-flycheck-mode)
   ;;(global-flycheck-mode -1)
   :config
   (add-to-list 'flycheck-clang-include-path "/usr/include/")

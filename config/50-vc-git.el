@@ -16,7 +16,7 @@
     (setq action #'browse-url))
   (let ((url (with-temp-buffer
                (vc-git--call t "ls-remote" "--get-url")
-               (s-trim (buffer-string)))))
+               (string-trim (buffer-string)))))
     (message "%s" url)
     ;; git protocol -> https
     (when (string-match "git@\\(.+\\):\\(.+?\\)\\(\\.wiki\\)?\\(?:\\.git\\)?\\'" url)
@@ -33,10 +33,11 @@
   :defer t
   :pin #:melpa-stable
   :bind (("C-x g" . magit-status)
-         ("C-x t g" . magit-list-repositories))
+         ("C-x t g" . magit-list-repositories)
+         :map magit-mode-map
+         ("&" . user:open-repository-url))
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes)
-  (bind-key "&" #'user:open-repository-url magit-mode-map)
   ;; see [$] `magit-process'
   ;; (setq magit-git-debug (not magit-git-debug))
   )
@@ -44,15 +45,14 @@
 (use-package git-gutter
   :pin melpa-stable
   :diminish git-gutter-mode
-  :config (global-git-gutter-mode +1)
+  :hook (emacs-startup . global-git-gutter-mode)
   :bind (("M-g p" . git-gutter:previous-hunk)
          ("M-g n" . git-gutter:next-hunk)
          ("M-g r" . git-gutter:revert-hunk))
   :ensure t)
 
 (use-package dired-k
-  :defer t
-  :init (add-hook 'dired-initial-position-hook 'dired-k)
+  :hook (dired-initial-position . dired-k)
   :bind (:map dired-mode-map ("g" . dired-k))
-  :config
-  (setq dired-k-human-readable t))
+  :custom
+  (dired-k-human-readable t))

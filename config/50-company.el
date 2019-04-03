@@ -2,14 +2,14 @@
 
 ;; テキスト補完
 (use-package company
-  :pin gnu
+  :pin #:gnu
   :diminish company-mode
   :init
   ;; TODO: 補完が重くなってきたらglobalをやめて個別にcompany-modeを指定する
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-idle-delay 0.2)
-  (setq company-selection-wrap-around t)
+  (add-hook 'emacs-startup-hook #'global-company-mode)
+  :custom
+  (company-idle-delay 0.2)
+  (company-selection-wrap-around t)
   ;; 補完時はなるべく元のキー入力を優先したい
   :bind (:map company-active-map
               ("RET"      . nil)

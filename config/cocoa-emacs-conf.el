@@ -21,6 +21,9 @@
 ;;(setf (getenv "PATH") (concat (expand-file-name "~/bin") path-separator (getenv "PATH")))
 ;;(setf (getenv "PS1") "[\\u@\\h:\\w]\\$ ")
 
+;; ../Makefile 利用時に役に立つかも
+(setf (getenv "EMACS") (expand-file-name invocation-name invocation-directory))
+
 ;; Font
 (set-face-attribute 'default nil :family "Menlo" :height 150)
 ;;(set-fontset-font nil 'unicode (font-spec :family "Menlo"))

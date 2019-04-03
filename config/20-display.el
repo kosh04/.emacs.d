@@ -32,8 +32,10 @@
 (size-indication-mode)
 ;(display-battery-mode t)
 
+;; アクティブなウィンドウをモードラインの色で判別する
 (set-face-background 'mode-line "black")
 (set-face-foreground 'mode-line "gray95")
+;;(invert-face 'mode-line)
 
 (use-package nyan-mode
   :if window-system

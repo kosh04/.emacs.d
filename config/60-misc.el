@@ -126,9 +126,9 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
      10
      (lambda (x y) (> (cdr x) (cdr y))))
     ))
-;;(add-hook 'after-init-hook 'init-loader-display-chart t)
+;;(add-hook 'emacs-startup-hook 'init-loader-display-chart)
 
 ;; カーソル移動時の見た目がちょっとだけスタイリッシュになる
 (use-package beacon
-  :disabled t
+  :disabled
   :init (beacon-mode +1))
