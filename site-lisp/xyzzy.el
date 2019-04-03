@@ -3,7 +3,7 @@
 ;; Copyright (C) 2009,2010,2015,2019 Shigeru Kobayashi
 
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
-;; Version: 0.1
+;; Version: 0.1.1
 ;; Package-Requires: ((emacs "24.4"))
 ;; Created: 2009-03-11
 ;; Keywords: lisp,extensions
@@ -439,7 +439,7 @@
     (while (not (eobp))
       (insert *quotation-prefix*)
       (unless (forward-line 1)
-	(return))))
+	(cl-return))))
   t)
 
 ;; buffer-read-onlyの時はちゃんとエラーにして、カーソルが動かないように
@@ -593,7 +593,6 @@
   (modify-syntax-entry char "> 4b" syntax-table))
 
 (cl-defun use-syntax-table (syntax-table &optional buffer (_invalidate-p t))
-  ;;(declare (ignorable invalidate-p))
   (with-current-buffer (or buffer (current-buffer))
     (set-syntax-table syntax-table)))
 
@@ -648,12 +647,10 @@
 ;;; @@ Text
 (defun convert-encoding-to-internal (encoding input-string &optional _output-stream)
   "convert string INPUT-STRING (internal -> ENCODING)"
-  ;;(declare (ignore output-stream))
   (encode-coding-string input-string encoding))
 
 (defun convert-encoding-from-internal (encoding input-string &optional _output-stream)
   "convert string INPUT-STRING (ENCODING -> internal)"
-  (declare (ignore output-stream))
   (decode-coding-string input-string encoding))
 
 (defun map-utf8-to-internal (input-string &optional output-stream)
@@ -780,7 +777,6 @@
 ;; Emacs25.1 より実装された`make-process'を上書きしない
 (cl-defun xyzzy-make-process (cmd-line &key _environ output exec-directory
                                 incode outcode _eol-code)
-  (declare (ignore eol-code))
   (setq cmd-line (split-string cmd-line " "))
   (let* ((default-directory (or exec-directory default-directory))
          (program (car cmd-line))
@@ -813,14 +809,14 @@
 (defun launch-application (app)
   "外部プログラムを実行します."
   (interactive "s%% ")
-  (case system-type
-    (windows-nt
+  (pcase system-type
+    (`windows-nt
      (let ((w32-start-process-show-window t)) ; ?
        (ignore w32-start-process-show-window)
        (w32-shell-execute "open" app)))
-    (dawrin
+    (`dawrin
      (start-process "" nil "open" app))
-    (gnu/linux
+    (`gnu/linux
      (let ((process-connection-type nil))
        (start-process "" nil "xdg-open" app)))))
 
@@ -936,7 +932,7 @@ You can use key command as C-u \\[shell-command-on-region]"
          (if (eq literal-char 't)
              nil
            (make-unreserved-chars (or literal-char "-A-Za-z0-9$_.+!*'(|),")))))
-    (declare (special url-unreserved-chars))
+    (cl-declare (special url-unreserved-chars))
     (url-hexify-string (encode-coding-string string locale-coding-system))))
 
 ;; url-unhex-string
@@ -1026,8 +1022,8 @@ You can use key command as C-u \\[shell-command-on-region]"
            (move-to-window-line -1))
           (t
            (move-to-window-line 0)))
-    (destructuring-bind (x . y)
-        (posn-x-y (posn-at-point))
+    (pcase-let ((`(,x . ,y)
+                 (posn-x-y (posn-at-point))))
       (let ((tooltip-hide-delay (or timeout tooltip-hide-delay))
             (tooltip-frame-parameters (append `((left . ,x))
                                               `((top . ,y))
@@ -1060,7 +1056,7 @@ You can use key command as C-u \\[shell-command-on-region]"
         ;; FIXME: なぜ色付けが効かない?
         (temp-buffer-show-hook '(font-lock-fontify-buffer)))
     (unless form
-      (return-from elisp-macroexpand-1))
+      (cl-return-from elisp-macroexpand-1))
     (with-output-to-temp-buffer #1=" *ELISP macroexpantion*"
       (with-temp-buffer
         (cl-prettyexpand form repeatedly)

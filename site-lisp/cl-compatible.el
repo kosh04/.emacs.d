@@ -1,7 +1,7 @@
 ;;; cl-compatible.el --- Common Lisp flavor functions/variables -*- lexical-binding: t -*-
 
 ;; Author: KOBAYASHI Shigeru (kosh) <shigeru.kb@gmail.com>
-;; Version: 0.1
+;; Version: 0.1.20190324-git
 ;; Created: 2015-02-23
 ;; Keywords: lisp,common-lisp
 
@@ -58,8 +58,7 @@
 
 ;; @@ Macro
 
-(defun macro-function (symbol &optional environment)
-  (cl-declare (ignore environment))
+(defun macro-function (symbol &optional _environment)
   (and (fboundp symbol)
        (let ((fn (symbol-function symbol)))
          (and (eq (car-safe fn) 'macro)
@@ -260,8 +259,7 @@ see also `read-char-by-name'
 (defun cl-string-trim (char-bag string)
   (cl-string-left-trim char-bag (cl-string-right-trim char-bag string)))
 
-(cl-defun parse-integer (string &key start end radix junk-allowed)
-  (cl-declare (ignore junk-allowed))
+(cl-defun parse-integer (string &key start end radix _junk-allowed)
   (string-to-number (substring string (or start 0) end) radix))
 
 ;; @@ Input/Output
@@ -286,10 +284,9 @@ see also `read-char-by-name'
   ;;(file-chase-links pathname)
   (file-truename pathname))
 
-(cl-defun directory (pathname &key absolute recursive wild (depth 1) file-only
+(cl-defun directory (pathname &key absolute _recursive wild (_depth 1) file-only
                      show-dots count directory-only (callback #'identity) file-info)
   "List file or directory entries."
-  (cl-declare (ignore recursive depth))
   (let* ((dir-func (if file-info
                        #'directory-files-and-attributes
                      #'directory-files))
