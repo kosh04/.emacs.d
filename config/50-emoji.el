@@ -1,7 +1,11 @@
 ;;; config/emoji
 
+;; Symbola font highly recommended
+;; http://users.teilar.gr/~g1951d/
+
 ;; 絵文字用のシステムフォントを適用する
 (use-package emoji-fontset
+  :disabled
   :if (cl-case window-system
         ;; Emacs 25.1 からデフォルトでいい感じの設定が利用可能になった
         (ns (version< emacs-version "25.1"))
@@ -28,4 +32,4 @@
 (defun list-emoji-display ()
   "[user] Display sample emoji and symbols."
   (interactive)
-  (eww "https://github.com/zonuexe/emoji-fontset.el/blob/master/emojis.org"))
+  (find-file "https://github.com/zonuexe/emoji-fontset.el/raw/master/emojis.org"))

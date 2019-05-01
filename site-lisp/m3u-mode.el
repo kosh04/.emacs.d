@@ -6,6 +6,7 @@
 ;; Keywords: multimedia
 ;; Version: 0.1-beta
 ;; Created: 2018-01-21
+;; URL: https://localhost/
 ;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -25,26 +26,54 @@
 
 ;; *TODO*
 
+;; HTTP Live Streaming
+;; https://www.rfc-editor.org/rfc/rfc8216.txt
+
 ;;; Code:
 
 (defconst m3u-mode-font-lock-keywords
   (list
-   '("^#\\(EXTM3U\\)$" 1 font-lock-keyword-face t)
+   ;;'("^#\\(EXTM3U\\)$" 1 font-lock-keyword-face t)
+   ;; #EXTINF:<duration>,[<title>]
    '("^#\\(EXTINF\\):\\(-?[0-9]+\\.?[0-9]*\\),\\(.*\\)$" ; ? "ArtistName - TrackTitle"
      (1 'font-lock-keyword-face t)
      (2 'italic t)
      (3 'bold t))
-   (list (rx bol "#" (group (or
-                             "EXT-X-VERSION"
-                             "EXT-X-TARGETDURATION"
-                             "EXT-X-MEDIA-SEQUENCE"
-                             "EXT-X-PROGRAM-DATE-TIME"
-                             "EXT-X-ENDLIST"
-                             "EXT-X-DISCONTINUITY"
-                             "EXT-X-PLAYLIST-TYPE"
-                             "EXT-X-STREAM-INF"
-                             )))
-         1 font-lock-keyword-face t)
+   (list (rx bol "#" (submatch
+                      (or
+                       "EXTM3U"
+                       "EXT-X-VERSION"   ; #EXT-X-VERSION:<n>
+                       "EXT-X-BYTERANGE" ; #EXT-X-BYTERANGE:<n>[@<o>]
+                       "EXT-X-KEY"       ; #EXT-X-KEY:<attribute-list>
+                       "EXT-X-MAP"       ; #EXT-X-MAP:<attribute-list>
+                       "EXT-X-PROGRAM-DATE-TIME" ; #EXT-X-PROGRAM-DATE-TIME:<YYYY-MM-DDThh:mm:ss.SSSZ>
+                       "EXT-X-DATERANGE" ; #EXT-X-DATERANGE:<attribute-list>
+                       "EXT-X-GAP"       ; #EXT-X-GAP
+                       "EXT-X-TARGETDURATION" ; #EXT-X-TARGETDURATION:<s>
+                       "EXT-X-MEDIA-SEQUENCE" ; #EXT-X-MEDIA-SEQUENCE:<number>
+                       "EXT-X-DISCONTINUITY-SEQUENCE" ; #EXT-X-DISCONTINUITY-SEQUENCE:<number>
+                       "EXT-X-ENDLIST"                ; #EXT-X-ENDLIST
+                       "EXT-X-DISCONTINUITY" ; #EXT-X-DISCONTINUITY
+                       "EXT-X-PLAYLIST-TYPE" ; #EXT-X-PLAYLIST-TYPE:<EVENT|VOD>
+                       "EXT-X-I-FRAMES-ONLY" ; #EXT-X-I-FRAMES-ONLY
+                       "EXT-X-MEDIA"      ; #EXT-X-MEDIA:<attribute-list>
+                       "EXT-X-STREAM-INF" ; #EXT-X-STREAM-INF:<attribute-list>\n<URI>
+                       )))
+         '(1 'font-lock-keyword-face t))
+
+   ;; <attribute-lists>: AttributeName=AttributeValues
+   (list (rx (submatch
+              (1+ (char upper digit ?-)))
+             "="
+             (submatch
+              (or (: (or "0x" "0X" ) (1+ hex))      ; hexadecimal-sequence
+                  (: (1+ digit) "x" (1+ digit))     ; decimal-resolution
+                  (: (? (or "+" "-")) (1+ digit) (? "." (1+ digit))) ; decimal-integer, decimal-floating-point
+                  (: "\"" (0+ (not (any "\"" "\r" "\n"))) "\"")      ; quoted-string
+                  (: (1+ (not (any "\"" "," " ")))) ; enumerated-string
+                  )))
+         '(1 'underline t)
+         '(2 'font-lock-constant-face t))
    ))
 
 (defconst m3u-mode-syntax-table
@@ -69,11 +98,12 @@
 ;;;###autoload
 (progn
   (add-to-list 'auto-mode-alist '("\\.m3u8?\\'" . m3u-mode))
-  (add-to-list 'file-coding-system-alist `("\\.m3u8\\'" . utf-8)))
+  (add-to-list 'file-coding-system-alist `("\\.m3u8\\'" . utf-8))
 
-(with-eval-after-load 'autoinsert
-  (or (assoc "\\.m3u8?\\'" (symbol-value 'auto-insert-alist))
-      (define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))))
+  (with-eval-after-load 'autoinsert
+    (or (assoc "\\.m3u8?\\'" (symbol-value 'auto-insert-alist))
+        (define-auto-insert "\\.m3u8?\\'" '(_ "#EXTM3U\n"))))
+  )
 
 (defun m3u-new-entry (title path &optional length)
   (format "#EXTINF:%d,%s\n%s" (or length -1) title path))

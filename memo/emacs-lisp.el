@@ -840,3 +840,11 @@ focus-out-hook
 (global-set-key [M-left]  'keisen-left-move)
 (global-set-key [M-up]    'keisen-up-move)
 (global-set-key [M-down]  'keisen-down-move)
+
+;; eww on NTEmacs にて HTTPS 接続が "400 Bad Request" になる謎
+(display-buffer
+ (url-https (url-generic-parse-url "https://www.gnu.org/")
+            (lambda (&rest args) (message "args=%S" args))
+            nil))
+;; url-handler はフツーに開く
+(find-file "https://www.gnu.org/")

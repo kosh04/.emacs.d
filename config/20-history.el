@@ -12,8 +12,7 @@
   "HTTPなどのリモートファイルの確認が煩わしいのでスキップする."
   (setq save-place-alist
         (seq-remove (lambda (x)
-                      (let ((file (car x))
-                            (pos_ (cdr x)))
+                      (pcase-let ((`(,file . ,pos) x))
                         (file-remote-p file)))
                     save-place-alist)))
 (advice-add 'save-place-alist-to-file :before #'user/save-alist-skip-remote)

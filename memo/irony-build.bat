@@ -1,6 +1,10 @@
 @echo off
 setlocal
+
 rem https://gist.github.com/kosh04/37bb86efd8d5f7046a480f96684df4a9
+rem Usage:
+rem CMD> cd %HOME%\.emacs.d\elpa\irony-YYMMDD.NNN\server
+rem CMD> start irony-build.bat
 
 set LLVM_ROOT=C:\opt\LLVM
 

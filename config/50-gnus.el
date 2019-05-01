@@ -1,4 +1,4 @@
-;;; config/Gnus
+;;; config/Gnus --- M-x gnus
 
 ;; 使い方が分からない :p
 

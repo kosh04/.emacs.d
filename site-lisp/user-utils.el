@@ -245,6 +245,13 @@ INPUT (filename/buffer/nil) is used as a process standard input."
       (add-hook 'post-command-hook #'what-cursor-position t 'local)
     (remove-hook 'post-command-hook #'what-cursor-position 'local)))
 
+(defun xlfd-at (pos)
+  (if (= pos (point-max))
+      "[EOF]"
+    (if-let ((font (font-at pos)))
+        (font-xlfd-name font)
+      "[Tofu]")))
+
 (defun user/process-environment-alist ()
   (mapcar (lambda (e)
             (if-let ((pos (seq-position e ?=)))

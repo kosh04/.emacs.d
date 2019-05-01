@@ -5,6 +5,10 @@
 ;; M-x describe-fontset
 
 ;; http://ja.wikipedia.org/wiki/XLFD
+;; http://extra-vision.blogspot.com/2016/07/emacs.html
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Low_002dLevel-Font.html
+;; https://ayatakesi.github.io/emacs/25.1/Fonts.html
+;; [Emacs のフォント設定を克服する](http://extra-vision.blogspot.com/2016/07/emacs.html)
 
 ;; フォント切り替え
 (set-frame-font
