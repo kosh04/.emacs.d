@@ -74,6 +74,7 @@
 
 (defvaralias 'buffer-mode 'major-mode)
 (defvaralias '*initial-buffer-mode* initial-major-mode)
+(defvaralias '*last-command* 'last-command)
 
 (defmacro xyzzy-defvar-local (symbol value &optional docstring)
   `(progn
