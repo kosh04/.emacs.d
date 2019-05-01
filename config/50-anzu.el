@@ -2,8 +2,7 @@
 
 (use-package anzu
   :diminish anzu-mode
-  :config
-  (global-anzu-mode +1)
+  :hook (emacs-startup . global-anzu-mode)
   :custom
   (anzu-search-threshold 1000)
   (anzu-use-migemo (featurep 'migemo))

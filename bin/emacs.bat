@@ -1,1 +1,1 @@
-@%~dp0\emacs25.bat %*
+@%~dp0\emacs26.bat %*

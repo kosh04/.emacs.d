@@ -831,3 +831,11 @@ focus-out-hook
 (eq A B)    ;;=== (= (sxhash-eq A) (sxhash-eq B))
 (eql A B)   ;;=== (= (sxhash-eql A) (sxhash-eql B))
 (equal A B) ;;=== (= (sxhash-equal A) (sxhash-equal B))
+
+;; eww on NTEmacs にて HTTPS 接続が "400 Bad Request" になる謎
+(display-buffer
+ (url-https (url-generic-parse-url "https://www.gnu.org/")
+            (lambda (&rest args) (message "args=%S" args))
+            nil))
+;; url-handler はフツーに開く
+(find-file "https://www.gnu.org/")
