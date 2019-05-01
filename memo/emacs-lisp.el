@@ -831,3 +831,12 @@ focus-out-hook
 (eq A B)    ;;=== (= (sxhash-eq A) (sxhash-eq B))
 (eql A B)   ;;=== (= (sxhash-eql A) (sxhash-eql B))
 (equal A B) ;;=== (= (sxhash-equal A) (sxhash-equal B))
+
+(with-temp-buffer
+  (url-insert-file-contents
+   "http://www.pitecan.com/Keisen/keisen.el")
+  (eval-buffer))
+(global-set-key [M-right] 'keisen-right-move)
+(global-set-key [M-left]  'keisen-left-move)
+(global-set-key [M-up]    'keisen-up-move)
+(global-set-key [M-down]  'keisen-down-move)

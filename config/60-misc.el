@@ -132,3 +132,5 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 (use-package beacon
   :disabled
   :init (beacon-mode +1))
+
+;;(set-fontset-font "fontset-default" ?\u32ff "IPAexGothic")
