@@ -14,6 +14,7 @@
 ;; - u `eww-up-url'
 ;; - l `eww-back-url'
 ;; - r `eww-forward-url'
+;; - F `eww-toggle-fonts' プロポーショナルフォントの切り替え
 ;; - H `eww-list-histories'
 ;; - b `eww-add-bookmark'
 ;; - B `eww-list-bookmarks'
@@ -39,7 +40,7 @@
   "現在閲覧中のウェブページを読みやすくします."
   (interactive)
   (cl-assert (eww-current-url))
-  (let* ((url (format "https://outlineapi.com/parse_article?source_url=%s"
+  (let* ((url (format "https://outlineapi.com/v3/parse_article?source_url=%s"
                       (url-hexify-string (eww-current-url))))
          (html (cdr (assoc 'html (assoc 'data (json-read-file url)))))
          (dom (with-temp-buffer
@@ -82,3 +83,8 @@
              ("R" . user:eww-readable)
              ("Q" . kill-this-buffer))
   )
+
+(custom-set-variables
+ ;; prefer monospace
+ '(shr-use-fonts nil)
+ )
