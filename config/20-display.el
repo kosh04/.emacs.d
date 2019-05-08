@@ -13,8 +13,8 @@
     (horizontal-scroll-bar-mode -1))
 
 ;; Frame
-;;(add-to-list 'default-frame-alist '(alpha . (0.75 0.75)))
-(set-frame-parameter nil 'alpha 90)
+(add-to-list 'default-frame-alist '(alpha . (0.95 0.95)))
+;;(setf (frame-parameter nil 'alpha) '(0.95 0.95))
 
 ;; アクティブでないウィンドウのカーソルを表示/非表示
 ;;(setq-default cursor-in-non-selected-windows nil)
