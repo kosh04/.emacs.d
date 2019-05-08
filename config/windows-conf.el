@@ -1,15 +1,19 @@
-;;; config/windows-conf.el
+;;; config/windows-conf
 
 ;; Font
-(set-face-attribute 'default nil :family "Consolas" :height 110)
-;; (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "MeiryoKe_Console"))
-;; (setq face-font-rescale-alist '(("MeiryoKe_Console" . 1.08)))
+
+;; https://myrica.estable.jp/
+(create-fontset-from-ascii-font "Myrica M-11.5" nil "coding")
+(add-to-list 'default-frame-alist '(font . "fontset-coding"))
+
+;;(setq use-default-font-for-symbols nil)
 
 ;; NOTE: gnutls.c: [1] Note that the security level of the
 ;; Diffie-Hellman key exchange has been lowered to 256 bits and this
 ;; may allow decryption of the session data
 (with-eval-after-load "gnutls"
-  (setq gnutls-min-prime-bits 1024))
+  ;;(setq gnutls-min-prime-bits 1024)
+  )
 
 ;; NTEmacs64 IME-patched
 ;; https://github.com/chuntaro/NTEmacs64
@@ -33,8 +37,8 @@
 
 ;; プチフリーズはGCが原因かもしれない
 ;;(setq gc-cons-threshold 800000 gc-cons-percentage 0.1)
-(setq gc-cons-threshold (* gc-cons-threshold 5))
-(setq gc-cons-percentage 0.5)
+;;(setq gc-cons-threshold (* gc-cons-threshold 5))
+;;(setq gc-cons-percentage 0.5)
 
 ;; image-dired
 (custom-set-variables

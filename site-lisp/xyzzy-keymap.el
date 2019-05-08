@@ -43,7 +43,8 @@
 ;; slime-compile-and-load-file
 (elisp:define-key (kbd "C-c C-k") 'emacs-lisp-byte-compile-and-load)
 (elisp:define-key (kbd "C-c C-b") 'eval-buffer)
-(elisp:define-key (kbd "C-c C-i") 'lisp-complete-symbol) ; C-c TAB
+;; use `completion-at-point' on C-M-i
+;;(elisp:define-key (kbd "C-c C-i") 'lisp-complete-symbol) ; C-c TAB
 
 (global-set-key (kbd "<M-f4>") 'save-buffers-kill-terminal)
 (global-set-key (kbd "<ESC> <f4>") 'save-buffers-kill-terminal)
