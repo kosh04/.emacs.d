@@ -35,10 +35,9 @@ before_install:
   - cat /proc/sys/kernel/randomize_va_space
   - sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"
 
-  - git clone https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git makefiles
-  - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/opt
-  - ls -lh ${HOME}/opt/bin
-  - export PATH=${HOME}/opt/bin:${PATH}
+  - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/.local/${EMACS}
+  - ls -lh ${HOME}/.local/${EMACS}/bin
+  - export PATH=${HOME}/.local/${EMACS}/bin:${PATH}
   - ${EMACS} --version
     
 install:
