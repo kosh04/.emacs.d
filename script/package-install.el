@@ -12,6 +12,7 @@
     request
     s
     f
+    rainbow-identifiers
     )
   "初回起動時とsite-lispのバイトコンパイルに必要なパッケージ.")
 
@@ -23,7 +24,7 @@
       '(("gnu" . 20)
         ("melpa-stable" . 10)
         ("melpa". 0))
-      ;; package-pinned-packages
+      ;; package-pinned-packages ()
       )
 (setq debug-on-error t)
 
