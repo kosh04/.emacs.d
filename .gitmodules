@@ -4,3 +4,15 @@
 [submodule "makefiles"]
 	path = makefiles
 	url = https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git
+[submodule "site-lisp/wandbox"]
+	path = site-lisp/wandbox
+	url = git@github.com:kosh04/emacs-wandbox.git
+[submodule "site-lisp/unicode-escape"]
+	path = site-lisp/unicode-escape
+	url = git@github.com:kosh04/unicode-escape.el.git
+[submodule "site-lisp/gitignore"]
+	path = site-lisp/gitignore
+	url = git@github.com:kosh04/gitignore.el.git
+[submodule "site-lisp/go-playground-cli"]
+	path = site-lisp/go-playground-cli
+	url = git@github.com:kosh04/emacs-go-playground.git
