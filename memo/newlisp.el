@@ -23,7 +23,7 @@
   (c-set-offset 'substatement-open 8)
   ;; (setq fill-column 75)
   )
-(add-to-list 'auto-mode-alist '("~/src/newlisp/*\\.[ch]$" . newlisp-c-mode))
+(add-to-list 'auto-mode-alist '("newlisp/*\\.[ch]$" . newlisp-c-mode))
 
 ;; ac-newlisp
 (load "~/src/gitrepo/ac-newlisp/ac-newlisp.el")

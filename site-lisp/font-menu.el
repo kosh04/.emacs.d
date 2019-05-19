@@ -117,10 +117,11 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
   (let ((ff (font-family-list)))
     (setq ff (delete-dups ff))
     (setq ff (sort ff #'(lambda (x y) (string< (upcase x) (upcase y)))))
-    (setq tabulated-list-format `[("Name" 50 t)])
+    (setq tabulated-list-format `[("Name" 35 t)
+                                  ("Opened Name" 50)])
     (setq tabulated-list-entries
           (mapcar (lambda (family)
-                    (list family (vector family)))
+                    (list family (vector family (or (elt (font-info family) 0) "*"))))
                   ff))))
 
 (defun font-family-menu/display-sample-text (font-family)

@@ -44,11 +44,11 @@
 (custom-set-variables
  '(auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
 
-;; Batch mode
-(use-package batch-mode  
-  :defer t
-  :mode ("\\.bat\\'"
-         "\\.cmd\\'"))
+;; Batch mode (obsolete); use bat-mode
+;; https://www.emacswiki.org/emacs/batch-mode.el
+(use-package batch-mode
+  :disabled
+  :mode ("\\.bat\\'" "\\.cmd\\'"))
 
 ;; Smart Compile
 (use-package smart-compile

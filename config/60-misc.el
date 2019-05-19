@@ -133,3 +133,12 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :disabled
   :init (beacon-mode +1))
 
+;; https://github.com/kosh04/.emacs.d/issues/1
+(with-eval-after-load 'compile
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region
+       compilation-filter-start (point))))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+  )

@@ -42,3 +42,5 @@ ssh 経由で開く (デフォルトでは `scp` / `pscp` つまりファイル�
 sudo でファイルを開く
 
     /sudo::/path/to/file
+
+    /sudo:USER@localhost:/path/to/file

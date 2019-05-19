@@ -11,22 +11,27 @@
 (require 'ssh-public-key-overlay)
 (require 'data-uri)
 (require 'xyzzy)
-(require 'xyzzy-keymap)
+;;(require 'xyzzy-keymap)
+(require 'font-menu)
 (require 'user-utils)
 
 (require 'google-search)
 (global-set-key (kbd "C-c g") 'google-search)
 
 (use-package m3u-mode
-  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry)))
+  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry))
+  :pin #:manual
+  :ensure nil)
 
 (use-package unicode-escape
-  :pin #:manual)
+  :pin #:manual
+  :ensure nil)
 
 (use-package gitignore
   :after gitignore-mode
   ;;:load-path "~/Documents/GitHub/gitignore.el"
   :pin #:manual
+  :ensure nil
   :custom
   (gitignore-template-directory
    (file-name-as-directory
@@ -37,4 +42,6 @@
   )
 
 (use-package lingr-irc
-  :commands (lingr-irc))
+  :commands (lingr-irc)
+  :pin #:manual
+  :ensure nil)
