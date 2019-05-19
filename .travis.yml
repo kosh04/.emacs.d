@@ -35,7 +35,7 @@ matrix:
 
 before_install:
   # https://gist.github.com/iedemam/9830045
-  - sed -i 's/git@\(gitst.\|\)github.com:/git:\/\/github.com\//' .gitmodules
+  - sed -i 's/git@\(gist.\|\)github.com:/git:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
 
   # XXX: see details, etc/PROBLEMS [*** Segfault during 'make']
