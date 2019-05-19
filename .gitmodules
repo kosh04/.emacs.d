@@ -1,9 +1,14 @@
+# Utilities
+[submodule "share/autoinsert/gitignore"]
+	path = share/autoinsert/gitignore
+        url = https://github.com/github/gitignore.git
+
+# Build emacs recipe for travis-ci
 [submodule "makefiles"]
 	path = makefiles
         url = git@gist.github.com:cbecab9afc38e31f97be2db35353b57a.git
-[submodule "share/autoinsert/gitignore"]
-	path = share/autoinsert/gitignore
-        url = git@github.com:kosh04/gitignore.el.git
+
+# My development emacs-lisp packages
 [submodule "site-lisp/wandbox"]
 	path = site-lisp/wandbox
 	url = git@github.com:kosh04/emacs-wandbox.git
