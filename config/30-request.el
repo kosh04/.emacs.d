@@ -1,7 +1,7 @@
 ;;; config/Request
 
 (use-package request
-  ;;:defer t
+  :commands (request)
   :config
   (defun toggle-request-logger ()
     "[user] Toggle `request' message level."

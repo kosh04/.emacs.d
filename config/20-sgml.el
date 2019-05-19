@@ -68,8 +68,6 @@ Original URL `https://www.emacswiki.org/emacs/NxmlMode'"
 
 (use-package web-mode
   :pin melpa-stable
-  :defer t
-  :ensure emmet-mode
   ;; :mode (("\\.html?\\'" . web-mode)
   ;;        ("\\.tpl\\.php\\'" . web-mode))
   ;; :config (setq web-mode-script-padding 0
