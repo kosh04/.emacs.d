@@ -1,9 +1,9 @@
-[submodule "share/autoinsert/gitignore"]
-	path = share/autoinsert/gitignore
-	url = https://github.com/github/gitignore
 [submodule "makefiles"]
 	path = makefiles
-	url = https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git
+        url = git@gist.github.com:cbecab9afc38e31f97be2db35353b57a.git
+[submodule "share/autoinsert/gitignore"]
+	path = share/autoinsert/gitignore
+        url = git@github.com:kosh04/gitignore.el.git
 [submodule "site-lisp/wandbox"]
 	path = site-lisp/wandbox
 	url = git@github.com:kosh04/emacs-wandbox.git
