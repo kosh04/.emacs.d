@@ -99,6 +99,8 @@
 (progn
   (add-to-list 'auto-mode-alist '("\\.m3u8?\\'" . m3u-mode))
   (add-to-list 'file-coding-system-alist `("\\.m3u8\\'" . utf-8))
+  ;; for read from url. e.g. https://example.com/playlist.m3u8?key=value
+  (add-to-list 'magic-mode-alist '("^#EXTM3U$" . m3u-mode))
 
   (with-eval-after-load 'autoinsert
     (or (assoc "\\.m3u8?\\'" (symbol-value 'auto-insert-alist))
