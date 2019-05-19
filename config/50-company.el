@@ -16,6 +16,5 @@
               ("<return>" . nil) 
               ("TAB"   . company-complete-selection)
               ("<tab>" . company-complete-selection)
-              ("C-h" . delete-backward-char))
-  :ensure t)
+              ("C-h" . delete-backward-char)))
 

@@ -34,10 +34,9 @@
 
 ;; prefixキーのコマンド一覧を表示
 (use-package which-key
-  :ensure t
   :diminish which-key-mode
-  :init (which-key-mode)
-  :config (setq which-key-idle-delay 1.5))
+  :hook (emacs-startup . which-key-mode)
+  :custom (which-key-idle-delay 1.5))
 
 (with-eval-after-load 'xref
   (let ((map xref--xref-buffer-mode-map))

@@ -17,3 +17,9 @@
   (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer)
   (add-hook 'markdown-mode-hook #'outline-minor-mode)
   )
+
+;; Hugo - https://gohugo.io/
+(use-package easy-hugo
+  :bind ("C-x t h" . easy-hugo)
+  :custom
+  (easy-hugo-basedir "~/Dropbox/Documents/bookshelf"))

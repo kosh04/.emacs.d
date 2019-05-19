@@ -42,14 +42,15 @@
   ;; (setq magit-git-debug (not magit-git-debug))
   )
 
+(use-package gitconfig-mode)
+
 (use-package git-gutter
   :pin melpa-stable
   :diminish git-gutter-mode
   :hook (emacs-startup . global-git-gutter-mode)
   :bind (("M-g p" . git-gutter:previous-hunk)
          ("M-g n" . git-gutter:next-hunk)
-         ("M-g r" . git-gutter:revert-hunk))
-  :ensure t)
+         ("M-g r" . git-gutter:revert-hunk)))
 
 (use-package dired-k
   :hook (dired-initial-position . dired-k)

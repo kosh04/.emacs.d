@@ -26,7 +26,7 @@
 
 ;; C-c ! v `flycheck-verify-setup'
 (use-package flycheck
-  ;;:diminish flycheck-mode
+  :diminish flycheck-mode
   :custom
   (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
@@ -36,7 +36,7 @@
   :config
   (add-to-list 'flycheck-clang-include-path "/usr/include/")
   ;;(add-to-list 'flycheck-clang-include-path "/usr/local/include/")
-  :ensure t)
+  )
 
 (use-package flycheck-pos-tip
   :after flycheck

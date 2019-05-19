@@ -2,10 +2,8 @@
 
 ;; Font
 
-;; https://myrica.estable.jp/
-(create-fontset-from-ascii-font "Myrica M-11.5" nil "coding")
+(create-fontset-from-ascii-font "Sarasa Term J-10.5" nil "coding")
 (add-to-list 'default-frame-alist '(font . "fontset-coding"))
-
 ;;(setq use-default-font-for-symbols nil)
 
 ;; NOTE: gnutls.c: [1] Note that the security level of the

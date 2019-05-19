@@ -133,3 +133,10 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :disabled
   :init (beacon-mode +1))
 
+(use-package highlight-indentation
+  :disabled
+  :hook (prog-mode . highlight-indentation-mode)
+  :config
+  ;;(setf (face-background 'highlight-indentation-face) "#e3e3d3")
+  ;;(setf (face-background 'highlight-indentation-current-column-face) "#c3b3b3")
+  nil)
