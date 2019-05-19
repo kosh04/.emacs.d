@@ -36,20 +36,25 @@
 
 ;;(concat "https://www.microsofttranslator.com/bv.aspx?from=en&to=ja" "&a=" (url-hexify-string url))
 
-(defun user:eww-readable ()
+(defun user:eww-readable (url)
   "現在閲覧中のウェブページを読みやすくします."
-  (interactive)
-  (cl-assert (eww-current-url))
-  (let* ((url (format "https://outlineapi.com/v3/parse_article?source_url=%s"
-                      (url-hexify-string (eww-current-url))))
-         (html (cdr (assoc 'html (assoc 'data (json-read-file url)))))
+  (interactive (list (eww-current-url)))
+  (cl-assert url)
+  (let* ((url* (format "https://outlineapi.com/v3/parse_article?source_url=%s"
+                       (url-hexify-string url)))
+         (json (json-read-file url*))
+         (html (or (cdr (assoc 'html (assoc 'data json)))
+                   (error "No Html found: %s" json)))
          (dom (with-temp-buffer
                 (insert html)
                 (libxml-parse-html-region (point-min) (point-max)))))
-    ;; TODO: w キーでURLをコピーしたい
-    ;;(plist-put eww-data :url url)
-    (eww-save-history)
-    (eww-display-html nil url dom nil (current-buffer))))
+    (with-current-buffer (get-buffer "*eww*")
+      (setq dom `(base ((href . ,url)) ,dom))
+      (eww-display-html nil url dom nil (current-buffer))
+      ;; TODO: w キーでURLをコピーしたい
+      ;;(eww-save-history)
+      ;;(plist-put eww-data :url url)
+      )))
 
 (use-package eww
   :defer t

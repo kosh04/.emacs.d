@@ -848,3 +848,11 @@ focus-out-hook
             nil))
 ;; url-handler はフツーに開く
 (find-file "https://www.gnu.org/")
+
+(char-width ?α)
+;;=> 1 or 2
+
+(require 'xdg)
+(setf (getenv "XDG_CONFIG_HOME") (xdg-config-home)
+      (getenv "XDG_CACHE_HOME") (xdg-cache-home)
+      (getenv "XDG_DATA_HOME") (xdg-data-home))
