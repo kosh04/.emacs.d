@@ -1,8 +1,13 @@
 ;; config/exec-path-from-shell
 
-;; NOTE: EmacsForMacOSX をアプリケーションとして起動すると /usr/local/bin がパスに含まれない
+;; NOTE: Dock から Emacs アプリを起動するとシェルの環境変数が引き継がれない
+;; [2019-05-19] 現在は LaunchAgents + launchctl setenv にて対策済
+;; 詳細は以下のファイルを参照
+;; * ~/Library/LaunchAgents/user.environ.plist
+;; * ~/.local/setenv.sh
 
 (use-package exec-path-from-shell
+  :disabled
   :defer nil ;; disable use-package-always-defer=t
   :if (memq window-system '(mac ns))
   :config

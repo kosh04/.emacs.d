@@ -5,7 +5,7 @@
 ;; Author: KOBAYASHI Shigeru (kosh[04]) <shgeru.kb@gmail.com>
 ;; Version: 0.1snapshot
 ;; Created: 2017-04-18
-;; Package-Requires: ((emacs "24.3") (names "20151201.0"))
+;; Package-Requires: ((emacs "24.3") (names "20151201.0") (rainbow-identifier "0.2.2"))
 ;; Keywords: ssh, tools
 ;; License: MIT
 ;; URL: https://github.com/kosh04/.emacs.d/blob/master/site-lisp/ssh-public-key-overlay.el
@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'rx)
   (require 'names))
+(require 'rainbow-identifiers)
 
 ;;;###autoload
 (define-namespace ssh-public-key-overlay-
@@ -65,10 +66,12 @@
       (let* ((n 2) ;; match[N]
              (ov (make-overlay (match-beginning n) (match-end n)))
              (s  (match-string n))
-             (ss (funcall format s)))
+             (ss (funcall format s))
+             (hash (rainbow-identifiers--hash-function s))
+             (face (rainbow-identifiers-cie-l*a*b*-choose-face hash)))
         (push ov -overlays)
         (setf (overlay-get ov 'display) ss)
-        (setf (overlay-get ov 'face) "underline")
+        (setf (overlay-get ov 'face) `((:underline t) ,@face))
         (setf (overlay-get ov 'mouse-face) 'highlight
               (overlay-get ov 'help-echo) s)
         )))

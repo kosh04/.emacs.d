@@ -11,6 +11,9 @@ sudo: true
 #       - emacs
 #       - emacs-snapshot
 
+git:
+  submodules: false
+
 env:
   global:
     # XXX: see details, etc/NEWS.24
@@ -31,14 +34,17 @@ matrix:
     - env: EMACS=emacs-24.5
 
 before_install:
-  # XXX: see details, etc/PROBLEMS [*** Segfault during 'make']
-  - cat /proc/sys/kernel/randomize_va_space
-  - sudo bash -c "echo 0 > /proc/sys/kernel/randomize_va_space"
+  # https://gist.github.com/iedemam/9830045
+  - sed -i 's/git@\(gist.\|\)github.com:/git:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
 
-  - git clone https://gist.github.com/cbecab9afc38e31f97be2db35353b57a.git makefiles
-  - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/opt
-  - ls -lh ${HOME}/opt/bin
-  - export PATH=${HOME}/opt/bin:${PATH}
+  # XXX: see details, etc/PROBLEMS [*** Segfault during 'make']
+  - sudo sysctl kernel.randomize_va_space
+  - sudo sysctl -w kernel.randomize_va_space=0
+
+  - make -f makefiles/emacs.mk EMACS=${EMACS} PREFIX=${HOME}/.local/${EMACS}
+  - ls -lh ${HOME}/.local/${EMACS}/bin
+  - export PATH=${HOME}/.local/${EMACS}/bin:${PATH}
   - ${EMACS} --version
     
 install:

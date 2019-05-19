@@ -4,9 +4,9 @@
 (use-package company
   :pin #:gnu
   :diminish company-mode
-  :init
+  :hook
   ;; TODO: 補完が重くなってきたらglobalをやめて個別にcompany-modeを指定する
-  (add-hook 'emacs-startup-hook #'global-company-mode)
+  (emacs-startup . global-company-mode)
   :custom
   (company-idle-delay 0.2)
   (company-selection-wrap-around t)

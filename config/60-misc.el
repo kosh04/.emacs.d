@@ -140,3 +140,12 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   ;;(setf (face-background 'highlight-indentation-face) "#e3e3d3")
   ;;(setf (face-background 'highlight-indentation-current-column-face) "#c3b3b3")
   nil)
+
+;; https://github.com/kosh04/.emacs.d/issues/1
+(with-eval-after-load 'compile
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region
+       compilation-filter-start (point))))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))

@@ -15,14 +15,17 @@
   (global-set-key [C-S-tab] 'tabbar-backward-group)
 
   ;; kill-buffer した後に戻るバッファが変わるのを抑える
-  (remove-hook 'kill-buffer-hook 'tabbar-buffer-track-killed)
+  (add-hook 'tabbar-init-hook
+            (lambda ()
+              (remove-hook 'kill-buffer-hook 'tabbar-buffer-track-killed))
+            'append)
 
   (setq
    tabbar-scroll-left-help-function 'ignore
    tabbar-scroll-right-help-function 'ignore
    tabbar-help-on-tab-function 'ignore
    tabbar-home-help-function 'ignore
-                                        ;tabbar-buffer-home-button '(("[+]") "[-]")
+   ;;tabbar-buffer-home-button '(("[+]") "[-]")
    tabbar-scroll-left-button '(("") "")
    tabbar-scroll-right-button '(("") ""))
 

@@ -44,7 +44,7 @@
 
 (use-package irony-eldoc
   :after irony
-  :config (add-to-list 'irony-mode-hook 'irony-eldoc))
+  :init (add-to-list 'irony-mode-hook 'irony-eldoc))
 
 (use-package company-irony
   :after company

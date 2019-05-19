@@ -2,7 +2,6 @@
 
 (use-package clojure-mode
   :pin melpa-stable
-  :defer t
   :config
   (setq clojure-align-forms-automatically nil) ; or clojure-align <C-c SPC>
   (add-hook 'clojure-mode-hook #'subword-mode))
@@ -10,7 +9,6 @@
 ;; M-x cider-jack-in
 (use-package cider
   :pin melpa-stable
-  :defer t
   :init
   (fset 'lein-repl   #'cider-jack-in)
   (fset 'run-clojure #'cider-jack-in)
@@ -27,5 +25,4 @@
   ;; cider-repl
   (custom-set-variables
    '(cider-repl-history-file (locate-user-emacs-file "nrepl-history"))
-   '(cider-repl-use-pretty-printing t))
-  :ensure clojure-mode)
+   '(cider-repl-use-pretty-printing t)))

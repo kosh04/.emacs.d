@@ -1,5 +1,10 @@
 ;;; config/cocoa-emacs-conf.el
 
+;; Font
+(when window-system
+  (create-fontset-from-ascii-font "Sarasa Term J:pixelsize=16" nil "coding")
+  (add-to-list 'default-frame-alist '(font . "fontset-coding")))
+
 ;; [alt] <-> [command]
 (custom-set-variables
  '(mac-option-modifier  'alt)
@@ -19,16 +24,10 @@
 
 ;;(setf (getenv "PATH") (concat "/usr/local/bin" path-separator (getenv "PATH")))
 ;;(setf (getenv "PATH") (concat (expand-file-name "~/bin") path-separator (getenv "PATH")))
-;;(setf (getenv "PS1") "[\\u@\\h:\\w]\\$ ")
+(setf (getenv "PS1") "[$?][\\u@\\h:\\w]\\$ ")
 
 ;; ../Makefile 利用時に役に立つかも
 (setf (getenv "EMACS") (expand-file-name invocation-name invocation-directory))
-
-;; Font
-(set-face-attribute 'default nil :family "Menlo" :height 150)
-;;(set-fontset-font nil 'unicode (font-spec :family "Menlo"))
-;;(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
-;;(set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 `("Hiragino Maru Gothic Pro" . "iso10646-1"))
 
 (custom-set-variables
  ;; FIXME

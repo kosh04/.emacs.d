@@ -14,6 +14,7 @@
 ;; - u `eww-up-url'
 ;; - l `eww-back-url'
 ;; - r `eww-forward-url'
+;; - F `eww-toggle-fonts' プロポーショナルフォントの切り替え
 ;; - H `eww-list-histories'
 ;; - b `eww-add-bookmark'
 ;; - B `eww-list-bookmarks'
@@ -35,20 +36,25 @@
 
 ;;(concat "https://www.microsofttranslator.com/bv.aspx?from=en&to=ja" "&a=" (url-hexify-string url))
 
-(defun user:eww-readable ()
+(defun user:eww-readable (url)
   "現在閲覧中のウェブページを読みやすくします."
-  (interactive)
-  (cl-assert (eww-current-url))
-  (let* ((url (format "https://outlineapi.com/parse_article?source_url=%s"
-                      (url-hexify-string (eww-current-url))))
-         (html (cdr (assoc 'html (assoc 'data (json-read-file url)))))
+  (interactive (list (eww-current-url)))
+  (cl-assert url)
+  (let* ((url* (format "https://outlineapi.com/v3/parse_article?source_url=%s"
+                       (url-hexify-string url)))
+         (json (json-read-file url*))
+         (html (or (cdr (assoc 'html (assoc 'data json)))
+                   (error "No Html found: %s" json)))
          (dom (with-temp-buffer
                 (insert html)
                 (libxml-parse-html-region (point-min) (point-max)))))
-    ;; TODO: w キーでURLをコピーしたい
-    ;;(plist-put eww-data :url url)
-    (eww-save-history)
-    (eww-display-html nil url dom nil (current-buffer))))
+    (with-current-buffer (get-buffer "*eww*")
+      (setq dom `(base ((href . ,url)) ,dom))
+      (eww-display-html nil url dom nil (current-buffer))
+      ;; TODO: w キーでURLをコピーしたい
+      ;;(eww-save-history)
+      ;;(plist-put eww-data :url url)
+      )))
 
 (use-package eww
   :defer t
@@ -82,3 +88,8 @@
              ("R" . user:eww-readable)
              ("Q" . kill-this-buffer))
   )
+
+(custom-set-variables
+ ;; prefer monospace
+ '(shr-use-fonts nil)
+ )

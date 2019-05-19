@@ -113,7 +113,7 @@ Example:
   "直前の単語を削除する."
   (interactive "p")
   (unless (integerp n)
-    (signal 'wrong-type-argument (list 'integerp n)))
+    (signal 'wrong-type-argument `(integerp ,n)))
   (delete-region (point)
                  (progn (backward-word n) (point))))
 
@@ -271,6 +271,24 @@ INPUT (filename/buffer/nil) is used as a process standard input."
             (user/process-environment-alist)
             ))))
   (dired (getenv env-name)))
+
+(defun iterate-text-prop (prop func)
+  "Iterate each buffer property PROP, and run with function FUNC.
+URL `http://emacs.g.hatena.ne.jp/kiwanami/20110809/1312877192'"
+  (cl-loop with pos = (point-min)
+           for next = (next-single-property-change pos prop)
+           for text-val = (and next (get-text-property next prop))
+           while next do
+           (when text-val
+             (funcall func pos next text-val))
+           (setq pos next)))
+
+;; face の付いている領域についてループする
+'
+(iterate-text-prop 'face 
+  (lambda (begin end val)
+    (let ((print-escape-newlines t))
+      (and val (message ">> %S : %S" val (buffer-substring-no-properties begin end))))))
 
 (provide 'user-utils)
 

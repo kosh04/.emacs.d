@@ -40,15 +40,15 @@
 (global-set-key (kbd "M-n") 'indent-and-next-line)
 
 ;; Language Template
-(auto-insert-mode +1)
+(add-hook 'emacs-startup-hook 'auto-insert-mode t)
 (custom-set-variables
  '(auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
 
-;; Batch mode
-(use-package batch-mode  
-  :defer t
-  :mode ("\\.bat\\'"
-         "\\.cmd\\'"))
+;; Batch mode (obsolete); use bat-mode
+;; https://www.emacswiki.org/emacs/batch-mode.el
+(use-package batch-mode
+  :disabled
+  :mode ("\\.bat\\'" "\\.cmd\\'"))
 
 ;; Smart Compile
 (use-package smart-compile

@@ -185,7 +185,8 @@
 ;; font-lock や eval-last-sexp を names 開発用に拡張
 ;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
 ;; (defalias 'names--convert-cl-defun 'names--convert-defun)
-(use-package names-dev :after names)
+(with-eval-after-load 'names
+  (require 'names-dev))
 
 ;; less is more
 (use-package nameless
