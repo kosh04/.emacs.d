@@ -15,12 +15,7 @@ git:
   submodules: false
 
 env:
-  global:
-    # XXX: see details, etc/NEWS.24
-    - NO_BIN_LINK=t
   matrix:
-    # - EMACS=emacs
-    # - EMACS=emacs-snapshot
     - EMACS=emacs-24.4
     - EMACS=emacs-24.5
     - EMACS=emacs-25.3
