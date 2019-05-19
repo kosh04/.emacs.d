@@ -52,12 +52,14 @@
 (set-frame-font "Inconsolata-10.5")
 (set-frame-font "Ricty Diminished-10.5")
 (set-frame-font "Fira Code-10.0")
+(set-frame-font "Fira Mono-15")
 (set-frame-font "Myrica M-11.5")
 (set-frame-font "MyricaM M-11.5")
 (set-frame-font "MigMix 1M-11")
 (set-frame-font "源ノ角ゴシック Code JP R-9.0")
 (set-frame-font "源真ゴシック等幅 Regular-10")
 (set-frame-font "Source Code Pro-10.0")
+(set-frame-font "Source Han Code JP-14")
 (set-frame-font "Noto Sans Mono CJK JP Regular-10.0")
 (set-frame-font "Unifont:pixelsize=16")
 (set-frame-font "MeiryoKe_Console-11.0")
@@ -71,8 +73,34 @@
 ;;(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "MeiryoKe_Console"))
 ;;(setq face-font-rescale-alist '(("MeiryoKe_Console" . 1.08)))
 
+;;  新規フォントセットの作成
+(create-fontset-from-ascii-font "Unifont:pixelsize=16" nil "xxx")
+(set-face-font 'default "fontset-xxx")
 
 ;; 令和合字 (U+32FF,㋿) のフォントをピンポイントに指定する
 ;; * 対応パッチが降ってくるまでの間に合わせ hack
 (set-fontset-font t ?\u32ff "源ノ角ゴシック")
 (set-fontset-font t ?\u32ff "IPAexGothic")
+
+(defun font-monospace-p (name)
+  "NAME が等幅フォント (monospace) であれば non-nil を返す."
+  (if-let* ((xlfd (elt (font-info name) 0))
+	    (xlfd-field (x-decompose-font-name xlfd))
+	    (spacing (aref xlfd-field 9)))
+      (string= spacing "m")))
+
+(with-output-to-temp-buffer "*Font Family*"
+  (dolist (family (thread-first (font-family-list)
+		    (delete-dups)
+		    (sort #'(lambda (x y) (string< (upcase x) (upcase y))))))
+    (when (font-monospace-p family)
+      (princ family)
+      (terpri))))
+
+;; その文字がどのフォントで描画されているか調べる
+;; あるいは C-u C-x = (what-cursor-position) でも OK
+(face-font 'default nil ?あ) ;;=> "-*-Hiragino Sans-normal-normal-normal-*-15-*-*-*-p-0-iso10646-1"
+(face-font 'default nil ?🍣) ;;=> "-*-Symbola-normal-normal-semicondensed-*-15-*-*-*-p-0-iso10646-1"
+(face-font 'default nil ?㋿) ;;=> "-*-IPAexGothic-normal-normal-normal-*-15-*-*-*-p-0-iso10646-1"
+
+(setq use-default-font-for-symbols t)

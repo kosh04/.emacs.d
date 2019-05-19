@@ -1,7 +1,7 @@
 ;;; config/migemo
 
 (use-package migemo
-  ;;:if (executable-find "cmigemo")
+  :if (executable-find "cmigemo")
   :hook (emacs-startup . migemo-init)
   :custom
   (migemo-command "cmigemo")

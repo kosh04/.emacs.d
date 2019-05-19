@@ -40,7 +40,7 @@
 (global-set-key (kbd "M-n") 'indent-and-next-line)
 
 ;; Language Template
-(auto-insert-mode +1)
+(add-hook 'emacs-startup-hook 'auto-insert-mode t)
 (custom-set-variables
  '(auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
 
