@@ -79,6 +79,9 @@
 (defvar font-family-menu/sample-text
   "The quick brown fox jumps over the lazy dog
 
+あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、
+うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。
+
 123456789012345678901234567890
 ABCDEFGHIJKLMNOPQRSTUVWXYZabcd
 あいうえおかきくけこさしすせそ
@@ -88,17 +91,10 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZabcd
 ΑΒΓαβγΑΒΓαβγΑΒΓ
 αβγΑΒΓαβγΑΒΓαβγ
 
-abcdefghijklmnopqrstuvwxyz
 ABCDEFGHIJKLMNOPQRSTUVWXYZ
-0123456789 A^ []{}()
-{[(123)]} ;, :-) ;-)
-000000000000000000000000
-012345678901234567890123456789
-012345678901234567890123456789
-012345678901234567890123456789
-123,123 125.46,15;,'458 \"\",
-123'123 ?%#c@!$&/=-+
-oO0|1iljJ
+abcdefghijklmnopqrstuvwxyz
+!@#$%^&*()_+-=,./?<>[]\\{}|
+0123456789 oO0|1iljJ
 
 あかさたなはまやらわ
 アカサタナハマヤラワ
@@ -126,19 +122,44 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
                     (list family (vector family (or (elt (font-info family) 0) "*"))))
                   ff))))
 
+(defun font-family-menu/fontify-buffer (font-family)
+  (cl-loop with pos = (point-min)
+           for next = (1+ pos)
+           for font = (font-at pos)
+           while (< next (point-max))
+           do (when font ;; isnt it tofu character?
+                (let* ((name (font-xlfd-name font))
+                       (ov (make-overlay pos next)))
+                  (setf (overlay-get ov 'face)
+                        (cond ((string-match (regexp-quote (format "-%s-" font-family)) name) nil)
+                              (t `(:background ,(format "#%X" (mod (sxhash name) #xFFFFFF))))))
+                  (setf (overlay-get ov 'mouse-face) 'highlight
+                        (overlay-get ov 'help-echo) (format "Font:%s" name))))
+           (setq pos next)))
+
 (defun font-family-menu/display-sample-text (font-family)
   (interactive
    (list (or (tabulated-list-get-id)
              (completing-read "Font Family: " (font-family-list)))))
-  (let ((buffer (get-buffer-create "*Sample Text*")))
+  (let ((buffer (get-buffer-create "*Sample Text*"))
+        (text (cl-typecase #1=font-family-menu/sample-text
+                (string #1#)
+                (buffer (with-current-buffer #1#
+                          (buffer-substring-no-properties (point-min) (point-max))))
+                (t (signal 'wrong-type-argument `((or string buffer) #1# ,#1#))))))
     (with-current-buffer buffer
+      (setq-local header-line-format (format "Font Name: %s" font-family))
       (let ((inhibit-read-only t))
         (erase-buffer)
-        (insert "Font Family: " font-family "\n\n")
-        (insert (propertize font-family-menu/sample-text 'face `(:family ,font-family))))
+        (insert (propertize text 'face `(:family ,font-family))))
       (goto-char (point-min))
       (view-mode t))
-    (display-buffer buffer)))
+    ;; Fortify
+    (save-window-excursion
+      (pop-to-buffer buffer)
+      (font-family-menu/fontify-buffer font-family))
+    (display-buffer buffer)
+    ))
 
 ;;;###autoload
 (defun list-font-family ()
