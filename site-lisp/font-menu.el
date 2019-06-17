@@ -134,7 +134,7 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
                        (ov (make-overlay pos next)))
                   (setf (overlay-get ov 'face)
                         (cond ((string-match (regexp-quote (format "-%s-" font-family)) name) nil)
-                              (t `(:background ,(format "#%X" (mod (sxhash name) #xFFFFFF))))))
+                              (t `(:background ,(format "#%X" (mod (sxhash name) #xffffffffffff))))))
                   (setf (overlay-get ov 'mouse-face) 'highlight
                         (overlay-get ov 'help-echo) (format "Font:%s" name))))
            (setq pos next)))

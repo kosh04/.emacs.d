@@ -30,3 +30,9 @@
   (with-eval-after-load 'popwin
     (add-to-list 'popwin:special-display-config '("*Google Translate*" :height 0.5 :stick t)))
   )
+
+;; 辞書.app
+(use-package osx-dictionary
+  :if (eq system-type 'darwin)
+  :bind (("C-c e" . osx-dictionary-search-word-at-point))
+  )

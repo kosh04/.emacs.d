@@ -24,7 +24,8 @@
 
 ;;(setf (getenv "PATH") (concat "/usr/local/bin" path-separator (getenv "PATH")))
 ;;(setf (getenv "PATH") (concat (expand-file-name "~/bin") path-separator (getenv "PATH")))
-(setf (getenv "PS1") "[$?][\\u@\\h:\\w]\\$ ")
+;;(setf (getenv "PS1") "[$?][\\u@\\h:\\w]\n\\$ ")
+(setf (getenv "GIT_EDITOR") "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
 
 ;; ../Makefile 利用時に役に立つかも
 (setf (getenv "EMACS") (expand-file-name invocation-name invocation-directory))
@@ -42,6 +43,9 @@
 ;;(setq vc-handled-backends '(Git))
 
 (add-to-list 'completion-ignored-extensions ".dSYM")
+
+(with-eval-after-load 'dired-x
+  (add-to-list 'dired-guess-shell-alist-user '("\\.ai\\'" "qlmanage -p")))
 
 (use-package apples-mode
   :mode ("\\.\\(applescri\\|sc\\)pt\\'"  . apples-mode))

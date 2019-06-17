@@ -4,7 +4,9 @@
 
 (custom-set-variables
  '(eshell-ask-to-save-last-dir nil)
- '(eshell-cmpl-ignore-case t))
+ '(eshell-cmpl-ignore-case t)
+ '(eshell-glob-include-dot-dot nil)
+ )
 
 (with-eval-after-load 'eshell
   ;;(require 'em-smart)
