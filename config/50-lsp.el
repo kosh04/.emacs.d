@@ -1,6 +1,6 @@
 ;;; config/LSP --- Language Server Protocol
 
-(use-package lsp
+(use-package lsp-mode
   :hook (go-mode . lsp)
   ;;:hook (before-save . lsp-format-buffer)
   :custom
@@ -9,8 +9,8 @@
   ;;(lsp-document-sync-method 'incremental) ;; always send incremental document
   ;;(lsp-prefer-flymake 'flymake)
   ;;(lsp-enable-completion-at-point nil)
-  :bind (:map lsp-mode-map
-              ("C-c r" . lsp-rename))
+  ;; :bind (:map lsp-mode-map
+  ;;             ("C-c r" . lsp-rename))
   )
 
 (use-package lsp-ui

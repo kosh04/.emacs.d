@@ -8,13 +8,12 @@
 (with-eval-after-load 'python
   (add-hook 'python-mode-hook 'which-func-mode))
 
-(cl-case system-type
-  (darwin (custom-set-variables
-           '(python-shell-interpreter "/usr/local/bin/python3")
-           ;; TODO: Emacs25.1 does not work
-           '(python-shell-completion-native-enable nil)
-           ;; M-x pdb
-           '(gud-pdb-command-name "python3 -m pdb"))))
+(custom-set-variables
+ '(python-shell-interpreter "python3")
+ ;; TODO: Emacs25.1@darwin does not work
+ '(python-shell-completion-native-enable nil)
+ ;; M-x pdb (pdb3)
+ '(gud-pdb-command-name "python3 -m pdb"))
 
 (unless (getenv "PYTHONIOENCODING")
   (setf (getenv "PYTHONIOENCODING") "utf-8"))
@@ -28,9 +27,10 @@
 (use-package py-autopep8
   :after python
   :init (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
-  :config (custom-set-variables
-           '(py-autopep8-options '("--max-line-length=100"))
-           '(flycheck-flake8-maximum-line-length 100))
+  :custom
+  (py-autopep8-options '("--max-line-length=100"))
+  (flycheck-flake8-maximum-line-length 100)
+  ;;:config
   ;;(setf (getenv "PYFLAKES_NODOCTEST") "true")
   )
 
