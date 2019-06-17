@@ -18,11 +18,12 @@
   (erc-tls :server "irc.mozilla.org" :port 6697)
   )
 
-
 (with-eval-after-load 'erc
-  (setq erc-fill-column 100)
-  (setq erc-kill-queries-on-quit t)
-  (setq erc-kill-server-buffer-on-quit t)
+  (custom-set-variables
+   '(erc-fill-column 100)
+   '(erc-kill-queries-on-quit t)
+   '(erc-kill-server-buffer-on-quit t)
+   )
   ;;(setq erc-join-buffer 'frame)
   ;; (setq erc-interpret-mirc-color t)
   ;; (setq erc-kill-server-buffer-on-quit t)
@@ -40,6 +41,5 @@
          (make-directory dir t))
        dir))
    '(erc-log-insert-log-on-open t))
-  ;;(erc-log-enable)
+  (erc-log-enable)
   )
-

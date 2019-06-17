@@ -36,3 +36,23 @@ Emacsのバージョンコントロールのためのインターフェース
 - https://magit.vc/
 - https://magit.vc/manual/magit.html
 - https://magit.vc/manual/magit-refcard.pdf
+
+```
+;; use nonstandard .git directory (not worked yet)
+;; https://emacs.stackexchange.com/q/30602
+(defun magit-dotfiles ()
+  (interactive)
+  (let ((magit-git-global-arguments
+         `("--git-dir" ,(expand-file-name "~/.dotfiles.git")
+           "--work-tree" ,(expand-file-name "~")
+           ,@magit-git-global-arguments)))
+    (magit-status-internal "~")))
+
+;; or
+(let ((process-environment
+      (copy-sequence process-environment)))
+  (mapc (lambda (x) (setf (getenv (car x)) (cdr x)))
+        `(("GIT_DIR" . ,(substitute-env-vars "$HOME/.dotfiles.git"))
+          ("GIT_WORK_TREE" . ,(substitute-env-vars "$HOME"))))
+  (magit-status-internal "~"))
+```
