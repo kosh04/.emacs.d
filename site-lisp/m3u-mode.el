@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(defconst m3u-mode-font-lock-keywords
+(defvar m3u-mode-font-lock-keywords
   (list
    ;;'("^#\\(EXTM3U\\)$" 1 font-lock-keyword-face t)
    ;; #EXTINF:<duration>,[<title>]

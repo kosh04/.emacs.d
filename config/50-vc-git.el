@@ -18,7 +18,7 @@
                (vc-git--call t "ls-remote" "--get-url")
                (string-trim (buffer-string)))))
     (message "%s" url)
-    ;; git protocol -> https
+    ;; ssh protocol -> https
     (when (string-match "git@\\(.+\\):\\(.+?\\)\\(\\.wiki\\)?\\(?:\\.git\\)?\\'" url)
       (setq url (format "https://%s/%s%s"
                         (match-string 1 url)
