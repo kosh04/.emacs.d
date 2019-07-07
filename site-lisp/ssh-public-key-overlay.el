@@ -3,9 +3,9 @@
 ;; Copyright (C) 2017  KOBAYASHI Shigeru
 
 ;; Author: KOBAYASHI Shigeru (kosh[04]) <shgeru.kb@gmail.com>
-;; Version: 0.1snapshot
+;; Version: 0.2-git
 ;; Created: 2017-04-18
-;; Package-Requires: ((emacs "24.3") (names "20151201.0") (rainbow-identifier "0.2.2"))
+;; Package-Requires: ((emacs "24.3") (names "20151201.0"))
 ;; Keywords: ssh, tools
 ;; License: MIT
 ;; URL: https://github.com/kosh04/.emacs.d/blob/master/site-lisp/ssh-public-key-overlay.el
@@ -20,7 +20,6 @@
 (eval-when-compile
   (require 'rx)
   (require 'names))
-(require 'rainbow-identifiers)
 
 ;;;###autoload
 (define-namespace ssh-public-key-overlay-
@@ -67,8 +66,6 @@
              (ov (make-overlay (match-beginning n) (match-end n)))
              (s  (match-string n))
              (ss (funcall format s))
-             ;; (hash (rainbow-identifiers--hash-function s))
-             ;; (face (rainbow-identifiers-cie-l*a*b*-choose-face hash))
              (rgb (mod (sxhash s) #xffffffffffff)))
         (setq rgb (logand rgb #x000000ffffff))
         (push ov -overlays)
@@ -76,6 +73,11 @@
         (setf (overlay-get ov 'face) `(:underline t :background ,(format "#%x" rgb)))
         (setf (overlay-get ov 'mouse-face) 'highlight
               (overlay-get ov 'help-echo) s)
+        ;; do u like rainbow?
+        ;; (require 'rainbow-identifiers)
+        ;; (let* ((hash (rainbow-identifiers--hash-function s))
+        ;;        (face (rainbow-identifiers-cie-l*a*b*-choose-face hash)))
+        ;;   (setf (overlay-get ov 'face) `((:underline t) ,@face)))
         )))
   (message (substitute-command-keys
             "Public key is omitted. Type \\[read-only-mode] to edit.")))

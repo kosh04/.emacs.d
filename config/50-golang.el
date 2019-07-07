@@ -5,6 +5,11 @@
 ;; $ go get -u github.com/rogpeppe/godef (定義ジャンプ)
 ;; $ go get -u golang.org/x/tools/cmd/goimports (import をいい感じにする)
 
+;; [2019-05-24] 追記
+;; $ go get -u golang.org/x/tools/cmd/gopls
+;; $ go get -u github.com/sourcegraph/go-langserver
+;; $ go get -u golang.org/x/tools/cmd/goimports
+
 ;; TODO: Language Server 周りの整理
 
 (use-package go-mode
@@ -26,7 +31,7 @@
   :init (add-hook 'go-mode-hook 'go-eldoc-setup))
   
 (use-package company-go
-  :disabled t
+  :disabled
   :after (go-mode company)
   :config
   ;; (custom-set-variables

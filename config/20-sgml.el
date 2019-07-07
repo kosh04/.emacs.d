@@ -56,7 +56,11 @@ Original URL `https://www.emacswiki.org/emacs/NxmlMode'"
   (eldoc-mode))
 
 (with-eval-after-load 'nxml-mode
-  (add-hook 'nxml-mode-hook 'user:nxml-mode-setup))
+  (add-hook 'nxml-mode-hook 'user:nxml-mode-setup)
+  (custom-set-variables
+   ;; スラッシュの入力で終了タグを自動補完
+   '(nxml-slash-auto-complete-flag t))
+  )
 
 ;; Zen Coding
 (use-package emmet-mode

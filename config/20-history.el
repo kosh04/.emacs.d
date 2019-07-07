@@ -21,6 +21,9 @@
 (recentf-mode +1)
 (setq recentf-save-file (locate-user-emacs-file "recentf"))
 (setq recentf-max-saved-items 2000)
+(setq recentf-auto-cleanup 'never)
+;; 保存ファイルの設定に リモートファイル tramp の先等を追加。これを実施すると起動時にパスワード等の確認はされない
+(setf (cdr recentf-keep) '(file-remote-p file-readable-p))
 (add-to-list 'recentf-exclude "recentf")
 (add-to-list 'recentf-exclude "\\.git/")
 (add-to-list 'recentf-exclude "/\\.emacs\\.d/elpa/")

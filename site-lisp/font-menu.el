@@ -79,6 +79,8 @@
 (defvar font-family-menu/sample-text
   "The quick brown fox jumps over the lazy dog
 
+いろはにほへと ちりぬるを 色は匂へど 散りぬるを
+
 あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、
 うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。
 

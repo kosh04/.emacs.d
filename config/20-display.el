@@ -33,9 +33,17 @@
 ;(display-battery-mode t)
 
 ;; アクティブなウィンドウをモードラインの色で判別する
-(set-face-background 'mode-line "black")
-(set-face-foreground 'mode-line "gray95")
-;;(invert-face 'mode-line)
+;; 端末タイプの詳細はinfo参照: (info "(elisp) Defining Faces")
+(custom-set-faces
+ '(mode-line
+   ((((class color) (min-colors 88) (background light) (type graphic))
+     :box (:line-width -1 :style released-button)
+     :background "black" :foreground "gray95")
+    (((class color) (type tty))		; tty means "emacs -nw"
+     :background "blue" :foreground "brightwhite")
+    (((class color) (background dark))  ; dark means "emacs -rv"
+      :background "green" :foreground "gray95")
+    (t :inverse-video t))))
 
 (use-package nyan-mode
   :if window-system
