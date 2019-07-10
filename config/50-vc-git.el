@@ -35,7 +35,10 @@
   :bind (("C-x g" . magit-status)
          ("C-x t g" . magit-list-repositories)
          :map magit-mode-map
-         ("&" . user:open-repository-url))
+         ("&" . user:open-repository-url)
+         ("!" . magit-git-command)      ; !!
+         (":" . magit-dispatch-popup)   ; ?
+         )
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes)
   ;; see [$] `magit-process'

@@ -8,5 +8,6 @@
 (put 'set-goal-column 'disabled nil)  ; C-x C-n
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil) ; [dired] a
+(put 'list-timers 'disabled nil)
 
 ;; (setq disabled-command-function nil)
