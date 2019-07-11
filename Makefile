@@ -34,7 +34,7 @@ update: update-package
 update-package:
 	$(EMACS) $(EMACSFLAGS) --script script/package-update.el
 
-UnicodeData.txt:
+etc/UnicodeData.txt:
 	curl -Os  "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"
 
 clean:

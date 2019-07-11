@@ -7,7 +7,7 @@
 ;;   * git config core.pager cat 
 
 (setf (symbol-function 'git-grep) #'vc-git-grep)
-;;(setf (getenv "PAGER") "cat")
+(setf (getenv "GIT_PAGER") "cat")
 
 (defun user:open-repository-url (&optional action)
   "現在開いているgitリポジトリのリモートURLを表示します."

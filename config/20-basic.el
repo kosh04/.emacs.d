@@ -24,10 +24,14 @@
 ;; `what-cursor-position' [C-u C-x =]
 (custom-set-variables
  '(describe-char-unicodedata-file
-   (let ((unicode-data-txt (locate-user-emacs-file "UnicodeData.txt")))
-     (if (file-exists-p unicode-data-txt)
-         unicode-data-txt
-         "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"))))
+   (let ((url "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
+         (path (locate-user-emacs-file "etc/UnicodeData.txt")))
+     (unless (file-exists-p path)
+       (let ((data (with-temp-buffer
+                     (url-insert-file-contents url)
+                     (buffer-string))))
+         (write-region data nil path nil 'silent)))
+     path)))
 
 (setq use-dialog-box nil)
 (setq print-quoted t)

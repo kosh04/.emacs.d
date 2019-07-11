@@ -7,8 +7,8 @@
 .newsrc.eld
 elpa
 el-get/
-history
-games/*-scores
+/history
+/games/*-scores
 request/
 url/
 server/
@@ -25,7 +25,8 @@ var/
 vendor/
 tmp/
 
-eshell/lastdir
+/eshell/lastdir
+/eshell/history
 
 # cask
 .cask
@@ -39,6 +40,7 @@ nrepl-history
 
 # misc
 UnicodeData.txt
+/migemo-pattern
 share/dict/*/migemo-dict
 site-lisp/vendor/
 etc/
