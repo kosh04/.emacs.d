@@ -66,10 +66,11 @@
              (ov (make-overlay (match-beginning n) (match-end n)))
              (s  (match-string n))
              (ss (funcall format s))
-             (rgb (format "#%x" (mod (sxhash s) #xffffffffffff))))
+             (rgb (mod (sxhash s) #xffffffffffff)))
+        (setq rgb (logand rgb #x000000ffffff))
         (push ov -overlays)
-        (setf (overlay-get ov 'display) ss
-              (overlay-get ov 'face) `(:underline t :background ,rgb))
+        (setf (overlay-get ov 'display) ss)
+        (setf (overlay-get ov 'face) `(:underline t :background ,(format "#%x" rgb)))
         (setf (overlay-get ov 'mouse-face) 'highlight
               (overlay-get ov 'help-echo) s)
         ;; do u like rainbow?

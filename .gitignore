@@ -21,6 +21,7 @@ custom.el
 notes
 debbugs
 timelog
+/kkcrc
 var/
 vendor/
 tmp/
@@ -40,10 +41,10 @@ nrepl-history
 
 # misc
 UnicodeData.txt
+/share/dict/*/migemo-dict
 /migemo-pattern
-share/dict/*/migemo-dict
-site-lisp/vendor/
-etc/
+/site-lisp/vendor/
+/etc/
 /emojis/
 /irony/
 .geiser_history.guile

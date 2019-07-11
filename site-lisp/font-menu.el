@@ -79,6 +79,8 @@
 (defvar font-family-menu/sample-text
   "The quick brown fox jumps over the lazy dog
 
+いろはにほへと ちりぬるを 色は匂へど 散りぬるを
+
 あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、
 うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。
 
@@ -107,6 +109,7 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
 (defvar font-family-menu-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "RET") #'font-family-menu/display-sample-text)
+    (define-key map (kbd "b") #'font-family-menu/switch-to-sample-buffer)
     map))
 
 (define-derived-mode font-family-menu-mode tabulated-list-mode
@@ -115,8 +118,8 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
   (let ((ff (font-family-list)))
     (setq ff (delete-dups ff))
     (setq ff (sort ff #'(lambda (x y) (string< (upcase x) (upcase y)))))
-    (setq tabulated-list-format `[("Name" 35 t)
-                                  ("Opened Name" 50)])
+    (setq tabulated-list-format [("Name" 35 t)
+                                 ("Opened Name" 50)])
     (setq tabulated-list-entries
           (mapcar (lambda (family)
                     (list family (vector family (or (elt (font-info family) 0) "*"))))
@@ -132,7 +135,9 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
                        (ov (make-overlay pos next)))
                   (setf (overlay-get ov 'face)
                         (cond ((string-match (regexp-quote (format "-%s-" font-family)) name) nil)
-                              (t `(:background ,(format "#%X" (mod (sxhash name) #xffffffffffff))))))
+                              (t (let ((rgb (mod (sxhash name) #xffffffffffff)))
+                                   (setq rgb (logand rgb #x000000ffffff))
+                                   `(:background ,(format "#%x" rgb))))))
                   (setf (overlay-get ov 'mouse-face) 'highlight
                         (overlay-get ov 'help-echo) (format "Font:%s" name))))
            (setq pos next)))
@@ -160,6 +165,10 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
       (font-family-menu/fontify-buffer font-family))
     (display-buffer buffer)
     ))
+
+(defun font-family-menu/switch-to-sample-buffer (buffer)
+  (interactive "bSample buffer: ")
+  (setq font-family-menu/sample-text (find-buffer buffer)))
 
 ;;;###autoload
 (defun list-font-family ()
