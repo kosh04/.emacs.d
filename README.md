@@ -47,7 +47,7 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 
 ## Rules
 
-- デフォルト設定を利用する (覚えることが少ない方がよい)
+- デフォルト設定＆標準キーバインドを尊重する (覚えることが少ない方がよい)
 - ライブラリが外部プロセスに依存する場合は PATH を通しておく (特に NTEmacs)
 - パッケージはなるべく安定版を優先してインストールしたい (gnu, melpa-stable)
 - Emacs と xyzzy の操作感を共存させる
@@ -62,4 +62,6 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 
 ## TODO
 
-- Better Directory Structure (refer to "Filesystem Hierarchy Standard")
+- [ ] Better Directory Structure (refer to "Filesystem Hierarchy Standard")
+- [ ] Emacs 27.1 では `~/.emacs.d` の代わりに `$XDG_CONFIG_HOME/emacs` が利用可能になる予定
+- [ ] シンボル名のプレフィックス記法を統一させる (`$USER-` ? `user:` ? `user/` ?)

@@ -11,6 +11,7 @@
 ;; Enable installed packages
 (package-initialize)
 
+;; -L ~/.emacs.d/site-lisp
 (add-to-list 'load-path (locate-user-emacs-file "site-lisp"))
 
 ;; Separate customization setting (do not overwrite `user-init-file')

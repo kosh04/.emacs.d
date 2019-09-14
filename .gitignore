@@ -1,10 +1,12 @@
 # emacs
 *.elc
 *-autoloads.el
+private.el
 .emacs.desktop
 .emacs.desktop.lock
 .newsrc
 .newsrc.eld
+*.plstore
 elpa
 el-get/
 /history
