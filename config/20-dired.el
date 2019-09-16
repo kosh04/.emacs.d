@@ -141,7 +141,7 @@
 ;; ファイルに関連付けられたアイコンを表示する
 ;; darwin: ~/Library/Fonts/*.ttf
 (use-package all-the-icons-dired
-  :disabled t
+  :disabled
   ;; NTEmacsだと描画が重いため見送り (追加で font-lock+.el が必要)
   :if (eq system-type 'darwin)
   :config

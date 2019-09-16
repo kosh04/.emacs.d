@@ -26,6 +26,7 @@
          ("C-c w i" . wandbox-insert-template)
          ("C-c w l" . wandbox-list-compilers))
   :config
+  (setq wandbox--verbose t)
   ;; 通信環境の問題でHTTPSがたまに失敗することがある
   '(ignore-errors
     (wandbox-add-server "fetus" "https://wandbox.fetus.jp"))
@@ -40,16 +41,15 @@
   :load-path "~/.emacs.d/site-lisp/unicode-escape")
 
 (use-package gitignore
-  :after gitignore-mode
   :load-path "~/.emacs.d/site-lisp/gitignore"
+  :after gitignore-mode
   :pin #:manual
   :custom
   (gitignore-template-directory
    (file-name-as-directory
     (locate-user-emacs-file "share/autoinsert/gitignore")))
-  :config
-  (with-eval-after-load 'gitignore-mode
-    (define-key gitignore-mode-map [remap insert-file] #'gitignore-insert-template))
+  :bind (:map gitignore-mode-map
+              ([remap insert-file] . gitignore-insert-template))
   )
 
 (use-package lingr-irc

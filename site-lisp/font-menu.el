@@ -136,10 +136,11 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
                   (setf (overlay-get ov 'face)
                         (cond ((string-match (regexp-quote (format "-%s-" font-family)) name) nil)
                               (t (let ((rgb (mod (sxhash name) #xffffffffffff)))
-                                   (setq rgb (logand rgb #x000000ffffff))
+                                   ;;(setq rgb (logand rgb #x000000ffffff))
                                    `(:background ,(format "#%x" rgb))))))
                   (setf (overlay-get ov 'mouse-face) 'highlight
-                        (overlay-get ov 'help-echo) (format "Font:%s" name))))
+                        (overlay-get ov 'help-echo) (format "Font:%s" name))
+                  ))
            (setq pos next)))
 
 (defun font-family-menu/display-sample-text (font-family)
@@ -168,7 +169,7 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
 
 (defun font-family-menu/switch-to-sample-buffer (buffer)
   (interactive "bSample buffer: ")
-  (setq font-family-menu/sample-text (find-buffer buffer)))
+  (setq font-family-menu/sample-text (get-buffer buffer)))
 
 ;;;###autoload
 (defun list-font-family ()

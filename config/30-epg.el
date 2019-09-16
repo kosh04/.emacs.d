@@ -1,5 +1,7 @@
 ;;; config/EasyPG
 
+;; TODO: gpg 本体のアップデートによって解消された可能性あり
+'
 (with-eval-after-load 'epg
   ;; monkey patching
   (defconst epg-pubkey-algorithm-alist

@@ -264,12 +264,10 @@ INPUT (filename/buffer/nil) is used as a process standard input."
   (interactive
    (list (completing-read "Jump to Env Directory: "
            (cl-remove-if-not
-            (lambda (e)
-              (pcase-let ((`(,name . ,val) e))
-                (message "name=%s,val=%s" name val)
-                (and (stringp val) (file-directory-p val))))
-            (user/process-environment-alist)
-            ))))
+            (pcase-lambda (`(,_name . ,val))
+              (and (stringp val)
+                   (file-directory-p val)))
+            (user/process-environment-alist)))))
   (dired (getenv env-name)))
 
 (defun iterate-text-prop (prop func)
@@ -283,12 +281,37 @@ URL `http://emacs.g.hatena.ne.jp/kiwanami/20110809/1312877192'"
              (funcall func pos next text-val))
            (setq pos next)))
 
-;; face の付いている領域についてループする
+;; e.g. face の付いている領域についてループする
 '
 (iterate-text-prop 'face 
   (lambda (begin end val)
     (let ((print-escape-newlines t))
       (and val (message ">> %S : %S" val (buffer-substring-no-properties begin end))))))
+
+
+(defun shredder (string)
+  "文字列 STRING を伏せ字に変換します."
+  (replace-regexp-in-string "[[:alnum:]]" "*" string))
+
+(defun shredder-region (start end)
+  "選択した範囲を******します."
+  (interactive "*r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (while (re-search-forward "[[:alnum:]]" nil t)
+        (replace-match "*")))))
+
+(defun outlineapi-fetch (article-url)
+  (let ((url-request-extra-headers
+         '(("Referer" . "https://outline.com/")))
+        (url (concat "https://outlineapi.com/article?"
+                     (url-build-query-string
+                      `((source_url ,article-url))))))
+    (with-temp-buffer
+      (url-insert-file-contents url)
+      (json-read))))
 
 (provide 'user-utils)
 

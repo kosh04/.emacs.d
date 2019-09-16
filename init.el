@@ -23,4 +23,15 @@
 (setq init-loader-directory (locate-user-emacs-file "config"))
 (init-loader-load)
 
+;; TODO: 環境別ファイルの命名規則をGo言語風にする (prefixでなくsuffixで表現したい)
+;; (custom-set-variables
+;;  '(init-loader-windows-regexp "-windows\\'")
+;;  '(init-loader-linux-regexp )
+;;  '(init-loader-cocoa-emacs-regexp)
+;;  '(init-loader-nw-regexp )
+;;  )
+
+(load (locate-user-emacs-file "private.el") 't)
+
+(provide 'init-el)
 ;;; init.el ends here

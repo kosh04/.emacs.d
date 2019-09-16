@@ -33,6 +33,7 @@
 
 ;; 辞書.app
 (use-package osx-dictionary
+  :disabled
   :if (eq system-type 'darwin)
   :bind (("C-c e" . osx-dictionary-search-word-at-point))
   )

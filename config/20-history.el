@@ -8,14 +8,14 @@
 
 ;; ファイルを開いたときのカーソル位置を復元
 (save-place-mode +1)
-(defun user/save-alist-skip-remote ()
+(defun user::save-alist-skip-remote ()
   "HTTPなどのリモートファイルの確認が煩わしいのでスキップする."
-  (setq save-place-alist
-        (seq-remove (lambda (x)
-                      (pcase-let ((`(,file . ,pos) x))
-                        (file-remote-p file)))
-                    save-place-alist)))
-(advice-add 'save-place-alist-to-file :before #'user/save-alist-skip-remote)
+  (cl-callf2
+      seq-remove
+      (pcase-lambda (`(,file . ,_pos))
+        (file-remote-p file))
+      save-place-alist))
+(advice-add 'save-place-alist-to-file :before #'user::save-alist-skip-remote)
 
 (require 'recentf)
 (recentf-mode +1)
@@ -34,16 +34,20 @@
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop
 ;; FIXME: NTEmacs(win)/Cygwin(unix) は .emacs.desktop を共有できないため分ける必要がある
-(require 'desktop)
-(desktop-save-mode)
-;(setq desktop-load-locked-desktop nil)
-(setq desktop-dirname user-emacs-directory) ; XXX: 上書きされている？@osx
-(add-to-list 'desktop-globals-to-save 'file-name-history)
-(add-to-list 'desktop-globals-to-save 'command-history)
+(use-package desktop
+  :init (desktop-save-mode)
+  ;;:custom
+  ;;(desktop-load-locked-desktop nil)
+  ;;(desktop-restore-frames nil)
+  :config
+  (add-to-list 'desktop-globals-to-save 'file-name-history)
+  ;; WARNING: 循環リストを含むコマンドを保存しようとすると無限ループの可能性あり '#0=(x . #0#)
+  (add-to-list 'desktop-globals-to-save 'command-history)
+  ;;(setq desktop-dirname user-emacs-directory) ; XXX: 上書きされている？@osx
+  nil)
 
-(defun user:restore-desktop (&optional dirname)
+(defun user::restore-desktop (&optional dirname)
   ".emacs.desktop ファイルを基にセッションを復元します."
-  ;;(interactive (list (read-file-name "Desktop file: " (desktop-full-file-name))))
   (interactive (list (read-directory-name "Desktop directory: " desktop-dirname)))
   (let ((desktop-first-buffer nil)
         (desktop-buffer-ok-count 0)
@@ -56,4 +60,4 @@
 ;; セッションの復元ならば `recover-session' も有効
 
 (fset 'restore-desktop #'desktop-revert)
-;; (defalias 'restore-desktop #'my:restore-desktop)
+;; (defalias 'restore-desktop #'user::restore-desktop)

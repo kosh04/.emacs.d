@@ -153,7 +153,11 @@
 
 (with-eval-after-load 'edebug
   ;; FIXME: view-mode-map が優先されるのはバグ？ (type e `view-exit')
-  (add-hook 'edebug-mode-hook (lambda () (view-mode -1)))
+  (defun edebug-mode--disable-view-mode ()
+    (when view-mode
+      (warn "`view-mode' temporally disabled in Edebug-mode")
+      (view-mode -1)))
+  (add-hook 'edebug-mode-hook 'edebug-mode--disable-view-mode)
   ;;(setq edebug-trace t)
   )
 
@@ -179,28 +183,32 @@
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
 
 (use-package dash
-  :preface (declare-function dash-enable-font-lock "dash")
-  :config (dash-enable-font-lock))
+  :pin #:melpa-stable
+  ;;:custom (dash-enable-fontlock t)
+  :config
+  (dash-enable-font-lock)
+  )
 
 ;; font-lock や eval-last-sexp を names 開発用に拡張
 ;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
 ;; (defalias 'names--convert-cl-defun 'names--convert-defun)
-(with-eval-after-load 'names
-  (require 'names-dev))
+(use-package names-dev
+  :after names)
 
 ;; less is more
 (use-package nameless
   :custom
   (nameless-global-aliases nil)
   (nameless-private-prefix t)
-  :config
-  (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
+  :hook (emacs-lisp-mode . nameless-mode))
 
 ;; Surpress byte-compile warning
 ;; (unless (fboundp 'elisp--preceding-sexp)
 ;;   (defalias 'elisp--preceding-sexp 'preceding-sexp))
 
-(use-package erefactor)
+(use-package erefactor
+  ;;:bind (:map emacs-lisp-mode-map ("\C-c\C-v" . erefactor-map))
+  )
 
 (use-package flycheck-package
   :after flycheck

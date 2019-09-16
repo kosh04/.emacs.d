@@ -62,5 +62,6 @@
              (paradox-enable))
   :custom
   (paradox-execute-asynchronously t)
-  ;;(paradox-homepage-button-string "⛺") ; why cannot use emoji?
+  ;; "⛺" を使いたいが `tabulated-list' は今のところ emoji 非対応らしい
+  (paradox-homepage-button-string "⌂")
   )

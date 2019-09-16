@@ -1,4 +1,4 @@
-;;; config/eww.el
+;;; config/eww
 
 ;; w3m.el のキーバインドとの互換性は特にない
 
@@ -26,25 +26,28 @@
 ;; - q `quit-window'
 ;; &rest (help-xref-interned 'eww-mode-map)
 
-(defun user:eww-send-to-google-translate ()
+(defun user:eww-send-to-google-translate (url)
   "EWWで閲覧中のウェブページを外部ブラウザで翻訳します."
-  (interactive)
-  (cl-assert (eww-current-url))
-  (let ((url (concat "http://translate.google.com/translate?hl=ja&sl=auto&tl=ja&u="
-                     (url-hexify-string (eww-current-url)))))
-    (eww-browse-with-external-browser url)))
+  (interactive (list (eww-current-url)))
+  (eww-browse-with-external-browser
+   (concat "http://translate.google.com/translate?"
+           (url-build-query-string
+            `((hl "ja")
+              (sl "auto")
+              (tl "ja")
+              (u ,url))))))
 
 ;;(concat "https://www.microsofttranslator.com/bv.aspx?from=en&to=ja" "&a=" (url-hexify-string url))
+
+(declare-function outlineapi-fetch "user-utils")
 
 (defun user:eww-readable (url)
   "現在閲覧中のウェブページを読みやすくします."
   (interactive (list (eww-current-url)))
   (cl-assert url)
-  (let* ((url* (format "https://outlineapi.com/v3/parse_article?source_url=%s"
-                       (url-hexify-string url)))
-         (json (json-read-file url*))
+  (let* ((json (outlineapi-fetch url))
          (html (or (cdr (assoc 'html (assoc 'data json)))
-                   (error "No Html found: %s" json)))
+                   (error "No HTML found: %s" json)))
          (dom (with-temp-buffer
                 (insert html)
                 (libxml-parse-html-region (point-min) (point-max)))))
@@ -69,6 +72,7 @@
     (eldoc-mode))
 
   (add-hook 'eww-mode-hook 'user:eww-setup)
+  (add-hook 'eww-bookmark-mode-hook 'hl-line-mode)
   (add-hook 'eww-history-mode-hook 'hl-line-mode)
 
   ;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
@@ -86,7 +90,13 @@
              ("C-k" . eww)
              ("e" . user:eww-send-to-google-translate)
              ("R" . user:eww-readable)
-             ("Q" . kill-this-buffer))
+             ("Q" . kill-this-buffer)
+             :map eww-bookmark-mode-map
+             ("n" . next-line)
+             ("p" . previous-line)
+             :map eww-history-mode-map
+             ("n" . next-line)
+             ("p" . previous-line))
   )
 
 (custom-set-variables

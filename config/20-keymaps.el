@@ -21,6 +21,7 @@
 (global-set-key (kbd "C-x t v") 'toggle-viper-mode)
 (global-set-key (kbd "C-x t w") 'whitespace-mode)
 (global-set-key (kbd "C-x t o") 'ff-find-related-file)
+(global-set-key (kbd "C-x t n") 'display-line-numbers-mode)
 
 ;;(global-set-key [f11] 'toggle-frame-fullscreen)
 (global-set-key [f11] 'toggle-frame-maximized)

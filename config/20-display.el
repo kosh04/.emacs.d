@@ -13,13 +13,14 @@
     (horizontal-scroll-bar-mode -1))
 
 ;; Frame
-(add-to-list 'default-frame-alist '(alpha . (0.95 0.95)))
-;;(setf (frame-parameter nil 'alpha) '(0.95 0.95))
+(add-to-list 'default-frame-alist '(alpha . (0.90 0.90)))
+;;(setf (frame-parameter nil 'alpha) '(0.90 0.90))
 
 ;; アクティブでないウィンドウのカーソルを表示/非表示
 ;;(setq-default cursor-in-non-selected-windows nil)
 
 ;; git-gutter と被る
+;; -> `global-display-line-numbers-mode'
 ;;(global-linum-mode)
 
 (setq frame-title-format
@@ -39,10 +40,11 @@
    ((((class color) (min-colors 88) (background light) (type graphic))
      :box (:line-width -1 :style released-button)
      :background "black" :foreground "gray95")
+    (((class color) (background dark) (type graphic)) ; dark means "emacs -rv" or dark-theme
+     :box (:line-width -1 :style released-button)
+     :background "gray95" :foreground "black")
     (((class color) (type tty))		; tty means "emacs -nw"
      :background "blue" :foreground "brightwhite")
-    (((class color) (background dark))  ; dark means "emacs -rv"
-      :background "green" :foreground "gray95")
     (t :inverse-video t))))
 
 (use-package nyan-mode
@@ -54,11 +56,9 @@
 ;; バッファ末尾の可視化 (fringe)
 ;; (set-fringe-mode 5)
 (setq-default indicate-empty-lines t)
-(set-face-background 'fringe "gray80")
 
 ;; 行カーソル
-(require 'hl-line)
-(set-face-background 'hl-line "#DEEDFF")
+;; (require 'hl-line)
 (add-hook 'help-mode-hook 'hl-line-mode)
 
 (add-hook 'tabulated-list-mode-hook 'hl-line-mode)

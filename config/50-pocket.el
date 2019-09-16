@@ -1,4 +1,4 @@
-;;; config/Pocket Reader
+;;; config/Pocket-Reader
 
 (use-package pocket-reader
   ;; [2019-05-18] コードを簡略化しようとしてforkしたはいいが割に合わなさそうだったので諦めた
@@ -16,8 +16,23 @@
      ;;pocket-reader--add-spacers
      ))
   (pocket-reader-color-title nil)
+  (pocket-reader-archive-on-open nil)
+  :bind
+  (:map pocket-reader-mode-map
+        ("TAB" . pocket-reader-excerpt)
+        ("g" . pocket-reader-refresh)
+        ("w" . pocket-reader-copy-url)
+        ("&" . pocket-reader-open-in-external-browser)
+        )
   )
 
 ;; (custom-set-variables
 ;;  '(pocket-lib-token-file (locate-user-emacs-file "var/pocket-lib-token.json"))
 ;;  )
+
+(use-package getpocket
+  :pin #:manual
+  :load-path "~/.emacs.d/site-lisp/getpocket.el/"
+  :commands (getpocket)
+  :config
+  (getpocket-debug-mode +1))

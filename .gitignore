@@ -1,6 +1,7 @@
 # emacs
 *.elc
 *-autoloads.el
+custom.el
 private.el
 .emacs.desktop
 .emacs.desktop.lock
@@ -19,7 +20,6 @@ recentf
 tramp
 abbrev_defs
 bookmarks
-custom.el
 notes
 debbugs
 timelog
@@ -27,6 +27,7 @@ timelog
 var/
 vendor/
 tmp/
+/straight/
 
 /eshell/lastdir
 /eshell/history

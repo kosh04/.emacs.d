@@ -730,6 +730,8 @@ focus-out-hook
 ;;=> (1 nil)
 (cl-loop for (x . y) in '((one . 1) (two . 2) (three . 3)) do ...)
 
+;; Emacs 27.1 にて map.el が plists に対応する予定 (from NEWS)
+
 ;; nntpプロトコルを開きたい
 (url-generic-parse-url "nntp://news.gmane.org/gmane.emacs.gnus.general")
 ;;=> #s(url "nntp" nil nil "news.gmane.org" nil "/gmane.emacs.gnus.general" nil nil t nil t t)
@@ -760,6 +762,22 @@ focus-out-hook
       (print-escape-newlines t))
   (prin1 "\xfe\xff\n\0\a\b\c\d\e\f\g🍣\n"))
 ;;-> "\376\377\n\0\007\010c\177\033\fg\x1f363\n"
+
+(let ((print-circle t)
+      (print-charset-text-property t)
+      (print-continuous-numbering t)
+      ;;(print-number-table )
+      (print-gensym t)
+      (print-length nil)
+      (print-level nil)
+      (print-quoted t)
+      (print-escape-control-characters t)
+      (print-escape-multibyte t)
+      (print-escape-nonascii t)
+      (print-escape-control-characters t)
+      (print-escape-newlines t))
+  (with-output-to-temp-buffer "*tmp*"
+    (pp "OBJECT-HERE")))
 
 ;; 改行コード(U+23CE;⏎)を表示する
 (setq buffer-display-table (make-display-table))
@@ -856,3 +874,48 @@ focus-out-hook
 (setf (getenv "XDG_CONFIG_HOME") (xdg-config-home)
       (getenv "XDG_CACHE_HOME") (xdg-cache-home)
       (getenv "XDG_DATA_HOME") (xdg-data-home))
+
+(let ((with
+       (lambda (parser)
+         (let ((response-buffer (current-buffer)))
+           (goto-char (symbol-value 'url-http-end-of-headers))
+           (unwind-protect
+               (funcall parser)
+             (kill-buffer response-buffer))))))
+  (url-retrieve "https://httpbin.org/get"
+                (lambda (status)
+                  (message "Status: %S" status)
+                  (message "Data: %S" (funcall with #'json-read)))))
+;;-> Status: (:peer (:certificate (...) :key-exchange "ECDHE-RSA" :protocol "TLS1.2" :cipher "AES-128-GCM" :mac "AEAD"))
+;;-> Data: ((args) ... (url . "https://httpbin.org/get"))
+;;=> #<buffer  *http httpbin.org:443*>
+
+;; Oauth2
+;; https://github.com/ifree/org-onenote/blob/master/org-onenote.el
+(oauth2-auth-and-store
+ "https://login.live.com/oauth20_authorize.srf"
+ "https://login.live.com/oauth20_token.srf"
+ "wl.offline_access offline_access office.onenote_create office.onenote_update_by_app office.onenote_update office.onenote"
+ "d6c99b4d-fda1-48f0-9e0f-22103e544413"
+ nil
+ "https://login.live.com/oauth20_desktop.srf")
+;;=> #s(oauth2-token ...)
+
+(with-temp-buffer
+  (insert-file-contents "~/tmp/xxx.el")
+  (read (current-buffer)))
+
+(global-set-key (kbd "C-x t u")
+                (lambda ()
+                  (interactive)
+                  (setq #0=url-debug (not #0#))
+                  (message "%s=%s" '#0# #0#)))
+
+;; エラーシンボル一覧 (signal 'ERROR-SYMBOL)
+(with-output-to-temp-buffer "*Errors*"
+  (mapatoms
+   (lambda (s)
+     (let ((err (get s 'error-conditions))
+           (msg (get s 'error-message)))
+       (when err
+         (princ (format "Error=%S,Message=%S\n" err msg)))))))

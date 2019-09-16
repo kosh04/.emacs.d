@@ -149,3 +149,44 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
       (ansi-color-apply-on-region
        compilation-filter-start (point))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+
+;; 一行に長いファイル によるパフォーマンス低下をなんとかする (min.js,json etc)
+;; https://www.emacswiki.org/emacs/SoLong
+(use-package so-long
+  ;;:load-path "~/.emacs.d/site-lisp/vendor"
+  :init (global-so-long-mode)
+  :config
+  (add-to-list 'so-long-target-modes 'json-mode))
+
+;; FIXME:
+;;
+;; json-mode が javascript-mode (js-mode のエイリアス) を継承しているため
+;; (apply #'derived-mode-p so-long-target-modes) が nil を返すのはバグ？
+;;
+;; (apply #'provided-mode-derived-p 'json-mode so-long-target-modes) ;=> nil
+;; (apply #'provided-mode-derived-p 'js-mode so-long-target-modes)   ;=> prog-mode
+
+;; モードラインのマイナーモードを纏める ;-)
+(use-package minions
+  :if (fboundp 'minions-mode)
+  :hook (after-init . minions-mode))
+
+(use-package calendar
+  :bind (("C-x t c" . calendar)
+         :map calendar-mode-map
+         ("f" . calendar-forward-day)
+         ("b" . calendar-backward-day)
+         ("n" . calendar-forward-week)
+         ("p" . calendar-backward-week))
+  :custom
+  (calendar-mark-holidays-flag t))
+
+(use-package keyfreq
+  :bind ([f1 f2] . keyfreq-show)
+  :config
+  (keyfreq-mode +1)
+  (advice-add 'keyfreq-show
+              :after
+              (lambda (&rest _)
+                (with-current-buffer keyfreq-buffer
+                  (view-mode)))))

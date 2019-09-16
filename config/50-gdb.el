@@ -14,4 +14,4 @@
   (add-hook 'gdb-mode-hook #'tool-bar-mode))
 
 (use-package gud-lldb
-  :load-path "~/.emacs.d/vendor")
+  :load-path "~/.emacs.d/site-lisp/vendor")
