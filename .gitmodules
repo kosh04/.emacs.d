@@ -21,3 +21,6 @@
 [submodule "site-lisp/go-playground-cli"]
 	path = site-lisp/go-playground-cli
 	url = git@github.com:kosh04/emacs-go-playground.git
+# [submodule "site-lisp/getpocket"]
+# 	path = site-lisp/getpocket
+# 	url = file:///Users/kosh/.emacs.d/site-lisp/getpocket/.git
