@@ -75,6 +75,7 @@ REGIONF requires method ((beg point) (end point))."
   (textproc-filter-region #'url-unhex-string start end))
 
 ;; html/xml
+(declare-function dom-texts "dom")
 (defun textproc-parse-html (string)
   (textproc-filter-string (lambda (start end)
                     (let ((dom (libxml-parse-html-region start end)))
