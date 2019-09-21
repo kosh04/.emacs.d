@@ -20,7 +20,7 @@
 
 (use-package wandbox
   ;; 開発版
-  :load-path "~/.emacs.d/site-lisp/wandbox"
+  :load-path "../site-lisp/wandbox"
   :bind (("C-c w w" . wandbox)
          ("C-c w e" . wandbox-eval-last-sexp)
          ("C-c w i" . wandbox-insert-template)
@@ -34,14 +34,17 @@
 
 (use-package m3u-mode
   :pin #:manual
-  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry)))
+  :load-path "../site-lisp"
+  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry))
+  )
 
 (use-package unicode-escape
   :pin #:manual
-  :load-path "~/.emacs.d/site-lisp/unicode-escape")
+  :load-path "../site-lisp/unicode-escape"
+  )
 
 (use-package gitignore
-  :load-path "~/.emacs.d/site-lisp/gitignore"
+  :load-path "../site-lisp/gitignore"
   :after gitignore-mode
   :pin #:manual
   :custom

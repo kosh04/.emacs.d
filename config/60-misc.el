@@ -153,7 +153,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; 一行に長いファイル によるパフォーマンス低下をなんとかする (min.js,json etc)
 ;; https://www.emacswiki.org/emacs/SoLong
 (use-package so-long
-  ;;:load-path "~/.emacs.d/site-lisp/vendor"
+  ;;:load-path "../site-lisp/vendor"
   :init (global-so-long-mode)
   :config
   (add-to-list 'so-long-target-modes 'json-mode))
