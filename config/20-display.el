@@ -39,12 +39,15 @@
  '(mode-line
    ((((class color) (min-colors 88) (background light) (type graphic))
      :box (:line-width -1 :style released-button)
-     :background "black" :foreground "gray95")
+     :background "black"
+     :foreground "gray95")
     (((class color) (background dark) (type graphic)) ; dark means "emacs -rv" or dark-theme
      :box (:line-width -1 :style released-button)
-     :background "gray95" :foreground "black")
+     :background "#6846A5"              ; 本紫
+     :foreground "brightwhite")
     (((class color) (type tty))		; tty means "emacs -nw"
-     :background "blue" :foreground "brightwhite")
+     :background "#0067C0"              ; 青 (JIS)
+     :foreground "brightwhite")
     (t :inverse-video t))))
 
 (use-package nyan-mode
