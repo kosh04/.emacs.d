@@ -27,7 +27,7 @@
   (define-key package-menu-mode-map (kbd "?") 'describe-package)
   (define-key package-menu-mode-map (kbd "/") 'occur))
 
-(defun package-uninstall (pkg)
+(defun user::package-uninstall (pkg)
   "Uninstall the package PKG."
   (interactive (list (intern (completing-read "Uninstall package: " package-alist))))
   (pcase-let ((`(,_name ,desc)
@@ -35,25 +35,31 @@
     (if (package-desc-p desc)
         (package-delete desc))))
 
+(unless (symbol-function 'package-uninstall)
+  (setf (symbol-function 'package-uninstall) #'user::package-uninstall))
+
 ;; TODO:
 ;; - try https://github.com/raxod502/straight.el
 ;; - :config (というかトップレベル以外) で補助関数を定義するとソースジャンプができない
 
 ;; use-package
-(or (require 'use-package nil t)
+(or (require 'use-package nil 'noerror)
     ;;(package-install 'use-package)
-    (defmacro use-package (name &rest args)
+    (defmacro use-package (name &rest _args)
       "Dummy definition `use-package'."
-      `(message "Ignore Package: %s" ',name)))
+      `(warn "Ignored Package: `%s'" ',name)))
 
-(custom-set-variables
- '(use-package-verbose t)
- '(use-package-enable-imenu-support t)
- ;; 初回起動時は自動インストールしたい
- ;;'(use-package-always-ensure t)
- ;; 遅延ロード
- '(use-package-always-defer t)
- )
+(use-package use-package
+  :pin #:melpa-stable
+  :custom
+  (use-package-verbose t)
+  (use-package-enable-imenu-support t)
+  ;; 初回起動時は自動インストールしたい
+  (use-package-always-ensure
+   (if (getenv "TRAVIS") nil t))
+  ;; 遅延ロード
+  (use-package-always-defer t)
+  )
 
 ;; modernizing Emacs Package Menu
 (use-package paradox

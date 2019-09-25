@@ -28,6 +28,7 @@ var/
 vendor/
 tmp/
 /straight/
+/transient/
 
 /eshell/lastdir
 /eshell/history

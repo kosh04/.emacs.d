@@ -43,7 +43,7 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 
 1. Clone this repository. (recommended `~/.emacs.d/`)
 2. `cask install`
-3. `make compile` (byte-compile site-lisp/*.el)
+3. `make` (byte-compile site-lisp/*.el, and testing it)
 
 ## Rules
 

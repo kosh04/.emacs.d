@@ -35,7 +35,7 @@ update-package:
 	$(EMACS) $(EMACSFLAGS) --script script/package-update.el
 
 etc/UnicodeData.txt:
-	curl -Os  "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt"
+	curl "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt" -o $@
 
 clean:
 	$(RM) $(SRCS:.el=.elc)

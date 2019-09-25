@@ -29,7 +29,7 @@
   :custom-face
   ;; 引数表示をSLIME風にする
   (eldoc-highlight-function-argument
-   ((t (:background "darkseagreen2" :underline nil :bold nil)))))
+   ((t (:inherit highlight)))))
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
@@ -175,6 +175,7 @@
   (setq prettify-symbols-alist
         '(("lambda" . "\u03BB")         ; λ
           ("/=" . "\u2260")             ; ≠
+          ("!=" . "\u2260")
           ("<=" . "\u2264")             ; ≤
           (">=" . "\u2267")             ; ≧
           ))
@@ -192,8 +193,8 @@
 ;; font-lock や eval-last-sexp を names 開発用に拡張
 ;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
 ;; (defalias 'names--convert-cl-defun 'names--convert-defun)
-(use-package names-dev
-  :after names)
+(with-eval-after-load 'names
+  (require 'names-dev))
 
 ;; less is more
 (use-package nameless

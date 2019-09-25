@@ -64,7 +64,6 @@ Original URL `https://www.emacswiki.org/emacs/NxmlMode'"
 
 ;; Zen Coding
 (use-package emmet-mode
-  :defer t
   :init
   ;;(custom-set-variables '(emmet-indentation 2))
   (add-hook 'sgml-mode-hook 'emmet-mode)

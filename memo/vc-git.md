@@ -37,7 +37,7 @@ Emacsのバージョンコントロールのためのインターフェース
 - https://magit.vc/manual/magit.html
 - https://magit.vc/manual/magit-refcard.pdf
 
-```
+```emacs-lisp
 ;; use nonstandard .git directory (not worked yet)
 ;; https://emacs.stackexchange.com/q/30602
 (defun magit-dotfiles ()
@@ -55,4 +55,9 @@ Emacsのバージョンコントロールのためのインターフェース
         `(("GIT_DIR" . ,(substitute-env-vars "$HOME/.dotfiles.git"))
           ("GIT_WORK_TREE" . ,(substitute-env-vars "$HOME"))))
   (magit-status-internal "~"))
+```
+
+```emacs-lisp
+;; 黒背景ターミナルで文字が見えにくい場合の対応
+(set-face-background 'magit-section-highlight "gray55")
 ```

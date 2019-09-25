@@ -37,22 +37,6 @@
     (`unstaged (magit-stage))
     (`staged   (magit-unstage))))
 
-;; Magit
-;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
-(use-package magit
-  ;;:if (executable-find "git")
-  :defer t
-  :pin #:melpa-stable
-  :bind (("C-x g" . magit-status)
-         :map magit-mode-map
-         ("&" . user::open-repository-url)
-         )
-  :config
-  (add-to-list 'magit-no-confirm 'stage-all-changes)
-  ;; see [$] `magit-process'
-  ;; (setq magit-git-debug (not magit-git-debug))
-  )
-
 (defun user::magit-repolist-open-dired (dir)
   "Open `DIR' repository."
   (interactive (list (tabulated-list-get-id)))
@@ -67,18 +51,30 @@ See URL `https://github.com/magit/magit/issues/3686'"
      "(gone)")
     (error (apply 'signal err))))
 
-(use-package magit-repos
-  :bind (("C-x t g" . magit-list-repositories)
+;; Magit
+;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
+(use-package magit
+  ;;:if (executable-find "git")
+  :pin #:melpa-stable
+  :bind (("C-x g" . magit-status)
+         ("C-x t g" . magit-list-repositories)
+         :map magit-mode-map
+         ("&" . user::open-repository-url)
          :map magit-repolist-mode-map
-         ("f" . user::magit-repolist-open-dired))
+         ("f" . user::magit-repolist-open-dired)
+         )
   :custom
   (magit-repository-directories
-   `(("~/.emacs.d/" . 0)
-     ("~/.emacs.d/site-lisp/" . 1)
+   `((,user-emacs-directory . 0) ;; "~/.emacs.d" or "~/.config/emacs"
+     (,(locate-user-emacs-file "site-lisp") . 1)
      ("~/Documents/GitHub/" . 1)
      ("~/Downloads/gitrepo/" . 1)
      (,(substitute-in-file-name "$GOPATH/src/github.com/kosh04/") . 1)))
   :config
+  (add-to-list 'magit-no-confirm 'stage-all-changes)
+  ;; see [$] `magit-process'
+  ;; (setq magit-git-debug (not magit-git-debug))
+
   (let ((patch #'magit-repolist-column-version--patch))
     (if (version<= "2.91.0" (magit-version))
         (warn "The patch `%s' is no longer required: %s" patch #$)

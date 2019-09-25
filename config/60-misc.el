@@ -4,10 +4,10 @@
 (use-package f)
 (use-package s)
 
-(defun user:emacs-init-time ()
+(defun user::emacs-init-time ()
   (message "Emacs init time %s" (emacs-init-time)))
 
-(add-hook 'emacs-startup-hook #'user:emacs-init-time)
+(add-hook 'emacs-startup-hook #'user::emacs-init-time)
 
 (defadvice locate (around modify-buffer-name activate)
   (let ((locate-buffer-name (format "*Locate %s*" search-string)))
@@ -71,7 +71,8 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
  ;; コンパイルバッファの出力を追う (M-x compile)
  '(compilation-scroll-output 'first-error))
 
-(diminish 'auto-revert-mode)
+(when (fboundp 'diminish)
+  (diminish 'auto-revert-mode))
 
 (use-package csv-mode
   ;; netscape cooke text is tsv format

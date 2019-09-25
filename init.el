@@ -1,5 +1,9 @@
 ;;; init.el --- .emacs
 
+(when load-file-name
+  (let ((file (expand-file-name "init-minimum.el" (file-name-directory #$))))
+    (load file 'noerror)))
+
 ;; available in Emacs24.4+
 (or (fboundp 'with-eval-after-load)
     (defmacro with-eval-after-load (feature &rest body)

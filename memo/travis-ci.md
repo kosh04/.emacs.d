@@ -11,7 +11,7 @@ Emacs をインストールする方法は幾つかある
 公式が提供しているパッケージがそのまま利用可能。
 オプションで ubuntu-elisp も指定しても良い。
 
-```
+```yaml
 # .travis.yml
 addons:
   apt:
