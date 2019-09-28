@@ -1,4 +1,4 @@
-;;; config/display --- 表示関係
+;;; config/appearance --- 表示と外観
 
 ;(setq inhibit-startup-screen t)
 
@@ -44,10 +44,10 @@
     (((class color) (background dark) (type graphic)) ; dark means "emacs -rv" or dark-theme
      :box (:line-width -1 :style released-button)
      :background "#6846A5"              ; 本紫
-     :foreground "brightwhite")
+     :foreground "gray95")
     (((class color) (type tty))		; tty means "emacs -nw"
      :background "#0067C0"              ; 青 (JIS)
-     :foreground "brightwhite")
+     :foreground "gray95")
     (t :inverse-video t))))
 
 (use-package nyan-mode
