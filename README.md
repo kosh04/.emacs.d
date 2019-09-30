@@ -36,7 +36,7 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 - Platform
   - Windows ([NTEmacs64](https://github.com/chuntaro/NTEmacs64))
   - Linux (Debian, Ubuntu)
-  - macOS (Cocoa Emacs)
+  - macOS ([Emacs Mac port](https://bitbucket.org/mituharu/emacs-mac/src), or [Cocoa Emacs](https://emacsformacosx.com/))
 - Cask (optional. for develop site-lisp)
 
 ## Installation
