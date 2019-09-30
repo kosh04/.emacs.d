@@ -919,3 +919,7 @@ focus-out-hook
            (msg (get s 'error-message)))
        (when err
          (princ (format "Error=%S,Message=%S\n" err msg)))))))
+
+(use-package hi-lock
+  :init (global-hi-lock-mode +1)
+  :custom (hi-lock-file-patterns-policy t))

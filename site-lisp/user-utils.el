@@ -5,6 +5,8 @@
 (require 'subr-x)
 (require 'cl-lib)
 
+(declare-function json-read "json")
+
 (defalias 'standard-error-output #'external-debugging-output
   "Standard error output (stderr).
 Example:
@@ -103,7 +105,7 @@ Example:
 (defun point-of (fn)
   "FN 実行後のポイント位置を返す.
 
-(point-of #'beginning-of-buffer) => 1"
+(point-of #\\='beginning-of-buffer) => 1"
   (save-window-excursion
     (save-excursion
       (funcall fn)
@@ -129,8 +131,8 @@ association list ((key . value) ...)"
 
 (defun alist->plist (alist)
   "Translate ALIST to plist.
-property list (:key value ...)
-association list ((key . value) ...)"
+property list is (:key value ...)
+association list is ((key . value) ...)"
   (cl-labels ((keyword (sym)
                 (if (keywordp sym) sym (intern (format ":%s" sym)))))
     (let (plist)
@@ -186,7 +188,6 @@ Example:
 (defun zalgo (text &optional depth)
   "Zalgo Text Generator (incomplete)."
   (replace-regexp-in-string
-   ;;"[a-zA-Z0-9]"
    (rx alnum)
    (lambda (s)
      (concat s (with-output-to-string
@@ -219,11 +220,11 @@ Example:
     (with-help-window (help-buffer)
       (call-process emacs nil standard-output t "--help"))))
 
-(defun user/exec* (program infile &rest args)
+(defun user::exec* (program infile &rest args)
   (with-output-to-string
     (apply #'call-process program infile standard-output t args)))
 
-(defun user/exec (program input &rest args)
+(defun user::exec (program input &rest args)
   "Execute PROGRAM+ARGS, then return the result as string.
 INPUT (filename/buffer/nil) is used as a process standard input."
   (if (bufferp input)
@@ -232,10 +233,10 @@ INPUT (filename/buffer/nil) is used as a process standard input."
             (progn
               (with-temp-file infile
                 (insert-buffer-substring input))
-              (apply #'user/exec* program infile args))
+              (apply #'user::exec* program infile args))
           (and (file-exists-p infile)
                (delete-file infile))))
-    (apply #'user/exec* program input args)))
+    (apply #'user::exec* program input args)))
 
 ;; TODO: suppress other echo-area output (eldoc, etc)
 (define-minor-mode what-cursor-position-minor-mode
@@ -252,14 +253,14 @@ INPUT (filename/buffer/nil) is used as a process standard input."
         (font-xlfd-name font)
       "[Tofu]")))
 
-(defun user/process-environment-alist ()
+(defun user::process-environment-alist ()
   (mapcar (lambda (e)
             (if-let ((pos (seq-position e ?=)))
                 (cons (substring e 0 pos) (substring e (1+ pos)))
               (cons e nil)))
           process-environment))
 
-(defun user/jump-to-env-directory (env-name)
+(defun user::jump-to-env-directory (env-name)
   "環境変数 `ENV-NAME' が示すディレクトリにジャンプします."
   (interactive
    (list (completing-read "Jump to Env Directory: "
@@ -267,7 +268,7 @@ INPUT (filename/buffer/nil) is used as a process standard input."
             (pcase-lambda (`(,_name . ,val))
               (and (stringp val)
                    (file-directory-p val)))
-            (user/process-environment-alist)))))
+            (user::process-environment-alist)))))
   (dired (getenv env-name)))
 
 (defun iterate-text-prop (prop func)
@@ -312,6 +313,15 @@ URL `http://emacs.g.hatena.ne.jp/kiwanami/20110809/1312877192'"
     (with-temp-buffer
       (url-insert-file-contents url)
       (json-read))))
+
+(defun user::url-parse (url)
+  "クエリ文字列を含めたURLの解析を行います.
+Return-Type => ((urlobj struct-url) . (query alist))"
+  (pcase-let* ((urlobj (url-generic-parse-url url))
+               (`(,path . ,query-string) (url-path-and-query urlobj))
+               (query (if query-string (url-parse-query-string query-string))))
+    (setf (url-filename urlobj) path)
+    (cons urlobj query)))
 
 (provide 'user-utils)
 

@@ -29,20 +29,20 @@
    tabbar-scroll-left-button '(("") "")
    tabbar-scroll-right-button '(("") ""))
 
-  ;; 外観の変更
+  ;; 外観の変更 (フラットな感じで)
   ;; TODO :custom-face
   (set-face-attribute 'tabbar-default nil
                       :family (face-attribute 'default :family)
                       :background (face-attribute 'mode-line-inactive :background)
-                      :height 0.9)
+                      :height 0.8)
 
   (set-face-attribute 'tabbar-unselected nil
                       :background (face-attribute 'mode-line-inactive :background)
                       :foreground (face-attribute 'mode-line-inactive :foreground)
-                      :box nil)
+                      :box '(:line-width -1 :style released-button))
 
   (set-face-attribute 'tabbar-selected nil
                       :background (face-attribute 'mode-line :background)
                       :foreground (face-attribute 'mode-line :foreground)
-                      :box nil)
+                      :box '(:line-width -1 :style released-button))
   )
