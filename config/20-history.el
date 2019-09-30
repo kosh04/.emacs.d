@@ -36,9 +36,10 @@
 ;; FIXME: NTEmacs(win)/Cygwin(unix) は .emacs.desktop を共有できないため分ける必要がある
 (use-package desktop
   :init (desktop-save-mode)
-  ;;:custom
+  :custom
   ;;(desktop-load-locked-desktop nil)
-  ;;(desktop-restore-frames nil)
+  (desktop-restore-frames nil)
+  ;;(desktop-restore-in-current-display nil)
   :config
   (add-to-list 'desktop-globals-to-save 'file-name-history)
   ;; WARNING: 循環リストを含むコマンドを保存しようとすると無限ループの可能性あり '#0=(x . #0#)
