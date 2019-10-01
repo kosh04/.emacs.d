@@ -66,13 +66,15 @@
              (ov (make-overlay (match-beginning n) (match-end n)))
              (s  (match-string n))
              (ss (funcall format s))
-             (rgb (mod (sxhash s) #xffffffffffff)))
-        (setq rgb (logand rgb #x000000ffffff))
+             ;; unique-like color name from text object
+             (color (let* ((colors (defined-colors))
+                           (n (mod (sxhash s) (length colors))))
+                      (nth n colors))))
         (push ov -overlays)
         (setf (overlay-get ov 'display) ss)
-        (setf (overlay-get ov 'face) `(:underline t :background ,(format "#%x" rgb)))
+        (setf (overlay-get ov 'face) `(:underline t :background ,color))
         (setf (overlay-get ov 'mouse-face) 'highlight
-              (overlay-get ov 'help-echo) s)
+              (overlay-get ov 'help-echo) (format "text:%s\ncolor:%s" s color))
         ;; do u like rainbow?
         ;; (require 'rainbow-identifiers)
         ;; (let* ((hash (rainbow-identifiers--hash-function s))

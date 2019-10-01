@@ -323,6 +323,22 @@ Return-Type => ((urlobj struct-url) . (query alist))"
     (setf (url-filename urlobj) path)
     (cons urlobj query)))
 
+(defun user::unique-color-name (obj)
+  "Return a unique-like supported color name from OBJ."
+  (let* ((colors (defined-colors))
+         (n (mod (sxhash obj) (length colors))))
+    (nth n colors)))
+
+(defun user::unique-color-hex (obj)
+  "Return a unique-like hexadecimal color identifier from OBJ."
+  (let* ((ncolors (display-color-cells))
+         (rgb (mod (sxhash obj) (1- ncolors)))
+         (fmt (cond
+                ((= ncolors 16777216) "#%06x") ; 24-bit #RRGGBB
+                ((= ncolors      256) "#%03x") ; 8-bit  #RGB
+                )))
+    (format fmt rgb)))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

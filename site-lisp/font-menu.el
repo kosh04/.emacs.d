@@ -133,11 +133,11 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
            do (when font ;; isnt it tofu character?
                 (let* ((name (font-xlfd-name font))
                        (ov (make-overlay pos next)))
-                  (setf (overlay-get ov 'face)
-                        (cond ((string-match (regexp-quote (format "-%s-" font-family)) name) nil)
-                              (t (let ((rgb (mod (sxhash name) #xffffffffffff)))
-                                   ;;(setq rgb (logand rgb #x000000ffffff))
-                                   `(:background ,(format "#%x" rgb))))))
+                  (unless (string-match (regexp-quote (format "-%s-" font-family)) name)
+                    (let* ((colors (defined-colors))
+                           (n (mod (sxhash font) (length colors)))
+                           (color (nth n colors)))
+                      (setf (overlay-get ov 'face) `(:background ,color))))
                   (setf (overlay-get ov 'mouse-face) 'highlight
                         (overlay-get ov 'help-echo) (format "Font:%s" name))
                   ))
