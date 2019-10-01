@@ -923,3 +923,13 @@ focus-out-hook
 (use-package hi-lock
   :init (global-hi-lock-mode +1)
   :custom (hi-lock-file-patterns-policy t))
+
+;; `list-colors-display' のように `defined-colors' を一覧表示
+(with-current-buffer (get-buffer-create "*Colors (Hexadecimal)*")
+  (save-excursion
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (dolist (color (mapcar 'color-complement-hex (defined-colors)))
+        (insert (propertize color 'face `(:background ,color)))
+        (insert "\n"))))
+  (display-buffer (current-buffer)))
