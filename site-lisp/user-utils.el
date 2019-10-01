@@ -289,7 +289,6 @@ URL `http://emacs.g.hatena.ne.jp/kiwanami/20110809/1312877192'"
     (let ((print-escape-newlines t))
       (and val (message ">> %S : %S" val (buffer-substring-no-properties begin end))))))
 
-
 (defun shredder (string)
   "文字列 STRING を伏せ字に変換します."
   (replace-regexp-in-string "[[:alnum:]]" "*" string))
@@ -338,6 +337,20 @@ Return-Type => ((urlobj struct-url) . (query alist))"
                 ((= ncolors      256) "#%03x") ; 8-bit  #RGB
                 )))
     (format fmt rgb)))
+
+(defun gc-with-message ()
+  "Show memory usage.
+See URL `https://www.reddit.com/r/emacs/comments/ck4zb3/'
+Or `chart-emacs-storage'"
+  (interactive)
+  (display-message-or-buffer
+   (cl-loop for (name size used free) in (garbage-collect)
+            for used = (* used size)
+            for free = (* (or free 0) size)
+            for total = (file-size-human-readable (+ used free))
+            for used = (file-size-human-readable used)
+            for free = (file-size-human-readable free)
+            concat (format "%s: %s + %s = %s\n" name used free total))))
 
 (provide 'user-utils)
 

@@ -933,3 +933,15 @@ focus-out-hook
         (insert (propertize color 'face `(:background ,color)))
         (insert "\n"))))
   (display-buffer (current-buffer)))
+
+;; [2019-09-27] epg.el:epg--start
+;; https://emba.gnu.org/emacs/emacs/blob/emacs-26/lisp/epg.el#L647-L663
+;; プロセスの標準エラー出力を `make-pipe-process' に渡しているが :coding が指定されていないため
+;; gpg4win では sjis 出力が文字化けする
+;; ロケールを変更する回避策はあるが万全ではない
+(defun user::epg-reset-locale (f &rest args)
+  (let ((process-environment
+         (copy-sequence process-environment)))
+    (setf (getenv "LANG") "C")
+    (apply f args)))
+(advice-add 'epg--start :around 'user::epg-reset-locale)
