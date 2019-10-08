@@ -151,10 +151,11 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
        compilation-filter-start (point))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 
-;; 一行に長いファイル によるパフォーマンス低下をなんとかする (min.js,json etc)
+;; 一行に長いファイルによるパフォーマンス低下を抑える (min.js,json etc)
 ;; https://www.emacswiki.org/emacs/SoLong
 (use-package so-long
-  ;;:load-path "../site-lisp/vendor"
+  :load-path "site-lisp/vendor"
+  :if (fboundp 'global-so-long-mode)
   :init (global-so-long-mode)
   :config
   (add-to-list 'so-long-target-modes 'json-mode))
@@ -170,7 +171,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; モードラインのマイナーモードを纏める ;-)
 (use-package minions
   :if (fboundp 'minions-mode)
-  :hook (after-init . minions-mode))
+  :init (minions-mode +1))
 
 (use-package calendar
   :bind (("C-x t c" . calendar)
@@ -183,9 +184,10 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   (calendar-mark-holidays-flag t))
 
 (use-package keyfreq
+  :if (fboundp 'keyfreq-mode)
+  :init  (keyfreq-mode +1)
   :bind ([f1 f2] . keyfreq-show)
   :config
-  (keyfreq-mode +1)
   (advice-add 'keyfreq-show
               :after
               (lambda (&rest _)
