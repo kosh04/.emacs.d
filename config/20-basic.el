@@ -15,10 +15,11 @@
 
 (add-to-list 'completion-ignored-extensions ".exe")
 
-;; クリックで URL を開く
+;; URL クリックでブラウザを開く
 (add-hook 'text-mode-hook 'goto-address-mode)
 (add-hook 'prog-mode-hook 'goto-address-prog-mode)
 
+;; バッファ上で URL を開けるようになる
 (url-handler-mode +1)
 
 ;; `what-cursor-position' [C-u C-x =]

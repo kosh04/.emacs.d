@@ -180,6 +180,6 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
       (font-family-menu-mode)
       (tabulated-list-init-header)
       (tabulated-list-print))
-    (display-buffer buffer)))
+    (pop-to-buffer buffer)))
 
 (provide 'font-menu)

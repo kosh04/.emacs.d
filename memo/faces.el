@@ -49,7 +49,7 @@
 (face-font 'default)
 ;;=> "-outline-Consolas-normal-normal-normal-mono-15-*-*-*-c-*-iso8859-1"
 
-;; 上書き可能な defface
+;; 上書き可能な defface (C-M-x `eval-defun' で代用可能)
 ;; http://paste.lisp.org/display/90293
 (defmacro defface! (face spec doc &rest args)
   `(custom-declare-face-1 ',face ,spec ,doc ,@args))
@@ -78,3 +78,11 @@
   "URLのface"
   :group 'font-lock-faces)
 (setf (get 'url 'face-alias) 'url-face)
+
+;; `defface' の "face spec" ってどうやって調べるの？
+(frame-parameter nil 'background-mode) ;=> 'light or 'dark
+(display-color-cells)                  ;=> 16777216 (24-bit color)
+;; dark-mode, light-mode 切り替え
+;; あるいは起動オプションの --reverse-video, -r, rv
+(setf frame-background-mode 'dark)
+(mapc #'frame-set-background-mode (frame-list))

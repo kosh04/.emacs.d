@@ -3,7 +3,7 @@
 (use-package pocket-reader
   ;; [2019-05-18] コードを簡略化しようとしてforkしたはいいが割に合わなさそうだったので諦めた
   ;; 動かなくなったら元パッケージを利用するように
-  :load-path "../site-lisp/pocket-reader"
+  :load-path "site-lisp/pocket-reader"
   :custom
   ;; Org 利用してない
   (pocket-reader-open-url-default-function #'eww)
@@ -32,7 +32,7 @@
 
 (use-package getpocket
   :pin #:manual
-  :load-path "../site-lisp/getpocket"
+  :load-path "site-lisp/getpocket"
   :commands (getpocket)
   :config
   (getpocket-debug-mode +1))
