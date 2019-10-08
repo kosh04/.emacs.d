@@ -9,6 +9,8 @@
 (setf (symbol-function 'git-grep) #'vc-git-grep)
 (setf (getenv "GIT_PAGER") "cat")
 
+(global-set-key (kbd "C-x v @") 'vc-git-grep)
+
 (defun user::open-repository-url (&optional action)
   "現在開いているgitリポジトリのリモートURLを表示します."
   (interactive)

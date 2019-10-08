@@ -1,3 +1,4 @@
+;; -*- no-byte-compile: t -*-
 ((nil
   ;; M-x bug-reference-prog-mode
   (bug-reference-bug-regexp . "\\(?:issue\\|pull\\) ?#\\(?2:[0-9]+\\)")
