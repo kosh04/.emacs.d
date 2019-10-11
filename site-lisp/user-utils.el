@@ -352,6 +352,18 @@ Or `chart-emacs-storage'"
             for free = (file-size-human-readable free)
             concat (format "%s: %s + %s = %s\n" name used free total))))
 
+;; `defface' の "face spec" ってどうやって調べるの？
+;; (user::face-spec-display)
+;; => ((type mac) (class color) (background dark) (min-colors 16777216))
+(defun user::face-spec-display (&optional frame)
+  "Return \"face spec\" for current match."
+  `((type ,(window-system frame))
+    (class ,(frame-parameter frame 'display-type))
+    (background ,(frame-parameter frame 'background-mode))
+    (min-colors ,(display-color-cells frame))
+    ;;(supports ,(display-supports-face-attributes-p ATTRIBUTES))
+    ))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

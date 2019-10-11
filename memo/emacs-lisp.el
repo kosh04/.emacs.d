@@ -945,3 +945,8 @@ focus-out-hook
     (setf (getenv "LANG") "C")
     (apply f args)))
 (advice-add 'epg--start :around 'user::epg-reset-locale)
+
+;; 連想リストをパラメータ名順でソート
+(sort (frame-parameters)
+      (pcase-lambda (`(,param-x . ,_) `(,param-y . ,_))
+        (string< (symbol-name param-x) (symbol-name param-y))))
