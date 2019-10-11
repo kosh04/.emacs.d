@@ -64,3 +64,5 @@
 
 ;; or C-u q (in view-mode)
 ;;(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
+(global-set-key (kbd "<f1> A") #'apropos)
