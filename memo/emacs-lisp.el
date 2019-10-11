@@ -933,3 +933,8 @@ focus-out-hook
         (insert (propertize color 'face `(:background ,color)))
         (insert "\n"))))
   (display-buffer (current-buffer)))
+
+;; 連想リストをパラメータ名順でソート
+(sort (frame-parameters)
+      (pcase-lambda (`(,param-x . ,_) `(,param-y . ,_))
+        (string< (symbol-name param-x) (symbol-name param-y))))
