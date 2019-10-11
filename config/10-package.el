@@ -54,6 +54,8 @@
   :custom
   (use-package-verbose t)
   (use-package-enable-imenu-support t)
+  (use-package-ignore-unknown-keywords t)
+  (use-package-expand-minimally t)
   ;; 初回起動時は自動インストールしたい
   (use-package-always-ensure
    (if (getenv "TRAVIS") nil t))

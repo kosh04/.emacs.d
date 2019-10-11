@@ -35,7 +35,8 @@
 ;;  '(init-loader-nw-regexp )
 ;;  )
 
-(load (locate-user-emacs-file "private.el") 't)
+;; マシン固有の設定 (private)
+(load (locate-user-emacs-file (format "init-%s.el" (system-name))) t)
 
 (provide 'init-el)
 ;;; init.el ends here

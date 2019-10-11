@@ -11,6 +11,7 @@
 ;; since Emacs25
 (if (fboundp 'horizontal-scroll-bar-mode)
     (horizontal-scroll-bar-mode -1))
+;;(scroll-bar-mode -1)
 
 ;; Frame
 (add-to-list 'default-frame-alist '(alpha . (0.90 0.90)))
@@ -45,9 +46,12 @@
      :box (:line-width -1 :style released-button)
      :background "#6846A5"              ; 本紫
      :foreground "gray95")
-    (((class color) (type tty))		; tty means "emacs -nw"
+    (((class color) (min-colors 16777216) (type tty)) ; tty means "emacs -nw"
      :background "#0067C0"              ; 青 (JIS)
      :foreground "gray95")
+    (((class color) (min-colors 256) (type tty))
+     :background "blue"
+     :foreground "grey80")
     (t :inverse-video t))))
 
 (use-package nyan-mode

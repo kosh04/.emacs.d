@@ -1,4 +1,5 @@
 ;; Auto-generated file; don't edit
+;; -*- no-byte-compile: t -*-
 ((:url "https://www.gnu.org/software/emacs/" :title "GNU Emacs - GNU Project" :time "Sat Aug 31 17:00:43 2019")
  (:url "https://news.ycombinator.com/" :title "Hacker News" :time "Sat Jun 22 04:03:34 2019")
  (:url "https://www.gnu.org/software/emacs/manual/" :title "GNU Emacs Manuals Online - GNU Project" :time "Tue Mar 12 15:12:50 2019")

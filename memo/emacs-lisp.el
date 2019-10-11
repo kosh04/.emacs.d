@@ -933,3 +933,34 @@ focus-out-hook
         (insert (propertize color 'face `(:background ,color)))
         (insert "\n"))))
   (display-buffer (current-buffer)))
+
+;; /etc/X11/rgb.txt を色付してみる
+(defvar user::rgb-txt-regexp
+  (rx (: bol
+         (group #1=(: (* space) (group (** 1 3 num))) #1##1#) ; RGB
+         (* space)
+         (+? (or word space))           ; colorName
+         eol)))
+
+(defun user::rgb-txt-colorize ()
+  (let ((rgb (apply #'format "#%02x%02x%02x"
+                    (mapcar #'string-to-number
+                            (list
+                             (match-string-no-properties 2)
+                             (match-string-no-properties 3)
+                             (match-string-no-properties 4))))))
+    (put-text-property (match-beginning 1)
+                       (match-end 1)
+                       'face `(:background ,rgb))))
+
+(with-current-buffer "rgb.txt"
+  (font-lock-add-keywords nil
+     `((,user::rgb-txt-regexp (1 (user::rgb-txt-colorize)))))
+  ;; テキストプロパティを直接変更する方法もあるがバッファが modified になる
+  '(let ((inhibit-read-only t))
+     (save-excursion
+       (goto-char (point-min))
+       (while (re-search-forward user::rgb-txt-regexp nil t)
+         (user::colorize-rgb)))
+     (set-buffer-modified-p nil)
+     )))

@@ -29,8 +29,9 @@
   (company-lsp-enable-recompletion nil))
 
 ;; https://github.com/joaotavora/eglot
-(require 'eglot nil t)
+;;(require 'eglot nil t)
 (use-package eglot
+  :after go-mode
   :config
   ;; NOTE: default (go-mode "go-langserver" ...)
   (add-to-list 'eglot-server-programs '(go-mode "gopls"))

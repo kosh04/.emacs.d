@@ -116,6 +116,7 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
   "Font Family Menu"
   "Major mode for listing the available font families."
   (let ((ff (font-family-list)))
+    (setq ff (mapcar (lambda (font) (decode-coding-string font 'utf-8)) ff))
     (setq ff (delete-dups ff))
     (setq ff (sort ff #'(lambda (x y) (string< (upcase x) (upcase y)))))
     (setq tabulated-list-format [("Name" 35 t)
