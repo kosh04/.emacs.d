@@ -1,6 +1,35 @@
 ;;; config/tabbar
 
+;; new feature tabs (emacs-27+)
+(use-package tab-bar
+  :ensure nil
+  :if (version<= "27.0" emacs-version)
+  :init (tab-bar-mode +1)
+  :bind (("C-x 6 l" . tab-bar-list)
+         ("C-x 6 b" . tab-bar-select-tab)
+         ;;("C-x 6 o" . tab-bar-switch-to-next-tab)
+         ;;("C-x 6 p" . tab-bar-switch-to-prev-tab)
+         ("C-x C-." . tab-next)
+         ("C-x C-," . tab-previous))
+  :config
+  (set-face-attribute 'tab-bar nil :height 1.0)
+  ;;(set-face-attribute 'tab-bar-tab nil :inherit 'header-line)
+  (set-face-attribute 'tab-bar-tab nil :inherit 'success)
+  (set-face-attribute 'tab-bar-tab-inactive nil :foreground (face-foreground 'default) :background (face-background 'default) :inverse-video t)
+  )
+
+(use-package tab-line
+  :ensure nil
+  :if (version<= "27.0" emacs-version)
+  :init (global-tab-line-mode +1)
+  :config
+  (set-face-attribute 'tab-line-tab nil :inherit 'warning)
+  ;;(set-face-attribute 'tab-line-tab nil :background "#00F" :foreground (face-background 'highlight))
+  (set-face-attribute 'tab-line-tab-inactive nil :foreground (face-foreground 'default) :background (face-background 'default) :inverse-video t)
+  )
+
 (use-package tabbar
+  :if (not (version<= "27.0" emacs-version))
   :hook
   (emacs-startup . tabbar-mode)
 
@@ -9,6 +38,7 @@
   (tabbar-separator '(0.8))
 
   :config
+  (tabbar-mwheel-mode -1)
   (global-set-key (kbd "C-x C-.") 'tabbar-forward-tab)
   (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
   (global-set-key [C-tab]   'tabbar-forward-group)
