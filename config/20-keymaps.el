@@ -23,16 +23,23 @@
 (global-set-key (kbd "C-x t o") 'ff-find-related-file)
 (global-set-key (kbd "C-x t n") 'display-line-numbers-mode)
 
-(global-set-key (kbd "C-x t u")
-  (lambda ()
-    (interactive)
-    (let ((bufname "*URL-DEBUG*"))
-      (if url-debug
-          (and (find-buffer bufname)
-               (kill-buffer bufname))
-        (display-buffer (get-buffer-create bufname))))
-    (setq url-debug (not url-debug))
-    (message "url-debug=%s" url-debug)))
+(defun user::toggle-url-debug ()
+  (interactive)
+  (let ((bufname "*URL-DEBUG*"))
+    (if url-debug
+        (progn
+          ;; restore windows configuration
+          (let ((val (get 'url-debug 'current-window-configuration)))
+            (if val (set-window-configuration val)))
+          (if (find-buffer bufname)
+              (kill-buffer bufname)))
+      (progn
+        ;; save window configuration
+        (setf (get 'url-debug 'current-window-configuration) (current-window-configuration))
+        (display-buffer (get-buffer-create bufname)))))
+  (setq url-debug (not url-debug))
+  (message "url-debug=%s" url-debug))
+(global-set-key (kbd "C-x t u") 'user::toggle-url-debug)
 
 ;;(global-set-key [f11] 'toggle-frame-fullscreen)
 (global-set-key [f11] 'toggle-frame-maximized)
