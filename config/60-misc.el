@@ -157,6 +157,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :load-path "site-lisp/vendor"
   :if (fboundp 'global-so-long-mode)
   :init (global-so-long-mode)
+  ;;:preface (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")
   :config
   (add-to-list 'so-long-target-modes 'json-mode))
 
@@ -193,3 +194,12 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
               (lambda (&rest _)
                 (with-current-buffer keyfreq-buffer
                   (view-mode)))))
+
+(use-package chart
+  :commands
+  (chart-test-it-all
+   chart-file-count
+   chart-space-usage
+   chart-emacs-storage
+   chart-emacs-lists
+   chart-rmail-from))

@@ -38,12 +38,13 @@
   (tabbar-separator '(0.8))
 
   :config
-  (tabbar-mwheel-mode -1)
-  (global-set-key (kbd "C-x C-.") 'tabbar-forward-tab)
-  (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
-  (global-set-key [C-tab]   'tabbar-forward-group)
-  (global-set-key [C-S-tab] 'tabbar-backward-group)
-
+  '(progn
+   (tabbar-mwheel-mode -1)
+   (global-set-key (kbd "C-x C-.") 'tabbar-forward-tab)
+   (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
+   (global-set-key [C-tab]   'tabbar-forward-group)
+   (global-set-key [C-S-tab] 'tabbar-backward-group)
+   )
   ;; kill-buffer した後に戻るバッファが変わるのを抑える
   (add-hook 'tabbar-init-hook
             (lambda ()

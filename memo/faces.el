@@ -79,10 +79,7 @@
   :group 'font-lock-faces)
 (setf (get 'url 'face-alias) 'url-face)
 
-;; `defface' の "face spec" ってどうやって調べるの？
-(frame-parameter nil 'background-mode) ;=> 'light or 'dark
-(display-color-cells)                  ;=> 16777216 (24-bit color)
 ;; dark-mode, light-mode 切り替え
 ;; あるいは起動オプションの --reverse-video, -r, rv
-(setf frame-background-mode 'dark)
-(mapc #'frame-set-background-mode (frame-list))
+(custom-set-variables
+ '(frame-background-mode 'dark))

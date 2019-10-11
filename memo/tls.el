@@ -62,3 +62,27 @@
 (defun user/disable-gnutls (f &rest args) nil)
 (advice-add 'gnutls-available-p :around #'user/disable-gnutls)
 ;;(advice-remove 'gnutls-available-p #'user/disable-gnutls)
+
+;; NTEmacs にて HTTPS なウェブサイトが読み取れないエラーあり
+;; e.g. (eww "https://qiita.com/")
+;; 400 Bad Request
+;; The plain HTTP request was sent to HTTPS port
+
+;; (url-https URL CALLBACK CBARGS)
+;; -> (url-http URL CALLBACK RETRY-BUFFER 'tls)
+;; -> (url-http-find-free-connection HOST PORT 'tls)
+;; -> (url-open-stream NAME BUFFER HOST PORT 'tls)
+;; -> (open-network-stream NAME BUFFER HOST PORT :type 'tls)
+;; -> (network-stream-open-tls NAME BUFFER HOST PORT)
+(with-temp-buffer
+  (let* ((host "qiita.com")
+         (service "https")
+         (path "/")
+         (proc (open-network-stream "TLS" (current-buffer) host service))
+         ;;(proc (open-network-stream "TLS" (current-buffer) host service :type 'tls))
+         ;;(proc (open-gnutls-stream "TLS" (current-buffer) host service))
+         (header (format "GET %s HTTP/1.0\r\nHost: %s\r\n\r\n" path host)))
+    (display-buffer (process-buffer proc))
+    (process-send-string proc header)
+    (while (accept-process-output proc))
+    (buffer-string)))

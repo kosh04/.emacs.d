@@ -58,6 +58,7 @@
                        "EXT-X-I-FRAMES-ONLY" ; #EXT-X-I-FRAMES-ONLY
                        "EXT-X-MEDIA"      ; #EXT-X-MEDIA:<attribute-list>
                        "EXT-X-STREAM-INF" ; #EXT-X-STREAM-INF:<attribute-list>\n<URI>
+                       "EXT-X-ALLOW-CACHE"
                        )))
          '(1 'font-lock-keyword-face t))
 

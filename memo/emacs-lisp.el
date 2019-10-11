@@ -531,7 +531,9 @@ The following commands are available:
         :coding-system (process-coding-system proc)
         :command (process-command proc)
         :contact (process-contact proc)
-        :datagram-address (process-datagram-address proc)
+        :datagram-address (if (fboundp 'process-datagram-address)
+                              (process-datagram-address proc)
+                            '#:undef)
         :exit-status (process-exit-status proc)
         :filter (process-filter proc)
         :sentinel (process-send-eof proc)
@@ -963,4 +965,21 @@ focus-out-hook
        (while (re-search-forward user::rgb-txt-regexp nil t)
          (user::colorize-rgb)))
      (set-buffer-modified-p nil)
-     )))
+     ))
+
+;; [2019-09-27] epg.el:epg--start
+;; https://emba.gnu.org/emacs/emacs/blob/emacs-26/lisp/epg.el#L647-L663
+;; プロセスの標準エラー出力を `make-pipe-process' に渡しているが :coding が指定されていないため
+;; gpg4win では sjis 出力が文字化けする
+;; ロケールを変更する回避策はあるが万全ではない
+(defun user::epg-reset-locale (f &rest args)
+  (let ((process-environment
+         (copy-sequence process-environment)))
+    (setf (getenv "LANG") "C")
+    (apply f args)))
+(advice-add 'epg--start :around 'user::epg-reset-locale)
+
+;; 連想リストをパラメータ名順でソート
+(sort (frame-parameters)
+      (pcase-lambda (`(,param-x . ,_) `(,param-y . ,_))
+        (string< (symbol-name param-x) (symbol-name param-y))))
