@@ -2,10 +2,14 @@
 
 ;; NOTE: lisp-interaction-mode は emacs-lisp-mode の子モードのため hook が継承される
 
-(add-to-list
- 'auto-mode-alist
+(define-derived-mode user::emacs-lisp-dataset-mode
+  emacs-lisp-mode "elisp-dataset"
+  ;; surpress flycheck linter
+  (setq-local no-byte-compile t))
+
+(add-to-list 'auto-mode-alist
  (cons (rx (or "Cask" "abbrev_defs" "recentf" "bookmarks") eos)
-       'emacs-lisp-mode))
+       'user::emacs-lisp-dataset-mode))
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-x C-r") 'eval-region)
 ;; (define-key lisp-interaction-mode-map (kbd "C-x C-r") 'eval-region)
