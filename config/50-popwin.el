@@ -1,6 +1,7 @@
 ;; config/popwin.el
 
 (use-package popwin
+  :disabled
   :init (require 'popwin nil t)
   :config
   (popwin-mode +1)

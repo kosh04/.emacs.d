@@ -37,7 +37,7 @@
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
-  :if (not (locate-library "xref")) ; or (version< emacs-version "25.1")
+  :if (not (fboundp 'xref-find-definitions)) ; or (version< emacs-version "25.1")
   :diminish elisp-slime-nav-mode
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)

@@ -1,12 +1,10 @@
 ;;; config/workspace
 
-;; workspace / window-configuration manager
+;; workspace, window-configuration manager
 ;; see also config/50-tabbar.el
 
 (use-package eyebrowse
-  :bind
-  ("<C-tab>"   . eyebrowse-next-window-config)
-  ("<C-S-tab>" . eyebrowse-prev-window-config)
+  :init (eyebrowse-mode t)
   :custom
   (eyebrowse-wrap-around t)
   :custom-face
