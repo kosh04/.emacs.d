@@ -357,7 +357,7 @@ Or `chart-emacs-storage'"
 ;; => ((type mac) (class color) (background dark) (min-colors 16777216))
 (defun user::face-spec-display (&optional frame)
   "Return \"face spec\" for current match."
-  `((type ,(window-system frame))
+  `((type ,(or (window-system frame) 'tty))
     (class ,(frame-parameter frame 'display-type))
     (background ,(frame-parameter frame 'background-mode))
     (min-colors ,(display-color-cells frame))
