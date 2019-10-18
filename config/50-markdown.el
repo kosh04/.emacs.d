@@ -22,7 +22,7 @@
 
 ;; Hugo - https://gohugo.io/
 (use-package easy-hugo
-  :bind ("C-x t h" . easy-hugo)
+  :bind ("C-c t h" . easy-hugo)
   :custom
   (easy-hugo-basedir "~/Dropbox/Documents/bookshelf")
   :hook (easy-hugo-mode . hl-line-mode))

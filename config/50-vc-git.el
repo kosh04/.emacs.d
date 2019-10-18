@@ -59,7 +59,7 @@ See URL `https://github.com/magit/magit/issues/3686'"
   ;;:if (executable-find "git")
   :pin #:melpa-stable
   :bind (("C-x g" . magit-status)
-         ("C-x t g" . magit-list-repositories)
+         ("C-x G" . magit-list-repositories)
          :map magit-mode-map
          ("&" . user::open-repository-url)
          :map magit-repolist-mode-map

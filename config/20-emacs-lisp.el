@@ -76,7 +76,7 @@
 (setf (get 'font-lock-add-keywords 'lisp-indent-function) 1)
 (setf (get 'completing-read 'lisp-indent-function) 1)
 
-(defun toggle-scratch-buffer (&optional other-window)
+(defun user::toggle-scratch-buffer (&optional other-window)
   "scratchバッファを表示する.
 引数 OTHER-WINDOW を指定した場合はポップアップ表示する."
   (interactive "P")
@@ -86,11 +86,6 @@
       (switch-to-buffer scratch))
     (or (eq major-mode initial-major-mode)
         (funcall initial-major-mode))))
-
-(global-set-key (kbd "C-x t s") 'toggle-scratch-buffer)
-
-;; REPL
-(global-set-key (kbd "C-x t l") 'ielm)
 
 ;; ParEdit
 ;; http://www.emacswiki.org/emacs/ParEdit

@@ -19,7 +19,7 @@
   (interactive)
   (insert (iso8601)))
 
-(global-set-key (kbd "C-c t") 'insert-time)
+;;(global-set-key (kbd "C-c t") 'insert-time)
 
 ;; C-w で直前の単語を削除する (Bash 風)
 (define-key minibuffer-local-map (kbd "C-w") 'delete-backward-word)
@@ -175,7 +175,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :init (minions-mode +1))
 
 (use-package calendar
-  :bind (("C-x t c" . calendar)
+  :bind (("C-c t c" . calendar)
          :map calendar-mode-map
          ("f" . calendar-forward-day)
          ("b" . calendar-backward-day)
