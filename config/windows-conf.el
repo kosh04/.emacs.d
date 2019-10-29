@@ -1,11 +1,5 @@
 ;;; config/windows-conf
 
-;; Font
-
-(create-fontset-from-ascii-font "Sarasa Term J-10.5" nil "coding")
-(add-to-list 'default-frame-alist '(font . "fontset-coding"))
-;;(setq use-default-font-for-symbols nil)
-
 ;; NOTE: gnutls.c: [1] Note that the security level of the
 ;; Diffie-Hellman key exchange has been lowered to 256 bits and this
 ;; may allow decryption of the session data

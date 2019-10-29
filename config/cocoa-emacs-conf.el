@@ -1,10 +1,5 @@
 ;;; config/cocoa-emacs-conf.el
 
-;; Font
-(when window-system
-  (create-fontset-from-ascii-font "Sarasa Term J:pixelsize=16" nil "coding")
-  (add-to-list 'default-frame-alist '(font . "fontset-coding")))
-
 ;; [alt] <-> [command]
 (custom-set-variables
  '(mac-option-modifier  'alt)

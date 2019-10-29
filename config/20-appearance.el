@@ -13,9 +13,20 @@
     (horizontal-scroll-bar-mode -1))
 ;;(scroll-bar-mode -1)
 
+;; Font
+(when (and window-system (font-info "Sarasa Term J"))
+  ;; TODO: マシン毎にフォントサイズを調整したい
+  ;; "Sarasa Term J:pixelsize=16"
+  ;; "Sarasa Term J-10.5"
+  ;; "Sarasa Term J:pixelsize=16:weight=regular:slant=normal"
+  ;; "更紗等幅ゴシック J"
+  (create-fontset-from-ascii-font "Sarasa Term J" nil "coding")
+  (add-to-list 'default-frame-alist '(font . "fontset-coding")))
+
 ;; Frame
 (add-to-list 'default-frame-alist '(alpha . (0.90 0.90)))
 ;;(setf (frame-parameter nil 'alpha) '(0.90 0.90))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; アクティブでないウィンドウのカーソルを表示/非表示
 ;;(setq-default cursor-in-non-selected-windows nil)
