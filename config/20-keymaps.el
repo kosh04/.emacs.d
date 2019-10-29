@@ -44,7 +44,6 @@
     (define-key map "u" 'user::toggle-url-debug)
     (define-key map "s" 'user::toggle-scratch-buffer)
     (define-key map "l" 'ielm)
-    (define-key map "x" 'toggle-ruler)
     map))
 (global-set-key (kbd "C-c t") 'ctl-c-t-prefix)
 
