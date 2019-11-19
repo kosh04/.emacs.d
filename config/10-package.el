@@ -72,4 +72,5 @@
   (paradox-execute-asynchronously t)
   ;; "⛺" を使いたいが `tabulated-list' は今のところ emoji 非対応らしい
   (paradox-homepage-button-string "⌂")
+  (paradox-column-width-version 13)     ; melpa 20190123.4567 (13 characters)
   )

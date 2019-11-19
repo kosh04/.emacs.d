@@ -22,7 +22,7 @@
           ;; restore windows configuration
           (let ((val (get 'url-debug 'current-window-configuration)))
             (if val (set-window-configuration val)))
-          (if (find-buffer bufname)
+          (if (get-buffer bufname)
               (kill-buffer bufname)))
       (progn
         ;; save window configuration
@@ -71,4 +71,6 @@
 ;; or C-u q (in view-mode)
 ;;(global-set-key (kbd "C-x k") 'kill-this-buffer)
 
-(global-set-key (kbd "<f1> A") #'apropos)
+(global-set-key (kbd "<f1> A") 'apropos)
+
+;;(global-set-key (kbd "M-o") 'other-window)

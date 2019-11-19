@@ -983,3 +983,12 @@ focus-out-hook
 (sort (frame-parameters)
       (pcase-lambda (`(,param-x . ,_) `(,param-y . ,_))
         (string< (symbol-name param-x) (symbol-name param-y))))
+
+;; 行番号を現在行からの相対位置にする (度し難い..)
+(custom-set-variables
+ '(display-line-numbers-type 'relative)
+ '(display-line-numbers-current-absolute nil))
+
+;; (featurep FEATURE &optional SUBFEATURE)
+(featurep 'make-network-process '(:family ipv6))
+;;~> (member '(:family ipv6) (get 'make-network-process 'subfeatures))

@@ -16,11 +16,10 @@
 ;; Font
 (when (and window-system (font-info "Sarasa Term J"))
   ;; TODO: マシン毎にフォントサイズを調整したい
-  ;; "Sarasa Term J:pixelsize=16"
-  ;; "Sarasa Term J-10.5"
-  ;; "Sarasa Term J:pixelsize=16:weight=regular:slant=normal"
+  ;; "Sarasa Term J-10.5" (pixelsize=14)
   ;; "更紗等幅ゴシック J"
-  (create-fontset-from-ascii-font "Sarasa Term J" nil "coding")
+  (create-fontset-from-ascii-font
+   "Sarasa Term J:pixelsize=16:weight=regular:slant=normal" nil "coding")
   (add-to-list 'default-frame-alist '(font . "fontset-coding")))
 
 ;; Frame

@@ -1,6 +1,7 @@
 ;;; config/Markdown
 
 (use-package markdown-mode
+  :mode ("/README\\.md\\'" . gfm-mode)
   :custom
   ;;(markdown-fontify-code-blocks-natively t)
   (markdown-url-compose-char ?\U0001F517) ; 🔗 (LINK SYMBOL)

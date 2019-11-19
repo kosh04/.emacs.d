@@ -39,3 +39,10 @@
 
 ;; C-u C-SPC C-SPC ...
 (setq set-mark-command-repeat-pop t)
+
+;; ドキュメントの引用符に半角を使用する
+;; 全角引用符はターミナル時にテキスト表示がズレる可能性がある
+(setq text-quoting-style 'grave)
+
+;; *Help* ウィンドウ表示時にフォーカスする (q 押下で quit)
+(setq help-window-select 't)

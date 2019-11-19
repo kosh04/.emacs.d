@@ -45,6 +45,9 @@
   (with-current-buffer "*Occur*"
     (printf "%s" (buffer-string))))
 
+(defun elpa-cli/update ()
+  (error "TODO: %s" "package-update.el"))
+
 (defun main (args)
   (pcase args
     (`("list")

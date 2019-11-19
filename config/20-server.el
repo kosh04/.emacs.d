@@ -4,4 +4,6 @@
 (add-hook 'emacs-startup-hook 'server-start)
 
 ;; (custom-set-variables
-;;  '(server-use-tcp t))
+;;  '(server-use-tcp t)
+;;  '(server-window 'pop-to-buffer)
+;; )
