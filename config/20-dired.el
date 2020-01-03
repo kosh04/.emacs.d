@@ -124,6 +124,7 @@
 
 ;; interactive filter
 (use-package dired-narrow
+  ;; or `dired-narrow-fuzzy' ?
   :bind (:map dired-mode-map ("/" . dired-narrow)))
 
 ;; ファイルの中身を覗き見る (peep)

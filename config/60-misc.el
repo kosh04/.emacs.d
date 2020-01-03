@@ -19,7 +19,7 @@
   (interactive)
   (insert (iso8601)))
 
-;;(global-set-key (kbd "C-c t") 'insert-time)
+(global-set-key (kbd "C-c i t") 'insert-time)
 
 ;; C-w で直前の単語を削除する (Bash 風)
 (define-key minibuffer-local-map (kbd "C-w") 'delete-backward-word)
@@ -124,7 +124,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
      "Load time of init-loader"
      (map-keys acc) "Name"
      (map-values acc) "Time (ms)"
-     10
+     7
      (lambda (x y) (> (cdr x) (cdr y))))
     ))
 ;;(add-hook 'emacs-startup-hook 'init-loader-display-chart)

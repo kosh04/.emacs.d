@@ -46,3 +46,9 @@
 
 ;; *Help* ウィンドウ表示時にフォーカスする (q 押下で quit)
 (setq help-window-select 't)
+
+;; elpa.gnu.org とのリクエスト通信がよろしくない場合に有効？
+(custom-set-variables
+ '(gnutls-algorithm-priority
+   (if (string< emacs-version "26.3")
+       "NORMAL:-VERS-TLS1.3")))

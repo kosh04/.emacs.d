@@ -43,7 +43,9 @@
   :config
   (add-to-list 'desktop-globals-to-save 'file-name-history)
   ;; WARNING: 循環リストを含むコマンドを保存しようとすると無限ループの可能性あり '#0=(x . #0#)
-  (add-to-list 'desktop-globals-to-save 'command-history)
+  ;; そうでなくても重い...
+  ;;(add-to-list 'desktop-globals-to-save 'command-history)
+  (add-to-list 'desktop-globals-to-save 'extended-command-history)
   ;;(setq desktop-dirname user-emacs-directory) ; XXX: 上書きされている？@osx
   nil)
 

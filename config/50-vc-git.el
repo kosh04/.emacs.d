@@ -72,6 +72,8 @@ See URL `https://github.com/magit/magit/issues/3686'"
      ("~/Documents/GitHub/" . 1)
      ("~/Downloads/gitrepo/" . 1)
      (,(substitute-in-file-name "$GOPATH/src/github.com/kosh04/") . 1)))
+  ;; 履歴をコミット時刻で表示 (デフォルトはコミット時期 e.g."3 days")
+  ;;(magit-log-margin '(t "%F %T%z" magit-log-margin-width t 18))
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes)
   ;; see [$] `magit-process'
