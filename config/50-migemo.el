@@ -17,6 +17,7 @@
   (migemo-coding-system 'utf-8)  
   ;; キャッシュを有効にする
   (migemo-use-pattern-alist t)
+  (migemo-pattern-alist-file (locate-user-emacs-file "cache/migemo-pattern"))
   (migemo-use-frequent-pattern-alist t)
   ;;(migemo-pattern-alist-length 1024)
   )

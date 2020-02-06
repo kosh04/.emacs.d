@@ -23,16 +23,15 @@
 (url-handler-mode +1)
 
 ;; `what-cursor-position' [C-u C-x =]
-(custom-set-variables
- '(describe-char-unicodedata-file
-   (let ((url "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
-         (path (locate-user-emacs-file "etc/UnicodeData.txt")))
-     (unless (file-exists-p path)
-       (let ((data (with-temp-buffer
-                     (url-insert-file-contents url)
-                     (buffer-string))))
-         (write-region data nil path nil 'silent)))
-     path)))
+(let ((url "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
+      (path (locate-user-emacs-file "share/etc/UnicodeData.txt")))
+  (unless (file-exists-p path)
+    (let ((data (with-temp-buffer
+                  (url-insert-file-contents url)
+                  (buffer-string))))
+      (write-region data nil path nil 'silent)))
+  (custom-set-variables
+   `(describe-char-unicodedata-file ,path)))
 
 (setq use-dialog-box nil)
 (setq print-quoted t)
@@ -47,8 +46,8 @@
 ;; *Help* ウィンドウ表示時にフォーカスする (q 押下で quit)
 (setq help-window-select 't)
 
-;; elpa.gnu.org とのリクエスト通信がよろしくない場合に有効？
+;; *.gnu.org とのリクエスト通信がよろしくない場合 (400 Bad Request) に有効
 (custom-set-variables
  '(gnutls-algorithm-priority
-   (if (string< emacs-version "26.3")
+   (if (version< emacs-version "26.3")
        "NORMAL:-VERS-TLS1.3")))

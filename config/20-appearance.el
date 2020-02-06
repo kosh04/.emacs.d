@@ -5,8 +5,8 @@
 ;; 24.3.1@darwin にて未定義
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode -1))
-(menu-bar-mode)
-(show-paren-mode)
+(menu-bar-mode -1)
+(show-paren-mode +1)
 
 ;; since Emacs25
 (if (fboundp 'horizontal-scroll-bar-mode)
@@ -70,14 +70,15 @@
   :custom
   (nyan-bar-length 12))
 
-;; バッファ末尾の可視化 (fringe)
-;; (set-fringe-mode 5)
+;; フリンジ (fringes: 縁) に色々追加する
+;; バッファ末尾
 (setq-default indicate-empty-lines t)
+;; バッファ境界
+(setq-default indicate-buffer-boundaries 'right)
 
 ;; 行カーソル
 ;; (require 'hl-line)
 (add-hook 'help-mode-hook 'hl-line-mode)
-
 (add-hook 'tabulated-list-mode-hook 'hl-line-mode)
 (add-hook 'finder-mode-hook 'hl-line-mode)
 (add-hook 'occur-mode-hook 'hl-line-mode)

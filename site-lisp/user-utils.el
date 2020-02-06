@@ -364,6 +364,16 @@ Or `chart-emacs-storage'"
     ;;(supports ,(display-supports-face-attributes-p ATTRIBUTES))
     ))
 
+;; e.g. (radix 1234567890 36) => "#36rKF12OI"
+(declare-function math-format-radix "calc-bin")
+(defun radix (n &optional r)
+  "数値 N を 基数 R に基づいてフォーマットします.
+R のデフォルトは 10 (十進数; #10rN) です."
+  (require 'calc-bin)
+  (unless r (setq r 10))
+  (let ((calc-number-radix r))
+    (format "#%dr%s" r (math-format-radix n))))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

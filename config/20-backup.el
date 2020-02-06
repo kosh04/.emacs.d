@@ -13,7 +13,7 @@
   "Create backup files on ~/.emacs.d/var/backup/YY-MM-DD/."
   (let ((dirname (file-name-as-directory
                   (locate-user-emacs-file
-                   (format-time-string "var/backup/%Y-%m-%d/")))))
+                   (format-time-string "cache/backup/%Y-%m-%d/")))))
     (or (file-directory-p dirname)
         ;; mkdir -p DIRNAME
         (make-directory dirname t))

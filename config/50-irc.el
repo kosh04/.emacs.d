@@ -36,7 +36,7 @@
   (require 'erc-log)
   (custom-set-variables
    '(erc-log-channels-directory
-     (let ((dir (locate-user-emacs-file "var/log/erc")))
+     (let ((dir (locate-user-emacs-file "cache/erc-log")))
        (unless (file-exists-p dir)
          (make-directory dir t))
        dir))

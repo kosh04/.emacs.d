@@ -203,3 +203,9 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
    chart-emacs-storage
    chart-emacs-lists
    chart-rmail-from))
+
+;; cache directory
+(custom-set-variables
+ '(auto-save-list-file-prefix (concat user-emacs-directory "cache/auto-save-list/.saves-"))
+ '(url-configuration-directory (locate-user-emacs-file "cache/url"))
+ '(image-dired-dir (locate-user-emacs-file "cache/image-dired")))

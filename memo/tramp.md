@@ -33,7 +33,7 @@ memo/Tramp
 
 ユーザ名、ポート番号を指定する
 
-    /kosh@localhost#2222:/etc/hosts
+    /USER@localhost#2222:/etc/hosts
 
 ssh 経由で開く (デフォルトでは `scp` / `pscp` つまりファイルコピーを利用する)
 
@@ -44,3 +44,11 @@ sudo でファイルを開く
     /sudo::/path/to/file
 
     /sudo:USER@localhost:/path/to/file
+
+## デバッグ
+
+```emacs-lisp
+(custom-set-variables
+ '(tramp-use-ssh-controlmaster-options nil)
+ '(tramp-verbose 4))
+```

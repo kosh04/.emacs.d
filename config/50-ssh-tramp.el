@@ -9,4 +9,10 @@
   (ssh-config-mode
    ssh-known-hosts-mode
    ssh-authorized-keys-mode)
-  :hook (ssh-known-hosts-mode . display-line-numbers-mode))
+  :mode "\\.ssh/config_.*\\'"
+  :hook (ssh-known-hosts-mode . display-line-numbers-mode)
+  :config
+  (add-hook 'ssh-config-mode-hook
+            (lambda ()
+              (setq-default indent-tabs-mode t)))
+  )

@@ -10,10 +10,10 @@
   (tabbar-separator '(0.8))
 
   :config
-  '(progn
    (tabbar-mwheel-mode -1)
    (global-set-key (kbd "C-x C-.") 'tabbar-forward-tab)
    (global-set-key (kbd "C-x C-,") 'tabbar-backward-tab)
+  '(progn
    (global-set-key [C-tab]   'tabbar-forward-group)
    (global-set-key [C-S-tab] 'tabbar-backward-group)
    )
@@ -61,7 +61,7 @@
          ("C-x 6 ," . tab-previous)
          ("C-x 6 l" . tab-bar-list))
   :config
-  (tab-rename "*main*")
+  (tab-rename "main")
   (require 'hi-lock)
   (set-face-attribute 'tab-bar-tab nil :inherit 'hi-green)
   )

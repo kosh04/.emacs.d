@@ -992,3 +992,15 @@ focus-out-hook
 ;; (featurep FEATURE &optional SUBFEATURE)
 (featurep 'make-network-process '(:family ipv6))
 ;;~> (member '(:family ipv6) (get 'make-network-process 'subfeatures))
+
+;; scratch バッファを間違って削除しないようにロックする
+(with-current-buffer "*scratch*"
+  (emacs-lock-mode 'kill))
+
+;; 似たような文字をいっしょに検索してくれる (e.g. e=é=è, o=ö, u=ü, a=å, o=ó=ö, c=ç)
+;; Migemo と併用はできない
+;; http://extra-vision.blogspot.com/2016/10/emacs-251-isearch.html
+(setq search-default-mode #'char-fold-to-regexp)
+(setq replace-char-fold t)
+
+;; TODO: ssh-known-host-mode の font-lock が重い -> rx で書き換えてみる
