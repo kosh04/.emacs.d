@@ -154,7 +154,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; 一行に長いファイルによるパフォーマンス低下を抑える (min.js,json etc)
 ;; https://www.emacswiki.org/emacs/SoLong
 (use-package so-long
-  :load-path "site-lisp/vendor"
+  :load-path "site-lisp/_vendor"
   :if (fboundp 'global-so-long-mode)
   :init (global-so-long-mode)
   ;;:preface (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")

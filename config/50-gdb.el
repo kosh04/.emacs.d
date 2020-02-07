@@ -14,4 +14,4 @@
   (add-hook 'gdb-mode-hook #'tool-bar-mode))
 
 (use-package gud-lldb
-  :load-path "site-lisp/vendor")
+  :load-path "site-lisp/_vendor")

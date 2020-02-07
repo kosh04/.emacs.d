@@ -34,7 +34,8 @@
 
 (use-package m3u-mode
   :pin #:manual
-  :load-path "site-lisp"
+  :mode "\\.m3u8?\\'"
+  :load-path "site-lisp/m3u-mode"
   :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry))
   )
 

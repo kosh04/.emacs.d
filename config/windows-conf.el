@@ -1,5 +1,8 @@
 ;;; config/windows-conf
 
+;; Where do I put my init file?
+;; https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Location-of-init-file.html
+
 ;; NOTE: gnutls.c: [1] Note that the security level of the
 ;; Diffie-Hellman key exchange has been lowered to 256 bits and this
 ;; may allow decryption of the session data
