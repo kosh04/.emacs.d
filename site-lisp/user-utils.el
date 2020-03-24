@@ -374,6 +374,18 @@ R のデフォルトは 10 (十進数; #10rN) です."
   (let ((calc-number-radix r))
     (format "#%dr%s" r (math-format-radix n))))
 
+;; 以下のようにコマンドラインから呼び出すと任意の Unicode 文字をクリップボードにコピーできる
+;; emacsclient --eval "(copy-char)"
+(defun copy-char ()
+  "Copy characters.
+URL `https://www.reddit.com/r/emacs/comments/f2ut1v/searching_and_typing_unicode_characters_like/'"
+  (interactive)
+  (x-focus-frame (selected-frame))
+  (with-temp-buffer
+    (call-interactively 'insert-char)
+    (kill-ring-save (point-min) (point-max))
+    (message "Copy %s" (car kill-ring))))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

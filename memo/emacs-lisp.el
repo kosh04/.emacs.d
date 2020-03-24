@@ -1004,3 +1004,18 @@ focus-out-hook
 (setq replace-char-fold t)
 
 ;; TODO: ssh-known-host-mode の font-lock が重い -> rx で書き換えてみる
+
+;; なんでこれ定義したんだっけ‥？
+(with-eval-after-load 'tar-mode
+  (define-advice tar-extract (:after (&rest args))
+    (when view-read-only
+      (read-only-mode))))
+
+;; フレームの作成とコマンド実行を同時に行おうとしたが
+;; M-x 入力が前フレームに表示されてしまう不具合
+(defun user/execute-extended-command-other-frame ()
+  "Execute command (M-x) in other frame."
+  (interactive)
+  (make-frame)
+  (call-interactively 'execute-extended-command))
+(global-set-key (kbd "C-x 5 x") 'user/execute-extended-command-other-frame)

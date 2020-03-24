@@ -19,14 +19,6 @@
  '(save-place-file (locate-user-emacs-file "cache/places"))
  '(save-place-forget-unreadable-files nil))
 (save-place-mode +1)
-;; (defun user::save-alist-skip-remote ()
-;;   "HTTPなどのリモートファイルの確認が煩わしいのでスキップする."
-;;   (cl-callf2
-;;       seq-remove
-;;       (pcase-lambda (`(,file . ,_pos))
-;;         (file-remote-p file))
-;;       save-place-alist))
-;; (advice-add 'save-place-alist-to-file :before #'user::save-alist-skip-remote)
 
 (require 'recentf)
 (setq recentf-save-file (locate-user-emacs-file "cache/recentf"))

@@ -33,7 +33,8 @@
   (custom-set-variables
    `(describe-char-unicodedata-file ,path)))
 
-(setq use-dialog-box nil)
+(setq use-dialog-box nil
+      use-file-dialog nil)
 (setq print-quoted t)
 
 ;; C-u C-SPC C-SPC ...
@@ -46,7 +47,7 @@
 ;; *Help* ウィンドウ表示時にフォーカスする (q 押下で quit)
 (setq help-window-select 't)
 
-;; *.gnu.org とのリクエスト通信がよろしくない場合 (400 Bad Request) に有効
+;; *.gnu.org とのリクエスト通信がよろしくない場合 (400 Bad Request) に有効 ?
 (custom-set-variables
  '(gnutls-algorithm-priority
    (if (version< emacs-version "26.3")

@@ -25,5 +25,5 @@
 (use-package easy-hugo
   :bind ("C-c t h" . easy-hugo)
   :custom
-  (easy-hugo-basedir "~/Dropbox/Documents/bookshelf")
+  (easy-hugo-basedir "~/Documents/bookshelf")
   :hook (easy-hugo-mode . hl-line-mode))

@@ -27,6 +27,12 @@
   (define-key package-menu-mode-map (kbd "?") 'describe-package)
   (define-key package-menu-mode-map (kbd "/") 'occur))
 
+;; TODO: パッケージのブートストラップインストールをしたい
+;; (custom-set-variables
+;;  '(package-selected-packages
+;;    '(use-package names)))
+;; (package-install-selected-packages)
+
 (defun user::package-uninstall (pkg)
   "Uninstall the package PKG."
   (interactive (list (intern (completing-read "Uninstall package: " package-alist))))

@@ -1,8 +1,7 @@
 ;;; config/LSP --- Language Server Protocol
 
 (use-package lsp-mode
-  :disabled
-  :hook (go-mode . lsp)
+  :hook (go-mode . lsp-deferred)
   ;;:hook (before-save . lsp-format-buffer)
   :custom
   (lsp-auto-guess-root t)
@@ -15,14 +14,15 @@
   )
 
 (use-package lsp-ui
-  :disabled
-  :after lsp
+  :after lsp-mode
+  :custom
+  (lsp-ui-doc-delay 0.4)
   :bind (:map lsp-mode-map
               ("C-c l" . lsp-ui-imenu))
   )
 
 (use-package company-lsp
-  :after lsp
+  :after lsp-mode
   :custom
   (company-lsp-cache-candidates t) ;; always using cache
   (company-lsp-async t)

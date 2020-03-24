@@ -38,7 +38,7 @@
    '("^#\\(EXTINF\\):\\(-?[0-9]+\\.?[0-9]*\\),\\(.*\\)$" ; ? "ArtistName - TrackTitle"
      (1 'font-lock-keyword-face t)
      (2 'italic t)
-     (3 'bold t))
+     (3 'font-lock-doc-face t))
    (list (rx bol "#" (submatch
                       (or
                        "EXTM3U"

@@ -20,18 +20,18 @@
 ;; dired-x で代用可能
 ;; [C-x C-j]   dired-jump
 ;; [C-x 4 C-j] dired-jump-other-window
-(defadvice dired (around set-forcus-on-filename activate)
+(define-advice dired (:around (f &rest args) forcus-on-filename)
   "作業中のファイルにカーソルを当てる."
   (let ((file (buffer-file-name)))
-    ad-do-it
+    (apply f args)
     (if file (dired-goto-file file))))
 
 ;; [v] dired-view-file
-(defun user/read-only-mode (&rest r)
+(defun user::read-only-mode (&rest r)
   "読み取り専用でファイルを開く."
   (read-only-mode +1))
-(advice-add 'dired-find-file              :after 'user/read-only-mode)
-(advice-add 'dired-find-file-other-window :after 'user/read-only-mode)
+(advice-add 'dired-find-file              :after 'user::read-only-mode)
+(advice-add 'dired-find-file-other-window :after 'user::read-only-mode)
 
 (defun dired-copy-pathname-as-kill ()
   "ファイルのフルパスを取得."

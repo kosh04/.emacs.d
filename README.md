@@ -29,7 +29,7 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 
 ## Requirements
 
-- Emacs 25 or lator
+- Emacs 26 or lator
 - Library
   - [init-loader](https://github.com/emacs-jp/init-loader)
   - [use-package](https://github.com/jwiegley/use-package)

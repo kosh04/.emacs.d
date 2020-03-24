@@ -19,14 +19,11 @@
 ;; - M-x json-pretty-print-buffer ()
 ;; - M-x json-pretty-print (begin end)
 
-(when (featurep 'nadvice)
-  (defun json-pretty-print--use-hash-table(f &rest args)
-    "[user] {}, null を区別する."
-    (let ((json-object-type 'hash-table))
-      (apply f args)))
-  (advice-add 'json-pretty-print :around 'json-pretty-print--use-hash-table)
-  ;;(advice-remove 'json-pretty-print 'json-pretty-print--use-hash-table)
-  )
+(define-advice json-pretty-print (:around (f &rest args) use-hash-table)
+  "{}, null を区別する."
+  (let ((json-object-type 'hash-table))
+    (apply f args)))
+;;(advice-remove 'json-pretty-print #'json-pretty-print@use-hash-table)
 
 (defun json-pretty-string (json-string)
   "[user] Pretty format JSON-STRING."
