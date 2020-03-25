@@ -62,9 +62,11 @@
   (use-package-enable-imenu-support t)
   (use-package-ignore-unknown-keywords t)
   (use-package-expand-minimally t)
-  ;; 初回起動時は自動インストールしたい
+  ;; 初回起動時は自動インストールしたい (でも CI ではスキップしたい)
   (use-package-always-ensure
-   (if (getenv "TRAVIS") nil t))
+   (if (or (getenv "TRAVIS")
+           (getenv "GITHUB_ACTIONS"))
+       nil t))
   ;; 遅延ロード
   (use-package-always-defer t)
   )
