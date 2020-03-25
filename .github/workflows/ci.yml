@@ -1,0 +1,33 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        emacs_version:
+          - 25.3
+          - 26.3
+          - snapshot
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: purcell/setup-emacs@v1.0
+      with:
+        version: ${{ matrix.emacs_version }}
+
+    - name: Install Packages
+      run: make package-install
+
+    - name: Byte Compiling
+      run: make compile
+
+    - name: Testing
+      run: make test
+
+    - name: Startup
+      run: make test-startup
