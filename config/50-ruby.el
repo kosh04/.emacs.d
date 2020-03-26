@@ -1,7 +1,6 @@
 ;;; config/ruby.el
 
 (use-package inf-ruby
-  :defer t
   :init (defalias 'irb 'inf-ruby)
   :config
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)

@@ -10,6 +10,7 @@
   (add-hook 'occur-mode-hook 'next-error-follow-minor-mode))
 
 (use-package ag
+  :if (executable-find "ag")
   :custom
   (ag-highlight-search t)
   :config

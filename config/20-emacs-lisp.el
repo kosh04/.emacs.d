@@ -37,7 +37,8 @@
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
-  :if (not (fboundp 'xref-find-definitions)) ; or (version< emacs-version "25.1")
+  ;; or :if (version< emacs-version "25.1")
+  :unless (fboundp 'xref-find-definitions)
   :diminish elisp-slime-nav-mode
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
@@ -94,18 +95,16 @@
 ;; ParEdit
 ;; http://www.emacswiki.org/emacs/ParEdit
 (use-package paredit
-  :defer t
-  :disabled t
+  :disabled
   :config
-  (progn
-    (dolist (hook '(emacs-lisp-mode-hook
-                    ;;lisp-interaction-mode-hook
-                    lisp-mode-hook
-                    ielm-mode-hook
-                    scheme-mode-hook))
-      (add-hook hook 'enable-paredit-mode))
-    (require 'eldoc)
-    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)))
+  (dolist (hook '(emacs-lisp-mode-hook
+                  ;;lisp-interaction-mode-hook
+                  lisp-mode-hook
+                  ielm-mode-hook
+                  scheme-mode-hook))
+    (add-hook hook 'enable-paredit-mode))
+  (require 'eldoc)
+  (eldoc-add-command 'paredit-backward-delete 'paredit-close-round))
 
 ;; Debug
 
@@ -162,7 +161,6 @@
 
 ;; interactive macroexpand
 (use-package macrostep
-  :defer t
   :bind ("C-c RET" . macrostep-expand))
 
 ;; prettify-symbol
@@ -207,8 +205,11 @@
 ;;   (defalias 'elisp--preceding-sexp 'preceding-sexp))
 
 (use-package erefactor
-  ;;:bind (:map emacs-lisp-mode-map ("\C-c\C-v" . erefactor-map))
-  )
+  ;;:bind-keymap ("\C-c\C-v" . erefactor-map)
+  :config
+  (defalias 'erefactor-prefix erefactor-map)
+  (define-key emacs-lisp-mode-map "\C-c\C-v" 'erefactor-prefix)
+  (define-key erefactor-map "@" 'erefactor-highlight-mode))
 
 (use-package flycheck-package
   :after flycheck

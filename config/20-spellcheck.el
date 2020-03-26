@@ -20,7 +20,6 @@
 ;;(add-hook 'c-mode-hook 'flyspell-prog-mode)
 
 (use-package flymake-yaml
-  :defer t
   :after yaml-mode
   :config (add-hook 'yaml-mode-hook 'flymake-yaml-load))
 

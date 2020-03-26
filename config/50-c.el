@@ -4,7 +4,6 @@
   (add-to-list 'completion-ignored-extensions ext))
 
 (use-package cquery
-  :defer t
   :config
   (add-hook 'c-mode-hook 'lsp-cquery-enable)
   (setq cquery-executable "~/opt/bin/cquery")
@@ -13,7 +12,6 @@
 
 (use-package c-eldoc
   :disabled (featurep 'cquery)
-  :defer t
   :init (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
   :config
   (custom-set-variables
@@ -21,14 +19,12 @@
    '(c-eldoc-includes "-I. -I..")))
 
 (use-package company-c-headers
-  :defer t
   :after (company)
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
 (use-package irony
   ;;:disabled (featurep 'cquery)
-  :defer t
   :init
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'c++-mode-hook 'irony-mode)

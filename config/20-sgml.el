@@ -11,7 +11,6 @@
   (setf (symbol-function 'xml-pretty-print) 'sgml-pretty-print))
 
 (use-package sgml-mode
-  :defer t
   :bind (:map html-mode-map
               ("C-," . sgml-tag)
               ("C-." . sgml-close-tag)))

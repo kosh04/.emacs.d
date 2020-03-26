@@ -60,7 +60,6 @@
       )))
 
 (use-package eww
-  :defer t
   :config
   (require 's)
   (defun user:eww-show-url-at-point ()

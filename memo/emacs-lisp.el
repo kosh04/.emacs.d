@@ -1011,6 +1011,9 @@ focus-out-hook
     (when view-read-only
       (read-only-mode))))
 
+(use-package tar-mode
+  :bind (:map tar-mode-map ("f" . tar-view)))
+
 ;; フレームの作成とコマンド実行を同時に行おうとしたが
 ;; M-x 入力が前フレームに表示されてしまう不具合
 (defun user/execute-extended-command-other-frame ()

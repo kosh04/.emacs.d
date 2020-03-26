@@ -74,8 +74,8 @@
 ;; modernizing Emacs Package Menu
 (use-package paradox
   :pin #:melpa-stable
-  :init (and (require 'paradox nil t)
-             (paradox-enable))
+  :demand t
+  :config (paradox-enable)
   :custom
   (paradox-execute-asynchronously t)
   ;; "⛺" を使いたいが `tabulated-list' は今のところ emoji 非対応らしい

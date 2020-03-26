@@ -1,7 +1,6 @@
 ;;; config/PHP
 
 (use-package php-mode
-  :defer t
   :config
   (setq php-search-url "http://www.php.net/ja/")        ; C-c C-f
   (setq php-manual-url "http://www.php.net/manual/ja/") ; C-c C-m

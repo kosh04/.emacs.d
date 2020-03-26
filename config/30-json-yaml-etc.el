@@ -1,4 +1,6 @@
-;;; config/json.el
+;;; config/JSON,YAML,etc
+
+;; 設定ファイルいろいろ JSON,YAML,TOML,ini,.. (XML は別枠)
 
 (require 'json)
 
@@ -56,3 +58,10 @@
   :after #:json-mode
   :config
   (setq jsons-path-printer 'jsons-print-path-jq))
+
+;; YAML
+(use-package yaml-mode
+  :mode "\\.yml\\'")
+
+;; TOML
+(use-package toml-mode)

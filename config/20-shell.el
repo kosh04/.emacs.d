@@ -26,7 +26,7 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
 ;; shell-command(M-!) のコマンド入力に補完を効かせる
 ;; http://namazu.org/~tsuchiya/
 (use-package "shell-command"
-  :disabled t
+  :disabled
   :config (shell-command-completion-mode t))
 
 (with-eval-after-load 'shell

@@ -3,7 +3,6 @@
 ;; TODO: [2019-03-07]
 ;; MELPA に登録した (あるいは site-lisp 以下にある) 自作パッケージは、可能な限り手動インストールする
 ;; autoload cookie によるシンボルの事前定義＆遅延ロードが有効になるため、通常パッケージに近い設定を行える
-;; e.g. (use-package NAME :pin #:manual)
 
 (require 'textproc)
 (require 'gitter-irc)
@@ -19,8 +18,8 @@
 (global-set-key (kbd "C-c g") 'google-search)
 
 (use-package wandbox
-  ;; 開発版
-  :load-path "site-lisp/wandbox"
+  :load-path "site-lisp/wandbox"                ;; サブモジュール版
+  :load-path "~/Documents/GitHub/emacs-wandbox" ;; 開発版 (あれば)
   :bind (("C-c w w" . wandbox)
          ("C-c w e" . wandbox-eval-last-sexp)
          ("C-c w i" . wandbox-insert-template)
@@ -33,16 +32,13 @@
   )
 
 (use-package m3u-mode
-  :pin #:manual
   :mode "\\.m3u8?\\'"
   :load-path "site-lisp/m3u-mode"
-  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry))
-  )
+  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry)))
 
 (use-package unicode-escape
-  :pin #:manual
   :load-path "site-lisp/unicode-escape"
-  )
+  :demand t)
 
 (use-package gitignore
   :load-path "site-lisp/gitignore"

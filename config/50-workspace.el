@@ -4,7 +4,8 @@
 ;; see also config/50-tabbar.el
 
 (use-package eyebrowse
-  :init (eyebrowse-mode t)
+  :demand t
+  :config (eyebrowse-mode +1)
   :custom
   (eyebrowse-wrap-around t)
   :custom-face

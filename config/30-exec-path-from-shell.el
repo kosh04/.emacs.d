@@ -8,7 +8,7 @@
 
 (use-package exec-path-from-shell
   :disabled
-  :defer nil ;; disable use-package-always-defer=t
+  :demand t
   :if (memq window-system '(mac ns))
   :config
   (exec-path-from-shell-initialize)

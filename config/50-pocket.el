@@ -31,8 +31,5 @@
 ;;  )
 
 (use-package getpocket
-  :pin #:manual
   :load-path "site-lisp/getpocket"
-  :commands (getpocket)
-  :config
-  (getpocket-debug-mode +1))
+  :commands (getpocket))

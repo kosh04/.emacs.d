@@ -52,8 +52,10 @@
 
 ;; Smart Compile
 (use-package smart-compile
-  :defer t
-  ;; :bind ("C-c c" . smart-compile)
+  ;;:bind (("C-c c" . smart-compile))
+  :config
+  (define-key menu-bar-tools-menu [compile]
+    '("Compile..." . smart-compile))
   )
 
 ;; 関数上部のコメントをまとめて narrow

@@ -2,7 +2,7 @@
 
 (use-package popwin
   :disabled
-  :init (require 'popwin nil t)
+  :demand t
   :config
   (popwin-mode +1)
   ;;:custom

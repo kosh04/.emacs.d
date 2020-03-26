@@ -84,11 +84,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; https://github.com/m00natic/vlfi
 (use-package vlf)
 
-;; (use-package tar-mode
-;;   :bind (:map tar-mode-map ("f" . tar-view)))
-
 (use-package pangu-spacing
-  :defer t
   :diminish "Pangu"
   :config (global-pangu-spacing-mode +1))
 
@@ -118,7 +114,8 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; カーソル移動時の見た目がちょっとだけスタイリッシュになる
 (use-package beacon
   :disabled
-  :init (beacon-mode +1))
+  :demand t
+  :config (beacon-mode +1))
 
 (use-package highlight-indentation
   :disabled
@@ -137,14 +134,14 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
        compilation-filter-start (point))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 
-;; 一行に長いファイルによるパフォーマンス低下を抑える (min.js,json etc)
+;; 行が長ーーーいファイルによるパフォーマンス低下を抑える (min.js,json,etc)
 ;; https://www.emacswiki.org/emacs/SoLong
+;; (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")
 (use-package so-long
   :load-path "site-lisp/_vendor"
-  :if (fboundp 'global-so-long-mode)
-  :init (global-so-long-mode)
-  ;;:preface (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")
+  :demand t
   :config
+  (global-so-long-mode)
   (add-to-list 'so-long-target-modes 'json-mode))
 
 ;; FIXME:
@@ -157,8 +154,8 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 
 ;; モードラインのマイナーモードを纏める ;-)
 (use-package minions
-  :if (fboundp 'minions-mode)
-  :init (minions-mode +1))
+  :demand t
+  :config (minions-mode +1))
 
 (use-package calendar
   :bind (("C-c t c" . calendar)
@@ -171,15 +168,13 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   (calendar-mark-holidays-flag t))
 
 (use-package keyfreq
-  :if (fboundp 'keyfreq-mode)
-  :init  (keyfreq-mode +1)
+  :demand t
   :bind ([f1 f2] . keyfreq-show)
   :config
-  (advice-add 'keyfreq-show
-              :after
-              (lambda (&rest _)
-                (with-current-buffer keyfreq-buffer
-                  (view-mode)))))
+  (define-advice keyfreq-show (:after (&rest _) read-only)
+    (with-current-buffer keyfreq-buffer
+      (view-mode)))
+  (keyfreq-mode +1))
 
 (use-package chart
   :commands
