@@ -5,7 +5,7 @@
 
 # Build emacs recipe for travis-ci
 [submodule "makefiles"]
-	path = makefiles
+	path = share/makefiles
         url = git@gist.github.com:cbecab9afc38e31f97be2db35353b57a.git
 
 # My development emacs-lisp packages
