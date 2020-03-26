@@ -16,12 +16,6 @@
       ;; package-pinned-packages ()
       )
 
-;; XXX
-(customize-set-variable
- 'gnutls-algorithm-priority
- (if (version< emacs-version "26.3")
-     "NORMAL:-VERS-TLS1.3"))
-
 (defun printf (fmt &rest args)
   (princ (apply #'format fmt args)))
 

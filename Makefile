@@ -3,7 +3,7 @@ USAGE = Usage: $(notdir $(MAKE)) [compile|test|update|clean|help]
 EMACS ?= emacs
 EMACSFLAGS = -l .user-dir.el
 
-PACKAGES := init-loader use-package
+PACKAGES := init-loader use-package names
 PACKAGES += let-alist request s f
 
 COMPILE.el = $(EMACS) -batch $(EMACSFLAGS) -f batch-byte-compile

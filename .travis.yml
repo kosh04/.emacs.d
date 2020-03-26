@@ -19,6 +19,11 @@ env:
     - EMACS=emacs-25.3
     - EMACS=emacs-26.3
 
+matrix:
+  allow_failures:
+    # FIXME: elpa.gnu.org:443 (bad-signature "archive-contents.sig")
+    - env: EMACS=emacs-25.3
+
 before_install:
   # https://gist.github.com/iedemam/9830045
   - sed -i 's/git@\(gist.\|\)github.com:/git:\/\/github.com\//' .gitmodules
