@@ -2,9 +2,7 @@ rem Setup NTEmacs environment
 
 set EMACS24_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
 set EMACS25_HOME=%USERPROFILE%\opt\emacs-25.2
-REM set EMACS26_HOME=%USERPROFILE%\opt\emacs-26.1-simple_ime-no_symbol
-REM set EMACS26_HOME=%USERPROFILE%\opt\emacs-26.1-i686-minimum-ime
-set EMACS26_HOME=%USERPROFILE%\opt\emacs-26.2
+set EMACS26_HOME=%LOCALAPPDATA%\Programs\emacs-26.2
 
 rem set EMACSPATH=
 rem set EMACSPATH=%EMACS_HOME%\bin

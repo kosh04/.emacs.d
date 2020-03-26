@@ -51,3 +51,10 @@
   :after go-mode
   :bind (:map go-mode-map
               ("C-c w w" . go-playground-cli-run-current-file)))
+
+;; (workaround) "go tool vet" -> "go vet"
+;; https://github.com/flycheck/flycheck/issues/1523#issuecomment-469402280
+(with-eval-after-load 'flycheck
+  (let ((govet (flycheck-checker-get 'go-vet 'command)))
+    (when (equal (cadr govet) "tool")
+      (setf (cdr govet) (cddr govet)))))

@@ -43,7 +43,6 @@
 (use-package gitignore
   :load-path "site-lisp/gitignore"
   :after gitignore-mode
-  :pin #:manual
   :custom
   (gitignore-template-directory
    (file-name-as-directory

@@ -32,4 +32,4 @@
 (defun list-emoji-display ()
   "[user] Display sample emoji and symbols."
   (interactive)
-  (find-file "https://github.com/zonuexe/emoji-fontset.el/raw/master/emojis.org"))
+  (find-file "https://unicode.org/emoji/charts/emoji-style.txt"))

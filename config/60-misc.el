@@ -134,7 +134,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
        compilation-filter-start (point))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 
-;; 行が長ーーーいファイルによるパフォーマンス低下を抑える (min.js,json,etc)
+;; 行が長ーーーいファイルの読み込みによるパフォーマンス低下を抑える (min.js,json,etc)
 ;; https://www.emacswiki.org/emacs/SoLong
 ;; (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")
 (use-package so-long

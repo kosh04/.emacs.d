@@ -59,6 +59,11 @@
       ;;(plist-put eww-data :url url)
       )))
 
+(defun user::eww-new (url)
+  "新しいウィンドウで eww を開きます."
+  (interactive "snew URL: ")
+  (eww-browse-url url t))
+
 (use-package eww
   :config
   (require 's)
@@ -82,8 +87,8 @@
              ("]" . eww-forward-url)
              ;;("j" . forward-line)       ; hjkl
              ;;("k" . previous-line)
-             ("j" . (lambda (&optional arg) (interactive "P") (scroll-up   (or arg 1))))
-             ("k" . (lambda (&optional arg) (interactive "P") (scroll-down (or arg 1))))
+             ("j" . (lambda (&optional arg) "next line" (interactive "P") (scroll-up   (or arg 1))))
+             ("k" . (lambda (&optional arg) "prev line" (interactive "P") (scroll-down (or arg 1))))
              ("<M-left>"  . eww-back-url)
              ("<M-right>" . eww-forward-url)
              ("C-k" . eww)

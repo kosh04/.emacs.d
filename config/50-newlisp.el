@@ -1,9 +1,9 @@
-;;; config/newlisp-mode
+;;; config/newLISP
 
 (use-package newlisp-mode
   ;; 開発版
-  :load-path "~/src/gitrepo/newlisp-mode"
-  :mode ("\\.lsp\\'" . newlisp-mode)
+  :load-path "~/Downloads/gitrepo/newlisp-mode"
+  :mode "\\.lsp\\'"
   :bind (:map newlisp-mode-map
               ("C-c h" . newlisp-lookup-manual))
   :config

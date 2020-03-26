@@ -41,15 +41,18 @@
  ;; http://opensourcepack.blogspot.jp/p/converter.html
  '(image-dired-cmd-create-thumbnail-program "magick convert"))
 
-;; cygwinにパスを通したくないけど
-;; diredのy(ファイルタイプ判別)ではfileコマンドを利用したい
-(defun user:with-cygwin-path (f &rest args)
-  (let ((exec-path  exec-path)
-        (cygwin/bin (expand-file-name "bin" (getenv "CYGWIN_HOME"))))
-    (push cygwin/bin exec-path)
-    (apply f args)))
+;; cygwin にパスを通したくないけど
+;; dired の y (ファイルタイプ判別) では file コマンドを利用したい
+'
+(define-advice dired-show-file-type (:around (f file &optional symlinksp) with-unix-path)
+  (let ((exec-path  exec-path))
+    (push (expand-file-name "Git/usr/bin" (getenv "programfiles")) exec-path)
+    ;; FIXME: 絵文字を含むファイル名を正しくエンコードできない
+    (setq file (encode-coding-string file 'cp932))
+    (funcall f file symlinksp)))
 
-(advice-add 'dired-show-file-type :around #'user:with-cygwin-path)
+;; UNIX 由来のコマンド群
+;;(add-to-list 'exec-path (expand-file-name "Git/usr/bin" (getenv "programfiles")) t)
 
 ;; TODO: Replace with `ag' or `git-grep' command?
 (custom-set-variables

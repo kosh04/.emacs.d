@@ -1,6 +1,9 @@
 ;;; config/LSP --- Language Server Protocol
 
+;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
+
 (use-package lsp-mode
+  :after (:any go-mode)
   :hook (go-mode . lsp-deferred)
   ;;:hook (before-save . lsp-format-buffer)
   :custom

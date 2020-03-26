@@ -1022,3 +1022,23 @@ focus-out-hook
   (make-frame)
   (call-interactively 'execute-extended-command))
 (global-set-key (kbd "C-x 5 x") 'user/execute-extended-command-other-frame)
+
+;; :smile: みたいな絵文字エイリアスを変換して入力するパッケージって既にある？
+(setq emoji-db
+      (with-temp-buffer
+        (url-insert-file-contents
+         "https://github.com/github/gemoji/raw/master/db/emoji.json")
+        (json-read)))
+
+(seq-find (pcase-lambda ((map emoji description category aliases))
+            (string= description "thumbs up"))
+          emoji-db)
+;;=>	((emoji . "👍")
+;; 	 (description . "thumbs up")
+;; 	 (category . "People & Body")
+;; 	 (aliases . ["+1" "thumbsup"])
+;; 	 (tags . ["approve" "ok"])
+;; 	 (unicode_version . "6.0")
+;; 	 (ios_version . "6.0")
+;; 	 (skin_tones . t))
+
