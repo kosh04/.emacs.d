@@ -3,12 +3,7 @@
 (unless noninteractive
   (error "Only scripting"))
 
-(defun printf (fmt &rest args)
-  (princ (apply #'format fmt args)))
-
-(defun usage ()
-  (printf "Usage: %s --script %s COMMAND ARGS...\n"
-	  invocation-name (file-name-nondirectory #$)))
+(require 'package)
 
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -21,8 +16,15 @@
       ;; package-pinned-packages ()
       )
 
+(defun printf (fmt &rest args)
+  (princ (apply #'format fmt args)))
+
+(defun usage ()
+  (printf "Usage: %s --script %s COMMAND ARGS...\n"
+	  invocation-name (file-name-nondirectory #$)))
+
 (package-initialize)
-(package-refresh-contents)
+;;(package-refresh-contents)
 
 (defun elpa-cli-cmd/list ()
   (list-packages)
@@ -45,8 +47,14 @@
   (with-current-buffer "*Occur*"
     (printf "%s" (buffer-string))))
 
-(defun elpa-cli/update ()
-  (error "TODO: %s" "package-update.el"))
+(defun elpa-cli-cmd/update ()
+  (warn "NOT TESTED YET")
+  (list-packages)
+  (package-menu-mark-upgrades)
+  (package-menu-execute))
+
+(defun elpa-cli-cmd/lint ()
+  (error "TODO: see %s" "package-lint.el"))
 
 (defun main (args)
   (pcase args
@@ -56,6 +64,8 @@
      (elpa-cli-cmd/info pkg))
     (`("install" . ,pkgs)
      (elpa-cli-cmd/install pkgs))
+    (`("update")
+     (elpa-cli-cmd/update))
     (`("search" ,regexp)
      (elpa-cli-cmd/search regexp))
     (`("lint" . ,_)

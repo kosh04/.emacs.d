@@ -3,6 +3,9 @@ USAGE = Usage: $(notdir $(MAKE)) [compile|test|update|clean|help]
 EMACS ?= emacs
 EMACSFLAGS = -l .user-dir.el
 
+PACKAGES := init-loader use-package
+PACKAGES += let-alist request s f
+
 COMPILE.el = $(EMACS) -batch $(EMACSFLAGS) -f batch-byte-compile
 
 SRCS := $(filter-out %-test.el, $(wildcard site-lisp/*.el))
@@ -27,12 +30,12 @@ test-lisp: $(basename $(notdir $(wildcard site-lisp/*-test.el)))
 	$(EMACS) -batch -L site-lisp $(EMACSFLAGS) -l $^ -f ert-run-tests-batch-and-exit
 
 package-install:
-	$(EMACS) -batch $(EMACSFLAGS) -l script/package-install.el
+	$(EMACS) -batch $(EMACSFLAGS) -l script/elpa-cli.el install $(PACKAGES)
 
 update: update-package
 
 update-package:
-	$(EMACS) $(EMACSFLAGS) --script script/package-update.el
+	$(EMACS) -batch $(EMACSFLAGS) -l script/elpa-cli.el update
 
 etc/UnicodeData.txt:
 	curl "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt" -o $@

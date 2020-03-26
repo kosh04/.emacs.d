@@ -4,6 +4,8 @@
 
 ;; $ emacs --script package-update.el
 
+(warn "This script deprecated. use `elpa-cli.el'")
+
 ;;; TODO
 
 ;; - confirm package-pinned-packages

@@ -2,6 +2,8 @@
 
 ;; Usage: $ emacs --script package-install.el
 
+(warn "This script deprecated. use `elpa-cli.el'")
+
 (require 'package)
 
 (defvar user/packages
