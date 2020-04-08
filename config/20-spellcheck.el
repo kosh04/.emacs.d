@@ -1,6 +1,10 @@
 ;;; config/spell.el --- spell check
 
 ;; ispell/flyspell/aspell/hunspell/etc..
+;; - http://aspell.net/
+;; - https://hunspell.github.io
+
+(setenv "DICTIONARY" "en_US")
 
 ;; Ispell
 (require 'ispell)
@@ -9,12 +13,6 @@
  ;;'(ispell-dictionary "american")
  ;;'(ispell-personal-dictionary (locate-user-emacs-file ".ispell"))
  )
-
-;; 自動終了してくれないので一時的な対策 [2015-08-31]
-(when (eq system-type 'windows-nt)
-  (defun user:ispell-killall ()
-    (ispell-kill-ispell t))
-  (add-hook 'kill-emacs-hook 'user:ispell-killall))
 
 ;; flyspell
 ;;(add-hook 'c-mode-hook 'flyspell-prog-mode)
@@ -29,6 +27,8 @@
   :custom
   (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  ;; SC1090 Can't follow non-constant source.
+  (flycheck-shellcheck-excluded-warnings '("SC1090"))
   :hook
   (emacs-startup . global-flycheck-mode)
   ;;(global-flycheck-mode -1)
@@ -38,7 +38,9 @@
   )
 
 (use-package flycheck-pos-tip
+  :disabled
   :after flycheck
+  :demand t
   :config (flycheck-pos-tip-mode +1))
 
 ;; https://github.com/Wilfred/flycheck-title

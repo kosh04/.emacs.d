@@ -52,3 +52,5 @@
  '(gnutls-algorithm-priority
    (if (version< emacs-version "26.3")
        "NORMAL:-VERS-TLS1.3")))
+
+(global-auto-revert-mode +1)

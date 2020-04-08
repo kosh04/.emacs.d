@@ -68,10 +68,6 @@
   (unless (string-match bindir path)
     (setf (getenv "PATH") (concat path path-separator bindir))))
 
-(with-eval-after-load 'ispell
-  (custom-set-variables
-   '(ispell-program-name "c:/msys64/mingw64/bin/aspell.exe")))
-
 (with-eval-after-load 'doc-view
   (add-to-list 'exec-path "c:/opt/gs9.21/bin")
   (set-variable 'doc-view-ghostscript-program (executable-find "gswin64c")))

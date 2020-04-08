@@ -155,6 +155,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; モードラインのマイナーモードを纏める ;-)
 (use-package minions
   :demand t
+  ;;:custom (minions-mode-line-lighter "...") ; "[+]"
   :config (minions-mode +1))
 
 (use-package calendar

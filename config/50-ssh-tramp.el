@@ -9,7 +9,8 @@
   (ssh-config-mode
    ssh-known-hosts-mode
    ssh-authorized-keys-mode)
-  :mode "\\.ssh/config_.*\\'"
+  :mode (("\\.ssh/config_.*\\'" . ssh-config-mode)
+         ("\\.ssh/known_hosts\\(?:\\.old\\)" . ssh-known-hosts-mode))
   :hook (ssh-known-hosts-mode . display-line-numbers-mode)
   :config
   (add-hook 'ssh-config-mode-hook
