@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/kosh04/.emacs.d.svg)](https://travis-ci.org/kosh04/.emacs.d)
+![GitHub Actions](https://github.com/kosh04/.emacs.d/workflows/CI/badge.svg)
 
 ## Files
 
