@@ -31,6 +31,8 @@
 
 ;;; Code:
 
+(require 'subr-x)
+
 (defvar m3u-mode-font-lock-keywords
   (list
    ;;'("^#\\(EXTM3U\\)$" 1 font-lock-keyword-face t)
@@ -109,7 +111,11 @@
   )
 
 (defun m3u-new-entry (title path &optional length)
-  (format "#EXTINF:%d,%s\n%s" (or length -1) title path))
+  (format "#EXTINF:%d,%s%s%s"
+          (or length -1)
+          title
+          (if (string-empty-p path) "" "\n")
+          path))
 
 (defun m3u-insert-entry (title path)
   "Insert M3U Entry."
