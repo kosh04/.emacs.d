@@ -33,8 +33,12 @@
 ;;(setq-default cursor-in-non-selected-windows nil)
 
 ;; git-gutter と被る
-;; -> `global-display-line-numbers-mode'
 ;;(global-linum-mode)
+
+;; 行番号
+;; FIXME: 通常ファイルのみで特殊バッファには行番号いらない
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook 'display-line-numbers-mode)
 
 (setq frame-title-format
       `(" %b " (buffer-file-name "(%f)") " on " ,(system-name)

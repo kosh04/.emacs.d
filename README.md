@@ -38,13 +38,12 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
   - Windows ([NTEmacs64](https://github.com/chuntaro/NTEmacs64))
   - Linux (Debian, Ubuntu)
   - macOS ([Emacs Mac port](https://bitbucket.org/mituharu/emacs-mac/src), or [Cocoa Emacs](https://emacsformacosx.com/))
-- Cask (optional. for develop site-lisp)
 
 ## Installation
 
-1. Clone this repository. (recommended `~/.emacs.d/`)
-2. `cask install`
-3. `make` (byte-compile site-lisp/*.el, and testing it)
+1. `git clone --recursive git@github.com:kosh04/.emacs.d.git [~/.config/emacs]`
+2. `make package-install`
+3. `make` (Optional; byte-compile site-lisp/*.el, and testing it)
 
 ## Rules
 

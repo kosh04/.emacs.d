@@ -1,3 +1,4 @@
 ;;; config/linux-conf
 
-;; NOTHING TO DO
+(when (and window-system (font-info "Noto Color Emoji"))
+  (set-fontset-font nil '(#x1F000 . #x1FAFF) "Noto Color Emoji"))

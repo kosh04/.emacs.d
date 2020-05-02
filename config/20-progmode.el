@@ -71,4 +71,9 @@
   (setf (face-foreground 'which-func) "skyblue"))
 
 ;; issue トラッカーをハイライト＆開けるように
-;;(add-hook 'prog-mode-hook #'bug-reference-prog-mode)
+;; (add-hook 'prog-mode-hook #'bug-reference-prog-mode)
+;; (with-eval-after-load 'bug-reference
+;;   ;; debug2(...); とかに反応しないようにしたい
+;;   (setq bug-reference-bug-regexp
+;;         (concat "\\<" bug-reference-bug-regexp "\\>"))
+;;   )

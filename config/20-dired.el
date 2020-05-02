@@ -26,11 +26,13 @@
     (apply f args)
     (if file (dired-goto-file file))))
 
-;; [v] dired-view-file
 (defun user::read-only-mode (&rest r)
   "読み取り専用でファイルを開く."
   (read-only-mode +1))
+
+;; or dired-view-file [v]
 (advice-add 'dired-find-file              :after 'user::read-only-mode)
+(advice-add 'dired-find-alternate-file    :after 'user::read-only-mode)
 (advice-add 'dired-find-file-other-window :after 'user::read-only-mode)
 
 (defun dired-copy-pathname-as-kill ()
