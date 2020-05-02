@@ -74,3 +74,9 @@
 (global-set-key (kbd "<f1> A") 'apropos)
 
 ;;(global-set-key (kbd "M-o") 'other-window)
+
+;; FIXME
+;; ReadOnly を切り替えることが多いので C-x C-q 以外のキーが欲しい (evil?)
+(global-set-key (kbd "ESC M-q") 'read-only-mode)
+;; WindowsTerminal v0.11.1121 にて C-@ が反応しないためその場しのぎな対処
+(global-set-key (kbd "ESC M-@") 'set-mark-command)

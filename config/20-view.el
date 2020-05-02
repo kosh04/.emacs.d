@@ -1,6 +1,7 @@
 ;;; config/View
 
-;; 読み取り専用時はViewModeを利用する
+;; ファイルは基本的に read-only+view-mode で開きたい
+
 (setq view-read-only t)
 
 (with-eval-after-load 'view
@@ -18,3 +19,5 @@
     ;;(define-key map (kbd "DEL") 'ignore)
     (define-key map (kbd "RET") 'ignore)
     ))
+
+(add-hook 'find-function-after-hook 'view-mode)

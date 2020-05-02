@@ -191,3 +191,9 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
  '(auto-save-list-file-prefix (concat user-emacs-directory "cache/auto-save-list/.saves-"))
  '(url-configuration-directory (locate-user-emacs-file "cache/url"))
  '(image-dired-dir (locate-user-emacs-file "cache/image-dired")))
+
+(use-package man
+  :bind
+  (:map Man-mode-map
+	("j" . scroll-up-line)
+	("k" . scroll-down-line)))
