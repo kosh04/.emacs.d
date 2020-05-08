@@ -1,23 +1,23 @@
 ;;; config/View
 
-;; ファイルは基本的に read-only+view-mode で開きたい
-
+;; 基本的にファイルは read-only+view-mode で開きたい
 (setq view-read-only t)
-
-(with-eval-after-load 'view
-  (setq-default view-exit-action #'kill-buffer)
-  (let ((map view-mode-map))
-    ;; vi-like
-    (define-key map "h" 'backward-char)
-    (define-key map "l" 'forward-char)
-    (define-key map "j" 'next-line)
-    (define-key map "k" 'previous-line)
-    ;; less-like
-    (define-key map "N" 'View-search-last-regexp-backward)
-    (define-key map "i" 'read-only-mode)
-
-    ;;(define-key map (kbd "DEL") 'ignore)
-    (define-key map (kbd "RET") 'ignore)
-    ))
-
 (add-hook 'find-function-after-hook 'view-mode)
+
+(use-package view
+  :custom
+  (view-inhibit-help-message t)
+  ;;:config
+  ;;(setq-default view-exit-action #'kill-buffer)
+  :bind
+  (:map view-mode-map
+        ;; vi-like
+        ("h" . backward-char)
+        ("l" . forward-char)
+        ("j" . next-line)
+        ("k" . previous-line)
+        ;; less-like
+        ("N" . View-search-last-regexp-backward)
+        ("i" . read-only-mode)
+        ("RET" . ignore)
+        ))

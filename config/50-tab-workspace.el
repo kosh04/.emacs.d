@@ -1,4 +1,6 @@
-;;; config/tabbar
+;;; config/Tab,Workspace
+
+;; tab, workspace, window-configuration manager
 
 (use-package tabbar
   :if (not (version<= "27.0" emacs-version))
@@ -71,3 +73,19 @@
   :if (version<= "27.0" emacs-version)
   ;;:init (global-tab-line-mode +1)
   )
+
+(use-package eyebrowse
+  :demand t
+  :config (eyebrowse-mode +1)
+  :custom
+  (eyebrowse-wrap-around t)
+  ;;(eyebrowse-new-workspace t)
+  :custom-face
+  (eyebrowse-mode-line-active
+   ((t (:inverse-video t))))
+  )
+
+;; ブックマークは新しいワークスペースで開いてみる
+(with-eval-after-load 'bookmark
+  (setq bookmark-after-jump-hook
+        '(eyebrowse-create-window-config view-mode)))

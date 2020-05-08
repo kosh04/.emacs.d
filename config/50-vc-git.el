@@ -62,6 +62,8 @@ See URL `https://github.com/magit/magit/issues/3686'"
          ("C-x G" . magit-list-repositories)
          :map magit-mode-map
          ("&" . user::open-repository-url)
+         :map magit-status-mode-map
+         ("RET" . magit-diff-visit-file-other-window)
          :map magit-repolist-mode-map
          ("f" . user::magit-repolist-open-dired)
          )

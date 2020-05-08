@@ -48,9 +48,20 @@
 (setq help-window-select 't)
 
 ;; *.gnu.org とのリクエスト通信がよろしくない場合 (400 Bad Request) に有効 ?
-(custom-set-variables
- '(gnutls-algorithm-priority
-   (if (version< emacs-version "26.3")
-       "NORMAL:-VERS-TLS1.3")))
+(customize-set-variable
+ 'gnutls-algorithm-priority
+ (if (version< emacs-version "26.3")
+     "NORMAL:-VERS-TLS1.3"))
 
 (global-auto-revert-mode +1)
+
+;; 閲覧モード時は q キー押下でバッファごと削除 (デフォルトは bury)
+(define-advice quit-window (:filter-args (args) kill-or-bury)
+  "第1引数の挙動 (bury-or-kill) を反対にする."
+  (setf (elt args 0) (not current-prefix-arg))
+  args)
+
+;; ファイル閲覧時は履歴を保存しているから雑に開いて雑に閉じたい
+;; 特殊バッファ *help* などはできる限り残しておいて終了時にまとめて削除したい
+;; quit-window はその両方を満たせるのか？
+
