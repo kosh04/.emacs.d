@@ -52,22 +52,24 @@
 
 ;; アクティブなウィンドウをモードラインの色で判別する
 ;; 端末タイプの詳細はinfo参照: (info "(elisp) Defining Faces")
+;; - dark means "emacs -rv" or dark-theme (<-> light)
+;; - tty means "emacs -nw" (<-> graphic)
 (custom-set-faces
  '(mode-line
    ((((class color) (min-colors 88) (background light) (type graphic))
      :box (:line-width -1 :style released-button)
      :background "black"
      :foreground "gray95")
-    (((class color) (background dark) (type graphic)) ; dark means "emacs -rv" or dark-theme
+    (((class color) (background dark) (type graphic))
      :box (:line-width -1 :style released-button)
      :background "#6846A5"              ; 本紫
      :foreground "gray95")
-    (((class color) (min-colors 16777216) (type tty)) ; tty means "emacs -nw"
+    (((class color) (min-colors 256) (type tty))
      :background "#0067C0"              ; 青 (JIS)
      :foreground "gray95")
-    (((class color) (min-colors 256) (type tty))
+    (((class color) (min-colors 8) (type tty))
      :background "blue"
-     :foreground "grey80")
+     :foreground "white")
     (t :inverse-video t))))
 
 (use-package nyan-mode

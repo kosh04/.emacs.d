@@ -59,14 +59,10 @@
   :init (tab-bar-mode +1)
   :custom
   (tab-bar-tab-hints t)
-  :bind (("C-x 6 ." . tab-next)
-         ("C-x 6 ," . tab-previous)
-         ("C-x 6 l" . tab-bar-list))
+  :bind (("C-x t l" . tab-list))
   :config
-  (tab-rename "main")
-  (require 'hi-lock)
-  (set-face-attribute 'tab-bar-tab nil :inherit 'hi-green)
-  )
+  (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
+  (tab-rename "main" 1))
 
 (use-package tab-line
   :ensure nil
@@ -87,5 +83,7 @@
 
 ;; ブックマークは新しいワークスペースで開いてみる
 (with-eval-after-load 'bookmark
-  (setq bookmark-after-jump-hook
-        '(eyebrowse-create-window-config view-mode)))
+  (add-hook 'bookmark-after-jump-hook 'view-mode)
+  ;; (add-hook 'bookmark-after-jump-hook 'tab-new)
+  ;; (add-hook 'bookmark-after-jump-hook 'eyebrowse-create-window-config)
+  )
