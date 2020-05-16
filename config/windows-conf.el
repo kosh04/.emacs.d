@@ -77,3 +77,7 @@
 
 (global-set-key [enlw] 'toggle-input-method)
 (global-set-key [auto] 'toggle-input-method)
+
+(set-fontset-font t 'unicode "Segoe UI Emoji" nil 'prepend)
+;;(set-fontset-font t 'unicode "Segoe UI Symbol" nil 'prepend)
+

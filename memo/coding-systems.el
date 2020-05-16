@@ -1,4 +1,4 @@
-;;; memo/coding-systems.el -- about encoding
+;;; memo/coding-systems,charset,unicode
 
 ;;; 非ASCII文字 -- GNU Emacs Lispリファレンスマニュアル
 ;;; http://www.bookshelf.jp/texi/elisp-manual/21-2-8/jp/elisp_33.html
@@ -160,3 +160,31 @@ current-language-environment
 ;; バイト数を考慮した関数 (`XXX-bytes')
 (cons #1=(point-max) (byte-to-position (position-bytes #1#)))
 (cons (length #1="こんにちは WORLD 🍣") (string-bytes #1#))
+
+(let ((emoji-font
+       (font-spec :family "Segoe UI Emoji" :registry "iso10646-1")))
+  (dolist (target
+           '((#x1F300 . #x1F5FF)
+             (#x1F600 . #x1F64F) ;; Emoticons
+             (#x1F650 . #x1F67F) ;; Ornamental Dingbats
+             (#x1F680 . #x1F6FF) ;; Transport and Map Symbols
+             (#x1F700 . #x1F77F) ;; Alchemical Symbols
+             (#x1F780 . #x1F7FF) ;; Geometric Shapes Extended
+             (#x1F800 . #x1F8FF) ;; Supplemental Arrows-C
+             (#x1F900 . #x1F9FF)
+             ))
+    (set-fontset-font t target emoji-font nil 'prepend)))
+
+;; ## Unicode 用語集
+;; - Unicode正規化
+;; - 結合文字列
+
+"\u30DD"                                ;=> "ポ" (length=1)
+"\u30db\u309a"                          ;=> "ポ" (length=2)
+
+"\u01d6"                                ;=> "ǖ"
+"\u00fc\x0304"                          ;=> "ǖ"
+"\u0075\u0308\u0304"                    ;=> "ǖ"
+
+;; TODO:
+;; - 結合文字列を1文字として数える方法は？

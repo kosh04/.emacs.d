@@ -55,13 +55,13 @@
 
 (global-auto-revert-mode +1)
 
-;; 閲覧モード時は q キー押下でバッファごと削除 (デフォルトは bury)
 (define-advice quit-window (:filter-args (args) kill-or-bury)
-  "第1引数の挙動 (bury-or-kill) を反対にする."
-  (setf (elt args 0) (not current-prefix-arg))
+  "ファイル閲覧時は q キー押下でバッファごと削除する. (デフォルトは bury)
+ただし *help* などの特殊バッファ時には影響しない."
+  (when (and args (buffer-file-name))
+    ;; args=(&optional kill window)
+    ;; bury-or-kill を反転させる
+    (setf (elt args 0) (not current-prefix-arg)))
   args)
 
-;; ファイル閲覧時は履歴を保存しているから雑に開いて雑に閉じたい
-;; 特殊バッファ *help* などはできる限り残しておいて終了時にまとめて削除したい
-;; quit-window はその両方を満たせるのか？
-
+(setq temp-buffer-show-function #'pop-to-buffer)
