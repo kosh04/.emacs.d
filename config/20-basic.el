@@ -44,9 +44,6 @@
 ;; 全角引用符はターミナル時にテキスト表示がズレる可能性がある
 (setq text-quoting-style 'grave)
 
-;; *Help* ウィンドウ表示時にフォーカスする (q 押下で quit)
-(setq help-window-select 't)
-
 ;; *.gnu.org とのリクエスト通信がよろしくない場合 (400 Bad Request) に有効 ?
 (customize-set-variable
  'gnutls-algorithm-priority

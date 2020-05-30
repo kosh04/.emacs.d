@@ -1041,3 +1041,5 @@ focus-out-hook
 ;; 	 (unicode_version . "6.0")
 ;; 	 (ios_version . "6.0")
 ;; 	 (skin_tones . t))
+
+(setq highlight-nonselected-windows t)

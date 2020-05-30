@@ -6,15 +6,14 @@
 
 ;; Keymap
 (global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "C-x C-b") 'bs-show)
+(global-set-key (kbd "C-x C-b") 'buffer-menu-other-window)
 
-;; Custom Variables
-(custom-set-variables
- '(view-read-only t)
- '(kill-whole-line t)
- '(disabled-command-function nil)
- '(custom-file (locate-user-emacs-file "custom.el"))
- )
+;; Variables
+(setq view-read-only t
+      view-inhibit-help-message t)
+(setq kill-whole-line t)
+(setq disabled-command-function nil)
+(setq custom-file (locate-user-emacs-file "custom.el"))
 
 (setq completion-ignore-case t
       read-file-name-completion-ignore-case t

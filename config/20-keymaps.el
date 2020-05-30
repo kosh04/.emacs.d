@@ -54,19 +54,20 @@
 (global-unset-key (kbd "C-x m"))        ; compose-mail
 (global-unset-key (kbd "C-x C-n"))      ; set-goal-column
 
-(define-key completion-list-mode-map "q"
-  (lambda () (interactive) (quit-window t)))
+;; (define-key completion-list-mode-map "q"
+;;   (lambda () (interactive) (quit-window t)))
+
+(defun switch-to-last-buffer ()
+  "Display last visited buffer."
+  (interactive)
+  (switch-to-buffer (other-buffer)))
+(global-set-key (kbd "C-x l") #'switch-to-last-buffer)
 
 ;; prefixキーのコマンド一覧を表示
 (use-package which-key
   :diminish which-key-mode
   :hook (emacs-startup . which-key-mode)
   :custom (which-key-idle-delay 1.5))
-
-(with-eval-after-load 'xref
-  (let ((map xref--xref-buffer-mode-map))
-    (define-key map (kbd "TAB") 'xref-next-line)
-    (define-key map (kbd "DEL") 'xref-prev-line)))
 
 ;; or C-u q (in view-mode)
 ;;(global-set-key (kbd "C-x k") 'kill-this-buffer)

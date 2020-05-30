@@ -5,7 +5,7 @@
 (use-package lsp-mode
   :after (:any go-mode)
   :hook (go-mode . lsp-deferred)
-  ;;:hook (before-save . lsp-format-buffer)
+  :hook (before-save . lsp-format-buffer)
   :custom
   (lsp-auto-guess-root t)
   (lsp-restart 'ignore)
@@ -20,8 +20,14 @@
   :after lsp-mode
   :custom
   (lsp-ui-doc-delay 0.4)
+  (lsp-ui-doc-position 'top)
   :bind (:map lsp-mode-map
-              ("C-c l" . lsp-ui-imenu))
+         ("C-c l" . lsp-ui-imenu)
+         :map lsp-ui-imenu-mode-map
+         ("n" . next-line)
+         ("p" . previous-line)
+         ("<tab>"     . lsp-ui-imenu--next-kind)
+         ("<backtab>" . lsp-ui-imenu--prev-kind))
   )
 
 (use-package company-lsp

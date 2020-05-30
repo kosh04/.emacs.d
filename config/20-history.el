@@ -8,17 +8,21 @@
 (setq history-length t)                 ; no truncation.
 
 ;; ミニバッファの履歴を保存
-(require 'savehist)
-(custom-set-variables
- '(savehist-file (locate-user-emacs-file "cache/history")))
-(savehist-mode +1)
+(use-package savehist
+  :demand t
+  :custom
+  (savehist-file (locate-user-emacs-file "cache/history"))
+  :config
+  (savehist-mode +1))
 
 ;; ファイルを開いたときのカーソル位置を復元
-(require 'saveplace)
-(custom-set-variables
- '(save-place-file (locate-user-emacs-file "cache/places"))
- '(save-place-forget-unreadable-files nil))
-(save-place-mode +1)
+(use-package saveplace
+  :demand t
+  :custom
+  (save-place-file (locate-user-emacs-file "cache/places"))
+  (save-place-forget-unreadable-files nil)
+  :config
+  (save-place-mode +1))
 
 (require 'recentf)
 (setq recentf-save-file (locate-user-emacs-file "cache/recentf"))

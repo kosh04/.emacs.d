@@ -77,3 +77,10 @@
 ;;   (setq bug-reference-bug-regexp
 ;;         (concat "\\<" bug-reference-bug-regexp "\\>"))
 ;;   )
+
+(use-package xref
+  ;; :bind
+  ;; (:map xref--xref-buffer-mode-map
+  ;;   ("TAB" . xref-next-line)
+  ;;   ("DEL" . xref-prev-line))
+  :hook (xref-after-jump . view-mode))

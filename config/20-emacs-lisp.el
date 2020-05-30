@@ -214,3 +214,14 @@
 (use-package flycheck-package
   :after flycheck
   :config (flycheck-package-setup))
+
+(use-package delight
+  ;; NOTE: Emacs28 ではモードラインに lexical/dynamic 情報が追加されるが delight と併用不可
+  :if (version< emacs-version "28.1")
+  :demand t
+  :config
+  (delight 'lisp-interaction-mode "Eλ»")    ; *scratch*
+  (delight 'inferior-emacs-lisp-mode "Eλ»") ; *ielm*
+  (delight 'emacs-lisp-mode "Eλ")
+  (delight 'lisp-mode "λ")
+  )

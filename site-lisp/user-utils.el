@@ -55,6 +55,8 @@ Example:
           (buffer-string))))
 
 (defalias 'sha1sum #'sha1-file)
+(defun sha1* (object)
+  (sha1 object nil nil 'binary))
 
 (defun describe-bindings-anymap (keymap)
   "あらゆる KEYMAP のキーマップを表示します."
@@ -385,6 +387,42 @@ URL `https://www.reddit.com/r/emacs/comments/f2ut1v/searching_and_typing_unicode
     (call-interactively 'insert-char)
     (kill-ring-save (point-min) (point-max))
     (message "Copy %s" (car kill-ring))))
+
+;; frame-utils.el (あるいは eyebrowse)
+(defun rename-frame (name &optional frame)
+  (interactive "sRename frame: ")
+  (unless frame
+    (setq frame (selected-frame)))
+  (modify-frame-parameters frame `((name . ,name))))
+(global-set-key (kbd "^X 5 ,") #'rename-frame)
+
+(defun switch-to-frame (name)
+  (interactive (list (completing-read "Frame: "
+                       (mapcar (lambda (f)
+                                 (frame-parameter f 'name))
+                               (frame-list)))))
+  (select-frame-set-input-focus
+   (seq-find (lambda (f)
+               (string= name (frame-parameter f 'name)))
+             (frame-list))))
+(global-set-key (kbd "^X 5 b") 'switch-to-frame)
+
+;; (letter-spacing "HELLO WORLD") ;=> "H E L L O W O R L D"
+(defun letter-spacing (str &optional pad)
+  "文字同士の間隔を開ける."
+  (unless pad
+    (setq pad " "))
+  (with-output-to-string
+    (let (prev)
+      (mapc (lambda (c)
+              (if (and prev
+                       (not (memq prev #1='(?\s ?\C-i ?\C-j ?\C-m)))
+                       (not (memq c #1#)))
+                  (princ pad))
+              (write-char (upcase c))
+              (setq prev c))
+            str))
+    (buffer-string)))
 
 (provide 'user-utils)
 
