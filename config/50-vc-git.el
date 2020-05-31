@@ -44,6 +44,15 @@
   (interactive (list (tabulated-list-get-id)))
   (dired dir))
 
+(defun user::magit-mode-quit ()
+  "Quit Magit mode. (Discard all buffers, and restore window-configuration)
+URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)
+    (message "Magit has broken!")))
+
 (defun magit-repolist-column-version--patch (f &rest args)
   "コミットのないリポジトリに対処するパッチ. (magit-2.91.0 にて修正予定)
 See URL `https://github.com/magit/magit/issues/3686'"
@@ -62,6 +71,7 @@ See URL `https://github.com/magit/magit/issues/3686'"
          ("C-x G" . magit-list-repositories)
          :map magit-mode-map
          ("&" . user::open-repository-url)
+         ("Q" . user::magit-mode-quit)
          :map magit-status-mode-map
          ("RET" . magit-diff-visit-file-other-window)
          :map magit-repolist-mode-map
@@ -76,6 +86,7 @@ See URL `https://github.com/magit/magit/issues/3686'"
      (,(substitute-in-file-name "$GOPATH/src/github.com/kosh04/") . 1)))
   ;; 履歴をコミット時刻で表示 (デフォルトはコミット時期 e.g."3 days")
   ;;(magit-log-margin '(t "%F %T%z" magit-log-margin-width t 18))
+
   :config
   (add-to-list 'magit-no-confirm 'stage-all-changes)
   ;; see [$] `magit-process'
