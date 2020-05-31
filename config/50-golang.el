@@ -13,9 +13,11 @@
 ;; TODO: Language Server 周りの整理
 
 (use-package go-mode
+  :hook
+  (go-mode . user::lsp-enable)
+  (go-mode . subword-mode)
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (add-hook 'go-mode-hook 'subword-mode)
   :custom
   (go-play-browse-function #'browse-url)
   (gofmt-command "goimports")

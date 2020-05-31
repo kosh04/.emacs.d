@@ -3,17 +3,18 @@
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 
 (use-package lsp-mode
-  :after (:any go-mode)
-  :hook (go-mode . lsp-deferred)
-  :hook (before-save . lsp-format-buffer)
   :custom
   (lsp-auto-guess-root t)
   (lsp-restart 'ignore)
   ;;(lsp-document-sync-method 'incremental) ;; always send incremental document
   ;;(lsp-prefer-flymake 'flymake)
   ;;(lsp-enable-completion-at-point nil)
-  ;; :bind (:map lsp-mode-map
-  ;;             ("C-c r" . lsp-rename))
+  :preface
+  (defun user::lsp-enable ()
+    (add-hook 'before-save-hook #'lsp-format-buffer nil 'local)
+    (add-hook 'before-save-hook #'lsp-organize-imports nil 'local)
+    (lsp-deferred))
+  :bind (:map lsp-mode-map ("<f2>" . lsp-rename))
   )
 
 (use-package lsp-ui
