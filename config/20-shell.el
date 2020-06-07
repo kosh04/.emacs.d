@@ -1,4 +1,4 @@
-;;; config/Shell
+;;; config/shell,eshell
 
 (defun user:shell-other-window (&optional eshell)
   "シェルを別ウィンドウで開きます.
@@ -13,7 +13,7 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
       (or (eq buffer (current-buffer))
           (switch-to-buffer-other-window buffer)))))
 
-(global-set-key (kbd "C-c s") 'user:shell-other-window)
+(global-set-key (kbd "C-c s") 'shell)
 
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -44,3 +44,14 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
   "端末エミュレータを開きます."
   (interactive)
   (ansi-term shell-file-name))
+
+(use-package eshell
+  :custom
+  (eshell-ask-to-save-last-dir nil)
+  (eshell-cmpl-ignore-case t)
+  (eshell-glob-include-dot-dot nil))
+
+(with-eval-after-load 'em-term
+  ;; 端末操作が必要なコマンドをterm.elに丸投げする
+  (add-to-list 'eshell-visual-commands "ssh")
+  (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show" "grep")))
