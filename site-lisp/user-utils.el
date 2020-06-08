@@ -308,7 +308,7 @@ URL `http://emacs.g.hatena.ne.jp/kiwanami/20110809/1312877192'"
 (defun outlineapi-fetch (article-url)
   (let ((url-request-extra-headers
          '(("Referer" . "https://outline.com/")))
-        (url (concat "https://outlineapi.com/article?"
+        (url (concat "https://api.outline.com/v3/parse_article?"
                      (url-build-query-string
                       `((source_url ,article-url))))))
     (with-temp-buffer
