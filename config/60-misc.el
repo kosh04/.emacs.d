@@ -88,25 +88,23 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   :diminish "Pangu"
   :config (global-pangu-spacing-mode +1))
 
-(defun init-loader-display-chart ()
-  "init-loader の読み込み時間をグラフ表示します."
-  (interactive)
+(defun init-loader-display-chart (&optional max-lines)
+  "init-loader の読み込み時間をグラフ表示します.
+MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
+  (interactive "p")
   (require 'chart)
-  (require 'map)
-  (let (acc)
-    (with-current-buffer "*init log*"
-      (save-excursion
-        (goto-char (point-min))
-        (while (re-search-forward "loaded \\(.*\\)[.] \\([0-9]*\\.?[0-9]+\\|[0-9]+\\)" nil t)
-          (push (cons (file-name-base (match-string 1))
-                      (* 1000 (string-to-number (match-string 2))))
-                acc))))
+  (setq max-lines (max max-lines 5))
+  (let (names times)
+    (dolist (msg (symbol-value 'init-loader--log-buffer))
+      (when (string-match "loaded \\(.*\\)[.] \\([0-9]*\\.?[0-9]+\\|[0-9]+\\)" msg)
+        (push (file-name-base (match-string 1 msg)) names)
+        (push (* 1000 (string-to-number (match-string 2 msg))) times)))
     (chart-bar-quickie
      'horizontal ;;'vertical
      "Load time of init-loader"
-     (map-keys acc) "Name"
-     (map-values acc) "Time (ms)"
-     7
+     names "Name"
+     times "Time (ms)"
+     max-lines
      (lambda (x y) (> (cdr x) (cdr y))))
     ))
 ;;(add-hook 'emacs-startup-hook 'init-loader-display-chart)
