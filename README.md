@@ -51,6 +51,7 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 - ライブラリが外部プロセスに依存する場合は PATH を通しておく (特に NTEmacs)
 - パッケージはなるべく安定版を優先してインストールしたい (melpa-stable \>= gnu \> melpa)
 - Emacs と xyzzy の操作感を共存させる
+- ファイル＆バッファは閲覧モード優先 (`view-mode`; q キーで雑に閉じたい)
 
 ### init-loader (config/nn-xxx.el) の読み込み順序
 
@@ -66,5 +67,3 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
   - https://github.com/emacscollective/no-littering
 - [ ] Emacs 27.1 では `~/.emacs.d` の代わりに `$XDG_CONFIG_HOME/emacs` が利用可能になる予定
 - [ ] シンボル名のプレフィックス記法を統一させる (`$USER-` ? `user::` ? `user/` ?)
-- [ ] use-package 内の設定で参照する自作関数を :preface あるいはトップレベルどちらに書くか
-  - 関数及び変数のシンボルはトップレベルで定義しないとソースジャンプが有効化されない

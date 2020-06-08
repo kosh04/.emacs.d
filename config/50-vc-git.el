@@ -77,6 +77,7 @@ See URL `https://github.com/magit/magit/issues/3686'"
          :map magit-repolist-mode-map
          ("f" . user::magit-repolist-open-dired)
          )
+  :hook (magit-diff-visit-file . view-mode)
   :custom
   (magit-repository-directories
    `((,user-emacs-directory . 0) ;; "~/.emacs.d" or "~/.config/emacs"
@@ -84,11 +85,14 @@ See URL `https://github.com/magit/magit/issues/3686'"
      ("~/Documents/GitHub/" . 1)
      ("~/Downloads/gitrepo/" . 1)
      (,(substitute-in-file-name "$GOPATH/src/github.com/kosh04/") . 1)))
+
   ;; 履歴をコミット時刻で表示 (デフォルトはコミット時期 e.g."3 days")
   ;;(magit-log-margin '(t "%F %T%z" magit-log-margin-width t 18))
 
+  (magit-no-confirm '(stage-all-changes))
+  (magit-diff-refine-hunk 'all)       ; 変更箇所を単語単位でハイライト
+
   :config
-  (add-to-list 'magit-no-confirm 'stage-all-changes)
   ;; see [$] `magit-process'
   ;; (setq magit-git-debug (not magit-git-debug))
 

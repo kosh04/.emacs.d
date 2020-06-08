@@ -13,7 +13,8 @@
   :if (executable-find "ag")
   :custom
   (ag-highlight-search t)
+  ;; :hook
+  ;; (ag-mode . next-error-follow-minor-mode)
   :config
-  (add-to-list 'ag-arguments "--word-regexp")
-  ;;(add-hook 'ag-mode-hook 'next-error-follow-minor-mode)
-  )
+  ;;(add-to-list 'ag-arguments "--word-regexp")
+  nil)

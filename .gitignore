@@ -51,7 +51,7 @@ UnicodeData.txt
 /site-lisp/*/
 /etc/
 /emojis/
-/irony/
+irony/
 .geiser_history.guile
 .auth.plist
 places

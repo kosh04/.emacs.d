@@ -156,7 +156,14 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 (use-package minions
   :demand t
   ;;:custom (minions-mode-line-lighter "...") ; "[+]"
-  :config (minions-mode +1))
+  :config
+  (minions-mode +1)
+  :custom
+  (minions-direct
+   '(lsp-mode
+     flycheck-mode
+     ))
+  )
 
 (use-package calendar
   :bind (("C-c t c" . calendar)
@@ -197,3 +204,7 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
   (:map Man-mode-map
 	("j" . scroll-up-line)
 	("k" . scroll-down-line)))
+
+(customize-set-value
+ 'next-error-found-function
+ #'(lambda (_from _to) (view-mode +1)))

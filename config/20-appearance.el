@@ -32,13 +32,15 @@
 ;; アクティブでないウィンドウのカーソルを表示/非表示
 ;;(setq-default cursor-in-non-selected-windows nil)
 
-;; git-gutter と被る
-;;(global-linum-mode)
-
 ;; 行番号
-;; FIXME: 通常ファイルのみで特殊バッファには行番号いらない
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook 'display-line-numbers-mode)
+;; `linum-mode' は `git-gutter' と被るので NG
+(use-package display-line-numbers
+  ;; FIXME: 通常ファイルのみで特殊バッファには行番号いらない
+  :hook ((prog-mode . display-line-numbers-mode)
+         (text-mode . display-line-numbers-mode))
+  :custom-face
+  (line-number ((t :inherit shadow)))
+  (line-number-current-line ((t :foreground "default" :bold t :inherit line-number))))
 
 (setq frame-title-format
       `(" %b " (buffer-file-name "(%f)") " on " ,(system-name)

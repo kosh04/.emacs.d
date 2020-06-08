@@ -69,6 +69,12 @@
        nil t))
   ;; 遅延ロード
   (use-package-always-defer t)
+  :config
+  (defface use-package--disabled-keyword-face
+    '((t (:inverse-video t)))
+    ":disabled キーワードを強調する face.")
+  (font-lock-add-keywords 'emacs-lisp-mode
+    '(("\\_<:disabled\\_>" . 'use-package--disabled-keyword-face)))
   )
 
 ;; modernizing Emacs Package Menu
