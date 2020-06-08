@@ -21,10 +21,4 @@
         ("i" . read-only-mode)
         ("RET" . ignore)
         )
-  :config
-  (define-advice view-mode (:around (f &rest args) maybe)
-    "ファイルと関連付けされていない特殊バッファでは利用しない."
-    (if (buffer-file-name)
-        (apply f args)
-      (warn "`view-mode' ignored")))
   )
