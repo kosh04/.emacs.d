@@ -133,11 +133,12 @@
 ;;; @@ Chunk
 
 ;;; @@ Eval
-(defadvice eval-last-sexp (before eval-safe activate)
-  "ポイントがシンボルの途中でもエラーにならない eval-last-sexp"
+(define-advice eval-last-sexp (:around (f &rest args) eval-safe)
+  "ポイントがシンボルの途中でもエラーにならない."
   (with-syntax-table emacs-lisp-mode-syntax-table
-    (skip-syntax-forward "w_")))
-;; (ad-deactivate 'eval-last-sexp)
+    (skip-syntax-forward "w_"))
+  (let ((print-circle t))
+    (apply f args)))
 
 ;; Emacsのeval-regionの返り値が常にnil、出力はデフォルトでは破棄される
 ;; -> せめて出力は破棄せずにミニバッファに表示したい
