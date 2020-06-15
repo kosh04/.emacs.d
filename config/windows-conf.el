@@ -6,9 +6,8 @@
 ;; NOTE: gnutls.c: [1] Note that the security level of the
 ;; Diffie-Hellman key exchange has been lowered to 256 bits and this
 ;; may allow decryption of the session data
-(with-eval-after-load "gnutls"
-  ;;(setq gnutls-min-prime-bits 1024)
-  )
+;; (with-eval-after-load "gnutls"
+;;   (setq gnutls-min-prime-bits 1024))
 
 ;; NTEmacs64 IME-patched
 ;; https://github.com/chuntaro/NTEmacs64
@@ -25,6 +24,7 @@
 
 ;; VC-Git
 ;; 外部プロセスを抑制する
+'
 (with-eval-after-load 'vc-hooks
   ;;(setq vc-handled-backends (delete 'Git vc-handled-backends))
   (remove-hook 'find-file-hook 'vc-find-file-hook)
@@ -41,8 +41,9 @@
  ;; http://opensourcepack.blogspot.jp/p/converter.html
  '(image-dired-cmd-create-thumbnail-program "magick convert"))
 
-;; cygwin にパスを通したくないけど
-;; dired の y (ファイルタイプ判別) では file コマンドを利用したい
+;; dired の y (ファイルタイプ判別) で file コマンドを利用する
+;; UNIX 由来のコマンド群を必要とするパッケージは色々ある (diff,grep,gzip,etc...)
+(add-to-list 'exec-path "c:/PROGRA~1/Git/usr/bin")
 '
 (define-advice dired-show-file-type (:around (f file &optional symlinksp) with-unix-path)
   (let ((exec-path  exec-path))
@@ -50,9 +51,6 @@
     ;; FIXME: 絵文字を含むファイル名を正しくエンコードできない
     (setq file (encode-coding-string file 'cp932))
     (funcall f file symlinksp)))
-
-;; UNIX 由来のコマンド群
-;;(add-to-list 'exec-path (expand-file-name "Git/usr/bin" (getenv "programfiles")) t)
 
 ;; TODO: Replace with `ag' or `git-grep' command?
 (custom-set-variables
