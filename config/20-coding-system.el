@@ -40,3 +40,6 @@ URL `https://lists.gnu.org/archive/html/bug-gnu-emacs/2015-05/msg00710.html'"
   (advice-add 'sgml-html-meta-auto-coding-function :filter-return #'user/leave-utf-8-with-signature)
   ;;(setq auto-coding-functions nil)
   nil)
+
+;; (eww) 古の charset=x-sjis を理解してくれ
+(define-coding-system-alias 'x-sjis 'shift_jis)
