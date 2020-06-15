@@ -35,9 +35,11 @@
 ;; 行番号
 ;; `linum-mode' は `git-gutter' と被るので NG
 (use-package display-line-numbers
-  ;; FIXME: 通常ファイルのみで特殊バッファには行番号いらない
-  :hook ((prog-mode . display-line-numbers-mode)
-         (text-mode . display-line-numbers-mode))
+  ;; NOTE: 特殊バッファに行番号は不要
+  :hook ((prog-mode
+          text-mode
+          conf-mode)
+         . display-line-numbers-mode)
   :custom-face
   (line-number ((t :inherit shadow)))
   (line-number-current-line ((t :foreground "default" :bold t :inherit line-number))))
