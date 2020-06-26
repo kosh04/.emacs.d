@@ -83,7 +83,6 @@
 
 ;; ブックマークは新しいワークスペースで開いてみる
 (with-eval-after-load 'bookmark
-  (add-hook 'bookmark-after-jump-hook 'view-mode)
   ;; (add-hook 'bookmark-after-jump-hook 'tab-new)
   ;; (add-hook 'bookmark-after-jump-hook 'eyebrowse-create-window-config)
   )

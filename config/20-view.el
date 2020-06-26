@@ -1,8 +1,17 @@
-;;; config/View
+;;; config/ViewMode
 
 ;; 基本的にファイルは read-only+view-mode で開きたい
+
+;; C-x C-q (read-only-mode) を view-mode として機能させる
 (setq view-read-only t)
-(add-hook 'find-function-after-hook 'view-mode)
+
+(defun user::view-mode-maybe ()
+  (when (buffer-file-name)
+    (view-mode +1)))
+
+(add-hook 'find-function-after-hook #'view-mode)
+;; FIXME: ブックマーク登録したディレクトリ (dired) でも有効になってしまう
+(add-hook 'bookmark-after-jump-hook #'user::view-mode-maybe)
 
 (use-package view
   :custom
