@@ -54,18 +54,17 @@
 
 ;; new feature tabs (Emacs 27+)
 (use-package tab-bar
-  :ensure nil
   :if (version<= "27.0" emacs-version)
-  :init (tab-bar-mode +1)
+  :demand
   :custom
   (tab-bar-tab-hints t)
   :bind (("C-x t l" . tab-list))
   :config
+  (tab-bar-mode +1)
   (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
   (tab-rename "main" 1))
 
 (use-package tab-line
-  :ensure nil
   :if (version<= "27.0" emacs-version)
   ;;:init (global-tab-line-mode +1)
   )

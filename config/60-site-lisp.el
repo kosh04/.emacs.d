@@ -55,6 +55,5 @@
   )
 
 (use-package lingr-irc
-  :commands (lingr-irc)
-  :pin #:manual
-  :ensure nil)
+  :load-path "site-lisp"
+  :commands (lingr-irc))
