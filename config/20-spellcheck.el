@@ -40,7 +40,7 @@
 (use-package flycheck-pos-tip
   :disabled
   :after flycheck
-  :demand t
+  :demand
   :config (flycheck-pos-tip-mode +1))
 
 ;; https://github.com/Wilfred/flycheck-title

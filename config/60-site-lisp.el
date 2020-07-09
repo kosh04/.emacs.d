@@ -38,7 +38,7 @@
 
 (use-package unicode-escape
   :load-path "site-lisp/unicode-escape"
-  :demand t)
+  :demand)
 
 (use-package gitignore
   :load-path "site-lisp/gitignore"

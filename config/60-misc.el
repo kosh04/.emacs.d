@@ -112,7 +112,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 ;; カーソル移動時の見た目がちょっとだけスタイリッシュになる
 (use-package beacon
   :disabled
-  :demand t
+  :demand
   :config (beacon-mode +1))
 
 (use-package highlight-indentation
@@ -137,7 +137,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 ;; (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")
 (use-package so-long
   :load-path "site-lisp/_vendor"
-  :demand t
+  :demand
   :config
   (global-so-long-mode)
   (add-to-list 'so-long-target-modes 'json-mode))
@@ -152,7 +152,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 
 ;; モードラインのマイナーモードを纏める ;-)
 (use-package minions
-  :demand t
+  :demand
   ;;:custom (minions-mode-line-lighter "...") ; "[+]"
   :config
   (minions-mode +1)
@@ -174,7 +174,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   (calendar-mark-holidays-flag t))
 
 (use-package keyfreq
-  :demand t
+  :demand
   :bind ([f1 f2] . keyfreq-show)
   :config
   (define-advice keyfreq-show (:after (&rest _) read-only)

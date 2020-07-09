@@ -80,7 +80,7 @@
 ;; modernizing Emacs Package Menu
 (use-package paradox
   :pin #:melpa-stable
-  :demand t
+  :demand
   :config (paradox-enable)
   :custom
   (paradox-execute-asynchronously t)

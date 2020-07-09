@@ -9,7 +9,7 @@
 
 ;; ミニバッファの履歴を保存
 (use-package savehist
-  :demand t
+  :demand
   :custom
   (savehist-file (locate-user-emacs-file "cache/history"))
   :config
@@ -17,7 +17,7 @@
 
 ;; ファイルを開いたときのカーソル位置を復元
 (use-package saveplace
-  :demand t
+  :demand
   :custom
   (save-place-file (locate-user-emacs-file "cache/places"))
   (save-place-forget-unreadable-files nil)

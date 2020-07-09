@@ -217,8 +217,8 @@
 
 (use-package delight
   ;; NOTE: Emacs28 ではモードラインに lexical/dynamic 情報が追加されるが delight と併用不可
-  :if (version< emacs-version "28.1")
-  :demand t
+  :if (version< emacs-version "28.0")
+  :demand
   :config
   (delight 'lisp-interaction-mode "Eλ»")    ; *scratch*
   (delight 'inferior-emacs-lisp-mode "Eλ»") ; *ielm*

@@ -71,7 +71,7 @@
   )
 
 (use-package eyebrowse
-  :demand t
+  :demand
   :config (eyebrowse-mode +1)
   :custom
   (eyebrowse-wrap-around t)
