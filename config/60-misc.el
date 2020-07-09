@@ -1,6 +1,5 @@
 ;; config/misc
 
-(require 'user-utils)
 (use-package f)
 (use-package s)
 

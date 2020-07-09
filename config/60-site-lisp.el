@@ -4,6 +4,9 @@
 ;; MELPA に登録した (あるいは site-lisp 以下にある) 自作パッケージは、可能な限り手動インストールする
 ;; autoload cookie によるシンボルの事前定義＆遅延ロードが有効になるため、通常パッケージに近い設定を行える
 
+;; -L ~/.emacs.d/site-lisp
+(add-to-list 'load-path (locate-user-emacs-file "site-lisp"))
+
 (require 'textproc)
 (require 'gitter-irc)
 (require 'cl-compatible)
