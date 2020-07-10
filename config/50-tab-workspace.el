@@ -62,12 +62,13 @@
   :config
   (tab-bar-mode +1)
   (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
-  (tab-rename "main" 1))
+  (tab-rename "main" 1)
+  :ensure nil)
 
 (use-package tab-line
   :if (version<= "27.0" emacs-version)
   ;;:init (global-tab-line-mode +1)
-  )
+  :ensure nil)
 
 (use-package eyebrowse
   :demand
