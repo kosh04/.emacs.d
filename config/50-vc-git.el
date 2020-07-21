@@ -71,6 +71,7 @@ See URL `https://github.com/magit/magit/issues/3686'"
          ("C-x G" . magit-list-repositories)
          :map magit-mode-map
          ("&" . user::open-repository-url)
+         ("@" . vc-git-grep)
          ("Q" . user::magit-mode-quit)
          :map magit-status-mode-map
          ("RET" . magit-diff-visit-file-other-window)
@@ -117,3 +118,12 @@ See URL `https://github.com/magit/magit/issues/3686'"
   :bind (:map dired-mode-map ("g" . dired-k))
   :custom
   (dired-k-human-readable t))
+
+(use-package dired-git-info
+  :after dired
+  :custom (dgi-auto-hide-details-p t)
+  :config
+  (define-key dired-mode-map ")" 'dired-git-info-mode)
+  ;;(add-hook 'dired-after-readin-hook 'dired-git-info-auto-enable)
+  )
+
