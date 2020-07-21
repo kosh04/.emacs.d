@@ -154,4 +154,28 @@ gnuplot に出力できるらしい？
 
 LISPで数式処理ができる点ではMaximaとよく似ている.
 
-[EOF]
+## Tips
+
+http://www.eonet.ne.jp/~3alchemists/Calc/Texinfo/Texi2html/calc-jp_30.html
+
+練習問題 13 ハッシュコードの計算
+
+```calc
+. ' "Testing, 1, 2, 3" RET
+
+=> [84, 101, 115, 116, 105, 110, 103, 44, 32, 49, 44, 32, 50, 44, 32, 51]
+
+. V R ' 3$$+$ RET
+
+=> 1960915098
+```
+
+同じことを Emacs Lisp でやると以下のようになる
+
+```emacs-lisp
+(seq-reduce (lambda (acc elt)
+              (+ (* 3 acc) elt))
+            "Testing, 1, 2, 3"
+            0)
+;=> 1960915098
+```
