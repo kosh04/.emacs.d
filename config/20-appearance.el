@@ -33,16 +33,14 @@
 ;;(setq-default cursor-in-non-selected-windows nil)
 
 ;; 行番号
-;; `linum-mode' は `git-gutter' と被るので NG
+;; `linum-mode' は `git-gutter' と被るため非推奨
 (use-package display-line-numbers
   ;; NOTE: 特殊バッファに行番号は不要
   :hook ((prog-mode
           text-mode
           conf-mode)
          . display-line-numbers-mode)
-  :custom-face
-  (line-number ((t :inherit shadow)))
-  (line-number-current-line ((t :foreground "default" :bold t :inherit line-number))))
+  )
 
 (setq frame-title-format
       `(" %b " (buffer-file-name "(%f)") " on " ,(system-name)

@@ -154,11 +154,12 @@ gnuplot に出力できるらしい？
 
 LISPで数式処理ができる点ではMaximaとよく似ている.
 
+
 ## Tips
 
-http://www.eonet.ne.jp/~3alchemists/Calc/Texinfo/Texi2html/calc-jp_30.html
+### 練習問題 13 ハッシュコードの計算
 
-練習問題 13 ハッシュコードの計算
+http://www.eonet.ne.jp/~3alchemists/Calc/Texinfo/Texi2html/calc-jp_30.html
 
 ```calc
 . ' "Testing, 1, 2, 3" RET
@@ -179,3 +180,51 @@ http://www.eonet.ne.jp/~3alchemists/Calc/Texinfo/Texi2html/calc-jp_30.html
             0)
 ;=> 1960915098
 ```
+
+### 2020-05-27 シーケンスのサンプル
+
+https://ipmsg.org/protocol.txt
+
+> 公開鍵指紋付きユーザ名は以下のようにして作成します。
+> 1. 公開鍵の法(*1)に対する SHA-1 ダイジェスト値(160bit)を生成(*2)
+> 2. 末尾に 32bit の 0 を付与して、192bit の値とする
+> 3. 192bit を 64bit*3つのフィールドに分割し、3つを XORする
+> 4. 64bit値を16文字固定のhex文字列化する
+> 5. ユーザ名の末尾に、ユーザ名-<指紋文字列> の形式で指紋を付加
+> (*1) (*2) この部分に使う法とSHA-1はリトルエンディアン形式を使い
+> ます。（歴史的経緯のため）
+
+```
+レジストリ "HKCU\Software\HSTools\IPMsg\Crypt" を抽出する
+→設定保存／実験＞設定内容の外部保存からファイルに書き出し可能
+公開鍵の値は１６進数の配列のように表記されている (hh,hh,hh,...)
+コレをリージョン指定して calc コマンドに投げる
+
+C-x * g (calc-grab-region)
+. 0 v b (calc-build-vector) 4 ; [0,0,0,0] を生成して末尾に結合
+. | (calc-concat)
+. v a (calc-arrange-vector) 8
+. v u (calc-unpack)
+. V M b x (calc-map → xor)
+
+"kosh-<1dd6ba8b51ec6414>"
+```
+
+おまけ ベクタ表記を見やすくする
+
+```
+. d C (calc-c-language)		; C 言語ぽく表記
+. d 6 (calc-hex-radix)		; 16 進数表記
+. b w (calc-word-size) 8	; 2byte (XX) 表記
+. d z (calc-leading-zeros)	; zero-padding
+```
+
+回答メモ
+
+```
+1:  {0x4C, 0x3B, 0x3E, 0xA7, 0xAD, 0x78, 0x45, 0x2B}
+1:  {0xB8, 0x96, 0x10, 0x52, 0x16, 0x3A, 0xD9, 0x9E}
+kosh-<1dd6ba8b51ec6414>
+```
+
+合ってなくない・・？

@@ -22,6 +22,9 @@
 ;;(setf (getenv "PS1") "[$?][\\u@\\h:\\w]\n\\$ ")
 (setf (getenv "GIT_EDITOR") "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
 
+(unless (executable-find "cask")
+  (setf (getenv "PATH") (substitute-env-vars "$HOME/.cask/bin:$PATH")))
+
 ;; ../Makefile 利用時に役に立つかも
 (setf (getenv "EMACS") (expand-file-name invocation-name invocation-directory))
 
