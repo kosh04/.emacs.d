@@ -5,16 +5,6 @@
 ;; 行の切り捨て (non-nil ならば行の折り返し無効)
 (setf (default-value 'truncate-lines) t)
 
-;; 入力補完で大文字小文字の区別をしない
-(setq completion-ignore-case t)
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
-
-;; 補完候補がN以下ならば循環補完
-(setq completion-cycle-threshold 3)
-
-(add-to-list 'completion-ignored-extensions ".exe")
-
 ;; URL クリックでブラウザを開く
 (add-hook 'text-mode-hook 'goto-address-mode)
 (add-hook 'prog-mode-hook 'goto-address-prog-mode)
