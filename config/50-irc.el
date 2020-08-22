@@ -18,28 +18,34 @@
   (erc-tls :server "irc.mozilla.org" :port 6697)
   )
 
-(with-eval-after-load 'erc
-  (custom-set-variables
-   '(erc-fill-column 100)
-   '(erc-kill-queries-on-quit t)
-   '(erc-kill-server-buffer-on-quit t)
-   )
-  ;;(setq erc-join-buffer 'frame)
-  ;; (setq erc-interpret-mirc-color t)
-  ;; (setq erc-kill-server-buffer-on-quit t)
+(use-package erc
+  :custom
+  (erc-kill-queries-on-quit t)
+  (erc-kill-server-buffer-on-quit t)
+  ;; erc-fill
+  (erc-fill-column 100)
+  ;;(erc-join-buffer 'frame)
+  ;;(erc-interpret-mirc-color t)
+  ;; FIXME: ログの設置場所が固定されない..
+  (erc-log-channels-directory
+   (let ((dir (locate-user-emacs-file "cache/erc-log")))
+     (unless (file-exists-p dir)
+       (make-directory dir t))
+     dir))
+  (erc-log-insert-log-on-open t)
+
+  :config
   (add-hook 'erc-mode-hook 'goto-address-mode)
   ;; (erc-truncate-mode +1)
   ;; (erc-spelling-mode +1)
   (erc-timestamp-mode +1)
-
-  ;; FIXME: ログの設置場所が固定されない..
-  (require 'erc-log)
-  (custom-set-variables
-   '(erc-log-channels-directory
-     (let ((dir (locate-user-emacs-file "cache/erc-log")))
-       (unless (file-exists-p dir)
-         (make-directory dir t))
-       dir))
-   '(erc-log-insert-log-on-open t))
-  (erc-log-enable)
+  (erc-log-mode +1)
   )
+
+;; (use-package erc-log
+;;   :after erc :ensure nil
+;;   :demand 
+;;   :custom
+
+;;   :config
+;;   )
