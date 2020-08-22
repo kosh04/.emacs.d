@@ -63,6 +63,12 @@
   (tab-bar-mode +1)
   (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
   (tab-rename "main" 1)
+  ;; alt-[number]:switchToTab
+  (dolist (n (number-sequence ?1 ?9))
+    (define-key global-map `[(meta ,n)]
+      `(lambda ()
+         (interactive)
+         (tab-bar-select-tab ,(- n ?0)))))
   :ensure nil)
 
 (use-package tab-line

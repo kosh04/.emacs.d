@@ -205,3 +205,11 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (customize-set-value
  'next-error-found-function
  #'(lambda (_from _to) (view-mode +1)))
+
+(use-package remember
+  :custom
+  (remember-notes-initial-major-mode 'markdown-mode)
+  :bind
+  (("C-c m" . remember)))
+
+;; EOF

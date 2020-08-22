@@ -9,12 +9,15 @@
   ;;(lsp-document-sync-method 'incremental) ;; always send incremental document
   ;;(lsp-prefer-flymake 'flymake)
   ;;(lsp-enable-completion-at-point nil)
+  (lsp-keymap-prefix "s-l")             ; C-x @ s
   :preface
   (defun user::lsp-enable ()
     (add-hook 'before-save-hook #'lsp-format-buffer nil 'local)
     (add-hook 'before-save-hook #'lsp-organize-imports nil 'local)
     (lsp-deferred))
   :bind (:map lsp-mode-map ("<f2>" . lsp-rename))
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (lsp-mode . lsp-headerline-breadcrumb-mode))
   )
 
 (use-package lsp-ui
@@ -32,6 +35,7 @@
   )
 
 (use-package company-lsp
+  :disabled
   :after lsp-mode
   :custom
   (company-lsp-cache-candidates t) ;; always using cache

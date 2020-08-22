@@ -2,6 +2,8 @@
 
 ;; 基本的にファイルは read-only+view-mode で開きたい
 
+;; TODO: Diff-mode+read-only-mode 時に有効になるキーバインドを view-mode で潰したくない
+
 ;; C-x C-q (read-only-mode) を view-mode として機能させる
 (setq view-read-only t)
 
