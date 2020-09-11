@@ -47,3 +47,7 @@
 
 (use-package apples-mode
   :mode ("\\.\\(applescri\\|sc\\)pt\\'"  . apples-mode))
+
+(when (eq window-system 'mac)
+  ;; プレフィックスキー (C-x,M-g) 入力時に IME をオフにして誤爆を防ぐ
+  (mac-auto-ascii-mode +1))

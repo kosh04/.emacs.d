@@ -70,11 +70,10 @@
 
 (use-package eww
   :config
-  (require 's)
   (defun user:eww-show-url-at-point ()
-    (let ((url (get-text-property (point) 'shr-url))
-          (width (- (window-width) 3)))
-      (s-truncate width url)))
+    (when-let ((url (get-text-property (point) 'shr-url)))
+      (setq url (get-text-property (point) 'help-echo))
+      (truncate-string-to-width url (window-width) 0 nil 'ellipsis)))
   (defun user:eww-setup ()
     (setq-local eldoc-documentation-function #'user:eww-show-url-at-point)
     (eldoc-mode))
