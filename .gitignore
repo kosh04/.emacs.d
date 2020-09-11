@@ -49,6 +49,7 @@ UnicodeData.txt
 /share/dict/*/migemo-dict
 /migemo-pattern
 /site-lisp/*/
+/share/fonts/
 /etc/
 /emojis/
 irony/

@@ -64,6 +64,10 @@
   (interactive "snew URL: ")
   (eww-browse-url url t))
 
+(defun user::shr-next-image ()
+  (interactive)
+  (text-property-search-forward 'image-url))
+
 (use-package eww
   :config
   (require 's)
@@ -95,6 +99,7 @@
              ("e" . user:eww-send-to-google-translate)
              ("R" . user:eww-readable)
              ("Q" . kill-this-buffer)
+             ("N" . user::shr-next-image)
              :map eww-bookmark-mode-map
              ("n" . next-line)
              ("p" . previous-line)

@@ -22,6 +22,12 @@
   ;;(add-hook 'minibuffer-setup-hook 'deactivate-input-method)
   )
 
+;; ダイナミックモジュール版 IME パッチ
+;; https://github.com/trueroad/tr-emacs-ime-module
+(unless (fboundp 'ime-get-mode)
+  (require 'tr-ime-module-helper)
+  (require 'w32-ime "w32-ime-for-tr-ime-module"))
+
 ;; VC-Git
 ;; 外部プロセスを抑制する
 '
