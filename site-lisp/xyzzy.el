@@ -913,42 +913,22 @@ You can use key command as C-u \\[shell-command-on-region]"
          t)
         (t #1#)))
 
-(defsubst make-unreserved-chars (literal-char)
-  "引数文字列からURLエンコードしない文字のリストを作成します."
-  (if (string-equal literal-char "")
-      nil
-      (let ((words (concat "[^" literal-char "]"))
-            (acc '()))
-        (dolist (c (number-sequence 0 127))
-          (if (string-match words (char-to-string c))
-              (push c acc)))
-        (nreverse acc))))
-
-;; (set-difference (make-unreserved-chars "-A-Za-z0-9$_.+!*'(|),") url-unreserved-chars) => (?| ?, ?+ ?$)
-
 ;; url/url-util.el
 (defun si:www-url-encode (string &optional _output-stream literal-char)
   "STRINGをURLエンコードします."
-  (require 'url-util)
-  (let ((url-unreserved-chars
-         (if (eq literal-char 't)
+  (let ((allowed-chars
+         (if literal-char
              nil
-           (make-unreserved-chars (or literal-char "-A-Za-z0-9$_.+!*'(|),")))))
-    (cl-declare (special url-unreserved-chars))
-    (url-hexify-string (encode-coding-string string locale-coding-system))))
+           ;; URLエンコードしない文字のリスト
+           (cl-loop for c from 0 to 127
+                    if (string-match "[-A-Za-z0-9$_.+!*'(|),]" (char-to-string c))
+                    collect c))))
+    (url-hexify-string string allowed-chars)))
 
-;; url-unhex-string
 (defun si:www-url-decode (input-string &optional _output-stream)
   "STRINGをURLデコードします."
-  (require 'url-util)                   ; use `replace-regexp-in-string'
-  (let ((decoded-url
-         (replace-regexp-in-string "%\\([0-9A-Fa-f][0-9A-Fa-f]\\)"
-                                   #'(lambda (str)
-                                       ;; "%FA" => "\xFA"
-                                       (char-to-string
-                                        (string-to-number (match-string 1 str) 16)))
-                                   input-string)))
-    (decode-coding-string decoded-url locale-coding-system)))
+  (let ((url (url-unhex-string input-string)))
+    (decode-coding-string url 'utf-8)))
 
 ;; もしくは urlencode.el
 ;; "http://taiyaki.org/elisp/urlencode/"
