@@ -916,13 +916,11 @@ You can use key command as C-u \\[shell-command-on-region]"
 ;; url/url-util.el
 (defun si:www-url-encode (string &optional _output-stream literal-char)
   "STRINGをURLエンコードします."
-  (let ((allowed-chars
-         (if literal-char
-             nil
-           ;; URLエンコードしない文字のリスト
-           (cl-loop for c from 0 to 127
-                    if (string-match "[-A-Za-z0-9$_.+!*'(|),]" (char-to-string c))
-                    collect c))))
+  (let ((allowed-chars (make-vector 256 nil)))
+    (when (eq literal-char nil)
+      (cl-loop for c from 0 to 127
+               if (string-match "[-A-Za-z0-9$_.+!*'(|),]" (char-to-string c))
+               do (aset allowed-chars c t)))
     (url-hexify-string string allowed-chars)))
 
 (defun si:www-url-decode (input-string &optional _output-stream)
