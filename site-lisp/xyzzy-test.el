@@ -25,6 +25,6 @@
    '(("あいうえお" . "%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A")
      ("console.log('\U0001F363');" . "console.log('%F0%9F%8D%A3')%3B"))
    do
-   (should (string= (si:www-url-encode str) decoded))
-   (should (string= (si:www-url-decode decoded) str)))
+   (should (string= (si:www-url-encode str) encoded))
+   (should (string= (si:www-url-decode encoded) str)))
   )
