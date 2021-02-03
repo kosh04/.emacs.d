@@ -2,4 +2,4 @@
 setlocal
 
 call %~dp0\_env.cmd
-%EMACS26_HOME%\bin\runemacs %*
+%EMACS_HOME%\bin\runemacs %*

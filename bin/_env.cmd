@@ -3,6 +3,8 @@ rem Setup NTEmacs environment
 set EMACS24_HOME=%USERPROFILE%\opt\emacs-24.5-IME-patched-generic-cpu
 set EMACS25_HOME=%USERPROFILE%\opt\emacs-25.2
 set EMACS26_HOME=%LOCALAPPDATA%\Programs\emacs-26.2
+set EMACS27_HOME=%LOCALAPPDATA%\Programs\emacs-27.1-x86_64
+set EMACS_HOME=%EMACS27_HOME%
 
 rem set EMACSPATH=
 rem set EMACSPATH=%EMACS_HOME%\bin
