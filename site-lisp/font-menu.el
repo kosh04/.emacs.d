@@ -109,22 +109,48 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
 (defvar font-family-menu-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "RET") #'font-family-menu/display-sample-text)
+    (define-key map (kbd "?") #'font-family-menu/describe-font)
     (define-key map (kbd "b") #'font-family-menu/switch-to-sample-buffer)
     map))
+
+(declare-function describe-font-internal "describe-font-internal")
+
+(defun font-family-menu/describe-font (&optional button)
+  (interactive)
+  (let* ((font-family (if (markerp button)
+                          (button-label button)
+                        (tabulated-list-get-id)))
+         (fontname (elt (font-info font-family) 0)))
+    (describe-font fontname)))
+
+(defun font-family-menu/entry (font-family)
+  `(,font-family ;; id
+    [ ;; Name
+     (,font-family
+      follo-link t
+      action (lambda (b)
+               (font-family-menu/display-sample-text
+                (button-label b))))
+     ;; Opened Name
+     ,(if-let ((fi (font-info font-family)))
+          `(,(elt fi 0)
+            face link
+            action (lambda (b)
+                     (describe-font (button-label b))))
+        "??")
+     ]))
 
 (define-derived-mode font-family-menu-mode tabulated-list-mode
   "Font Family Menu"
   "Major mode for listing the available font families."
-  (let ((ff (font-family-list)))
+  (let ((ff (font-family-list)))        ; ff = font-families
     (setq ff (mapcar (lambda (font) (decode-coding-string font 'utf-8)) ff))
     (setq ff (delete-dups ff))
     (setq ff (sort ff #'(lambda (x y) (string< (upcase x) (upcase y)))))
     (setq tabulated-list-format [("Name" 35 t)
                                  ("Opened Name" 50)])
     (setq tabulated-list-entries
-          (mapcar (lambda (family)
-                    (list family (vector family (or (elt (font-info family) 0) "*"))))
-                  ff))))
+          (mapcar 'font-family-menu/entry ff))))
 
 (defun font-family-menu/fontify-buffer (font-family)
   (cl-loop with pos = (point-min)
