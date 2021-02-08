@@ -10,10 +10,23 @@
 
 (global-set-key (kbd "C-¥") 'toggle-input-method)
 
-;; ゴミ箱に入れる
-(custom-set-variables
- '(delete-by-moving-to-trash t)
- '(trash-directory "~/.Trash/"))
+(use-package emacs
+  :if (eq window-system 'mac)
+  :custom
+  ;; ゴミ箱に入れる
+  (delete-by-moving-to-trash t)
+  (trash-directory "~/.Trash/")
+
+  ;; FIXME: 黒背景に濃い青は見づらい (テーマを利用していれば無用の長物)
+  (ansi-color-names-vector
+   ["black" "red3" "green3" "yellow3"
+    "royal blue"                        ; Original "blue2"
+    "magenta3" "cyan3" "gray90"])
+
+  ;;
+  (ispell-program-name "aspell")
+  (locate-command "mdfind")
+  )
 
 ;; Environment Path (-> config/30-exec-path-from-shell.el)
 
@@ -27,12 +40,6 @@
 
 ;; ../Makefile 利用時に役に立つかも
 (setf (getenv "EMACS") (expand-file-name invocation-name invocation-directory))
-
-(custom-set-variables
- ;; FIXME
- '(ispell-program-name "aspell")
- '(locate-command "mdfind")
- )
 
 ;; Tramp
 ;; リモートファイルを開く時に`vc-svn-registered'が邪魔をする場合がある
@@ -48,6 +55,6 @@
 (use-package apples-mode
   :mode ("\\.\\(applescri\\|sc\\)pt\\'"  . apples-mode))
 
-(when (eq window-system 'mac)
-  ;; プレフィックスキー (C-x,M-g) 入力時に IME をオフにして誤爆を防ぐ
-  (mac-auto-ascii-mode +1))
+;; プレフィックスキー (C-x,M-g) 入力時に IME をオフにして誤爆を防ぐ
+(if (fboundp 'mac-auto-ascii-mode)
+    (mac-auto-ascii-mode +1))

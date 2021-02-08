@@ -53,5 +53,7 @@
 ;; http://www.rtags.net/
 (use-package rtags)
 
-(use-package ccls)
+(use-package ccls
+  :custom
+  (ccls-sem-highlight-method 'font-lock))
 (add-hook 'c-mode-common-hook 'lsp-deferred)

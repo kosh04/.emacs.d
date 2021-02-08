@@ -45,7 +45,8 @@
 (custom-set-variables
  ;;'(desktop-load-locked-desktop nil)
  ;;'(desktop-restore-in-current-display nil)
- '(desktop-restore-frames nil))
+ ;;'(desktop-restore-frames nil)
+ )
 (add-to-list 'desktop-path (locate-user-emacs-file "cache/"))
 ;; WARNING: 循環リストを含むコマンドを保存しようとすると無限ループの可能性あり '#0=(x . #0#)
 ;; そうでなくても重い気がする...

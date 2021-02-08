@@ -59,6 +59,9 @@
   :config
   (setq jsons-path-printer 'jsons-print-path-jq))
 
+;; https://github.com/DamienCassou/json-navigator/issues/22
+;; (use-package json-navigator)
+
 ;; YAML
 (use-package yaml-mode
   :mode "\\.yml\\'")

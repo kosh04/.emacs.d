@@ -1,7 +1,7 @@
 ;;; config/anzu.el --- isearch utility
 
 (use-package anzu
-  :diminish anzu-mode
+  :after isearch
   :hook (emacs-startup . global-anzu-mode)
   :custom
   (anzu-search-threshold 1000)

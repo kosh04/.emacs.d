@@ -100,3 +100,6 @@
 (defalias 'hideshow-minor-mode #'hs-minor-mode)
 (with-eval-after-load 'hideshow
   (add-hook 'hs-minor-mode-hook 'hs-hide-all))
+
+(use-package rainbow-mode
+  :hook (emacs-lisp-mode))
