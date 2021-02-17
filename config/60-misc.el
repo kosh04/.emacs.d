@@ -208,6 +208,9 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (use-package remember
   :custom
   (remember-notes-initial-major-mode 'markdown-mode)
+  ;; hijack the *scratch* buffer
+  ;(remember-notes-buffer-name "*scratch*")
+  ;(initial-buffer-choice 'remember-notes)
   :bind
   (("C-c m" . remember)))
 
