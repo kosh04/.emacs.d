@@ -1,4 +1,4 @@
-;;; config/appearance --- 表示と外観
+;;; config/appearance --- 表示と外観,テーマ
 
 ;(setq inhibit-startup-screen t)
 
@@ -103,3 +103,12 @@
 
 (use-package rainbow-mode
   :hook (emacs-lisp-mode))
+
+;;; Theme
+
+;; (load-theme 'zenburn)
+;; (load-theme 'wombat)
+
+(use-package kaolin-themes
+  :init
+  (load-theme 'kaolin-dark t))
