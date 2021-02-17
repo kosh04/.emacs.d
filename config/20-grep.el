@@ -2,6 +2,11 @@
 
 ;; (できれば) M-x grep,lgrep,rgrep を活用したい
 
+(with-eval-after-load 'grep
+  (define-advice grep (:after (&rest _) window-select)
+    "*grep* ウィンドウにフォーカスする."
+    (pop-to-buffer next-error-last-buffer)))
+
 ;; Occur
 (with-eval-after-load 'replace
   (let ((map occur-mode-map))
