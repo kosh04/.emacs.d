@@ -42,16 +42,26 @@ rem SWI-Prolog
 set PATH=%PATH%;C:\opt\swipl\bin
 
 rem == Zeal ==
-set PATH=%PATH%;%ProgramFiles(x86)%\Zeal
+rem set PATH=%PATH%;%ProgramFiles(x86)%\Zeal
+call :add_path "%ProgramFiles(x86)%\Zeal"
 
 rem == Cygwin ==
 rem NOTE: NOT recommended using Cygwin process in NTEmacs
-set CYGWIN_HOME=C:\cygwin64
+rem set CYGWIN_HOME=C:\cygwin64
 rem set PATH=%PATH%;%CYGWIN_HOME%\bin
 
 rem set PATH=%PATH%;C:\opt\Gow\bin
+rem set PATH=%PATH%;%ProgramFiles%\Git\usr\bin
+call :add_path "%ProgramFiles%\Git\usr\bin"
 
 rem == The Unarchiver ==
 rem https://theunarchiver.com/command-line
 rem lsar.exe for dired *.rar
-set PATH=%PATH%;%HOME%\opt\unar
+call :add_path %HOME%\opt\unar
+
+exit /b
+
+:add_path
+if exist %1 set PATH=%PATH%;%~1
+if not exist %1 echo Warning: non-existent path %1
+exit /b
