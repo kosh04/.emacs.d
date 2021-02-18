@@ -31,6 +31,14 @@
     (add-to-list 'popwin:special-display-config '("*Google Translate*" :height 0.5 :stick t)))
   )
 
+(with-eval-after-load 'google-translate-tk
+  (define-advice google-translate--get-b-d1 (:override () fake-tkk)
+    "See URL `https://github.com/atykhonov/google-translate/issues/52'"
+    ;; TKK='427110.1469889687'
+    '(427110 1469889687))
+  ;;(advice-remove #'google-translate--get-b-d1 #'google-translate--get-b-d1@fake-tkk)
+  )
+
 ;; 辞書.app
 (use-package osx-dictionary
   :disabled

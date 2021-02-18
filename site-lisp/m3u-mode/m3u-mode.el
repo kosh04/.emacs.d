@@ -119,7 +119,7 @@
 
 (defun m3u-insert-entry (title path)
   "Insert M3U Entry."
-  (interactive "*sTitle: \nsPath: ")
+  (interactive "*sTitle: \nFPath: ")
   (insert (m3u-new-entry title path) "\n"))
 
 (provide 'm3u-mode)

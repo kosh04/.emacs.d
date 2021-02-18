@@ -77,6 +77,9 @@ See URL `https://github.com/magit/magit/issues/3686'"
          ("RET" . magit-diff-visit-file-other-window)
          :map magit-repolist-mode-map
          ("f" . user::magit-repolist-open-dired)
+         :map magit-repolist-mode-map
+         ("n" . next-line)
+         ("p" . previous-line)
          )
   :hook (magit-diff-visit-file . view-mode)
   :custom

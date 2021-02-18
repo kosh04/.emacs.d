@@ -58,6 +58,7 @@
   :demand
   :custom
   (tab-bar-tab-hints t)
+  (tab-bar-new-tab-choice "*scratch*")
   :bind (("C-x t l" . tab-list))
   :config
   (tab-bar-mode +1)

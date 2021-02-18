@@ -150,17 +150,16 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 ;; (apply #'provided-mode-derived-p 'js-mode so-long-target-modes)   ;=> prog-mode
 
 ;; モードラインのマイナーモードを纏める ;-)
+;; no more `:diminish' ?
 (use-package minions
   :demand
-  ;;:custom (minions-mode-line-lighter "...") ; "[+]"
-  :config
-  (minions-mode +1)
   :custom
+  ;;(minions-mode-line-lighter "...") ; "[+]"
   (minions-direct
    '(lsp-mode
-     flycheck-mode
-     ))
-  )
+     flycheck-mode))
+  :config
+  (minions-mode +1))
 
 (use-package calendar
   :bind (("C-c t c" . calendar)
@@ -209,7 +208,15 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (use-package remember
   :custom
   (remember-notes-initial-major-mode 'markdown-mode)
+  ;; hijack the *scratch* buffer
+  ;(remember-notes-buffer-name "*scratch*")
+  ;(initial-buffer-choice 'remember-notes)
   :bind
   (("C-c m" . remember)))
+
+;; TODO: not worked yet
+(use-package treemacs
+  :bind
+  ("C-c t t" . treemacs))
 
 ;; EOF

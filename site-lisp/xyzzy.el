@@ -829,6 +829,7 @@
 (defun run-console ()
   "外部コンソールを起動します."
   (interactive)
+  ;;(start-process #1="com.apple.terminal" nil "open" "-b" #1# default-directory)
   (launch-application shell-file-name))
 
 ;; (fset 'process-exit-code #'process-exit-status)

@@ -19,6 +19,14 @@
     (shr-render-buffer (markdown-standalone)))
   (defalias 'markdown-preview-buffer 'user:markdown-preview-in-buffer)
   (add-hook 'markdown-mode-hook #'outline-minor-mode)
+  :hook
+  (markdown-mode . outline-minor-mode)
+  (markdown-mode . prettify-symbols-mode)
+  (markdown-mode . (lambda ()
+                     (setq prettify-symbols-alist
+                           '(("[ ]" . "☐")
+                             ("[x]" . "☑") ;; ☒
+                             ))))
   )
 
 ;; Hugo - https://gohugo.io/

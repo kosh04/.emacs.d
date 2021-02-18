@@ -13,6 +13,7 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
       (or (eq buffer (current-buffer))
           (switch-to-buffer-other-window buffer)))))
 
+;; TODO: グループタブごとに個別のシェルを開きたい
 (global-set-key (kbd "C-c s") 'shell)
 
 ;; エスケープシーケンスを処理する ("ls --color" が使える)

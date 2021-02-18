@@ -142,6 +142,12 @@
               ("<SPC>" . peep-dired-scroll-page-down)
               ("<S-SPC>" . peep-dired-scroll-page-up)))
 
+;; より豪華な peep-dired
+(use-package ranger
+  :disabled
+  :after dired
+  :init (ranger-override-dired-mode t))
+
 ;; ファイルに関連付けられたアイコンを表示する
 ;; darwin: ~/Library/Fonts/*.ttf
 (use-package all-the-icons-dired

@@ -52,3 +52,6 @@
   args)
 
 (setq temp-buffer-show-function #'pop-to-buffer)
+
+;; C-x = で文字名情報を追加する
+(setq what-cursor-show-names t)

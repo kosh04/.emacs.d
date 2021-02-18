@@ -1,5 +1,6 @@
 ;;; config/LSP --- Language Server Protocol
 
+;; https://emacs-lsp.github.io/lsp-mode/
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 
 (use-package lsp-mode
