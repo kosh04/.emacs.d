@@ -409,7 +409,7 @@ URL `https://www.reddit.com/r/emacs/comments/f2ut1v/searching_and_typing_unicode
 
 ;; (letter-spacing "HELLO WORLD") ;=> "H E L L O W O R L D"
 (defun letter-spacing (str &optional pad)
-  "文字同士の間隔を開ける."
+  "文字 STR の隙間に PAD を埋め込み間隔を開ける."
   (unless pad
     (setq pad " "))
   (with-output-to-string
@@ -423,6 +423,10 @@ URL `https://www.reddit.com/r/emacs/comments/f2ut1v/searching_and_typing_unicode
               (setq prev c))
             str))
     (buffer-string)))
+
+(defun transpose-window ()
+  (interactive)
+  (error "TODO: Not Implemented"))
 
 (provide 'user-utils)
 

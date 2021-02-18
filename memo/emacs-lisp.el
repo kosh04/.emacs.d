@@ -1024,11 +1024,11 @@ focus-out-hook
 (global-set-key (kbd "C-x 5 x") 'user/execute-extended-command-other-frame)
 
 ;; :smile: みたいな絵文字エイリアスを変換して入力するパッケージって既にある？
-(setq emoji-db
-      (with-temp-buffer
-        (url-insert-file-contents
-         "https://github.com/github/gemoji/raw/master/db/emoji.json")
-        (json-read)))
+(defvar emoji-db
+  (with-temp-buffer
+    (url-insert-file-contents
+     "https://github.com/github/gemoji/raw/master/db/emoji.json")
+    (json-read)))
 
 (seq-find (pcase-lambda ((map emoji description category aliases))
             (string= description "thumbs up"))
@@ -1043,3 +1043,8 @@ focus-out-hook
 ;; 	 (skin_tones . t))
 
 (setq highlight-nonselected-windows t)
+
+;; `custom-reevaluate-setting' カスタム変数の値リセットの活用例
+;; via: https://github.com/cyrus-and/dotfiles/blob/b7eb700e5d81c5ab61fb6bbfb21685073a362433/emacs/.emacs#L51-L56
+(setq gc-cons-threshold most-positive-fixnum)
+(add-hook 'after-init-hook (lambda () (custom-reevaluate-setting 'gc-cons-threshold)))
