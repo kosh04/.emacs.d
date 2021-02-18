@@ -17,16 +17,18 @@
   (setq-default w32-ime-mode-line-state-indicator "[－]")
   (setq w32-ime-mode-line-state-indicator-list '("[－]" "[あ]" "[－]"))
   (w32-ime-initialize)
+  (defconst kosh-default-cursor-color (frame-parameter nil 'cursor-color))
   (add-hook 'w32-ime-on-hook #'(lambda () (set-cursor-color "brown")))
-  (add-hook 'w32-ime-off-hook #'(lambda () (set-cursor-color "black")))
+  (add-hook 'w32-ime-off-hook #'(lambda () (set-cursor-color kosh-default-cursor-color)))
   ;;(add-hook 'minibuffer-setup-hook 'deactivate-input-method)
   )
 
-;; ダイナミックモジュール版 IME パッチ
+;; IME Patch (Dynamic Modules ver.)
 ;; https://github.com/trueroad/tr-emacs-ime-module
-(unless (fboundp 'ime-get-mode)
-  (require 'tr-ime-module-helper)
-  (require 'w32-ime "w32-ime-for-tr-ime-module"))
+(use-package tr-ime
+  :demand
+  :config
+  (tr-ime-standard-install))
 
 ;; VC-Git
 ;; 外部プロセスを抑制する
