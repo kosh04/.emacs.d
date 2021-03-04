@@ -55,5 +55,21 @@
 
 (use-package ccls
   :custom
-  (ccls-sem-highlight-method 'font-lock))
+  (ccls-sem-highlight-method 'font-lock)
+  (ccls-args '("-log-file=/tmp/ccls.log" "-v=1"))
+  (ccls-initialization-options
+   (cond
+    ((eq system-type 'darwin)
+     ;; https://github.com/MaskRay/ccls/issues/191
+     '(:clang
+       (:extraArgs
+        ["-isystem/usr/local/include"
+         ;; "-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
+         ;; "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+         ;; "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"
+         ;; "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+         ;; "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+         ;; "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+         ])))
+    (t nil))))
 (add-hook 'c-mode-common-hook 'lsp-deferred)
