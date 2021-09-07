@@ -58,3 +58,8 @@
 ;; プレフィックスキー (C-x,M-g) 入力時に IME をオフにして誤爆を防ぐ
 (if (fboundp 'mac-auto-ascii-mode)
     (mac-auto-ascii-mode +1))
+
+;; Use ligatures
+;; https://github.com/tonsky/FiraCode/wiki/Emacs-instructions#using-composition-mode-in-emacs-mac-port
+(if (fboundp 'mac-auto-operator-composition-mode)
+    (funcall 'mac-auto-operator-composition-mode))

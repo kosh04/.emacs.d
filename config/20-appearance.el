@@ -16,13 +16,13 @@
 ;;(scroll-bar-mode -1)
 
 ;; Font
-(when (and window-system (font-info "Sarasa Term J"))
-  ;; TODO: マシン毎にフォントサイズを調整したい
-  ;; "Sarasa Term J-10.5" (pixelsize=14)
-  ;; "更紗等幅ゴシック J"
-  (create-fontset-from-ascii-font
-   "Sarasa Term J:pixelsize=16:weight=regular:slant=normal" nil "coding")
-  (add-to-list 'default-frame-alist '(font . "fontset-coding")))
+(let ((font "Sarasa Mono J:pixelsize=14:weight=regular:slant=normal"))
+  (when (and window-system (font-info font))
+    ;; TODO: マシン毎にフォントサイズを調整したい
+    ;; "Sarasa Term J-10.5" (pixelsize=14)
+    ;; "更紗等幅ゴシック J"
+    (create-fontset-from-ascii-font font nil "coding")
+    (add-to-list 'default-frame-alist '(font . "fontset-coding"))))
 
 ;; Frame
 (add-to-list 'default-frame-alist '(alpha . (0.90 0.90)))
@@ -88,6 +88,7 @@
 
 ;; 行カーソル
 ;; (require 'hl-line)
+(setq  hl-line-sticky-flag nil)
 (add-hook 'help-mode-hook 'hl-line-mode)
 (add-hook 'tabulated-list-mode-hook 'hl-line-mode)
 (add-hook 'finder-mode-hook 'hl-line-mode)
@@ -109,6 +110,8 @@
 ;; (load-theme 'zenburn)
 ;; (load-theme 'wombat)
 
+'
 (use-package kaolin-themes
   :init
   (load-theme 'kaolin-dark t))
+(use-package modus-themes :init (load-theme 'modus-vivendi t))
