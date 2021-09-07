@@ -157,3 +157,23 @@
   :config
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
   (diminish 'all-the-icons-dired-mode " "))
+
+;; TODO: Tree-based file browser 軽めのファイルツリー表示パッケージを探す
+;; ? speedbar
+;; - neotree (+projectile)
+;; - treemacs
+;; - filetree
+;; - dired-subtrees
+;; - dirtree
+;; - ztree (M-x ztree-dir)
+
+;; TODO: not worked yet
+(use-package treemacs
+  :bind
+  ("C-c t t" . treemacs)
+  :custom
+  (treemacs-persist-file
+   (locate-user-emacs-file "cache/treemacs-persist"))
+  (treemacs-last-error-persist-file
+   (locate-user-emacs-file "cache/treemacs-persist-at-last-error")))
+
