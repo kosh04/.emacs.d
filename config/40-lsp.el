@@ -45,9 +45,30 @@
 
 ;; https://github.com/joaotavora/eglot
 (use-package eglot
-  :after go-mode
+  :hook ((c-mode go-mode) . eglot-ensure)
   :config
+
+  ;; Go
   ;; NOTE: default (go-mode "go-langserver" ...)
   (add-to-list 'eglot-server-programs '(go-mode "gopls"))
-  (add-hook 'go-mode-hook 'eglot-ensure)
-  nil)
+
+  ;; C/C++
+  (pcase system-type
+    ('darwin
+     (add-to-list 'exec-path "/Library/Developer/CommandLineTools/usr/bin")
+     (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd" "-log=verbose"))
+     ))
+  )
+
+;; Debug Adapter Protocol
+;; M-x dap-debug, dap-debug-edit-template
+;; https://emacs-lsp.github.io/dap-mode/
+(use-package dap-mode
+  :after (:all go-mode lsp-mode)
+  :config
+  (require 'dap-go)
+  (dap-mode +1)
+  ;; (dap-ui-mode +1)
+  ;; (dap-tooltip-mode +1)
+  ;; (dap-ui-controls-mode +1)
+  )

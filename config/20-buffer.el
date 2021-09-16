@@ -1,11 +1,19 @@
-;;; config/buffer.el
+;;; config/Buffer
 
 ;; Buffer List
-(require 'bs)
-(global-set-key (kbd "C-x C-b") 'bs-show)
+(use-package bs
+  :bind
+  (("C-x C-b" . bs-show)
+   :map bs-mode-map
+   ("#" . clean-buffer-list)
+   ;;("e" . view-echo-area-messages)
+   ))
+
+;; (global-set-key (kbd "C-x C-b") 'bs-show)
 
 (add-hook 'bs-mode-hook 'hl-line-mode)
-(add-hook 'buffer-menu-mode-hook 'hl-line-mode)
+(add-hook 'Buffer-menu-mode-hook 'hl-line-mode)
+(add-hook 'ibuffer-mode-hook #'hl-line-mode)
 
 (defvar user::special-display-buffers
   '("*Messages*"

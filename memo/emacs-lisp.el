@@ -1048,3 +1048,7 @@ focus-out-hook
 ;; via: https://github.com/cyrus-and/dotfiles/blob/b7eb700e5d81c5ab61fb6bbfb21685073a362433/emacs/.emacs#L51-L56
 (setq gc-cons-threshold most-positive-fixnum)
 (add-hook 'after-init-hook (lambda () (custom-reevaluate-setting 'gc-cons-threshold)))
+
+;; major-mode をフック実行の回避をしながら起動させる
+;; 参考元 `custom-save-all'
+(delay-mode-hooks (emacs-lisp-mode))

@@ -2060,3 +2060,9 @@ command-history                   ;=> ((eval-expression [#2] nil))
   :config
   (add-hook 'sly-mode-hook 'sly-company-mode)
   (add-to-list 'company-backends 'sly-company))
+
+;; TODO: highlight
+(defun highlight-todos ()
+  (highlight-phrase
+   (rx word-start (or "BUG" "FIXME" "TODO" "NOTE") ":")))
+(add-hook 'find-file-hook 'highlight-todos)

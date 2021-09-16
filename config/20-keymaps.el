@@ -81,3 +81,6 @@
 (global-set-key (kbd "ESC M-q") 'read-only-mode)
 ;; WindowsTerminal v0.11.1121 にて C-@ が反応しないためその場しのぎな対処
 (global-set-key (kbd "ESC M-@") 'set-mark-command)
+
+(use-package bind-key
+  :bind ("<f1> =" . describe-personal-keybindings))

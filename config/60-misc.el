@@ -214,9 +214,4 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   :bind
   (("C-c m" . remember)))
 
-;; TODO: not worked yet
-(use-package treemacs
-  :bind
-  ("C-c t t" . treemacs))
-
 ;; EOF

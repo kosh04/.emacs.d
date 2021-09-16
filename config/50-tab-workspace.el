@@ -57,6 +57,10 @@
   :if (version<= "27.0" emacs-version)
   :demand
   :custom
+  (tab-bar-new-button-show nil)
+  (tab-bar-close-button-show 'selected)
+  (tab-bar-history-mode t)
+  (tab-bar-new-tab-to 'rightmost)
   (tab-bar-tab-hints t)
   (tab-bar-new-tab-choice "*scratch*")
   :bind (("C-x t l" . tab-list))
@@ -70,6 +74,7 @@
       `(lambda ()
          (interactive)
          (tab-bar-select-tab ,(- n ?0)))))
+  ;; TODO: C-x t k でタブと関連バッファをまとめて削除したい
   :ensure nil)
 
 (use-package tab-line

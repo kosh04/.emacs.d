@@ -2,22 +2,23 @@
 
 (require 'package)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-;;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 
 ;; Switch to Mirrors
 ;; https://github.com/melpa/melpa#mirrors
 ;;(setf (cdr (assoc "melpa"        package-archives)) "https://www.mirrorservice.org/sites/melpa.org/packages/")
 ;;(setf (cdr (assoc "melpa-stable" package-archives)) "https://www.mirrorservice.org/sites/stable.melpa.org/packages/")
 
-(custom-set-variables
- ;; アーカイブの優先順位 (it works?)
- '(package-archive-priorities
-   '(("manual" . 99)
-     ("melpa-stable" . 30)
-     ("melpa" . 20)
-     ("gnu" . 10))))
+;; アーカイブの優先順位 (it works?)
+(customize-set-variable
+ 'package-archive-priorities
+ '(("manual" . 99)
+   ("melpa-stable" . 30)
+   ("melpa" . 20)
+   ("nongnu" . 30)
+   ("gnu" . 10)))
 
 ;;(package-initialize)
 
@@ -58,10 +59,13 @@
 (use-package use-package
   :pin #:melpa-stable
   :custom
-  (use-package-verbose t)
+  ;; `--debug-init' フラグ有効時にのみデバッグ出力
+  (use-package-verbose (if init-file-debug t nil))
+  (use-package-expand-minimally (if init-file-debug nil t))
   (use-package-enable-imenu-support t)
   (use-package-ignore-unknown-keywords t)
-  (use-package-expand-minimally t)
+  (use-package-compute-statistics t)    ; M-x `use-package-report'
+  ;;(use-package-hook-name-suffix nil)  ; TODO: disable abbrev
   ;; 初回起動時は自動インストールしたい (でも CI ではスキップしたい)
   (use-package-always-ensure
    (if (or (getenv "TRAVIS")
@@ -79,6 +83,7 @@
 
 ;; modernizing Emacs Package Menu
 (use-package paradox
+  :disabled
   :pin #:melpa-stable
   :demand
   :config (paradox-enable)

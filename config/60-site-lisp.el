@@ -37,7 +37,12 @@
 (use-package m3u-mode
   :mode "\\.m3u8?\\'"
   :load-path "site-lisp/m3u-mode"
-  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry)))
+  :bind (:map m3u-mode-map ("C-c i" . m3u-insert-entry))
+  :config
+  (add-hook 'm3u-mode-hook
+            (lambda ()
+              (highlight-phrase "[+]GENRE")))
+  )
 
 (use-package unicode-escape
   :load-path "site-lisp/unicode-escape"
@@ -57,3 +62,8 @@
 (use-package lingr-irc
   :load-path "site-lisp"
   :commands (lingr-irc))
+
+;; セッション管理
+(use-package workgroups2
+  :disabled
+  :config (workgroups-mode +1))

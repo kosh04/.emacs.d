@@ -11,6 +11,10 @@
 
 (global-set-key (kbd "C-x v @") 'vc-git-grep)
 
+(define-advice vc-git-grep (:after (&rest _) window-select)
+  "*grep* ウィンドウにフォーカスする."
+  (pop-to-buffer next-error-last-buffer))
+
 (defun user::open-repository-url (&optional action)
   "現在開いているgitリポジトリのリモートURLを表示します."
   (interactive)
@@ -45,22 +49,13 @@
   (dired dir))
 
 (defun user::magit-mode-quit ()
-  "Quit Magit mode. (Discard all buffers, and restore window-configuration)
+  "Quit Magit mode.(Discard all buffers, and restore window-configuration)
 URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   (interactive)
   (let ((buffers (magit-mode-get-buffers)))
     (magit-restore-window-configuration)
     (mapc #'kill-buffer buffers)
     (message "Magit has broken!")))
-
-(defun magit-repolist-column-version--patch (f &rest args)
-  "コミットのないリポジトリに対処するパッチ. (magit-2.91.0 にて修正予定)
-See URL `https://github.com/magit/magit/issues/3686'"
-  (condition-case err
-      (apply f args)
-    (wrong-type-argument ;; err=(wrong-type-argument stringp nil)
-     "(gone)")
-    (error (apply 'signal err))))
 
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
@@ -92,18 +87,13 @@ See URL `https://github.com/magit/magit/issues/3686'"
 
   ;; 履歴をコミット時刻で表示 (デフォルトはコミット時期 e.g."3 days")
   ;;(magit-log-margin '(t "%F %T%z" magit-log-margin-width t 18))
-
+  (magit-refresh-status-buffer nil)
   (magit-no-confirm '(stage-all-changes))
   (magit-diff-refine-hunk 'all)       ; 変更箇所を単語単位でハイライト
 
   :config
   ;; see [$] `magit-process'
   ;; (setq magit-git-debug (not magit-git-debug))
-
-  (let ((patch #'magit-repolist-column-version--patch))
-    (if (version<= "2.91.0" (magit-version))
-        (warn "The patch `%s' is no longer required: %s" patch #$)
-      (advice-add 'magit-repolist-column-version :around patch)))
   )
 
 (use-package gitconfig-mode)

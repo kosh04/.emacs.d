@@ -986,6 +986,9 @@ You can use key command as C-u \\[shell-command-on-region]"
         (t t)))
 (add-hook 'kill-buffer-query-functions 'kill-scratch-hook)
 
+;; (with-current-buffer "*scratch*"
+;;   (emacs-lock-mode 'kill))
+
 ;; 正規表現のコンパイルってあったっけ？
 (defun compile-regexp (regexp &optional _case-fold)
   (warn "Undefined `compile-regexp'")

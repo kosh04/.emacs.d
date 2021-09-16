@@ -3,19 +3,20 @@
 *-autoloads.el
 custom.el
 private.el
+package-quickstart.el
 .emacs.desktop
 .emacs.desktop.lock
 .newsrc
 .newsrc.eld
 *.plstore
-elpa
-el-get/
-/history
+/elpa/
+/el-get/
+/history/
 /games/*-scores
-request/
-url/
-server/
-image-dired/
+/request/
+/url/
+/server/
+/image-dired/
 recentf
 tramp
 abbrev_defs
@@ -26,8 +27,8 @@ timelog
 /ido.last
 /kkcrc
 /cache/
-vendor/
-tmp/
+/vendor/
+/tmp/
 /straight/
 /transient/
 
@@ -52,7 +53,7 @@ UnicodeData.txt
 /share/fonts/
 /etc/
 /emojis/
-irony/
+/irony/
 .geiser_history.guile
 .auth.plist
 places

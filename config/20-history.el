@@ -6,6 +6,7 @@
 
 (setq history-length 250)               ; default 30
 (setq history-length t)                 ; no truncation.
+(setq history-delete-duplicates t)
 
 ;; ミニバッファの履歴を保存
 (use-package savehist
@@ -37,6 +38,7 @@
 (add-to-list 'recentf-exclude "^/sudo:")
 ;;(add-to-list 'recentf-exclude "^https?://")
 (recentf-mode +1)
+(global-set-key (kbd "C-x C-r") #'recentf-open-files)
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop

@@ -104,6 +104,10 @@ abcdefghijklmnopqrstuvwxyz
 
 console.log('oO08 iIlL1 g9qCGQ ~-+=>');
 ´`''\"\"1lI|¦!Ø0Oo{[()]}.,:
+
+ligatures
+
+-- --- == === != !== =!= =:= =/= <= >= && &&& &= ++ +++ *** ;; !! ?? ?: ?. ?= <: :< :> >: <> <<< >>> << >> || -| _|_ |- ||- |= ||= ## ### #### #{ #[ ]# #( #? #_ #_( #: #! #= ^= <$> <$ $> <+> <+ +> <*> <* *> </ </> /> <!-- <#-- --> -> ->> <<- <- <=< =<< <<= <== <=> <==> ==> => =>> >=> >>= >>- >- >-- -< -<< >-> <-< <-| <=| |=> |-> <-> <~~ <~ <~> ~~ ~~> ~> ~- -~ ~@ [||] |] [| |} {| [< >] |> <| ||> <|| |||> <||| <|> ... .. .= .- ..< .? :: ::: := ::= :? :?> // /// /* */ /= //= /== @_ __
 ")
 
 (defvar font-family-menu-mode-map
@@ -182,6 +186,7 @@ console.log('oO08 iIlL1 g9qCGQ ~-+=>');
                 (t (signal 'wrong-type-argument `((or string buffer) #1# ,#1#))))))
     (with-current-buffer buffer
       (setq-local header-line-format (format "Font Name: %s" font-family))
+      (setq-local truncate-lines nil)
       (let ((inhibit-read-only t))
         (erase-buffer)
         (insert (propertize text 'face `(:family ,font-family))))

@@ -65,6 +65,7 @@
 (set-frame-font "Unifont:pixelsize=16")
 (set-frame-font "MeiryoKe_Console-11.0")
 (set-frame-font "Sarasa Term J:pixelsize=16")
+(set-frame-font "Sarasa Mono T J")
 (set-frame-font "HackGen:pixelsize=16")
 
 (set-fontset-font "fontset-startup" 'ascii "Unifont:pixelsize=16")

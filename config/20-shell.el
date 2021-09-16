@@ -1,6 +1,6 @@
 ;;; config/shell,eshell
 
-(defun user:shell-other-window (&optional eshell)
+(defun user::shell-other-window (&optional eshell)
   "シェルを別ウィンドウで開きます.
 ESHELL (`C-u') を有効にすると `eshell' を開きます."
   (interactive "P")
@@ -13,16 +13,18 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
       (or (eq buffer (current-buffer))
           (switch-to-buffer-other-window buffer)))))
 
-;; TODO: グループタブごとに個別のシェルを開きたい
-(global-set-key (kbd "C-c s") 'shell)
+(defun user::shell-open (index)
+  "`tab-bar-mode' の INDEX に関連したシェルを開きます."
+  (interactive "p")
+  (unless index
+    (setq index (1+ (tab-bar--current-tab-index))))
+  (shell (format "*shell*<%d>" index)))
+
+;;(global-set-key (kbd "C-c s") 'shell)
+(global-set-key (kbd "C-c s") #'user::shell-open)
 
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-(defun user/shell-mode-hook ()
-  (setq show-trailing-whitespace nil))
-
-;;(add-hook 'shell-mode-hook 'user/shell-mode-hook)
 
 ;; shell-command(M-!) のコマンド入力に補完を効かせる
 ;; http://namazu.org/~tsuchiya/

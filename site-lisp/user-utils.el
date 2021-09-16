@@ -428,6 +428,33 @@ URL `https://www.reddit.com/r/emacs/comments/f2ut1v/searching_and_typing_unicode
   (interactive)
   (error "TODO: Not Implemented"))
 
+(defun user::sudo-edit (filename)
+  (interactive "fFind file @sudo: ")
+  (find-file "/sudo:root@localhost:" filename))
+
+(defun the-the ()
+  "Search forward for for a duplicated word.
+URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html'"
+  (interactive)
+  (message "Searching for for duplicated words ...")
+  (push-mark)
+  ;; This regexp is not perfect
+  ;; but is fairly good over all:
+  (if (re-search-forward
+       "\\b\\([^@ \n\t]+\\)[ \n\t]+\\1\\b" nil 'move)
+      (message "Found duplicated word.")
+    (message "End of buffer")))
+
+;; M-s o (occur) でも十分？
+(define-advice isearch-done (:after (&rest _args) sync-view-search-string)
+  "isearch と view-mode の検索文字列を中途半端に同期する."
+  (when-let ((str isearch-string))
+    (setq view-last-regexp (regexp-quote str))))
+
+(defmacro csetq (symbol value)
+  "Set SYMBOL to VALUE."
+  `(customize-set-variable ',symbol ,value))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

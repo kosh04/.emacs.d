@@ -81,5 +81,5 @@
 
 ;; dark-mode, light-mode 切り替え
 ;; あるいは起動オプションの --reverse-video, -r, rv
-(custom-set-variables
- '(frame-background-mode 'dark))
+(csetq frame-background-mode 'dark)
+(customize-set-variable 'frame-background-mode 'dark)

@@ -61,3 +61,18 @@ Emacsのバージョンコントロールのためのインターフェース
 ;; 黒背景ターミナルで文字が見えにくい場合の対応
 (set-face-background 'magit-section-highlight "gray55")
 ```
+
+```emacs-lisp
+(defun magit-repolist-column-version--patch (f &rest args)
+  "コミットのないリポジトリに対処するパッチ. (magit-2.91.0 にて修正予定)
+See URL `https://github.com/magit/magit/issues/3686'"
+  (condition-case err
+      (apply f args)
+    (wrong-type-argument ;; err=(wrong-type-argument stringp nil)
+     "(gone)")
+    (error (apply 'signal err))))
+
+(if (version<= "2.91.0" (magit-version))
+    (warn "The patch `%s' is no longer required: %s" patch #$)
+  (advice-add 'magit-repolist-column-version :around #'magit-repolist-column-version--patch))
+```
