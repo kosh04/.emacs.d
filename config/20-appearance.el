@@ -16,7 +16,7 @@
 ;;(scroll-bar-mode -1)
 
 ;; Font
-(let ((font "Sarasa Mono J:pixelsize=14:weight=regular:slant=normal"))
+(let ((font "Sarasa Mono T J:pixelsize=14:weight=regular:slant=normal"))
   (when (and window-system (font-info font))
     ;; TODO: マシン毎にフォントサイズを調整したい
     ;; "Sarasa Term J-10.5" (pixelsize=14)
