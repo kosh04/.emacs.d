@@ -2,9 +2,11 @@
 
 (require 'package)
 
+;;(add-to-list 'package-archives '("elpa-devel" . "https://elpa.gnu.org/devel/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
+;;(add-to-list 'package-archives '("nongnu-devel" . "https://elpa.nongnu.org/nongnu-devel/"))
 
 ;; Switch to Mirrors
 ;; https://github.com/melpa/melpa#mirrors

@@ -1,7 +1,7 @@
 ;;; config/CommonLisp
 
 (use-package slime
-  ;;:disabled t
+  ;;:disabled
   :pin #:melpa-stable
   :config
   (slime-setup '(slime-repl slime-fancy))
@@ -25,6 +25,7 @@
 ;; SLY is Sylvester the Cat's Common Lisp IDE
 ;; https://github.com/capitaomorte/sly
 (use-package sly
+  :disabled
   :pin #:melpa-stable
   :init (remove-hook 'lisp-mode-hook 'slime-lisp-mode-hook)
   :config
@@ -33,5 +34,4 @@
           (ecl ("ecl"))
           (sbcl ("sbcl")))
         sly-default-lisp 'sbcl)
-  (sly-setup '(sly-fancy))
-  :ensure nil)
+  (sly-setup '(sly-fancy)))

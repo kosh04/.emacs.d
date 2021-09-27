@@ -2,12 +2,6 @@
 
 ;(setq inhibit-startup-screen t)
 
-;; 24.3.1@darwin にて未定義
-(if (fboundp 'tool-bar-mode)
-    (tool-bar-mode -1))
-;; ターミナル時のみメニューバーを消して表示領域を広げたい
-(unless window-system
-  (menu-bar-mode -1))
 (show-paren-mode +1)
 
 ;; since Emacs25

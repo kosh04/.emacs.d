@@ -5,6 +5,7 @@
     (load file t)))
 
 ;; Enable installed packages
+;;(setq package-enable-at-startup t)
 (package-initialize)
 
 ;; Separate customization setting (do not overwrite `user-init-file')

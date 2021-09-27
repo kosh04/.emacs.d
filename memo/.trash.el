@@ -24,3 +24,11 @@
       (declare (indent 1) (debug t))
       `(eval-after-load ,feature
          (lambda () ,@body))))
+
+;; early-init.el + `initial-frame-alist' を利用するため不要
+;; 24.3.1@darwin にて未定義
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+;; ターミナル時のみメニューバーを消して表示領域を広げたい
+(unless window-system
+  (menu-bar-mode -1))

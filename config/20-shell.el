@@ -15,7 +15,7 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
 
 (defun user::shell-open (index)
   "`tab-bar-mode' の INDEX に関連したシェルを開きます."
-  (interactive "p")
+  (interactive "P")
   (unless index
     (setq index (1+ (tab-bar--current-tab-index))))
   (shell (format "*shell*<%d>" index)))
