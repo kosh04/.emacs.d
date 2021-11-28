@@ -14,3 +14,18 @@
       (22 . "ECC")                      ;+
       ))
   )
+
+(use-package epa
+  :preface
+  (defun user::epa-list-keys-copy-fingerprint (pos &optional event)
+    (interactive "@d")
+    (let* ((button (get-char-property pos 'button))
+           (epg-key (widget-get button :value))
+           (sub-keys (epg-key-sub-key-list epg-key))
+           (sub-key (elt sub-keys 0))
+           (fingerprint (epg-sub-key-fingerprint sub-key)))
+      (message "Copied %s" fingerprint)
+      (kill-new fingerprint)))
+  :bind
+  (:map epa-key-list-mode-map
+        ("w" . user::epa-list-keys-copy-fingerprint)))
