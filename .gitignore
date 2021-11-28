@@ -60,3 +60,4 @@ places
 # nsm-settings-file
 network-security.data
 .lsp-session-*
+/.dap-breakpoints

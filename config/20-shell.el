@@ -58,3 +58,5 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
   ;; 端末操作が必要なコマンドをterm.elに丸投げする
   (add-to-list 'eshell-visual-commands "ssh")
   (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show" "grep")))
+
+;(use-package vterm)

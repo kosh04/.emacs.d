@@ -229,3 +229,6 @@
   (delight 'emacs-lisp-mode "Eλ")
   (delight 'lisp-mode "λ")
   )
+
+;; nadvice でパッチを作るよりも便利なのだろうか？
+(use-package el-patch :disabled)

@@ -35,6 +35,7 @@
   (erc-log-insert-log-on-open t)
 
   :config
+  (setq erc-default-server "irc.libera.chat")
   (add-hook 'erc-mode-hook 'goto-address-mode)
   ;; (erc-truncate-mode +1)
   ;; (erc-spelling-mode +1)

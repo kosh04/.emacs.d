@@ -1,2 +1,4 @@
 alias ll ls -l $*
 alias type which $1
+alias d dired $1
+alias .. cd ..
