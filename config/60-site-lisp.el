@@ -23,15 +23,20 @@
 (use-package wandbox
   :load-path "site-lisp/wandbox"                ;; サブモジュール版
   :load-path "~/Documents/GitHub/emacs-wandbox" ;; 開発版 (あれば)
-  :bind (("C-c w w" . wandbox)
-         ("C-c w e" . wandbox-eval-last-sexp)
-         ("C-c w i" . wandbox-insert-template)
-         ("C-c w l" . wandbox-list-compilers))
   :config
+  ;; TODO: bind-key で名前付きプレフィックスキーを定義する方法
+  (defalias 'wandbox-command-map
+    (let ((map (make-sparse-keymap "Wandbox")))
+      (define-key map "w" '("run" . wandbox))
+      (define-key map "e" '("eval" . wandbox-eval-last-sexp))
+      (define-key map "i" '("insert" . wandbox-insert-template))
+      (define-key map "l" '("list" . wandbox-list-compilers))
+      map))
+  (global-set-key (kbd "C-c w") 'wandbox-command-map)
   (setq wandbox--verbose t)
   ;; 通信環境の問題でHTTPSがたまに失敗することがある
   '(ignore-errors
-    (wandbox-add-server "fetus" "https://wandbox.fetus.jp"))
+     (wandbox-add-server "fetus" "https://wandbox.fetus.jp"))
   )
 
 (use-package m3u-mode

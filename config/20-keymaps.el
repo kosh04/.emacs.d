@@ -31,21 +31,22 @@
   (setq url-debug (not url-debug))
   (message "url-debug=%s" url-debug))
 
-;; Keymap for user-defined toggle commands.
-(defalias 'ctl-c-t-prefix
-  (let ((map (make-sparse-keymap)))
-    (define-key map "e" 'toggle-debug-on-error)
-    (define-key map "f" 'toggle-truncate-lines)
-    (define-key map "p" 'list-packages)
-    (define-key map "v" 'toggle-viper-mode)
-    (define-key map "w" 'whitespace-mode)
-    (define-key map "o" 'ff-find-related-file)
-    (define-key map "n" 'display-line-numbers-mode)
-    (define-key map "u" 'user::toggle-url-debug)
-    (define-key map "s" 'user::toggle-scratch-buffer)
-    (define-key map "l" 'ielm)
-    map))
-(global-set-key (kbd "C-c t") 'ctl-c-t-prefix)
+;;(define-prefix-command 'ctl-c-t-map)
+(defalias 'ctl-c-t-map
+  (let ((map (make-sparse-keymap "Toggle")))
+    (define-key map "e" '("debug" . toggle-debug-on-error))
+    (define-key map "f" '("fold". toggle-truncate-lines))
+    (define-key map "p" '("packages" . list-packages))
+    (define-key map "v" '("viper" . toggle-viper-mode))
+    (define-key map "w" '("whitespace" . whitespace-mode))
+    (define-key map "o" '("find-related" . ff-find-related-file))
+    (define-key map "n" '("line-numbers" . display-line-numbers-mode))
+    (define-key map "u" '("url-debug" . user::toggle-url-debug))
+    (define-key map "s" '("scratch" . user::toggle-scratch-buffer))
+    (define-key map "l" '("ielm" . ielm))
+    map)
+  "Keymap for user-defined toggle commands.")
+(global-set-key (kbd "C-c t") 'ctl-c-t-map)
 
 ;;(global-set-key [f11] 'toggle-frame-fullscreen)
 (global-set-key [f11] 'toggle-frame-maximized)
@@ -64,6 +65,7 @@
 (global-set-key (kbd "C-x l") #'switch-to-last-buffer)
 
 ;; prefixキーのコマンド一覧を表示
+;; (define-key MAP KEY (DESC . DEFUN)) が定義されていて役割が被っている場合はどうする？
 (use-package which-key
   :diminish which-key-mode
   :hook (emacs-startup . which-key-mode)
