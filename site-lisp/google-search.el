@@ -1,9 +1,13 @@
-;;; google.el --- 簡易 Google 検索   -*- coding: utf-8; lexical-binding: t -*-
+;;; google-search.el --- 簡易 Google 検索   -*- coding: utf-8; lexical-binding: t -*-
 
 ;;; Example:
 
 ;; (require 'google-search)
 ;; (global-set-key (kbd "C-c g") 'google-search)
+;;
+;; ブラウザをw3mに変更する場合は
+;; (require 'w3m)
+;; (setq browse-url-browser-function 'w3m-browse-url)
 
 ;; 元ネタ: 自慢の.emacsを貼り付けよう スレ 198
 ;; http://www.geocities.co.jp/SiliconValley-SanJose/7225/log/1001393679.html#R198
@@ -25,11 +29,6 @@
       (setq i (1+ i) j (1+ j)))
     (substring ret 0 j)))
 
-;; ブラウザをw3mに変更する場合は
-;; (require 'w3m)
-;; (setq google-search-browser-function 'w3m-browse-url)
-(defvar google-search-browser-function browse-url-browser-function)
-
 ;; "&hl=ja&lr=lang_ja&num=100"
 (defvar google-search-url-options
   "&ie=UTF-8&oe=UTF-8")
@@ -44,16 +43,10 @@
                               (region-end)))
                             (:else
                              (current-word))))))
-  ;; (require 'browse-url)
-  (let ((browse-url-browser-function google-search-browser-function))
-    (browse-url (concat "http://www.google.com/search?q="
-                        (mapconcat #'google-encoding
-                                   (split-string string)
-                                   "+")
-                        (or google-search-url-options "")
-                        ))))
-
-;; (global-set-key (kbd "C-c g") 'google-search)
+  (let ((url (concat "https://www.google.com/search?q="
+                     (url-hexify-string string)
+                     google-search-url-options)))
+    (browse-url url)))
 
 (provide 'google-search)
 
