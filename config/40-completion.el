@@ -33,3 +33,9 @@
 (use-package company-box
   :disabled
   :hook (company-mode . company-box-mode))
+
+(use-package company-statistics
+  :hook (after-init . company-statistics-mode)
+  :custom
+  (company-statistics-file
+   (locate-user-emacs-file "cache/company-statistics-cache.el")))
