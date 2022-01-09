@@ -11,10 +11,10 @@
 (use-package gnus
   :custom
   ;;(gnus-init-file "~/.gnus")
-  ;;(gnus-select-method '(nntp "news.gmane.org"))
+  ;;(gnus-select-method '(nntp "news.gmane.io"))
   (gnus-secondary-select-methods
    '((nnml "")
-     (nntp "news.gmane.org")
+     (nntp "news.gmane.io")
      ;; (nntp "news.eternal-september.org")
      ;; (nntp "nntp.aioe.org")
      ;; (nntp "news.gwene.org")
