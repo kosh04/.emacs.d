@@ -1,11 +1,12 @@
 ;;; init.el --- .emacs
 
-(when load-file-name
-  (let ((file (expand-file-name "init-minimum.el" (file-name-directory #$))))
-    (load file t)))
+(defvar init-minimum-file
+  (expand-file-name "init-minimum.el" (file-name-directory #$)))
+(load init-minimum-file t)
 
 ;; Enable installed packages
 ;;(setq package-enable-at-startup t)
+;; TODO: 現状 init-loader の為だけに呼び出しているのでパッケージをローカル化する？
 (package-initialize)
 
 ;; Separate customization setting (do not overwrite `user-init-file')

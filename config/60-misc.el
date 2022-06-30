@@ -213,5 +213,3 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   ;(initial-buffer-choice 'remember-notes)
   :bind
   (("C-c m" . remember)))
-
-;; EOF

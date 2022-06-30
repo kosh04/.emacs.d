@@ -100,7 +100,7 @@
   :hook (emacs-lisp-mode))
 
 ;;; Theme
-
+;(csetq frame-background-mode 'dark)
 ;; (load-theme 'zenburn)
 ;; (load-theme 'wombat)
 
@@ -108,4 +108,6 @@
 (use-package kaolin-themes
   :init
   (load-theme 'kaolin-dark t))
-(use-package modus-themes :init (load-theme 'modus-vivendi t))
+
+(use-package modus-themes
+  :hook (after-init . modus-themes-load-vivendi))

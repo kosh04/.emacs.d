@@ -165,7 +165,13 @@ ligatures
                 (let* ((name (font-xlfd-name font))
                        (ov (make-overlay pos next)))
                   (unless (string-match (regexp-quote (format "-%s-" font-family)) name)
-                    (let* ((colors (defined-colors))
+                    (let* ((colors
+                            ;; TODO: 文字色＆背景色に紛れるものを除外したい
+                            (let* ((fc (frame-parameter nil 'foreground-color))
+                                   (bc (frame-parameter nil 'background-color))
+                                   (ignore (regexp-opt (list fc bc))))
+                              (seq-remove (lambda (c) (string-match ignore c))
+                                          (defined-colors))))
                            (n (mod (sxhash font) (length colors)))
                            (color (nth n colors)))
                       (setf (overlay-get ov 'face) `(:background ,color))))
