@@ -74,7 +74,11 @@
 
 (use-package tab-line
   :if (version<= "27.0" emacs-version)
-  ;;:init (global-tab-line-mode +1)
+  :demand
+  :custom
+  (tab-line-close-button-show 'selected)
+  :config
+  (global-tab-line-mode +1)
   :ensure nil)
 
 (use-package eyebrowse

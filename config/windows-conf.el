@@ -87,3 +87,7 @@
 (set-fontset-font t 'unicode "Segoe UI Emoji" nil 'prepend)
 ;;(set-fontset-font t 'unicode "Segoe UI Symbol" nil 'prepend)
 
+;; settings.json@WindowsTerminal colorschemes
+(use-package json-mode
+  :config
+  (add-to-list 'json-mode-hook #'rainbow-mode))

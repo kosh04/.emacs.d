@@ -7,6 +7,10 @@
     "*grep* ウィンドウにフォーカスする."
     (pop-to-buffer next-error-last-buffer)))
 
+(define-advice compilation-start (:after (&rest _) window-select)
+  "compilation 実行ウィンドウにフォーカスする."
+  (pop-to-buffer next-error-last-buffer))
+
 ;; Occur
 (with-eval-after-load 'replace
   (let ((map occur-mode-map))

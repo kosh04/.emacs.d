@@ -8,9 +8,9 @@
   (read-buffer-completion-ignore-case t)
   ;; 補完候補が N 以下ならば循環補完
   (completion-cycle-threshold 3)
+  :config
+  (add-to-list 'completion-ignored-extensions ".exe")
   )
-
-(add-to-list 'completion-ignored-extensions ".exe")
 
 (use-package company
   :pin #:gnu
@@ -39,3 +39,7 @@
   :custom
   (company-statistics-file
    (locate-user-emacs-file "cache/company-statistics-cache.el")))
+
+(use-package company-emoji
+  :after company
+  :config (company-emoji-init))

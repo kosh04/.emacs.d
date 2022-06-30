@@ -295,6 +295,7 @@ URL `http://emacs.g.hatena.ne.jp/kiwanami/20110809/1312877192'"
   "文字列 STRING を伏せ字に変換します."
   (replace-regexp-in-string "[[:alnum:]]" "*" string))
 
+;; M-x (replace-regexp "[[:alnum:]]" "*") とほぼ等価
 (defun shredder-region (start end)
   "選択した範囲を******します."
   (interactive "*r")
@@ -451,9 +452,13 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
   (when-let ((str isearch-string))
     (setq view-last-regexp (regexp-quote str))))
 
-(defmacro csetq (symbol value)
+(defmacro csetq (symbol value &rest args)
   "Set SYMBOL to VALUE."
-  `(customize-set-variable ',symbol ,value))
+  (if args
+      `(progn
+         (customize-set-variable ',symbol ,value)
+         (csetq ,@args))
+    `(customize-set-variable ',symbol ,value)))
 
 ;; e.g. (file-name-extension-replace "hello.txt" "")
 (defun file-name-extension-replace (filename to-type)
