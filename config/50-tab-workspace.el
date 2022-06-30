@@ -62,18 +62,13 @@
   (tab-bar-history-mode t)
   (tab-bar-new-tab-to 'rightmost)
   (tab-bar-tab-hints t)
+  (tab-bar-select-tab-modifiers [meta]) ; alt-[number]:switchToTab
   (tab-bar-new-tab-choice "*scratch*")
   :bind (("C-x t l" . tab-list))
   :config
   (tab-bar-mode +1)
   (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
   (tab-rename "main" 1)
-  ;; alt-[number]:switchToTab
-  (dolist (n (number-sequence ?1 ?9))
-    (define-key global-map `[(meta ,n)]
-      `(lambda ()
-         (interactive)
-         (tab-bar-select-tab ,(- n ?0)))))
   ;; TODO: C-x t k でタブと関連バッファをまとめて削除したい
   :ensure nil)
 
