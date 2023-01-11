@@ -37,6 +37,7 @@
     (define-key map "e" '("debug" . toggle-debug-on-error))
     (define-key map "f" '("fold". toggle-truncate-lines))
     (define-key map "p" '("packages" . list-packages))
+    (define-key map "P" '("packages" . package-list-packages-no-fetch))
     (define-key map "v" '("viper" . toggle-viper-mode))
     (define-key map "w" '("whitespace" . whitespace-mode))
     (define-key map "o" '("find-related" . ff-find-related-file))
@@ -69,7 +70,10 @@
 (use-package which-key
   :diminish which-key-mode
   :hook (emacs-startup . which-key-mode)
-  :custom (which-key-idle-delay 1.5))
+  :custom
+  (which-key-idle-delay 1.5)
+  (which-key-dont-use-unicode nil)
+  )
 
 ;; or C-u q (in view-mode)
 ;;(global-set-key (kbd "C-x k") 'kill-this-buffer)
@@ -86,3 +90,6 @@
 
 (use-package bind-key
   :bind ("<f1> =" . describe-personal-keybindings))
+
+(global-set-key (kbd "C-x C-,") 'switch-to-prev-buffer)
+(global-set-key (kbd "C-x C-.") 'switch-to-next-buffer)

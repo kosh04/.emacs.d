@@ -11,11 +11,12 @@
 
 ;; Separate customization setting (do not overwrite `user-init-file')
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file t)
+;;(load custom-file t)
 
 ;; Load config/nn-xxx.el
 (require 'init-loader)
 (setq init-loader-directory (locate-user-emacs-file "config"))
+(setq init-loader-show-log-after-init 'error-only)
 (init-loader-load)
 
 ;; TODO: 環境別ファイルの命名規則をGo言語風にする (prefixでなくsuffixで表現したい)

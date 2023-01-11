@@ -25,18 +25,11 @@
 (global-set-key (kbd "C-¥") 'toggle-input-method)
 
 (use-package emacs
-  :if (eq window-system 'mac)
+  :if (member window-system '(mac ns))
   :custom
   ;; ゴミ箱に入れる
   (delete-by-moving-to-trash t)
   (trash-directory "~/.Trash/")
-
-  ;; FIXME: 黒背景に濃い青は見づらい (テーマを利用していれば無用の長物)
-  (ansi-color-names-vector
-   ["black" "red3" "green3" "yellow3"
-    "royal blue"                        ; Original "blue2"
-    "magenta3" "cyan3" "gray90"])
-
   ;;
   (ispell-program-name "aspell")
   (locate-command "mdfind")
@@ -49,6 +42,7 @@
 ;;(setf (getenv "PS1") "[$?][\\u@\\h:\\w]\n\\$ ")
 (setf (getenv "GIT_EDITOR") "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
 
+'
 (unless (executable-find "cask")
   (setf (getenv "PATH") (substitute-env-vars "$HOME/.cask/bin:$PATH")))
 
@@ -77,3 +71,8 @@
 ;; https://github.com/tonsky/FiraCode/wiki/Emacs-instructions#using-composition-mode-in-emacs-mac-port
 (if (fboundp 'mac-auto-operator-composition-mode)
     (funcall 'mac-auto-operator-composition-mode))
+
+;; (if (eq window-system 'ns) )
+(setq ns-use-thin-smoothing t)
+
+(menu-ba-mode +1)

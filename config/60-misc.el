@@ -3,6 +3,8 @@
 (use-package f)
 (use-package s)
 
+(setq read-answer-short t) ;; y-or-n-p
+
 (defun user::emacs-init-time ()
   (message "Emacs init time %s" (emacs-init-time)))
 
@@ -129,13 +131,15 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
     (let ((inhibit-read-only t))
       (ansi-color-apply-on-region
        compilation-filter-start (point))))
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+  (add-hook 'compilation-filter #'ansi-color-compilation-filter)
+  )
 
 ;; 行が長ーーーいファイルの読み込みによるパフォーマンス低下を抑える (min.js,json,etc)
 ;; https://www.emacswiki.org/emacs/SoLong
 ;; (package-install-file "https://git.savannah.nongnu.org/cgit/so-long.git/plain/so-long.el")
 (use-package so-long
-  :load-path "site-lisp/_vendor"
+  ;;:load-path "site-lisp/_vendor"
   :demand
   :config
   (global-so-long-mode)
@@ -169,7 +173,24 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
          ("n" . calendar-forward-week)
          ("p" . calendar-backward-week))
   :custom
-  (calendar-mark-holidays-flag t))
+  (calendar-mark-holidays-flag t)
+  (calendar-date-style 'iso)
+  (calendar-latitude 37.916192)
+  (calendar-longitude 139.036413)
+  :config
+  (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
+
+;; 国民の祝日
+(use-package japanese-holidays
+  :after calendar
+  :demand
+  :config
+  (setq calendar-holidays
+        (append japanese-holidays
+                holiday-local-holidays
+                holiday-other-holidays))
+  (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
+  (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
 
 (use-package keyfreq
   :demand
@@ -213,3 +234,26 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   ;(initial-buffer-choice 'remember-notes)
   :bind
   (("C-c m" . remember)))
+
+(with-eval-after-load 'image
+  ;; for open webp image
+  (setq image-use-external-converter t))
+
+(use-package gcmh
+  :demand
+  :config (gcmh-mode +1))
+
+;; ゴミ箱用ファイラ
+(use-package trashed
+  :if (memq system-type '(gnu/linux windows-nt)))
+
+(use-package gnutls
+  :custom
+  ;; disable TLSv1.3
+  (gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
+(use-package* mouse
+  :when (version<= "28.1" emacs-version)
+  :config
+  ;; 右クリックメニュー
+  (context-menu-mode +1))

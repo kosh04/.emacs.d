@@ -11,7 +11,7 @@
   :config
   (setf (cdr (assq 'newline-mark whitespace-display-mappings))
         '(?\n [?\u21B5 ?\n] [?$ ?\n])) ;; ↵
-  ) 
+  )
 
 (defun user/show-trailing-whitespace ()
   (setq show-trailing-whitespace t))

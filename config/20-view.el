@@ -31,5 +31,6 @@
         ("N" . View-search-last-regexp-backward)
         ("i" . read-only-mode)
         ("RET" . ignore)
+        ("g" . recenter)                  ; disable `View-goto-line'
         )
   )

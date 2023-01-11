@@ -20,6 +20,7 @@
 
 (use-package erc
   :custom
+  ;;(erc-autojoin-channels-alist '(("irc.rizon.net" "#rice")))
   (erc-kill-queries-on-quit t)
   (erc-kill-server-buffer-on-quit t)
   ;; erc-fill

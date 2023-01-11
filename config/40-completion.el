@@ -8,9 +8,15 @@
   (read-buffer-completion-ignore-case t)
   ;; 補完候補が N 以下ならば循環補完
   (completion-cycle-threshold 3)
+  ;; シンボル補完時に注釈を追加 (@28.1)
+  (completions-detailed t)
   :config
   (add-to-list 'completion-ignored-extensions ".exe")
   )
+
+(use-package emacs
+  :if (version<= "28.1" emacs-version)
+  :hook (after-init . icomplete-vertical-mode))
 
 (use-package company
   :pin #:gnu
@@ -43,3 +49,23 @@
 (use-package company-emoji
   :after company
   :config (company-emoji-init))
+
+;; 注釈付き補完
+;; 注釈一覧 -> `marginalia-annotator-registry'
+(use-package marginalia
+  :unless (bound-and-true-p completions-detailed)
+  :hook (after-init . marginalia-mode))
+
+(use-package prescient
+  :disabled
+  :demand
+  ;; :custom
+  ;; (prescient-filter-method '(literal regexp initialism fuzzy))
+  ;; (prescient-sort-length-enable nil)
+  :config
+  (prescient-persist-mode +1))
+
+(use-package orderless
+  :disabled
+  :custom
+  (completion-styles '(orderless basic)))

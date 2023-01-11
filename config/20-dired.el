@@ -11,6 +11,8 @@
 
 ;; Dired バッファ内に DnD でフツーに開く (ファイルコピーをしない)
 (setq dired-dnd-protocol-alist nil)
+;; Dired バッファが散らからないように
+(setq dired-kill-when-opening-new-dired-buffer t)
 
 (add-hook 'dired-mode-hook 'hl-line-mode) ; 行カーソル
 
@@ -177,3 +179,12 @@
   (treemacs-last-error-persist-file
    (locate-user-emacs-file "cache/treemacs-persist-at-last-error")))
 
+;; 空のディレクトリ参照をスキップしてくれる
+;; FIXME: パーミッションの都合で開けないサブディレクトリがあると展開できない (e.g. ~/.Trash)
+(use-package dired-collapse
+  :disabled
+  :hook (dired-mode . (lambda ()
+                        (condition-case err
+                            (dired-collapse-mode +1)
+                          (error
+                           (message "dired-collapse-mode: %s" err))))))

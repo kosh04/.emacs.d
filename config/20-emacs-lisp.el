@@ -159,7 +159,8 @@
     (when view-mode
       (warn "`view-mode' temporally disabled in Edebug-mode")
       (view-mode -1)))
-  (add-hook 'edebug-mode-hook 'edebug-mode--disable-view-mode)
+  ;;(add-hook 'edebug-mode-hook 'edebug-mode--disable-view-mode)
+  (add-hook 'edebug-setup-hook 'edebug-mode--disable-view-mode)
   ;;(setq edebug-trace t)
   )
 
@@ -209,11 +210,15 @@
 ;;   (defalias 'elisp--preceding-sexp 'preceding-sexp))
 
 (use-package erefactor
-  ;;:bind-keymap ("\C-c\C-v" . erefactor-map)
+  ;; XXX: 開発用ファイル群のみ有効にしたい
   :config
   (defalias 'erefactor-prefix erefactor-map)
   (define-key emacs-lisp-mode-map "\C-c\C-v" 'erefactor-prefix)
   (define-key erefactor-map "@" 'erefactor-highlight-mode))
+
+;; 主に init.el 読書会用
+(add-to-list 'safe-local-variable-values '(erefactor-highlight-mode . nil))
+(add-to-list 'safe-local-variable-values '(display-line-numbers . t))
 
 (use-package flycheck-package
   :after flycheck

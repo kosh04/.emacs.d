@@ -92,7 +92,8 @@
    ((t (:inverse-video t))))
   )
 
-;; ブックマークは新しいワークスペースで開いてみる
+;; ブックマークは新しいワークスペースで開きたい
+;; -> C-x x t (other-tab-prefix) C-x r b (bookmark-jump)
 (with-eval-after-load 'bookmark
   ;; (add-hook 'bookmark-after-jump-hook 'tab-new)
   ;; (add-hook 'bookmark-after-jump-hook 'eyebrowse-create-window-config)

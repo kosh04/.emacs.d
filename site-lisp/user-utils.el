@@ -100,7 +100,11 @@ Example:
    (let ((things '(symbol list sexp defun filename url email word sentence whitespace line number page)))
      (list (intern (completing-read "Thing at point as: " things nil t))
            (intern (completing-read "To command: " obarray 'fboundp t)))))
-  (let* ((val (thing-at-point thing))
+  (let* ((val (let ((x (thing-at-point thing)))
+                (pcase thing
+                  ('symbol (intern x))
+                  ('list (read-from-string x))
+                  (_ x))))
          (ans (funcall fn val)))
     (message "(funcall #'%S %S) ;=> %S" fn val ans)))
 
@@ -218,6 +222,7 @@ Example:
 (defun emacsclient-help-options ()
   "[user] Display \"emacsclient --help\" text."
   (interactive)
+  ;; FIXME Where is Emacs.app/bin?
   (let ((emacs (expand-file-name "emacsclient" invocation-directory)))
     (with-help-window (help-buffer)
       (call-process emacs nil standard-output t "--help"))))
@@ -243,7 +248,9 @@ INPUT (filename/buffer/nil) is used as a process standard input."
 ;; TODO: suppress other echo-area output (eldoc, etc)
 (define-minor-mode what-cursor-position-minor-mode
   "Turn on/off `what-cursor-position'."
-  nil " 🔍" nil
+  :initial-value nil
+  :lighter " 🔍"
+  :keymap nil
   (if what-cursor-position-minor-mode
       (add-hook 'post-command-hook #'what-cursor-position t 'local)
     (remove-hook 'post-command-hook #'what-cursor-position 'local)))
@@ -479,6 +486,21 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
      ;; SSH 越しであれば "DISPLAY=:0" も追加する
      (call-process "scrot" nil nil nil "%Y-%m-%d_$wx$h.png"))
     ))
+
+(defun load-path-add (path)
+  (interactive "DAdd to load-path: ")
+  (cl-assert (file-directory-p path))
+  (add-to-list 'load-path path))
+
+(defmacro with-supperss-message (&rest body)
+  "Run BODY with disable message logging."
+  `(let (message-log-max)
+     ,@body))
+
+(defun disable-all-themes ()
+  "Disable and reset all loaded themes."
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes))
 
 (provide 'user-utils)
 

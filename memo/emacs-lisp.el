@@ -674,9 +674,6 @@ M-x lm-report-bug    ;; パッケージ作者宛にバグレポート
     (shr-render-region (point-min) (point-max))
     (buffer-substring-no-properties (point-min) (point-max))))
 
-(defun disable-theme* ()
-  (mapc #'disable-theme custom-enabled-themes))
-
 ;; Add ~/.emacs.d/vendor/*/ to load-path
 (let ((vendor-dir (locate-user-emacs-file "vendor")))
   (dolist (name (directory-files vendor-dir))

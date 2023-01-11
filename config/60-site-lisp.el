@@ -23,7 +23,7 @@
 (use-package wandbox
   :load-path "site-lisp/wandbox"                ;; サブモジュール版
   :load-path "~/Documents/GitHub/emacs-wandbox" ;; 開発版 (あれば)
-  :config
+  :init
   ;; TODO: bind-key で名前付きプレフィックスキーを定義する方法
   (defalias 'wandbox-command-map
     (let ((map (make-sparse-keymap "Wandbox")))
@@ -33,6 +33,7 @@
       (define-key map "l" '("list" . wandbox-list-compilers))
       map))
   (global-set-key (kbd "C-c w") 'wandbox-command-map)
+  :config
   (setq wandbox--verbose t)
   ;; 通信環境の問題でHTTPSがたまに失敗することがある
   '(ignore-errors

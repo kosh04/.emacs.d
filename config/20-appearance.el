@@ -34,17 +34,23 @@
           text-mode
           conf-mode)
          . display-line-numbers-mode)
+  :custom
+  (display-line-numbers-widen t)
   )
 
+;;(display-fill-column-indicator-mode +1)
+
 (setq frame-title-format
-      `(" %b " (buffer-file-name "(%f)") " on " ,(system-name)
-        " - " ,(format "Emacs %s" emacs-version)))
+      `(" %b " (buffer-file-name "(%f)") " on " system-name
+        " - Emacs " emacs-version))
 
 ;; モードライン
 (line-number-mode)
 (column-number-mode)
 (size-indication-mode)
 ;(display-battery-mode t)
+
+;; (setq mode-line-compact t)
 
 ;; アクティブなウィンドウをモードラインの色で判別する
 ;; 端末タイプの詳細はinfo参照: (info "(elisp) Defining Faces")
@@ -81,12 +87,15 @@
 (setq-default indicate-buffer-boundaries 'right)
 
 ;; 行カーソル
-;; (require 'hl-line)
-(setq  hl-line-sticky-flag nil)
-(add-hook 'help-mode-hook 'hl-line-mode)
-(add-hook 'tabulated-list-mode-hook 'hl-line-mode)
-(add-hook 'finder-mode-hook 'hl-line-mode)
-(add-hook 'occur-mode-hook 'hl-line-mode)
+(use-package hl-line
+  :hook
+  ((help-mode
+    finder-mode
+    occur-mode
+    tabulated-list-mode)
+   . hl-line-mode)
+  :custom
+  (hl-line-sticky-flag nil))
 
 ;; \C-x $ `set-selective-display'
 ;; 指定した桁数以上字下げしている行を隠す
@@ -99,6 +108,10 @@
 (use-package rainbow-mode
   :hook (emacs-lisp-mode))
 
+;; 隣接するウィンドウをマウスでドラッグできるバーの追加
+(customize-set-variable 'window-divider-default-right-width 2)
+(window-divider-mode +1)
+
 ;;; Theme
 ;(csetq frame-background-mode 'dark)
 ;; (load-theme 'zenburn)
@@ -110,4 +123,9 @@
   (load-theme 'kaolin-dark t))
 
 (use-package modus-themes
-  :hook (after-init . modus-themes-load-vivendi))
+  :demand
+  :config
+  (load-theme 'modus-vivendi t)
+  :custom
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t))

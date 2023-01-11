@@ -45,3 +45,7 @@
   :if (eq system-type 'darwin)
   :bind (("C-c e" . osx-dictionary-search-word-at-point))
   )
+
+(use-package dictionary
+  :custom
+  (dictionary-server "dict.org"))

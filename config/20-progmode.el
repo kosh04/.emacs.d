@@ -40,7 +40,8 @@
 (global-set-key (kbd "M-n") 'indent-and-next-line)
 
 ;; Language Template
-(add-hook 'emacs-startup-hook 'auto-insert-mode t)
+;;(add-hook 'emacs-startup-hook 'auto-insert-mode t)
+(auto-insert-mode +1)
 (custom-set-variables
  '(auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
 
@@ -78,9 +79,22 @@
 ;;         (concat "\\<" bug-reference-bug-regexp "\\>"))
 ;;   )
 
+;; TODO 組み込みパッケージ lisp/*.el に記載されているバグリファレンスを参照する
+(add-hook 'emacs-lisp-mode-hook 'bug-reference-prog-mode)
+(setq-local bug-reference-url-format "https://debbugs.gnu.org/%s")
+
 (use-package xref
   ;; :bind
   ;; (:map xref--xref-buffer-mode-map
   ;;   ("TAB" . xref-next-line)
   ;;   ("DEL" . xref-prev-line))
-  :hook (xref-after-jump . view-mode))
+  ;; FIXME: :hook で設定すると元の値が消える...？
+  ;; :hook (xref-after-jump . view-mode)
+  :config
+  (add-hook 'xref-after-jump-hook #'view-mode)
+  )
+
+;; シンボル強調
+(use-package symbol-overlay
+  :disabled
+  :hook (prog-mode . symbol-overlay-mode))

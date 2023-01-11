@@ -13,6 +13,9 @@
   :demand
   :custom
   (savehist-file (locate-user-emacs-file "cache/history"))
+  (savehist-additional-variables
+   '(command-history
+     extended-command-history))
   :config
   (savehist-mode +1))
 
@@ -38,23 +41,26 @@
 (add-to-list 'recentf-exclude "^/sudo:")
 ;;(add-to-list 'recentf-exclude "^https?://")
 (recentf-mode +1)
-(global-set-key (kbd "C-x C-r") #'recentf-open-files)
+(global-set-key (kbd "C-c t r") #'recentf-open-files)
 
 ;; Desktop -- 終了時の状態を保存
 ;; http://www.emacswiki.org/emacs/DeskTop
 ;; FIXME: NTEmacs(win)/Cygwin(unix) は .emacs.desktop を共有できないため分ける必要がある
-(require 'desktop)
-(custom-set-variables
- ;;'(desktop-load-locked-desktop nil)
- ;;'(desktop-restore-in-current-display nil)
- ;;'(desktop-restore-frames nil)
- )
-(add-to-list 'desktop-path (locate-user-emacs-file "cache/"))
-;; WARNING: 循環リストを含むコマンドを保存しようとすると無限ループの可能性あり '#0=(x . #0#)
-;; そうでなくても重い気がする...
-;;(add-to-list 'desktop-globals-to-save 'command-history)
-(add-to-list 'desktop-globals-to-save 'extended-command-history)
-(desktop-save-mode +1)
+(use-package desktop
+  :demand
+  :custom
+  ;;(desktop-load-locked-desktop nil)
+  ;;(desktop-restore-in-current-display nil)
+  ;; NOTE: tab-bar の復元にはフレームが必要
+  (desktop-restore-frames t)
+  :config
+  ;; WARNING: 循環リストを含むコマンドを保存しようとすると無限ループの可能性あり '#0=(x . #0#)
+  ;; そうでなくても重い気がする...
+  ;;(add-to-list 'desktop-globals-to-save 'command-history)
+  ;;(add-to-list 'desktop-globals-to-save 'extended-command-history)
+  (add-to-list 'desktop-path (locate-user-emacs-file "cache/"))
+  (desktop-save-mode +1)
+  )
 
 (defun user::restore-desktop (&optional dirname)
   ".emacs.desktop ファイルを基にセッションを復元します."

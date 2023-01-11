@@ -75,8 +75,12 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
          :map magit-repolist-mode-map
          ("n" . next-line)
          ("p" . previous-line)
+         ;; コミット間 diff の URL を生成したい
+         ;; :map magit-diff-mode-map
          )
-  :hook (magit-diff-visit-file . view-mode)
+  :hook
+  (magit-diff-visit-file . view-mode)
+  (after-save . magit-after-save-refresh-status)
   :custom
   (magit-repository-directories
    `((,user-emacs-directory . 0) ;; "~/.emacs.d" or "~/.config/emacs"
@@ -106,17 +110,16 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
          ("M-g n" . git-gutter:next-hunk)
          ("M-g r" . git-gutter:revert-hunk)))
 
+;; FIXME: ファイル数の多いディレクトリを考慮して、起動時は無効にしたほうが無難？
 (use-package dired-k
   :hook (dired-initial-position . dired-k)
   :bind (:map dired-mode-map ("g" . dired-k))
   :custom
   (dired-k-human-readable t))
 
+;; 直近のコミットメッセージと日付情報を表示する
 (use-package dired-git-info
-  :after dired
+  ;;:hook (dired-after-readin . dired-git-info-auto-enable)
   :custom (dgi-auto-hide-details-p t)
-  :config
-  (define-key dired-mode-map ")" 'dired-git-info-mode)
-  ;;(add-hook 'dired-after-readin-hook 'dired-git-info-auto-enable)
+  :bind (:map dired-mode-map (")" . dired-git-info-mode))
   )
-

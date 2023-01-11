@@ -18,6 +18,7 @@
   (go-mode . subword-mode)
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
+  (add-hook 'go-mode-hook (lambda () (setq compile-command "go build -v && go test -v && go vet")))
   :custom
   (go-play-browse-function #'browse-url)
   (gofmt-command "goimports")

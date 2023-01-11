@@ -7,3 +7,6 @@
 ;(add-hook 'html-mode-hook 'turn-off-auto-fill)
 
 ;; M-x display-fill-column-indicator-mode
+
+;; プレーンテキストで貼り付け
+;; (setq yank-excluded-properties t)
