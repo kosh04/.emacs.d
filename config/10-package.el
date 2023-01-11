@@ -83,6 +83,14 @@
     '(("\\_<:disabled\\_>" . 'use-package--disabled-keyword-face)))
   )
 
+;; TODO: built-in パッケージの設定時の記述 :ensure nil が煩わしい
+(defmacro use-package* (name &rest args)
+  "Similar to `use-package', but does not require NAME to be installed.
+It uses for built-in package configuration."
+  `(use-package ,name
+     :ensure nil
+     ,@args))
+
 ;; modernizing Emacs Package Menu
 (use-package paradox
   :disabled

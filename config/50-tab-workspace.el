@@ -53,7 +53,7 @@
   )
 
 ;; new feature tabs (Emacs 27+)
-(use-package tab-bar
+(use-package* tab-bar
   :if (version<= "27.0" emacs-version)
   :demand
   :custom
@@ -70,16 +70,16 @@
   (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
   (tab-rename "main" 1)
   ;; TODO: C-x t k でタブと関連バッファをまとめて削除したい
-  :ensure nil)
+  )
 
-(use-package tab-line
+(use-package* tab-line
   :if (version<= "27.0" emacs-version)
   :demand
   :custom
   (tab-line-close-button-show 'selected)
   :config
   (global-tab-line-mode +1)
-  :ensure nil)
+  )
 
 (use-package eyebrowse
   :demand

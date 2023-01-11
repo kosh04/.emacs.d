@@ -43,10 +43,8 @@
   (erc-log-mode +1)
   )
 
-;; (use-package erc-log
-;;   :after erc :ensure nil
+;; (use-package* erc-log
 ;;   :demand 
 ;;   :custom
-
 ;;   :config
 ;;   )
