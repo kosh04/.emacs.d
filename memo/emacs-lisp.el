@@ -92,6 +92,8 @@
 ;; C-u C-M-x で関数をデバッグ定義. 関数を再定義すればデバッグは解除される.
 (require 'edebug)
 
+;; M-x `memory-report' (メモリオブジェクトの統計を表示する; 28.1)
+
 ;; trace.el ---  CL の trace/untrace に近いトレース評価
 ;; http://clhs.lisp.se/Body/m_tracec.htm
 (defun fact (n) (if (zerop n) 1 (* n (fact (- n 1)))))
@@ -1052,3 +1054,13 @@ focus-out-hook
 ;; major-mode をフック実行の回避をしながら起動させる
 ;; 参考元 `custom-save-all'
 (delay-mode-hooks (emacs-lisp-mode))
+
+;; Not a Number
+(print 0.0e+NaN)
+
+;; FIXME: 黒背景に濃い青は見づらい (テーマを利用していれば無用の長物)
+;; (setq ansi-color-names-vector
+;;  ["black" "red3" "green3" "yellow3"
+;;   "royal blue"                        ; Original "blue2"
+;;   "magenta3" "cyan3" "gray90"])
+ansi-color-names-vector

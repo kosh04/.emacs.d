@@ -1,5 +1,19 @@
 ;;; config/cocoa-emacs-conf.el
 
+;; NOTE: Mac における Emacs バイナリいろいろ
+;; - Emacs for Mac OS X
+;;   https://emacsformacosx.com/
+;;   window-system=ns
+;;   公式ソースからビルドするのとほぼ同じ構成
+;; - emacs-mac port by Mitsuharu Yamamoto (EMP)
+;;   https://bitbucket.org/mituharu/emacs-mac/overview
+;;   window-system=mac
+;;   Homebrew 経由のインストールも可能 https://github.com/railwaycat/homebrew-emacsmacport
+
+;; タイトルバー透過
+;(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+;(add-to-list 'default-frame-alist '(ns-appearance . dark))
+
 ;; [alt] <-> [command]
 (custom-set-variables
  '(mac-option-modifier  'alt)

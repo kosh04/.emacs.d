@@ -817,7 +817,7 @@
        (ignore w32-start-process-show-window)
        (w32-shell-execute "open" app)))
     (`dawrin
-     (start-process "" nil "open" app))
+     (start-process "" nil "open" app)) ; or "open -a Terminal"
     (`gnu/linux
      (let ((process-connection-type nil))
        (start-process "" nil "xdg-open" app)))))

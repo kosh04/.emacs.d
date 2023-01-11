@@ -806,6 +806,20 @@ user-login-name
 (let ((system-time-locale "C"))
   (display-time-mode))
 
+;; M-x world-clock
+(setq display-time-world-list
+      '(("America/Los_Angeles" "シアトル")
+        ("America/New_York" "ニューヨーク")
+        ("Etc/UTC" "UTC")
+        ("Europe/Athens" "アテネ")
+        ("Asia/Shanghai" "上海")
+        ("Asia/Hong_Kong" "香港")
+        ("Asia/Tokyo" "東京")
+        ("Pacific/Auckland" "オークランド")
+        )
+      display-time-world-time-format "%FT%T%z"
+      )
+
 ;;; 端末から起動した時 (emacs -nw) にメニューバーを消す
 (menu-bar-mode (if window-system 1 -1))
 
@@ -980,10 +994,10 @@ network-coding-system-alist
 (network-interface-list)   ; (("lo" . [127 0 0 1 0]) ("eth0" . [192 168 3 3 0]))
 (network-interface-info "eth0")
 
-(mapcar (lambda (lst)
-          (format-network-address
-           (car (network-interface-info (car lst)))))
-        (network-interface-list))
+;; アドレス一覧
+(mapcar (pcase-lambda (`(,ifname . ,ip))
+              `(,ifname . ,(format-network-address ip)))
+            (network-interface-list))
 
 ;; lisp/net/net-utils.el
 (featurep 'net-utils)
@@ -2066,3 +2080,16 @@ command-history                   ;=> ((eval-expression [#2] nil))
   (highlight-phrase
    (rx word-start (or "BUG" "FIXME" "TODO" "NOTE") ":")))
 (add-hook 'find-file-hook 'highlight-todos)
+
+;; FIXME: emacs-lisp 編集時にカーソルが括弧の先頭にある場合
+;; シンボル補完や Xref の候補が「関数のみ」に限定されてしまうのが不便。変数も検索したい
+
+
+;; https://github.com/mnewt/dotemacs/blob/be862d6a6fba35102a7feca8fb8a8f5e634c6892/init.el#L909-L916
+(defun edebug-mode-info (_symbol newval _operation _where)
+  "Display an indicator when `edebug' is active.
+
+Watches `edebug-active' and sets the mode-line when it changes."
+  (setf (alist-get 'edebug-mode mode-line-misc-info)
+        (list (when newval "ED"))))
+(add-variable-watcher 'edebug-active #'edebug-mode-info)

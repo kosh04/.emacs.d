@@ -103,3 +103,9 @@ It uses for built-in package configuration."
   (paradox-homepage-button-string "⌂")
   (paradox-column-width-version 13)     ; melpa 20190123.4567 (13 characters)
   )
+
+;; パッケージ管理ソフトいろいろ
+;; package.el
+;; straight.el	- https://github.com/radian-software/straight.el
+;; quelpa	- https://github.com/quelpa/quelpa
+;; elpaca	- https://github.com/progfolio/elpaca

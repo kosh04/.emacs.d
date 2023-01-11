@@ -76,3 +76,14 @@ See URL `https://github.com/magit/magit/issues/3686'"
     (warn "The patch `%s' is no longer required: %s" patch #$)
   (advice-add 'magit-repolist-column-version :around #'magit-repolist-column-version--patch))
 ```
+
+コンフリクト探索。 smerge.el のドキュメントより引用
+
+```emacs-lisp
+(defun sm-try-smerge ()
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward "^<<<<<<< " nil t)
+      (smerge-mode 1))))
+(add-hook 'find-file-hook 'sm-try-smerge t)
+```
