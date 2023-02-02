@@ -3,14 +3,17 @@
 *-autoloads.el
 custom.el
 private.el
+init-private.el
 package-quickstart.el
 .emacs.desktop
 .emacs.desktop.lock
 .newsrc
 .newsrc.eld
 *.plstore
+/eln-cache/
 /elpa/
 /el-get/
+/emacs-gdb-layout
 /history/
 /games/*-scores
 /request/

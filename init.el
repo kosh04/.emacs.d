@@ -1,8 +1,13 @@
 ;;; init.el --- .emacs
 
-(defvar init-minimum-file
+(defvar user-init-minimum-file
   (expand-file-name "init-minimum.el" (file-name-directory #$)))
-(load init-minimum-file t)
+
+(defvar user-init-private-file
+  (locate-user-emacs-file "init-private.el")
+  "マシン固有の設定ファイル")
+
+(load user-init-minimum-file t)
 
 ;; Enable installed packages
 ;;(setq package-enable-at-startup t)
@@ -27,8 +32,7 @@
 ;;  '(init-loader-nw-regexp )
 ;;  )
 
-;; マシン固有の設定 (private)
-(load (locate-user-emacs-file (format "init-%s.el" (system-name))) t)
+(load user-init-private-file t)
 
 (provide 'init-el)
 ;;; init.el ends here
