@@ -107,6 +107,9 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   :pin melpa-stable
   :diminish git-gutter-mode
   :hook (emacs-startup . global-git-gutter-mode)
+  ;;FIXME "global-git-gutter-mode: Symbol's value as variable is void: global-linum-mode"
+  ;;FIXME linum.el is obsolete since emacs-29
+  :init (require 'linum)
   :bind (("M-g p" . git-gutter:previous-hunk)
          ("M-g n" . git-gutter:next-hunk)
          ("M-g r" . git-gutter:revert-hunk)))

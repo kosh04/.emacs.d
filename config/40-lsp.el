@@ -35,6 +35,8 @@
          ("<backtab>" . lsp-ui-imenu--prev-kind))
   )
 
+;; NOTE: lsp-completion.el says
+;; "`company-lsp` is not supported anymore. Using `company-capf` as the `lsp-completion-provider`."
 (use-package company-lsp
   :disabled
   :after lsp-mode

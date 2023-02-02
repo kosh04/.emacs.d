@@ -44,7 +44,8 @@
   :hook (after-init . company-statistics-mode)
   :custom
   (company-statistics-file
-   (locate-user-emacs-file "cache/company-statistics-cache.el")))
+   (locate-user-emacs-file "cache/company-statistics-cache.el"))
+  (company-statistics-auto-restore nil))
 
 (use-package company-emoji
   :after company

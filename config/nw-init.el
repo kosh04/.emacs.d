@@ -11,3 +11,15 @@
   :when (getenv "SSH_TTY")
   :custom
   (browse-url-browser-function #'eww-browse-url))
+
+;; TODO: 省略記号 (ellipsis) ?\u2026 とターミナル+縦分割ウィンドウの相性が悪い
+;; そのためアスキー文字で代用したい
+(with-eval-after-load 'mule-util
+  (setq truncate-string-ellipsis "..."))
+(customize-set-variable 'magit-ellipsis "...")
+(customize-set-variable 'magit-section-visibility-indicator '("..." . t))
+
+;; Vertical window divider
+(set-display-table-slot standard-display-table
+			'vertical-border
+			(make-glyph-code ?\u2502))

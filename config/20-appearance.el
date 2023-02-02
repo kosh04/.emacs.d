@@ -112,6 +112,13 @@
 (customize-set-variable 'window-divider-default-right-width 2)
 (window-divider-mode +1)
 
+;; 端末エミュレータは基本的にダークモードのみ
+;; この設定がないと端末が黒背景であっても background-mode=light として扱われてしまう (なぜ？)
+;; (setf (terminal-parameter nil 'background-mode) 'dark) ; daemon では効果なし
+;; (setq frame-background-mode (if window-system nil 'dark))
+
+;;; Theme
+
 ;;; Theme
 ;(csetq frame-background-mode 'dark)
 ;; (load-theme 'zenburn)
@@ -119,10 +126,13 @@
 
 '
 (use-package kaolin-themes
+  :if window-system
   :init
   (load-theme 'kaolin-dark t))
 
 (use-package modus-themes
+  :if window-system
+  ;; NOTE: built-in theme since emacs-30.0
   :demand
   :config
   (load-theme 'modus-vivendi t)

@@ -2084,7 +2084,6 @@ command-history                   ;=> ((eval-expression [#2] nil))
 ;; FIXME: emacs-lisp 編集時にカーソルが括弧の先頭にある場合
 ;; シンボル補完や Xref の候補が「関数のみ」に限定されてしまうのが不便。変数も検索したい
 
-
 ;; https://github.com/mnewt/dotemacs/blob/be862d6a6fba35102a7feca8fb8a8f5e634c6892/init.el#L909-L916
 (defun edebug-mode-info (_symbol newval _operation _where)
   "Display an indicator when `edebug' is active.
@@ -2093,3 +2092,9 @@ Watches `edebug-active' and sets the mode-line when it changes."
   (setf (alist-get 'edebug-mode mode-line-misc-info)
         (list (when newval "ED"))))
 (add-variable-watcher 'edebug-active #'edebug-mode-info)
+
+;; All those have been changed for Emacs 28
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read) ; for M-.
+(setq xref-show-xrefs-function #'xref-show-definitions-buffer) ; for grep and the like
+(setq xref-file-name-display 'project-relative)
+(setq xref-search-program 'grep)
