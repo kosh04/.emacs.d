@@ -6,4 +6,4 @@
 
 (set-variable 'cperl-hairy t)
 
-(use-package perl6-mode)
+(use-package perl6-mode :disabled)

@@ -100,7 +100,8 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   ;; (setq magit-git-debug (not magit-git-debug))
   )
 
-(use-package gitconfig-mode)
+;; Contains of Magit?
+;(use-package gitconfig-mode)
 
 (use-package git-gutter
   :pin melpa-stable
