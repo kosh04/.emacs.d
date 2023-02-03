@@ -11,7 +11,7 @@ package-quickstart.el
 .newsrc.eld
 *.plstore
 /eln-cache/
-/elpa/
+/elpa*/
 /el-get/
 /emacs-gdb-layout
 /history/
@@ -20,6 +20,7 @@ package-quickstart.el
 /url/
 /server/
 /image-dired/
+/multisession/
 recentf
 tramp
 abbrev_defs
