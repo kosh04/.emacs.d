@@ -980,7 +980,7 @@ You can use key command as C-u \\[shell-command-on-region]"
          (when (and
                 ;; (null inhibit-startup-message)
                 initial-scratch-message)
-           (insert initial-scratch-message)
+           (insert (substitute-command-keys initial-scratch-message))
            (set-buffer-modified-p nil))
          nil)
         (t t)))
