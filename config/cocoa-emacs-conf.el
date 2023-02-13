@@ -75,4 +75,4 @@
 ;; (if (eq window-system 'ns) )
 (setq ns-use-thin-smoothing t)
 
-(menu-ba-mode +1)
+(menu-bar-mode +1)
