@@ -222,8 +222,9 @@ Example:
 (defun emacsclient-help-options ()
   "[user] Display \"emacsclient --help\" text."
   (interactive)
-  ;; FIXME Where is Emacs.app/bin?
-  (let ((emacs (expand-file-name "emacsclient" invocation-directory)))
+  (let ((emacs (if (eq window-system 'ns) ; Emacs.app
+                   (expand-file-name "bin/emacsclient" invocation-directory)
+                 (expand-file-name "emacsclient" invocation-directory))))
     (with-help-window (help-buffer)
       (call-process emacs nil standard-output t "--help"))))
 
