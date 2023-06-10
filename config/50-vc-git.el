@@ -119,6 +119,7 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   :hook (dired-initial-position . dired-k)
   :bind (:map dired-mode-map ("g" . dired-k))
   :custom
+  (dired-k-style 'git)
   (dired-k-human-readable t))
 
 ;; 直近のコミットメッセージと日付情報を表示する
