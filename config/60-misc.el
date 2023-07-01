@@ -257,3 +257,17 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   :config
   ;; 右クリックメニュー
   (context-menu-mode +1))
+
+(use-package avy
+  :bind
+  (:map goto-map
+        ("c" . avy-goto-char)
+        ("l" . avy-goto-line)
+        ("w" . avy-goto-subword-1))
+  ;;:custom
+  ;;(avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  )
+
+;; TODO: ?append to 20-keymaps.el
+(use-package swap-buffers
+  :bind ("C-c t b" . swap-buffers))

@@ -37,3 +37,9 @@
   (setq-default flycheck-python-flake8-executable "flake8"))
 
 ;;(define-key python-mode-map (kbd "C-c m d") #'pydoc)
+
+;; psf/black: The Uncompromising Code Formatter
+(use-package python-black
+  :disabled
+  :after python
+  :hook (python-mode . python-black-on-save-mode-enable-dwim))

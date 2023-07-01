@@ -49,6 +49,16 @@
   "Keymap for user-defined toggle commands.")
 (global-set-key (kbd "C-c t") 'ctl-c-t-map)
 
+;; TODO: 上記のキー定義を bind-keys で書き換える？
+'
+(bind-keys
+ :prefix-map ctl-c-t-map
+ :prefix "C-c t"
+ :prefix-docstring "Keymap for user-defined toggle commands."
+ ("e" . toggle-debug-on-error)
+ ("f" . toggle-truncate-lines)
+ )
+
 ;;(global-set-key [f11] 'toggle-frame-fullscreen)
 (global-set-key [f11] 'toggle-frame-maximized)
 

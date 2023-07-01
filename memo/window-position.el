@@ -93,3 +93,6 @@
 
 ;; 最大化
 (modify-frame-parameters (selected-frame) '((fullscreen . maximized)))
+
+;; ?
+(setq switch-to-buffer-obey-display-actions t)

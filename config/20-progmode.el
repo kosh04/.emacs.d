@@ -98,3 +98,8 @@
 (use-package symbol-overlay
   :disabled
   :hook (prog-mode . symbol-overlay-mode))
+
+;; M-x minimap-mode
+(use-package minimap
+  :custom
+  (minimap-window-location 'right))

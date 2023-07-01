@@ -64,7 +64,7 @@
   ;; `--debug-init' フラグ有効時にのみデバッグ出力
   (use-package-verbose (if init-file-debug t nil))
   (use-package-expand-minimally (if init-file-debug nil t))
-  (use-package-enable-imenu-support t)
+  (use-package-enable-imenu-support t)  ; imenu -> Packages
   (use-package-ignore-unknown-keywords t)
   (use-package-compute-statistics t)    ; M-x `use-package-report'
   ;;(use-package-hook-name-suffix nil)  ; TODO: disable abbrev

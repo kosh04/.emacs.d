@@ -44,3 +44,7 @@
   :config (flycheck-pos-tip-mode +1))
 
 ;; https://github.com/Wilfred/flycheck-title
+
+;; Use AbiWord/enchant spellchecking library
+(use-package jinx
+  :disabled)

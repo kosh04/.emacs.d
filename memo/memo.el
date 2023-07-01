@@ -1383,15 +1383,6 @@ comment-styles
 ;; http://fly.srk.fer.hr/~hniksic/emacs/htmlize.el.html
 "http://fly.srk.fer.hr/~hniksic/emacs/htmlize.el"
 
-;; ターミナルで実行していてもXのクリップボードに切り取り／貼り付けはできないだろうか
-(window-system)                         ; nil
-(fboundp 'x-get-selection)              ; t
-(fboundp 'x-get-selection-internal)     ; nil
-(boundp 'x-select-enable-clipboard)     ; nil
-
-interprogram-cut-function
-interprogram-paste-function
-
 ;; textdoc
 ;; AsciiDoc mode
 ;; http://xpt.sourceforge.net/tools/
@@ -2098,3 +2089,9 @@ Watches `edebug-active' and sets the mode-line when it changes."
 (setq xref-show-xrefs-function #'xref-show-definitions-buffer) ; for grep and the like
 (setq xref-file-name-display 'project-relative)
 (setq xref-search-program 'grep)
+
+;;; マウス関連 mouse
+
+;; スクロール時のフォント再表示を抑制 (?)
+(setq  redisplay-skip-fontification-on-input t
+       fast-but-imprecise-scrolling t)
