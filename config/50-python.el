@@ -25,7 +25,7 @@
 ;; $ pip install --upgrade autopep8
 (use-package py-autopep8
   :after python
-  :hook (python-mode . py-autopep8-enable-on-save)
+  :hook (python-mode . py-autopep8-mode)
   :custom
   (py-autopep8-options '("--max-line-length=100"))
   (flycheck-flake8-maximum-line-length 100)

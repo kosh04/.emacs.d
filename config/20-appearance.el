@@ -10,12 +10,16 @@
 ;;(scroll-bar-mode -1)
 
 ;; Font
-(let ((font "Sarasa Mono T J:pixelsize=14:weight=regular:slant=normal"))
-  (when (and window-system (font-info font)) ; ? (display-graphic-p)
-    ;; TODO: マシン毎にフォントサイズを調整したい
-    ;; "Sarasa Term J-10.5" (pixelsize=14)
-    ;; "更紗等幅ゴシック J"
-    (create-fontset-from-ascii-font font nil "coding")
+;; TODO: マシン毎にフォントサイズを調整したい
+;; "Sarasa Term J-10.5" (pixelsize=14)
+;; "更紗等幅ゴシック J"
+(defvar user-font
+  "Sarasa Term J:pixelsize=14:weight=regular:slant=normal")
+
+(when window-system
+  (if (not (font-info user-font))       ; ? (display-graphic-p)
+      (warn "Not found font: %s" user-font)
+    (create-fontset-from-ascii-font user-font nil "coding")
     (add-to-list 'default-frame-alist '(font . "fontset-coding"))))
 
 ;; Frame
@@ -35,8 +39,7 @@
           conf-mode)
          . display-line-numbers-mode)
   :custom
-  (display-line-numbers-widen t)
-  )
+  (display-line-numbers-widen t))
 
 ;;(display-fill-column-indicator-mode +1)
 

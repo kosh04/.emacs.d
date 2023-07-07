@@ -32,7 +32,6 @@ timelog
 /ido.last
 /kkcrc
 /cache/
-/vendor/
 /tmp/
 /straight/
 /transient/
@@ -54,7 +53,7 @@ nrepl-history
 UnicodeData.txt
 /share/dict/*/migemo-dict
 /migemo-pattern
-/site-lisp/*/
+/site-lisp/_vendor/
 /share/fonts/
 /etc/
 /emojis/

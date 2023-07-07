@@ -31,12 +31,6 @@
   (define-key package-menu-mode-map (kbd "?") 'describe-package)
   (define-key package-menu-mode-map (kbd "/") 'occur))
 
-;; TODO: パッケージのブートストラップインストールをしたい
-;; (custom-set-variables
-;;  '(package-selected-packages
-;;    '(use-package names)))
-;; (package-install-selected-packages)
-
 (defun user::package-uninstall (pkg)
   "Uninstall the package PKG."
   (interactive (list (intern (completing-read "Uninstall package: " package-alist))))
@@ -52,12 +46,10 @@
 ;; - try https://github.com/raxod502/straight.el
 ;; - :config (というかトップレベル以外) で補助関数を定義するとソースジャンプができない
 
-;; use-package
-(or (require 'use-package nil 'noerror)
-    ;;(package-install 'use-package)
-    (defmacro use-package (name &rest _args)
-      "Dummy definition `use-package'."
-      `(warn "Ignored Package: `%s'" ',name)))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
 (use-package use-package
   :pin #:melpa-stable
@@ -84,7 +76,8 @@
     '(("\\_<:disabled\\_>" . 'use-package--disabled-keyword-face)))
   )
 
-;; TODO: built-in パッケージの設定時の記述 :ensure nil が煩わしい
+;; FIXME: `use-package-always-ensure' 有効時に built-in ライブラリを
+;; インストールしようとする挙動が解消されればこのマクロは不要
 (defmacro use-package* (name &rest args)
   "Similar to `use-package', but does not require NAME to be installed.
 It uses for built-in package configuration."

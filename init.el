@@ -1,7 +1,8 @@
 ;;; init.el --- .emacs
 
 (defvar user-init-minimum-file
-  (expand-file-name "init-minimum.el" (file-name-directory #$)))
+  (locate-user-emacs-file "init-minimum.el")
+  "最小構成の設定ファイル")
 
 (defvar user-init-private-file
   (locate-user-emacs-file "init-private.el")
@@ -9,16 +10,12 @@
 
 (load user-init-minimum-file t)
 
-;; Enable installed packages
-;;(setq package-enable-at-startup t)
-;; TODO: 現状 init-loader の為だけに呼び出しているのでパッケージをローカル化する？
-(package-initialize)
-
 ;; Separate customization setting (do not overwrite `user-init-file')
 (setq custom-file (locate-user-emacs-file "custom.el"))
 ;;(load custom-file t)
 
 ;; Load config/nn-xxx.el
+(add-to-list 'load-path (locate-user-emacs-file "site-lisp/init-loader"))
 (require 'init-loader)
 (setq init-loader-directory (locate-user-emacs-file "config"))
 (setq init-loader-show-log-after-init 'error-only)
