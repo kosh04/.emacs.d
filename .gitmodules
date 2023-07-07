@@ -24,3 +24,6 @@
 # [submodule "site-lisp/getpocket"]
 # 	path = site-lisp/getpocket
 # 	url = file:///Users/kosh/.emacs.d/site-lisp/getpocket/.git
+[submodule "site-lisp/init-loader"]
+	path = site-lisp/init-loader
+	url = https://github.com/emacs-jp/init-loader.git
