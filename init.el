@@ -1,7 +1,8 @@
 ;;; init.el --- .emacs
 
 (defvar user-init-minimum-file
-  (expand-file-name "init-minimum.el" (file-name-directory #$)))
+  (locate-user-emacs-file "init-minimum.el")
+  "最小構成の設定ファイル")
 
 (defvar user-init-private-file
   (locate-user-emacs-file "init-private.el")

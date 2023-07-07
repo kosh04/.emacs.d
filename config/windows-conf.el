@@ -26,6 +26,7 @@
 ;; IME Patch (Dynamic Modules ver.)
 ;; https://github.com/trueroad/tr-emacs-ime-module
 (use-package tr-ime
+  :if (eq window-system 'w32)           ; ignore in Terminal
   :demand
   :config
   (tr-ime-standard-install))
@@ -49,9 +50,6 @@
  ;; http://opensourcepack.blogspot.jp/p/converter.html
  '(image-dired-cmd-create-thumbnail-program "magick convert"))
 
-;; dired の y (ファイルタイプ判別) で file コマンドを利用する
-;; UNIX 由来のコマンド群を必要とするパッケージは色々ある (diff,grep,gzip,etc...)
-(add-to-list 'exec-path "c:/PROGRA~1/Git/usr/bin")
 '
 (define-advice dired-show-file-type (:around (f file &optional symlinksp) with-unix-path)
   (let ((exec-path  exec-path))

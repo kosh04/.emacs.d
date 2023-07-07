@@ -59,8 +59,9 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; HTTP Archive (HAR)
 (add-to-list 'auto-mode-alist '("\\.har\\'" . json-mode))
 
-;; (use-package helm
-;;   :pin melpa-stable)
+(use-package helm
+  :disabled
+  :pin melpa-stable)
 
 (defun check-parens-local ()
   (when buffer-file-name
@@ -158,8 +159,8 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (use-package minions
   :demand
   :custom
-  ;;(minions-mode-line-lighter "...") ; "[+]"
-  (minions-direct
+  ;; 随時ステータスが更新されるモードは表示する
+  (minions-prominent-modes
    '(lsp-mode
      flycheck-mode))
   :config

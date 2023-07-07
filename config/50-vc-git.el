@@ -100,6 +100,14 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   ;; (setq magit-git-debug (not magit-git-debug))
   )
 
+
+(use-package transient
+  :custom
+  ;; original: transient/history.el
+  (transient-history-file
+   (locate-user-emacs-file
+    "cache/transient-history.el")))
+
 ;; Contains of Magit?
 ;(use-package gitconfig-mode)
 

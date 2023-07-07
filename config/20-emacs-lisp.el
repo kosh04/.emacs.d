@@ -186,11 +186,9 @@
 (add-hook 'emacs-lisp-mode-hook 'user:prettify-lambda)
 
 (use-package dash
-  :pin #:melpa-stable
-  ;;:custom (dash-enable-fontlock t)
+  :pin #:gnu
   :config
-  (dash-enable-font-lock)
-  )
+  (global-dash-fontify-mode +1))
 
 ;; font-lock や eval-last-sexp を names 開発用に拡張
 ;; `defun*' が有効で `cl-defun' が無効なのはどういう意図？
