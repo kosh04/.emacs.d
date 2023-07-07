@@ -21,3 +21,8 @@
   (migemo-use-frequent-pattern-alist t)
   ;;(migemo-pattern-alist-length 1024)
   )
+
+(use-package ctrlf
+  :disabled
+  :custom
+  (ctrlf-mode +1))

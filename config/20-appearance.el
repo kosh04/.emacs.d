@@ -139,3 +139,6 @@
   :custom
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t))
+
+;; (use-package standard-themes
+;;   :config (standard-themes-load-dark))

@@ -46,6 +46,8 @@
   :bind (("C-c e" . osx-dictionary-search-word-at-point))
   )
 
+;; 英英辞書
 (use-package dictionary
+  :bind (("M-s d" . dictionary-search))
   :custom
   (dictionary-server "dict.org"))

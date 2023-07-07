@@ -21,6 +21,7 @@ package-quickstart.el
 /server/
 /image-dired/
 /multisession/
+/newsticker/
 recentf
 tramp
 abbrev_defs

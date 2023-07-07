@@ -1,5 +1,7 @@
 ;;; config/Buffer
 
+;; TODO: buffer / window 設定の統合
+
 ;; Buffer List
 (use-package bs
   :bind
@@ -8,8 +10,6 @@
    ("#" . clean-buffer-list)
    ;;("e" . view-echo-area-messages)
    ))
-
-;; (global-set-key (kbd "C-x C-b") 'bs-show)
 
 (add-hook 'bs-mode-hook 'hl-line-mode)
 (add-hook 'Buffer-menu-mode-hook 'hl-line-mode)

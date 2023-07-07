@@ -128,3 +128,8 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   :custom (dgi-auto-hide-details-p t)
   :bind (:map dired-mode-map (")" . dired-git-info-mode))
   )
+
+(use-package blamer
+  :disabled
+  :config
+  (global-blamer-mode +1))

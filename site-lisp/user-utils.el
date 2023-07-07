@@ -230,7 +230,12 @@ Example:
 
 (defun user::exec* (program infile &rest args)
   (with-output-to-string
-    (apply #'call-process program infile standard-output t args)))
+    (apply #'call-process program infile standard-output t args))
+  ;; :or
+  ;; (with-output-to-string
+  ;;   (with-current-buffer standard-output
+  ;;     (apply 'process-file program infile t nil args)))
+  )
 
 (defun user::exec (program input &rest args)
   "Execute PROGRAM+ARGS, then return the result as string.
@@ -502,6 +507,8 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
   "Disable and reset all loaded themes."
   (interactive)
   (mapc #'disable-theme custom-enabled-themes))
+
+(fset 'restore-symbol-value #'custom-reevaluate-setting)
 
 (provide 'user-utils)
 

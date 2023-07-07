@@ -7,6 +7,7 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 ;;(add-to-list 'package-archives '("nongnu-devel" . "https://elpa.nongnu.org/nongnu-devel/"))
+;;(add-to-list 'package-archives '("ELPA" . "https://tromey.com/elpa/"))
 
 ;; Switch to Mirrors
 ;; https://github.com/melpa/melpa#mirrors
@@ -109,3 +110,4 @@ It uses for built-in package configuration."
 ;; straight.el	- https://github.com/radian-software/straight.el
 ;; quelpa	- https://github.com/quelpa/quelpa
 ;; elpaca	- https://github.com/progfolio/elpaca
+;; Borg		- https://github.com/emacscollective/borg
