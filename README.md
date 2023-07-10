@@ -1,4 +1,4 @@
-![GitHub Actions](https://github.com/kosh04/.emacs.d/workflows/CI/badge.svg)
+[![CI](https://github.com/kosh04/.emacs.d/actions/workflows/test.yml/badge.svg)](https://github.com/kosh04/.emacs.d/actions/workflows/test.yml)
 
 ## Files
 
