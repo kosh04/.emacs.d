@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        submodule: recursive
+        submodules: recursive
 
     - uses: purcell/setup-emacs@master
       with:
