@@ -16,7 +16,10 @@
 
 (use-package emacs
   :if (version<= "28.1" emacs-version)
-  :hook (after-init . icomplete-vertical-mode))
+  :hook (after-init . icomplete-vertical-mode)
+  :custom
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  )
 
 (use-package company
   :pin #:gnu

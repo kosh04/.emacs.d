@@ -118,12 +118,17 @@
 ;; 端末エミュレータは基本的にダークモードのみ
 ;; この設定がないと端末が黒背景であっても background-mode=light として扱われてしまう (なぜ？)
 ;; (setf (terminal-parameter nil 'background-mode) 'dark) ; daemon では効果なし
-;; (setq frame-background-mode (if window-system nil 'dark))
+;; (csetq frame-background-mode (if window-system nil 'dark))
 
 ;;; Theme
 
+(setf (symbol-function 'list-themes) #'customize-themes)
+;;(custom-available-themes)
+
+;; テーマ読み込み時の安全性が目視確認だけならあまり意味ないのでは...
+;; (setq custom-safe-themes t)
+
 ;;; Theme
-;(csetq frame-background-mode 'dark)
 ;; (load-theme 'zenburn)
 ;; (load-theme 'wombat)
 

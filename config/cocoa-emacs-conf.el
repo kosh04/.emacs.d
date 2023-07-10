@@ -1,7 +1,9 @@
 ;;; config/cocoa-emacs-conf.el
 
-;; XXX: "English" on emacsformacosx @28.2
-(set-language-environment "UTF-8")
+;; XXX: current-language-environment=English on emacsformacosx @28.2
+;;(set-language-environment "UTF-8")
+(or (equal current-language-environment "Japanese")
+    (set-language-environment "Japanese"))
 
 ;; NOTE: Mac における Emacs バイナリいろいろ
 ;; - Emacs for Mac OS X

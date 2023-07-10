@@ -10,3 +10,8 @@
 
 ;; プレーンテキストで貼り付け
 ;; (setq yank-excluded-properties t)
+
+;; Time-stamp: <>
+(use-package time-stamp
+  :custom
+  (time-stamp-format "%Y-%m-%dT%H:%M:%S%5z %l"))

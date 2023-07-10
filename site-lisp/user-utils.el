@@ -119,12 +119,11 @@ Example:
 
 (defun delete-backward-word (&optional n)
   "直前の単語を削除する."
-  (interactive "p")
+  (interactive "*p")
   (unless (integerp n)
     (signal 'wrong-type-argument `(integerp ,n)))
   (delete-region (point)
                  (progn (backward-word n) (point))))
-
 
 (defun plist->alist (plist)
   "Translate PLIST to alist.

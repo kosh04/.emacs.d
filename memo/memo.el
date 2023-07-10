@@ -2095,3 +2095,5 @@ Watches `edebug-active' and sets the mode-line when it changes."
 ;; スクロール時のフォント再表示を抑制 (?)
 (setq  redisplay-skip-fontification-on-input t
        fast-but-imprecise-scrolling t)
+;; 入力時にマウスカーソルを隠す？
+(setq make-pointer-invisible nil)
