@@ -2097,3 +2097,14 @@ Watches `edebug-active' and sets the mode-line when it changes."
        fast-but-imprecise-scrolling t)
 ;; 入力時にマウスカーソルを隠す？
 (setq make-pointer-invisible nil)
+
+
+;; Resolved (~2022/11/12)
+;; https://github.com/atykhonov/google-translate/pull/146
+(with-eval-after-load 'google-translate-tk
+  (define-advice google-translate--get-b-d1 (:override () fake-tkk)
+    "See URL `https://github.com/atykhonov/google-translate/issues/52'"
+    ;; TKK='427110.1469889687'
+    '(427110 1469889687))
+  ;;(advice-remove #'google-translate--get-b-d1 #'google-translate--get-b-d1@fake-tkk)
+  )
