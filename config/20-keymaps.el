@@ -49,7 +49,8 @@
   "Keymap for user-defined toggle commands.")
 (global-set-key (kbd "C-c t") 'ctl-c-t-map)
 
-;; TODO: 上記のキー定義を bind-keys で書き換える？
+;; TODO: 上記のキー定義を bind-keys, hydra で書き換える？
+
 '
 (bind-keys
  :prefix-map ctl-c-t-map
@@ -58,6 +59,10 @@
  ("e" . toggle-debug-on-error)
  ("f" . toggle-truncate-lines)
  )
+
+;; (defhydra hydra-toggle (global-map "C-c t")
+;;   ("s" scratch-buffer "scratch")
+;;   )
 
 ;;(global-set-key [f11] 'toggle-frame-fullscreen)
 (global-set-key [f11] 'toggle-frame-maximized)

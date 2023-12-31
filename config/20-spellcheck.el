@@ -25,6 +25,7 @@
 (use-package flycheck
   :diminish flycheck-mode
   :custom
+  ;;(flycheck-mode-line-prefix "✔")
   (flycheck-emacs-lisp-load-path 'inherit)
   (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   ;; SC1090 Can't follow non-constant source.

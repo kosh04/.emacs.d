@@ -23,7 +23,10 @@
 (global-set-key (kbd "C-c i t") 'insert-time)
 
 ;; C-w で直前の単語を削除する (Bash 風)
-(define-key minibuffer-local-map (kbd "C-w") 'delete-backward-word)
+(use-package* minibuffer
+  :bind (:map minibuffer-local-map
+              ("C-u" . kill-whole-line)
+              ("C-w" . delete-backward-word)))
 
 ;;; find-file-at-point
 ;; カーソル上にあるファイル名や URL を開く
@@ -261,7 +264,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 
 (use-package avy
   :bind
-  (:map goto-map
+  (:map goto-map ;; M-g
         ("c" . avy-goto-char)
         ("l" . avy-goto-line)
         ("w" . avy-goto-subword-1))
@@ -272,3 +275,12 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 ;; TODO: ?append to 20-keymaps.el
 (use-package swap-buffers
   :bind ("C-c t b" . swap-buffers))
+
+;; XXX: ミニバッファの再帰的な編集を有効にして使い勝手を確かめる
+(setq enable-recursive-minibuffers t)
+(minibuffer-depth-indicate-mode +1)
+
+;; デバッグトレースの表示をリスト形式にする
+(setq debugger-stack-frame-as-list t)
+
+(setq use-short-answers t)

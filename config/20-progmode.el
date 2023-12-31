@@ -103,3 +103,10 @@
 (use-package minimap
   :custom
   (minimap-window-location 'right))
+
+(use-package highlight-indent-guides
+  :hook (python-mode yaml-mode)
+  ;; FIXME: ダークモードに対応していない？
+  :custom
+  (highlight-indent-guides-responsive 'stack)
+  (highlight-indent-guides-method 'character))

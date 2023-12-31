@@ -54,6 +54,10 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
   (eshell-cmpl-ignore-case t)
   (eshell-glob-include-dot-dot nil))
 
+(with-eval-after-load 'esh-module
+  (require 'em-tramp)
+  (add-to-list 'eshell-modules-list 'eshell-tramp))
+
 (with-eval-after-load 'em-term
   ;; 端末操作が必要なコマンドをterm.elに丸投げする
   (add-to-list 'eshell-visual-commands "ssh")

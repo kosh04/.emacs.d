@@ -49,6 +49,7 @@
   (add-hook 'ielm-mode-hook 'turn-on-elisp-slime-nav-mode))
 
 (define-key help-map (kbd "j") 'find-function) ; or #'find-variable
+(define-key help-map (kbd "J") 'find-function-on-key)
 (define-key help-map (kbd "C-l") 'find-library)
 ;;(find-function-setup-keys)
 

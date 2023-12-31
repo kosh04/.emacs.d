@@ -472,7 +472,7 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
          (csetq ,@args))
     `(customize-set-variable ',symbol ,value)))
 
-;; e.g. (file-name-extension-replace "hello.txt" "")
+;; e.g. (file-name-extension-replace "hello.txt" "md")
 (defun file-name-extension-replace (filename to-type)
   "FILENAME の拡張子を TO-TYPE に取り替える."
   (let ((orig (file-name-extension filename)))
@@ -485,8 +485,10 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
   ;;(x-export-frames )
   (pcase system-type
     ('darwin
-     (or (call-process "screencapture" nil nil nil "-i" filename)
-         (f-write (mac-export-frames nil) 'raw-text (format "%s.pdf" filename))))
+     (or
+      ;; FIXME: デスクトップ背景だけキャプチャされない？
+      (call-process "screencapture" nil nil nil "-i" filename)
+      (f-write (mac-export-frames nil) 'raw-text (format "%s.pdf" filename))))
     ('gnu/linux
      ;; SSH 越しであれば "DISPLAY=:0" も追加する
      (call-process "scrot" nil nil nil "%Y-%m-%d_$wx$h.png"))

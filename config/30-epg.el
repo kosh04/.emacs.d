@@ -29,3 +29,9 @@
   :bind
   (:map epa-key-list-mode-map
         ("w" . user::epa-list-keys-copy-fingerprint)))
+
+;; gpg --> gpg-agent --> pinentry --> Emacs
+(use-package pinentry
+  :demand
+  :config
+  (pinentry-start))

@@ -49,6 +49,8 @@
 (use-package desktop
   :demand
   :custom
+  (desktop-load-locked-desktop
+   (if (version<= "29.1" emacs-version) 'check-pid 'ask))
   ;;(desktop-load-locked-desktop nil)
   ;;(desktop-restore-in-current-display nil)
   ;; NOTE: tab-bar の復元にはフレームが必要

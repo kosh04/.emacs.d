@@ -81,3 +81,4 @@
 (setq ns-use-thin-smoothing t)
 
 (menu-bar-mode +1)
+;(setq visible-bell (not visible-bell))

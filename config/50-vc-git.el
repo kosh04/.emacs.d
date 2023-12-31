@@ -56,6 +56,8 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
     (magit-restore-window-configuration)
     (mapc #'kill-buffer buffers)
     (message "Magit has broken!")))
+;; ?>
+;; (csetq magit-bury-buffer-function #'magit-restore-window-configuration)
 
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
@@ -94,6 +96,10 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   (magit-refresh-status-buffer nil)
   (magit-no-confirm '(stage-all-changes))
   (magit-diff-refine-hunk 'all)       ; 変更箇所を単語単位でハイライト
+  (magit-status-goto-file-position t)
+
+  ;; *Magit* バッファの表示方法どうする？
+  ;;(magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 
   :config
   ;; see [$] `magit-process'
@@ -141,3 +147,9 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   :disabled
   :config
   (global-blamer-mode +1))
+
+;; ブラウザリンク生成 (init.el 読書会用)
+(use-package git-link
+  :commands git-link
+  :custom
+  (git-link-use-commit t))

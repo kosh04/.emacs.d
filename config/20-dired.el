@@ -179,6 +179,8 @@
   (treemacs-last-error-persist-file
    (locate-user-emacs-file "cache/treemacs-persist-at-last-error")))
 
+(use-package neotree)
+
 ;; 空のディレクトリ参照をスキップしてくれる
 ;; FIXME: パーミッションの都合で開けないサブディレクトリがあると展開できない (e.g. ~/.Trash)
 (use-package dired-collapse

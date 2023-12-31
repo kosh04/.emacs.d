@@ -69,6 +69,9 @@
   (text-property-search-forward 'image-url))
 
 (use-package eww
+  ;;:custom
+  ;;(eww-search-prefix "https://www.google.co.jp/search?q=")
+  ;;(eww-search-prefix "https://lite.duckduckgo.com/lite/?q=")
   :config
   (defun user:eww-show-url-at-point ()
     (when-let ((url (get-text-property (point) 'shr-url)))
@@ -81,8 +84,6 @@
   (add-hook 'eww-mode-hook 'user:eww-setup)
   (add-hook 'eww-bookmark-mode-hook 'hl-line-mode)
   (add-hook 'eww-history-mode-hook 'hl-line-mode)
-
-  ;; (setq eww-search-prefix "http://www.google.co.jp/search?q=")
 
   (bind-keys :map eww-mode-map
              ("=" . eww-view-source)

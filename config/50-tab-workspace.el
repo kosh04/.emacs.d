@@ -98,3 +98,13 @@
   ;; (add-hook 'bookmark-after-jump-hook 'tab-new)
   ;; (add-hook 'bookmark-after-jump-hook 'eyebrowse-create-window-config)
   )
+
+;; タブの見た目を強化
+(use-package centaur-tabs
+  :disabled
+  :demand
+  :init
+  ;;(setq centaur-tabs-style "alternate") ; ?
+  (setq centaur-tabs-set-icons t)
+  :config
+  (centaur-tabs-mode +1))

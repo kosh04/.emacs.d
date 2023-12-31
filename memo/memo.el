@@ -2108,3 +2108,9 @@ Watches `edebug-active' and sets the mode-line when it changes."
     '(427110 1469889687))
   ;;(advice-remove #'google-translate--get-b-d1 #'google-translate--get-b-d1@fake-tkk)
   )
+
+(defun telnet-koukoku ()
+  "URL `https://twitter.com/dnobori/status/1699339202104889474'"
+  (interactive)
+  (let ((default-process-coding-system '(sjis-dos . sjis-dos)))
+    (telnet "koukoku.shadan.open.ad.jp")))

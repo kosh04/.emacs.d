@@ -21,3 +21,6 @@
   "[user] Dired 内で *.org -> *.el の生成."
   (interactive (list (dired-get-filename)))
   (org-babel-tangle-file filename))
+
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode))
