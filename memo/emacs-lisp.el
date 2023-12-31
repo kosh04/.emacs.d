@@ -1052,7 +1052,7 @@ focus-out-hook
 ;; 参考元 `custom-save-all'
 (delay-mode-hooks (emacs-lisp-mode))
 
-;; Not a Number
+;; Not a Number (type-of=float)
 (print 0.0e+NaN)
 
 ;; FIXME: 黒背景に濃い青は見づらい (テーマを利用していれば無用の長物)
@@ -1061,3 +1061,8 @@ focus-out-hook
 ;;   "royal blue"                        ; Original "blue2"
 ;;   "magenta3" "cyan3" "gray90"])
 ansi-color-names-vector
+
+(with-output-to-temp-buffer "*features*"
+  (-each-indexed features
+    (lambda (i f)
+      (println (format "%03d\t%s" i f)))))

@@ -3,7 +3,6 @@
 (use-package markdown-mode
   :mode ("/README\\.md\\'" . gfm-mode)
   :custom
-  ;;(markdown-fontify-code-blocks-natively t)
   (markdown-url-compose-char ?\U0001F517) ; 🔗 (LINK SYMBOL)
   (markdown-fontify-code-blocks-natively t)
   (markdown-command
@@ -23,9 +22,14 @@
   (markdown-mode . outline-minor-mode)
   (markdown-mode . prettify-symbols-mode)
   (markdown-mode . (lambda ()
-                     (setq prettify-symbols-alist
-                           '(("[ ]" . "☐")
-                             ("[x]" . "☑") ;; ☒
+                     (when window-system
+                       (setq prettify-symbols-alist
+                             ;; ☐☒ (BALLOT BOX WITH CHECK)
+                             ;; 🔲✅❎
+                             ;; '(("[ ]" . "🟩")
+                             ;;   ("[x]" . "✅"))
+                             '(("[ ]" . "☐")
+                               ("[x]" . "☑")) ;; ☒
                              ))))
   )
 
@@ -33,5 +37,5 @@
 (use-package easy-hugo
   :bind ("C-c t h" . easy-hugo)
   :custom
-  (easy-hugo-basedir "~/Documents/bookshelf")
+  (easy-hugo-basedir "~/Onedrive/Documents/bookshelf")
   :hook (easy-hugo-mode . hl-line-mode))

@@ -6,6 +6,9 @@
 ;;(prefer-coding-system 'utf-8)
 (prefer-coding-system 'utf-8-unix)
 
+;; TODO
+;;(set-coding-system-priority 'utf-8)
+
 ;;(setq save-buffer-coding-system 'utf-8-unix)
 
 (defun detect-and-decode-string (string)
