@@ -52,12 +52,12 @@ nrepl-history
 # misc
 UnicodeData.txt
 /share/dict/*/migemo-dict
+/share/fonts/
+/share/irony/
 /migemo-pattern
 /site-lisp/_vendor/
-/share/fonts/
 /etc/
 /emojis/
-/irony/
 .geiser_history.guile
 .auth.plist
 places
