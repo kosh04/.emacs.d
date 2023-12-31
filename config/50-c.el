@@ -30,7 +30,7 @@
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'c++-mode-hook 'irony-mode)
   :custom
-  (irony-user-dir "~/.emacs.d/share/irony/")
+  (irony-user-dir (locate-user-emacs-file "share/irony/"))
   :config
   (if (boundp 'w32-pipe-read-delay)
       (setq w32-pipe-read-delay 0))

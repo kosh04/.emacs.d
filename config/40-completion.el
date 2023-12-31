@@ -16,7 +16,16 @@
 
 (use-package emacs
   :if (version<= "28.1" emacs-version)
-  :hook (after-init . icomplete-vertical-mode))
+  ;; :hook (after-init . fido-vertical-mode)
+  ;; :hook (after-init . icomplete-mode)
+  :hook (after-init . icomplete-vertical-mode)
+
+  :preface
+  (defun my-icomplete-styles ()
+    ;;(setq-local completion-styles '(initials flex))
+    (setq-local completion-styles '(basic partial-completion emacs22)))
+  ;;:hook (icomplete-minibuffer-setup . my-icomplete-styles)
+  )
 
 (use-package company
   :pin #:gnu
