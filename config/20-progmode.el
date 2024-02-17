@@ -40,10 +40,11 @@
 (global-set-key (kbd "M-n") 'indent-and-next-line)
 
 ;; Language Template
-;;(add-hook 'emacs-startup-hook 'auto-insert-mode t)
-(auto-insert-mode +1)
-(custom-set-variables
- '(auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
+(use-package autoinsert
+  :hook (emacs-startup . auto-insert-mode)
+  :custom
+  (auto-insert-directory (locate-user-emacs-file "share/autoinsert/")))
+
 
 ;; Batch mode (obsolete); use bat-mode
 ;; https://www.emacswiki.org/emacs/batch-mode.el

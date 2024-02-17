@@ -19,10 +19,19 @@
 ;(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 ;(add-to-list 'default-frame-alist '(ns-appearance . dark))
 
-;; [alt] <-> [command]
 (custom-set-variables
+ ;; [alt] <-> [command]
  '(mac-option-modifier  'alt)
- '(mac-command-modifier 'meta))
+ '(mac-command-modifier 'meta)
+ ;; mac-function-modifier
+ ;; mac-control-modifier
+ ;; mac-right-command-modifier
+ ;; mac-right-control-modifier
+ ;; mac-right-option-modifier
+ )
+
+
+
 
 ;; 入力ソースが "U.S." の場合に有効
 (define-key key-translation-map (kbd "¥") (kbd "\\"))

@@ -142,6 +142,8 @@ current-language-environment
                       'katakana-jisx0201 'iso-8859-1 'cp1252 'unicode)
 (set-coding-system-priority 'utf-8 'euc-jp 'iso-2022-jp 'cp932)
 
+(set-charset-priority 'unicode)
+
 ;; ファイルの文字コードを判定する手段はいくつかある
 ;; 1. `insert-file-contents' + `buffer-file-coding-system'
 ;;    ファイルの挿入時に Emacs 内部で文字コード判定が行われるのを利用する

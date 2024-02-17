@@ -152,4 +152,5 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
 (use-package git-link
   :commands git-link
   :custom
-  (git-link-use-commit t))
+  (git-link-use-commit t)
+  :bind (("C-c M-w" . git-link)))

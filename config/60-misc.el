@@ -276,6 +276,8 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (use-package swap-buffers
   :bind ("C-c t b" . swap-buffers))
 
+(use-package manage-minor-mode)
+
 ;; XXX: ミニバッファの再帰的な編集を有効にして使い勝手を確かめる
 (setq enable-recursive-minibuffers t)
 (minibuffer-depth-indicate-mode +1)
@@ -283,4 +285,12 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 ;; デバッグトレースの表示をリスト形式にする
 (setq debugger-stack-frame-as-list t)
 
+;; y[es]
 (setq use-short-answers t)
+
+'
+(add-hook 'minibuffer-setup-hook
+(defun minibuffer-setup-function ()
+  "ミニバッファの文字を少し大きめに."
+  (setq-local face-remapping-alist '((default :height 1.1))))
+)

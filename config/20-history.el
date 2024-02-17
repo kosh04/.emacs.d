@@ -79,3 +79,6 @@
 
 (fset 'restore-desktop #'desktop-revert)
 ;; (defalias 'restore-desktop #'user::restore-desktop)
+
+;; TODO: Desktop + Bookmark
+;; (use-package activities)

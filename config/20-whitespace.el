@@ -15,3 +15,6 @@
 
 (defun user/show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
+
+;; 全角スペースのハイライトが不要ならば
+;; (setq nobreak-char-display nil)

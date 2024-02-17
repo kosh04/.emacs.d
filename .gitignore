@@ -9,6 +9,7 @@ package-quickstart.el
 .emacs.desktop.lock
 .newsrc
 .newsrc.eld
+/diary
 *.plstore
 /eln-cache/
 /elpa*/
@@ -67,3 +68,5 @@ network-security.data
 /.dap-breakpoints
 /elpaca/
 /nov-places
+/tldr/
+/projectile-bookmarks.eld

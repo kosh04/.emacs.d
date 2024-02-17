@@ -1,5 +1,7 @@
 ;;; config/completion --- 補完機能
 
+;; TODO: rename to "autocomplete" ?
+
 ;; 入力補完で大文字小文字の区別をしない
 ;;(setq completion-ignore-case t)
 (use-package emacs

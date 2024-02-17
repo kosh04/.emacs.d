@@ -23,4 +23,9 @@
   (org-babel-tangle-file filename))
 
 (use-package org-bullets
+  :disabled
   :hook (org-mode . org-bullets-mode))
+
+(use-package org-modern
+  :after org
+  :config (global-org-modern-mode +1))

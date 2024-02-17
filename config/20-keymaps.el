@@ -1,7 +1,7 @@
 ;;; config/keymaps
 
 (global-set-key (kbd "C-h") 'backward-delete-char)
-(define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
+(define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char) ; or isearch-del-char
 
 (global-set-key (kbd "C-l") 'recenter)
 
