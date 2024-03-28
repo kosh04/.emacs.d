@@ -12,12 +12,21 @@
   :custom
   (browse-url-browser-function #'eww-browse-url))
 
-;; TODO: 省略記号 (ellipsis) ?\u2026 とターミナル+縦分割ウィンドウの相性が悪い
-;; そのためアスキー文字で代用したい
+;; TODO: 一部の Unicode は文字幅問題によりターミナル+縦分割ウィンドウとの相性が悪いためアスキー文字で代用したい
+;; - 省略記号 (ellipsis; …) ?\u2026
+;; - outline: 🔽 ▶️ v >
+
 (with-eval-after-load 'mule-util
   (setq truncate-string-ellipsis "..."))
-(customize-set-variable 'magit-ellipsis "...")
-(customize-set-variable 'magit-section-visibility-indicator '("..." . t))
+
+(use-package magit
+  :custom
+  (magit-ellipsis "...")
+  (magit-section-visibility-indicator '("..." . t)))
+
+(use-package icons
+  :custom
+  (icon-preference '(text emoji image symbol)))
 
 ;; Vertical window divider
 (set-display-table-slot standard-display-table

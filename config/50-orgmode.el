@@ -1,5 +1,7 @@
 ;;; config/Org-mode
 
+;; 主に config.org 閲覧用の設定
+
 (use-package org
   :hook
   (org-mode . outline-show-all)

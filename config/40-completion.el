@@ -2,10 +2,14 @@
 
 ;; TODO: rename to "autocomplete" ?
 
+;; - icomplete (fido-mode)
+;; - company
+
 ;; 入力補完で大文字小文字の区別をしない
 ;;(setq completion-ignore-case t)
 (use-package emacs
   :custom
+  (tab-always-indent 'complete)
   (read-file-name-completion-ignore-case t)
   (read-buffer-completion-ignore-case t)
   ;; 補完候補が N 以下ならば循環補完
@@ -14,6 +18,18 @@
   (completions-detailed t)
   :config
   (add-to-list 'completion-ignored-extensions ".exe")
+  )
+
+;; XXX: reading-init.el~20240323@ashton314-emacs-bedrock
+(use-package emacs
+  :disabled
+  :config
+  (setopt completion-auto-help 'always)
+  (setopt completions-max-height 20)
+  (setopt completions-format 'one-column)
+  (setopt completions-group t)
+  (setopt completion-auto-select 'second-tab)
+  ;;(setopt completion-auto-select t)
   )
 
 (use-package emacs
@@ -35,9 +51,9 @@
 (use-package company
   :pin #:gnu
   :diminish company-mode
-  :hook
+  ;;:hook
   ;; TODO: 補完が重くなってきたらglobalをやめて個別にcompany-modeを指定する
-  (emacs-startup . global-company-mode)
+  ;; (emacs-startup . global-company-mode)
   :custom
   (company-idle-delay 0.2)
   (company-selection-wrap-around t)

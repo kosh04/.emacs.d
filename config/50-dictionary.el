@@ -23,7 +23,12 @@
           (google-translate-at-point)
           (google-translate-at-point-reverse))))
 
-  :bind (("C-c e" . user:google-translate-at-point)
+  :bind (;;("C-c e" . user:google-translate-at-point)
+         ("C-c e" . (lambda ()
+                      (interactive)
+                      (save-mark-and-excursion
+                        (mark-paragraph)
+                        (user:google-translate-at-point))))
          ("M-g T" . google-translate-query-translate))
 
   :config

@@ -210,9 +210,11 @@
 
 (use-package erefactor
   ;; XXX: 開発用ファイル群のみ有効にしたい
+  :disabled
   :config
-  (defalias 'erefactor-prefix erefactor-map)
-  (define-key emacs-lisp-mode-map "\C-c\C-v" 'erefactor-prefix)
+  ;;(defalias 'erefactor-prefix erefactor-map)
+  ;;(define-key emacs-lisp-mode-map "\C-c\C-v" 'erefactor-prefix)
+  (define-key emacs-lisp-mode-map "\C-c\C-v" erefactor-map)
   (define-key erefactor-map "@" 'erefactor-highlight-mode))
 
 ;; 主に init.el 読書会用

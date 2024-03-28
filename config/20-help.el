@@ -12,3 +12,4 @@
   :custom
   (Man-notify-method 'aggressive))
 
+(use-package helpful :disabled)

@@ -1,4 +1,4 @@
-;;; config/textedit.el
+;;; config/textedit
 
 ;; auto-fill
 (setq fill-column 80)
@@ -7,6 +7,9 @@
 ;(add-hook 'html-mode-hook 'turn-off-auto-fill)
 
 ;; M-x display-fill-column-indicator-mode
+
+;; 折返しのないテキストを割と見かけるので
+(add-hook 'text-mode-hook 'visual-line-mode)
 
 ;; プレーンテキストで貼り付け
 ;; (setq yank-excluded-properties t)

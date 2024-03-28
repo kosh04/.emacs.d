@@ -33,6 +33,7 @@
                         (match-string 2 url)
                         (if (match-string 3) "/wiki" ""))))
     (funcall action url)))
+;;(defalias 'user::open-repository-url 'git-link-homepage)
 
 ;; TODO: Tig のように u キーひとつで stage/unstage を切り替えたい
 (defun user::magit-update-status ()
@@ -111,8 +112,11 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   :custom
   ;; original: transient/history.el
   (transient-history-file
-   (locate-user-emacs-file
-    "cache/transient-history.el")))
+   (locate-user-emacs-file "cache/transient/history.el"))
+  (transient-levels-file
+   (locate-user-emacs-file "cache/transient/levels.el"))
+  (transient-values-file
+   (locate-user-emacs-file "cache/transient/values.el")))
 
 ;; Contains of Magit?
 ;(use-package gitconfig-mode)

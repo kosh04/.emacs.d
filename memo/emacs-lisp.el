@@ -1066,3 +1066,7 @@ ansi-color-names-vector
   (-each-indexed features
     (lambda (i f)
       (println (format "%03d\t%s" i f)))))
+
+;; TODO: お役立ち正規表現いろいろ
+(rx (not (char (?\x00 . ?\x7f))))       ; "[^\x00-\x7f]"
+(rx (not ascii))                        ; "[^[:ascii:]]"

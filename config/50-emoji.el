@@ -14,11 +14,10 @@
 
 ;; 豆腐な絵文字を画像で代用する
 (use-package emojify
-  :disabled
-  :custom
-  (emojify-display-style 'image) ; (or 'ascii 'unicode 'image)
-  :hook
-  (emacs-startup . global-emojify-mode)
+  ;;:hook (emacs-startup . global-emojify-mode)
+  :bind ("C-x 8 e a" . emojify-apropos-emoji)
+  ;; :custom
+  ;; (emojify-display-style 'image) ; (or 'ascii 'unicode 'image)
   )
 
 (defvar user:emoji-samples

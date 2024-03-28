@@ -22,6 +22,7 @@
   ;;(setq-default view-exit-action #'kill-buffer)
   :bind
   (:map view-mode-map
+        ("q" . View-kill-and-leave)     ; or "C"
         ;; vi-like
         ("h" . backward-char)
         ("l" . forward-char)

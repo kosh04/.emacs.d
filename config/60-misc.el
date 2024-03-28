@@ -3,7 +3,15 @@
 (use-package f)
 (use-package s)
 
-(setq read-answer-short t) ;; y-or-n-p
+(use-package emacs
+  :custom
+  ;; y[es]
+  (use-short-answers t)
+  (auto-revert-avoid-polling t)         ; XXX: 起動時のファイル読み込みが改善される..かも？
+  (sentence-end-double-space nil)
+  ;; デバッグトレースの表示をリスト形式にする
+  (debugger-stack-frame-as-list t)
+  )
 
 (defun user::emacs-init-time ()
   (message "Emacs init time %s" (emacs-init-time)))
@@ -24,9 +32,13 @@
 
 ;; C-w で直前の単語を削除する (Bash 風)
 (use-package* minibuffer
-  :bind (:map minibuffer-local-map
-              ("C-u" . kill-whole-line)
-              ("C-w" . delete-backward-word)))
+  :bind
+  (:map minibuffer-local-map
+        ;; unix-line-discard (C-u)
+        ;; unix-word-rubout (C-w)
+        ("C-u" . kill-whole-line)
+        ("C-w" . delete-backward-word)
+        ))
 
 ;;; find-file-at-point
 ;; カーソル上にあるファイル名や URL を開く
@@ -262,10 +274,11 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   ;; 右クリックメニュー
   (context-menu-mode +1))
 
+;; Jump to any
 (use-package avy
   :bind
   (:map goto-map ;; M-g
-        ("c" . avy-goto-char)
+        ("c" . avy-goto-char)           ; or avy-goto-char-2
         ("l" . avy-goto-line)
         ("w" . avy-goto-subword-1))
   ;;:custom
@@ -276,17 +289,13 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (use-package swap-buffers
   :bind ("C-c t b" . swap-buffers))
 
-(use-package manage-minor-mode)
+(use-package manage-minor-mode
+  :init
+  (defalias 'list-minor-mode #'manage-minor-mode))
 
 ;; XXX: ミニバッファの再帰的な編集を有効にして使い勝手を確かめる
 (setq enable-recursive-minibuffers t)
 (minibuffer-depth-indicate-mode +1)
-
-;; デバッグトレースの表示をリスト形式にする
-(setq debugger-stack-frame-as-list t)
-
-;; y[es]
-(setq use-short-answers t)
 
 '
 (add-hook 'minibuffer-setup-hook
@@ -294,3 +303,4 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   "ミニバッファの文字を少し大きめに."
   (setq-local face-remapping-alist '((default :height 1.1))))
 )
+

@@ -13,12 +13,13 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
       (or (eq buffer (current-buffer))
           (switch-to-buffer-other-window buffer)))))
 
-(defun user::shell-open (index)
-  "`tab-bar-mode' の INDEX に関連したシェルを開きます."
-  (interactive "P")
-  (unless index
-    (setq index (1+ (tab-bar--current-tab-index))))
-  (shell (format "*shell*<%d>" index)))
+(defun user::shell-open ()
+  "`tab-bar' の index に関連したシェルを開きます."
+  (interactive)
+  (let ((index (1+ (tab-bar--current-tab-index))))
+    (pop-to-buffer
+     (save-window-excursion
+       (shell (format "*shell*<%d>" index))))))
 
 ;;(global-set-key (kbd "C-c s") 'shell)
 (global-set-key (kbd "C-c s") #'user::shell-open)

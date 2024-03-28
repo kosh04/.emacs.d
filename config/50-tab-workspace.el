@@ -1,6 +1,6 @@
 ;;; config/Tab,Workspace
 
-;; tab, workspace, window-configuration manager
+;; Tab, Workspace, Window-Configuration Manager
 
 (use-package tabbar
   :if (not (version<= "27.0" emacs-version))
@@ -53,11 +53,11 @@
   )
 
 ;; new feature tabs (Emacs 27+)
-(use-package* tab-bar
+(use-package tab-bar
   :if (version<= "27.0" emacs-version)
   :demand
   :custom
-  (tab-bar-new-button-show nil)
+  (tab-bar-show t)
   (tab-bar-close-button-show 'selected)
   (tab-bar-history-mode t)
   (tab-bar-new-tab-to 'rightmost)
@@ -66,13 +66,12 @@
   (tab-bar-new-tab-choice "*scratch*")
   :bind (("C-x t l" . tab-list))
   :config
-  (tab-bar-mode +1)
-  (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
+  ;;(set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
   (tab-rename "main" 1)
   ;; TODO: C-x t k でタブと関連バッファをまとめて削除したい
   )
 
-(use-package* tab-line
+(use-package tab-line
   :if (version<= "27.0" emacs-version)
   :demand
   :custom

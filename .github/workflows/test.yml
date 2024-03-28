@@ -21,12 +21,18 @@ jobs:
           - 28.1
           - snapshot
         include:
+          - emacs_version: snapshot
+            allow_failure: ture
+        include:
           - os: macos-latest
             emacs_version: 28.2
 
     steps:
     - uses: actions/checkout@v2
       with:
+        # TODO: サブモジュール周りを整理する
+        # with:
+        #   fetch-depth: 1
         submodules: recursive
         ssh-strict: false
         ssh-known-hosts: '# `ssh-keyscan gist.github.com`

@@ -94,6 +94,8 @@ Example:
   (let ((n (thing-at-point 'number)))
     (message "%d => %s" n (iso8601 n))))
 
+;; e.g. ポイント位置の URL を kill-ring に保存
+;; -> (thing-at-point-to 'url 'kil-new)
 (defun thing-at-point-to (thing fn)
   "ポイント位置の情報を基に (funcall FN (thing-at-point THING)) の結果を表示する."
   (interactive
