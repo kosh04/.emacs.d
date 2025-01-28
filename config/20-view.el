@@ -15,6 +15,11 @@
 ;; FIXME: ブックマーク登録したディレクトリ (dired) でも有効になってしまう
 (add-hook 'bookmark-after-jump-hook #'user::view-mode-maybe)
 
+;; `view-mode' 有効化の有無を少しだけ視覚的にわかりやすく.
+(defun user::hl-line-mode-dwim ()
+  (hl-line-mode (if view-mode +1 -1)))
+(add-hook 'view-mode-hook #'user::hl-line-mode-dwim)
+
 (use-package view
   :custom
   (view-inhibit-help-message t)
@@ -35,3 +40,6 @@
         ("g" . recenter)                  ; disable `View-goto-line'
         )
   )
+
+;; TODO: view-lock-mode
+;; https://qiita.com/s-fubuki/items/01943c4652484942c327

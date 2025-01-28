@@ -1,6 +1,7 @@
 ;;; config/anzu.el --- isearch utility
 
 (use-package anzu
+  :disabled
   :after isearch
   :hook (emacs-startup . global-anzu-mode)
   :custom
@@ -16,3 +17,10 @@
 (use-package anzu
   :after migemo
   :custom (anzu-use-migemo t))
+
+;; TODO: マッチ数カウントは emacs-27 より標準機能になった
+;; ただし migemo とはまだ相性がよくない
+(setopt isearch-lazy-count t)
+(setopt isearch-allow-scroll t)
+(setopt lazy-count-prefix-format nil
+	lazy-count-suffix-format " (%s/%s)")

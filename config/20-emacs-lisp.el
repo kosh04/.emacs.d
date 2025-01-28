@@ -34,10 +34,12 @@
   :custom
   (eldoc-idle-delay 0.3)
   (eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
-  :custom-face
-  ;; 引数表示をSLIME風にする
-  (eldoc-highlight-function-argument
-   ((t (:inherit highlight)))))
+  (eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+  ;; :custom-face
+  ;; ;; 引数表示をSLIME風にする
+  ;; (eldoc-highlight-function-argument
+  ;;  ((t (:inherit highlight))))
+  )
 
 ;; elisp-slime-nav [M-.] [M-,]
 (use-package elisp-slime-nav
@@ -96,6 +98,8 @@
       (switch-to-buffer scratch))
     (or (eq major-mode initial-major-mode)
         (funcall initial-major-mode))))
+
+(make-obsolete 'user::toggle-scratch-buffer #'scratch-buffer "29.1")
 
 ;; ParEdit
 ;; http://www.emacswiki.org/emacs/ParEdit
@@ -218,8 +222,8 @@
   (define-key erefactor-map "@" 'erefactor-highlight-mode))
 
 ;; 主に init.el 読書会用
-(add-to-list 'safe-local-variable-values '(erefactor-highlight-mode . nil))
-(add-to-list 'safe-local-variable-values '(display-line-numbers . t))
+;; (add-to-list 'safe-local-variable-values '(erefactor-highlight-mode . nil))
+;; (add-to-list 'safe-local-variable-values '(display-line-numbers . t))
 
 (use-package flycheck-package
   :after flycheck

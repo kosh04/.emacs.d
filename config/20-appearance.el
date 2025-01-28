@@ -22,10 +22,7 @@
     (create-fontset-from-ascii-font user-font nil "coding")
     (add-to-list 'default-frame-alist '(font . "fontset-coding"))))
 
-;; Frame
-(add-to-list 'default-frame-alist '(alpha . (0.90 0.90)))
-;;(setf (frame-parameter nil 'alpha) '(0.90 0.90))
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+;; Frame (see early-init.el)
 
 ;; アクティブでないウィンドウのカーソルを表示/非表示
 ;;(setq-default cursor-in-non-selected-windows nil)
@@ -53,7 +50,8 @@
 (size-indication-mode)
 ;(display-battery-mode t)
 
-;; (setq mode-line-compact t)
+;; 横幅に収まりきれないときは圧縮する
+(setq mode-line-compact 'long)
 
 ;; アクティブなウィンドウをモードラインの色で判別する
 ;; 端末タイプの詳細はinfo参照: (info "(elisp) Defining Faces")
@@ -109,6 +107,7 @@
   (add-hook 'hs-minor-mode-hook 'hs-hide-all))
 
 (use-package rainbow-mode
+  :diminish
   :hook (emacs-lisp-mode))
 
 ;; 隣接するウィンドウをマウスでドラッグできるバーの追加
@@ -118,7 +117,7 @@
 ;; 端末エミュレータは基本的にダークモードのみ
 ;; この設定がないと端末が黒背景であっても background-mode=light として扱われてしまう (なぜ？)
 ;; (setf (terminal-parameter nil 'background-mode) 'dark) ; daemon では効果なし
-;; (csetq frame-background-mode (if window-system nil 'dark))
+;; (setopt frame-background-mode (if window-system nil 'dark))
 
 ;;; Theme
 
@@ -128,19 +127,18 @@
 ;; テーマ読み込み時の安全性が目視確認だけならあまり意味ないのでは...
 ;; (setq custom-safe-themes t)
 
-;;; Theme
 ;; (load-theme 'zenburn)
 ;; (load-theme 'wombat)
 
-'
 (use-package kaolin-themes
+  :disabled
   :if window-system
   :init
   (load-theme 'kaolin-dark t))
 
+;; NOTE: Modus Themes is now built-in since emacs-28
 (use-package modus-themes
   :if window-system
-  ;; NOTE: built-in theme since emacs-30.0
   :demand
   :config
   (load-theme 'modus-vivendi t)
@@ -150,3 +148,10 @@
 
 ;; (use-package standard-themes
 ;;   :config (standard-themes-load-dark))
+
+;; システムの外観モード変更を自動検知
+(use-package auto-dark
+  :disabled
+  :custom
+  (auto-dark-dark-theme 'modus-vivendi)
+  (auto-dark-light-theme 'modus-operandi))

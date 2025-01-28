@@ -1,5 +1,7 @@
 ;; Auto-generated file; don't edit -*- mode: lisp-data -*-
-((:url "http://ftpmirror.gnu.org/emacs/" :title "GNU Emacs mirror" :time "Sun May 22 04:48:15 2022")
+((:url "https://wttr.in/" :title "wttr.in" :time "Fri Jan 24 08:47:18 2025")
+ (:url "http://cheat.sh/" :title "cheat.sh/:firstpage" :time "Sun Apr 28 22:51:04 2024")
+ (:url "http://ftpmirror.gnu.org/emacs/" :title "GNU Emacs mirror" :time "Sun May 22 04:48:15 2022")
  (:url "https://www.gnu.org/software/emacs/" :title "GNU Emacs - GNU Project" :time "Sat Aug 31 17:00:43 2019")
  (:url "https://www.gnu.org/software/emacs/manual/" :title "GNU Emacs Manuals Online - GNU Project" :time "Tue Mar 12 15:12:50 2019")
  (:url "https://news.ycombinator.com/" :title "Hacker News" :time "Sat Jun 22 04:03:34 2019")

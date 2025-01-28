@@ -4,7 +4,8 @@
 ;; - wdired モードで `vc-rename-file' を 使いたい
 ;; - shell-mode で利用する Git コマンドでは PAGER を無効化したい
 ;;   * git --no-pager $*
-;;   * git config core.pager cat 
+;;   * git config core.pager cat
+;; - Run term+tig
 
 (setf (symbol-function 'git-grep) #'vc-git-grep)
 (setf (getenv "GIT_PAGER") "cat")
@@ -58,14 +59,19 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
     (mapc #'kill-buffer buffers)
     (message "Magit has broken!")))
 ;; ?>
-;; (csetq magit-bury-buffer-function #'magit-restore-window-configuration)
+;; (setopt magit-bury-buffer-function #'magit-restore-window-configuration)
+
+(defun user::dired-root-dir ()
+  (interactive)
+  ;; (locate-dominating-file default-directory ".git")
+  (dired (vc-root-dir)))
 
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
 (use-package magit
   ;;:if (executable-find "git")
   :pin #:melpa-stable
-  :bind (("C-x g" . magit-status)
+  :bind (;("C-x g" . magit-status)
          ("C-x G" . magit-list-repositories)
          :map magit-mode-map
          ("&" . user::open-repository-url)
@@ -122,15 +128,14 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
 ;(use-package gitconfig-mode)
 
 (use-package git-gutter
-  :pin melpa-stable
+  ;; NOTE: linum.el (obsolete) をサポートしているため、メンテナンス頻度少なめ
   :diminish git-gutter-mode
   :hook (emacs-startup . global-git-gutter-mode)
-  ;;FIXME "global-git-gutter-mode: Symbol's value as variable is void: global-linum-mode"
-  ;;FIXME linum.el is obsolete since emacs-29
-  :init (require 'linum)
   :bind (("M-g p" . git-gutter:previous-hunk)
          ("M-g n" . git-gutter:next-hunk)
          ("M-g r" . git-gutter:revert-hunk)))
+
+;; TODO: diff-hl の使い心地はどう？
 
 ;; FIXME: ファイル数の多いディレクトリを考慮して、起動時は無効にしたほうが無難？
 (use-package dired-k
@@ -152,9 +157,8 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   :config
   (global-blamer-mode +1))
 
-;; ブラウザリンク生成 (init.el 読書会用)
+;; ブラウザリンク生成 (主に init.el 読書会用)
 (use-package git-link
-  :commands git-link
+  :bind (("C-c =" . git-link))
   :custom
-  (git-link-use-commit t)
-  :bind (("C-c M-w" . git-link)))
+  (git-link-use-commit t))

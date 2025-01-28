@@ -59,6 +59,7 @@
   :custom
   (tab-bar-show t)
   (tab-bar-close-button-show 'selected)
+  (tab-bar-auto-width nil)		; 勝手に伸び縮みしないで
   (tab-bar-history-mode t)
   (tab-bar-new-tab-to 'rightmost)
   (tab-bar-tab-hints t)
@@ -72,6 +73,7 @@
   )
 
 (use-package tab-line
+  :disabled
   :if (version<= "27.0" emacs-version)
   :demand
   :custom
@@ -80,7 +82,13 @@
   (global-tab-line-mode +1)
   )
 
+;; パンくずリスト
+;; which-function-mode の代替に使える？
+(use-package breadcrumb
+  :hook after-init)
+
 (use-package eyebrowse
+  :disabled
   :demand
   :config (eyebrowse-mode +1)
   :custom

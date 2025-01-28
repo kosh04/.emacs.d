@@ -80,5 +80,11 @@
 (fset 'restore-desktop #'desktop-revert)
 ;; (defalias 'restore-desktop #'user::restore-desktop)
 
+(use-package bookmark
+  :custom
+  ;; ブックマーク設定毎に保存 (デフォルトはアプリ終了時)
+  (bookmark-save-flag 1)
+  (bookmark-use-annotations t))
+
 ;; TODO: Desktop + Bookmark
 ;; (use-package activities)

@@ -25,9 +25,11 @@
 
   :bind (;;("C-c e" . user:google-translate-at-point)
          ("C-c e" . (lambda ()
+		      "パラグラフあるいはリージョン範囲を翻訳します."
                       (interactive)
                       (save-mark-and-excursion
-                        (mark-paragraph)
+                        (unless (region-active-p)
+                          (mark-paragraph))
                         (user:google-translate-at-point))))
          ("M-g T" . google-translate-query-translate))
 

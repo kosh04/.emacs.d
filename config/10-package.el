@@ -1,4 +1,4 @@
-;;; config/package-util
+;;; config/package
 
 (require 'package)
 
@@ -14,14 +14,15 @@
 ;;(setf (cdr (assoc "melpa"        package-archives)) "https://www.mirrorservice.org/sites/melpa.org/packages/")
 ;;(setf (cdr (assoc "melpa-stable" package-archives)) "https://www.mirrorservice.org/sites/stable.melpa.org/packages/")
 
-;; アーカイブの優先順位 (it works?)
+;; アーカイブの優先順位 (数値が大きい方が優先; it works?)
 (customize-set-variable
  'package-archive-priorities
  '(("manual" . 99)
-   ("melpa-stable" . 30)
-   ("melpa" . 20)
+   ("gnu" . 40)
    ("nongnu" . 30)
-   ("gnu" . 10)))
+   ("melpa-stable" . 20)
+   ("melpa" . 10)
+   ))
 
 ;;(package-initialize)
 
@@ -52,7 +53,6 @@
 (require 'use-package)
 
 (use-package use-package
-  :pin #:melpa-stable
   :custom
   ;; `--debug-init' フラグ有効時にのみデバッグ出力
   (use-package-verbose (if init-file-debug t nil))
@@ -86,6 +86,7 @@ It uses for built-in package configuration."
      ,@args))
 
 ;; modernizing Emacs Package Menu
+;; NOTE: Archived since Oct 22, 2022
 (use-package paradox
   :disabled
   :pin #:melpa-stable

@@ -16,8 +16,8 @@
 (use-package emojify
   ;;:hook (emacs-startup . global-emojify-mode)
   :bind ("C-x 8 e a" . emojify-apropos-emoji)
-  ;; :custom
-  ;; (emojify-display-style 'image) ; (or 'ascii 'unicode 'image)
+  :custom
+  (emojify-display-style 'image) ; ascii/unicode/image
   )
 
 (defvar user:emoji-samples

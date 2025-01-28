@@ -5,5 +5,5 @@
 
 ;; Disable all (but not supported)
 (setq bidi-inhibit-bpa t)
-(setq bidi-display-reordering nil)
+(setq-default bidi-display-reordering nil)
 (setq bidi-paragraph-direction 'left-to-right)

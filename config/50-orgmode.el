@@ -5,14 +5,18 @@
 (use-package org
   :hook
   (org-mode . outline-show-all)
-  (org-mode . which-function-mode)
+  ;;(org-mode . which-function-mode)
+  :custom
+  (org-link-descriptive nil)		; M-x org-toggle-link-display
   :config
   (defun org-mode/which-func-functions ()
     (setq-local which-func-functions
                 (lambda ()
                   (string-join (org-get-outline-path t) " > "))))
-  (add-hook 'org-mode-hook 'org-mode/which-func-functions)
+  ;;(add-hook 'org-mode-hook 'org-mode/which-func-functions)
   )
+
+;; TODO: org-startup-options
 
 (with-eval-after-load 'find-file
   ;; [init.el 読書会用] config.org <-> config.el を行来する
@@ -31,3 +35,6 @@
 (use-package org-modern
   :after org
   :config (global-org-modern-mode +1))
+
+;; TODO: org-superstar-mode
+;; https://github.com/integral-dw/org-superstar-mode

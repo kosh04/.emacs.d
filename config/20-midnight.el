@@ -1,6 +1,7 @@
 ;;; config/Midnight
 
 ;; 不要なバッファは定期的に掃除 (M-x clean-buffer-list)
+;; TODO: ウィンドウをフォーカス直後のプチフリーズの原因？
 
 (require 'midnight)
 (midnight-mode t)

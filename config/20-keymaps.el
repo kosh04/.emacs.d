@@ -1,5 +1,9 @@
 ;;; config/keymaps
 
+;; NOTE: "C-c LETTER" はユーザー用に予約済み (キーバインディング規約より)
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
+;; https://ayatakesi.github.io/lispref/29.1/html/Key-Binding-Conventions.html
+
 (global-set-key (kbd "C-h") 'backward-delete-char)
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char) ; or isearch-del-char
 
@@ -35,7 +39,7 @@
 (defalias 'ctl-c-t-map
   (let ((map (make-sparse-keymap "Toggle")))
     (define-key map "e" '("debug" . toggle-debug-on-error))
-    (define-key map "f" '("fold". toggle-truncate-lines))
+    (define-key map "f" '("fold". toggle-truncate-lines)) ; or visual-line-mode
     (define-key map "p" '("packages" . list-packages))
     (define-key map "P" '("packages" . package-list-packages-no-fetch))
     (define-key map "v" '("viper" . toggle-viper-mode))
@@ -47,9 +51,9 @@
     (define-key map "l" '("ielm" . ielm))
     map)
   "Keymap for user-defined toggle commands.")
-(global-set-key (kbd "C-c t") 'ctl-c-t-map)
+(global-set-key (kbd "C-c t") '("Toggle any" . ctl-c-t-map))
 
-;; TODO: 上記のキー定義を bind-keys, hydra で書き換える？
+;; TODO: 上記のキー定義を bind-keys, hydra, defvar-keymap で書き換える？
 
 '
 (bind-keys
@@ -77,7 +81,7 @@
 (defun switch-to-last-buffer ()
   "Display last visited buffer."
   (interactive)
-  (switch-to-buffer (other-buffer)))
+  (switch-to-buffer nil))
 (global-set-key (kbd "C-x l") #'switch-to-last-buffer)
 
 ;; prefixキーのコマンド一覧を表示
@@ -87,11 +91,12 @@
   :hook (emacs-startup . which-key-mode)
   :custom
   (which-key-idle-delay 1.5)
-  (which-key-dont-use-unicode nil)
+  (which-key-dont-use-unicode t)
   )
 
 ;; or C-u q (in view-mode)
 ;;(global-set-key (kbd "C-x k") 'kill-this-buffer)
+;;(global-set-key [remap kill-buffer] #'kill-current-buffer)
 
 (global-set-key (kbd "<f1> A") 'apropos)
 
@@ -104,7 +109,9 @@
 (global-set-key (kbd "ESC M-@") 'set-mark-command)
 
 (use-package bind-key
-  :bind ("<f1> =" . describe-personal-keybindings))
+  :bind
+  (("<f1> =" . describe-personal-keybindings)
+   ("<f1> S" . shortdoc)))
 
 (global-set-key (kbd "C-x C-,") 'switch-to-prev-buffer)
 (global-set-key (kbd "C-x C-.") 'switch-to-next-buffer)

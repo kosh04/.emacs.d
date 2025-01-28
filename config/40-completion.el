@@ -2,11 +2,19 @@
 
 ;; TODO: rename to "autocomplete" ?
 
+;; NOTE:
+;; - https://blog.tomoya.dev/posts/a-new-wave-has-arrived-at-emacs/
+
+;; 補完にもいろいろ
+;; - ミニバッファ補完 (symbol,pathname,..)
+;; ‐ 単語補完 (word,function,..)
+
 ;; - icomplete (fido-mode)
 ;; - company
 
 ;; 入力補完で大文字小文字の区別をしない
 ;;(setq completion-ignore-case t)
+
 (use-package emacs
   :custom
   (tab-always-indent 'complete)
@@ -32,6 +40,11 @@
   ;;(setopt completion-auto-select t)
   )
 
+;; ** Memo
+;; RET: icomplete-ret
+;; C-j: icomplete-force-complete-and-exit
+;; M-<TAB>: icomplete-force-complete
+
 (use-package emacs
   :if (version<= "28.1" emacs-version)
   ;; :hook (after-init . fido-vertical-mode)
@@ -47,6 +60,23 @@
   :custom
   (read-extended-command-predicate #'command-completion-default-include-p)
   )
+
+;; VERTical Interactive COmpletion (垂直補完 UI)
+;;   M-B -> `vertico-multiform-buffer'
+;;   M-F -> `vertico-multiform-flat'
+;;   M-G -> `vertico-multiform-grid'
+;;   M-R -> `vertico-multiform-reverse'
+;;   M-U -> `vertico-multiform-unobtrusive'
+;;   M-V -> `vertico-multiform-vertical'
+(use-package vertico)
+
+;; COmpletion in Region FUnction (入力補完)
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-prefix 2)
+  :config
+  (corfu-mode +1))
 
 (use-package company
   :pin #:gnu
@@ -100,3 +130,18 @@
   :disabled
   :custom
   (completion-styles '(orderless basic)))
+
+;; Completion At Point Extentions
+(use-package cape
+  :disabled)
+
+;; Auto Activating Snippets
+;; Abbrev よりも略称展開が楽かも？
+(use-package aas
+  :hook (text-mode . aas-activate-for-major-mode)
+  :config
+  (aas-set-snippets 'text-mode
+    ":-)" "🙂"
+    ":eyes" "👀"
+    ":wave" "👋"			; waving hand
+    ))

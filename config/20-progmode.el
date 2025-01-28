@@ -1,7 +1,8 @@
 ;;; config/progmode
 
 ;; スペースでインデント
-(setq-default indent-tabs-mode nil)
+;;(setq-default indent-tabs-mode nil)
+;;(setopt indent-tabs-mode t)
 
 ;; コメント
 (setq comment-style 'multi-line)
@@ -100,14 +101,23 @@
   :disabled
   :hook (prog-mode . symbol-overlay-mode))
 
-;; M-x minimap-mode
+;; 文章マップ M-x minimap-mode
 (use-package minimap
   :custom
   (minimap-window-location 'right))
 
+;; インデントの表示
 (use-package highlight-indent-guides
+  ;; FIXME: ダークモード未対応？
+  :disabled
   :hook (python-mode yaml-mode)
-  ;; FIXME: ダークモードに対応していない？
   :custom
   (highlight-indent-guides-responsive 'stack)
-  (highlight-indent-guides-method 'character))
+  (highlight-indent-guides-method 'colmn)
+  ;; XXX:編集時に見た目がガタガタになる
+  ;;(highlight-indent-guides-method 'character)
+  )
+
+(use-package indent-bars
+  ;;:vc (:url "https://github.com/jdtsmith/indent-bars.git" :rev :newest)
+  :hook (yaml-mode . indent-bars-mode))

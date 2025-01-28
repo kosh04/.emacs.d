@@ -30,9 +30,6 @@
  ;; mac-right-option-modifier
  )
 
-
-
-
 ;; 入力ソースが "U.S." の場合に有効
 (define-key key-translation-map (kbd "¥") (kbd "\\"))
 
@@ -91,3 +88,5 @@
 
 (menu-bar-mode +1)
 ;(setq visible-bell (not visible-bell))
+
+;; コピペ: pbcopy pbpaste

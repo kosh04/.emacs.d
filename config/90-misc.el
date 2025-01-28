@@ -2,6 +2,7 @@
 
 (use-package f)
 (use-package s)
+(require 'user-utils)
 
 (use-package emacs
   :custom
@@ -14,7 +15,7 @@
   )
 
 (defun user::emacs-init-time ()
-  (message "Emacs init time %s" (emacs-init-time)))
+  (message "Emacs init time %s, including %.3fs for %d GCs." (emacs-init-time "%.3fs") gc-elapsed gcs-done))
 
 (add-hook 'emacs-startup-hook #'user::emacs-init-time)
 
@@ -30,13 +31,19 @@
 
 (global-set-key (kbd "C-c i t") 'insert-time)
 
-;; C-w で直前の単語を削除する (Bash 風)
+;; Bash のキーコマンドを模倣する
+(bind-keys
+ :map minibuffer-local-map
+ ("C-u" . user::unix-line-discard)
+ ("C-w" . delete-backward-word)	   	; unix-word-rubout
+ )
+
+'
 (use-package* minibuffer
   :bind
   (:map minibuffer-local-map
-        ;; unix-line-discard (C-u)
+        ("C-u" . user::unix-line-discard)
         ;; unix-word-rubout (C-w)
-        ("C-u" . kill-whole-line)
         ("C-w" . delete-backward-word)
         ))
 
@@ -159,7 +166,8 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   :demand
   :config
   (global-so-long-mode)
-  (add-to-list 'so-long-target-modes 'json-mode))
+  (add-to-list 'so-long-target-modes 'json-mode)
+  (add-to-list 'so-long-hook #'(lambda () (toggle-truncate-lines -1))))
 
 ;; FIXME:
 ;;
@@ -291,16 +299,25 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 
 (use-package manage-minor-mode
   :init
-  (defalias 'list-minor-mode #'manage-minor-mode))
+  (defalias 'list-minor-mode #'manage-minor-mode)
+  :bind
+  ("C-c t m" . manage-minor-mode))
 
 ;; XXX: ミニバッファの再帰的な編集を有効にして使い勝手を確かめる
 (setq enable-recursive-minibuffers t)
 (minibuffer-depth-indicate-mode +1)
 
-'
-(add-hook 'minibuffer-setup-hook
-(defun minibuffer-setup-function ()
-  "ミニバッファの文字を少し大きめに."
-  (setq-local face-remapping-alist '((default :height 1.1))))
-)
+;; Find file: 左端のテキスト領域には移動させない
+(setq minibuffer-prompt-properties
+      '(read-only t 
+	cursor-intangible t
+	face minibuffer-prompt))
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
+(setf (symbol-function 'customize-package-variables) #'customize-group)
+
+;; inline image viewer
+(use-package iimage
+  :hook (info-mode . iimage-mode))
+
+(setf (symbol-function 'abbrev-edit) #'edit-abbrevs)

@@ -24,6 +24,10 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
 ;;(global-set-key (kbd "C-c s") 'shell)
 (global-set-key (kbd "C-c s") #'user::shell-open)
 
+(use-package shell-pop
+  :disabled
+  :bind ("C-c s" . shell-pop))
+
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
@@ -65,3 +69,8 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
   (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show" "grep")))
 
 ;(use-package vterm)
+
+;; Emulate A Terminal
+;; https://codeberg.org/akib/emacs-eat.git
+
+;; https://github.com/akermu/emacs-libvterm

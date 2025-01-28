@@ -26,3 +26,6 @@
       `(or ,@user::special-display-buffers))
     (display-buffer-same-window)))
  )
+
+;; switch-to-buffer (C-x b) runs pop-to-buffer-same-window
+;;(setq switch-to-buffer-obey-display-actions t)

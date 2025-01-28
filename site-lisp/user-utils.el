@@ -23,6 +23,10 @@ Example:
       (number-sequence from to step)
       (nreverse (number-sequence to from step))))
 
+(defmacro setq! (name)
+  "変数 NAME の値を反転させる."
+  `(setq ,name (not ,name)))
+
 (defun indent-line-sexp ()
   "長い一行S式をそれなりにインデントします."
   (interactive)
@@ -76,8 +80,8 @@ Example:
 (defun arglist (def)
   "Get DEF arguments.
 
-(arglist 'lambda)  => \"(lambda ARGS [DOCSTRING] [INTERACTIVE] BODY)\"
-(arglist 'arglist) => (def)
+(arglist \\='lambda)  => \"(lambda ARGS [DOCSTRING] [INTERACTIVE] BODY)\"
+(arglist \\='arglist) => (def)
 "
   (when (fboundp def)
     (or (car (help-split-fundoc (documentation def) def))
@@ -474,6 +478,8 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
          (csetq ,@args))
     `(customize-set-variable ',symbol ,value)))
 
+(define-obsolete-function-alias 'csetq 'setopt "29.1")
+
 ;; e.g. (file-name-extension-replace "hello.txt" "md")
 (defun file-name-extension-replace (filename to-type)
   "FILENAME の拡張子を TO-TYPE に取り替える."
@@ -495,6 +501,8 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
      ;; SSH 越しであれば "DISPLAY=:0" も追加する
      (call-process "scrot" nil nil nil "%Y-%m-%d_$wx$h.png"))
     ))
+;; see also: https://gitlab.com/marcowahl/emacsshot
+;; convert@imagemagick
 
 (defun load-path-add (path)
   (interactive "DAdd to load-path: ")
@@ -512,6 +520,19 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
   (mapc #'disable-theme custom-enabled-themes))
 
 (fset 'restore-symbol-value #'custom-reevaluate-setting)
+
+(defun user::unix-line-discard ()
+  "カーソル以前の文字を削除 (C-u on Bash)."
+  (interactive)
+  (kill-region (point)
+	       (progn
+		 (beginning-of-line 1)
+		 (point))))
+
+(defun explainshell (cmd)
+  (interactive "sExplain shell: ")
+  (eww (concat "https://explainshell.com/explain?"
+	       (url-build-query-string `(("cmd" ,cmd))))))
 
 (provide 'user-utils)
 

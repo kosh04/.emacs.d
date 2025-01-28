@@ -63,8 +63,10 @@
 ;; (use-package json-navigator)
 
 ;; YAML
-(use-package yaml-mode
-  :mode "\\.yml\\'")
+(use-package yaml-mode)
+
+;; アウトライン化パッチ
+;; https://gist.github.com/leoc/f8c0868051003c4ea6eff638bc614575
 
 ;; TOML
 (use-package toml-mode)
