@@ -108,3 +108,8 @@
 (face-font 'default nil ?㋿) ;;=> "-*-IPAexGothic-normal-normal-normal-*-15-*-*-*-p-0-iso10646-1"
 
 (setq use-default-font-for-symbols t)
+
+(set-fontset-font nil '(#x1f000 . #x1faff) "Apple Color Emoji")
+
+;; https://juliamono.netlify.app/
+(set-fontset-font t 'unicode "JuliaMono")

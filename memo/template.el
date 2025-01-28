@@ -17,4 +17,7 @@
   nil
   "<h1>" _ "</h1>")
 
-;;; tempo.el --- Flexible template insertion
+;; tempo.el --- Flexible template insertion
+
+;; abbrev の展開にテンプレートを指定することも可能らしい
+(define-abbrev global-abbrev-table "sample" "" 'html-headline-1)

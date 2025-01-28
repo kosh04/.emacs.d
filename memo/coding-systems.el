@@ -190,3 +190,14 @@ current-language-environment
 
 ;; TODO:
 ;; - 結合文字列を1文字として数える方法は？
+
+;; CP50220 (Microsoft iso-2022-jp for mail)
+(require 'cp5022x)
+
+(progn
+  ;; Emacs は null バイトが含まれているバッファ、リージョン、文字列を確定でバイナリとして扱う
+  (let ((inhibit-null-byte-detection nil))
+    #0=(detect-coding-string "ASDF\0しかのこのこのここしたんたん")) ;=> (no-conversion)
+  ;; non-nil の場合、null バイトを無視して文字コード判別を行う
+  (let ((inhibit-null-byte-detection t))
+    #0#))			    ;=> (utf-8 utf-8-auto iso-2022-jp)

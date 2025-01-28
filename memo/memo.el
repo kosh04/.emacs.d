@@ -2114,3 +2114,47 @@ Watches `edebug-active' and sets the mode-line when it changes."
   (interactive)
   (let ((default-process-coding-system '(sjis-dos . sjis-dos)))
     (telnet "koukoku.shadan.open.ad.jp")))
+
+(add-hook 'minibuffer-setup-hook
+(defun minibuffer-setup-function ()
+  "ミニバッファの文字を少し大きめに."
+  (setq-local face-remapping-alist '((default :height 1.1))))
+)
+
+;; export $EDITOR
+(use-package with-editor
+  :hook ((shell-mode
+	  eshell-mode
+	  term-exec
+	  vterm-exec
+	  )
+	 . with-editor-export-editor))
+
+;; Camel-case とか Snake-case 変換
+;; string-inflection
+
+;; マクロ定義
+(defalias 'my-macro
+  (kmacro "C-a ; ; SPC HELLO SPC Emacs RET"))
+
+;; set,setq と何が違う？
+(set-default-toplevel-value 'file-name-handler-alist nil)
+
+;; SIGNAL 割り込み制御
+(defun sigusr-handler ()
+  (interactive)
+  (message "Caught signal %S" last-input-event))
+(keymap-set special-event-map "<sigusr1>" #'sigusr-handler)
+(signal-process (emacs-pid) 'sigusr1)
+
+;; ウィンドウ枠を除去すれば、より画面を広く活用できる…かも
+(setf (frame-parameter nil 'undecorated) t)
+
+
+(add-hook 'activate-mark-hook
+	  (defun pulse-line (&rest _)
+	    "Pulse the current line."
+	    (pulse-momentary-highlight-one-line (point))))
+
+;; DEL Does Not Delete
+(normal-erase-is-backspace-mode +1)

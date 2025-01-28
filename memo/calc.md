@@ -139,6 +139,8 @@ PRN(逆ポーランド記法)電卓を起動する (M-x `calc`)
 
 - k p : `calc-prime-test` 素数判定
 
+	1129 k p => Prime (guaranteed)
+
 ## 9. 配列と行列 (Vector/Matric Functions)
 ## 10. 代数 (Algebra)
 ## 11. 単位の計算 (Operating on Units)

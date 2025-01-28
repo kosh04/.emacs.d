@@ -1070,3 +1070,6 @@ ansi-color-names-vector
 ;; TODO: お役立ち正規表現いろいろ
 (rx (not (char (?\x00 . ?\x7f))))       ; "[^\x00-\x7f]"
 (rx (not ascii))                        ; "[^[:ascii:]]"
+
+;; シャドーされたパスを探す
+;; M-x list-load-path-shadows

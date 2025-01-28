@@ -30,3 +30,8 @@
   (completing-read "Mode: " obarray))
 ;; - predicateで絞る
 (completing-read "Keymap: " obarray 'keymapp)
+
+;; 複数選択可能なプロンプトには接頭辞にマークがあると嬉しいかも
+(defun crm-indicator (args)
+  (cons (concat "[CRM] " (car args)) (cdr args)))
+(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
