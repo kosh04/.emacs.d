@@ -886,7 +886,9 @@ You can use key command as C-u \\[shell-command-on-region]"
 ;;; @@ Misc
 (fset 'modulep #'featurep)
 (fset 'msgbox #'message-box)
-(defun etc-path () data-directory)
+(defun etc-path ()
+  "See `data-directory'"
+  data-directory)
 
 ;; tail-f.l
 (defun tail-f (filename)
