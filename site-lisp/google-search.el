@@ -31,7 +31,12 @@
 
 ;; "&hl=ja&lr=lang_ja&num=100"
 (defvar google-search-url-options
-  "&ie=UTF-8&oe=UTF-8")
+  (url-build-query-string
+   '(("ie" "UTF-8")
+     ("oe" "UTF-8")
+     ("udm" "14")
+     ))
+  ))
 
 ;;;###autoload
 (defun google-search (string)
