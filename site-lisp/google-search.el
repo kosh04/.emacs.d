@@ -35,8 +35,7 @@
    '(("ie" "UTF-8")
      ("oe" "UTF-8")
      ("udm" "14")
-     ))
-  ))
+     )))
 
 ;;;###autoload
 (defun google-search (string)
