@@ -20,7 +20,7 @@ jobs:
           - snapshot
         include:
           - emacs_version: snapshot
-            allow_failure: ture
+            allow_failure: true
     name: Test on Emacs ${{ matrix.emacs_version }}
     steps:
     - uses: actions/checkout@v4
