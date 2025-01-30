@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
@@ -18,9 +19,10 @@ jobs:
           - 28.2
           - 29.1
           - snapshot
+        experimental: [false]
         include:
           - emacs_version: snapshot
-            allow_failure: true
+            experimental: true
     name: Test on Emacs ${{ matrix.emacs_version }}
     steps:
     - uses: actions/checkout@v4
