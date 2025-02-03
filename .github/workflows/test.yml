@@ -8,8 +8,6 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
@@ -23,6 +21,8 @@ jobs:
         include:
           - emacs_version: snapshot
             experimental: true
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     name: Test on Emacs ${{ matrix.emacs_version }}
     steps:
     - uses: actions/checkout@v4
@@ -54,4 +54,3 @@ gist.github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiip
       continue-on-error: true
     - name: Startup
       run: make test-startup
-      continue-on-error: ${{ matrix.allow_failure }}
