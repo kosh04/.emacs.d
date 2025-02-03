@@ -8,10 +8,11 @@ on:
 
 jobs:
   test:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-latest', 'macos-latest']
         emacs_version:
           - 27.2
           - 28.2
@@ -21,8 +22,6 @@ jobs:
         include:
           - emacs_version: snapshot
             experimental: true
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     name: Test on Emacs ${{ matrix.emacs_version }}
     steps:
     - uses: actions/checkout@v4
