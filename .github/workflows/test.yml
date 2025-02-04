@@ -8,8 +8,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
+    runs-on: [ubuntu-latest, macos-latest]
+    # XXX: It works? jobs.<job_id>.continue-on-error
+    # https://docs.github.com/ja/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error
+    # continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
@@ -17,11 +19,9 @@ jobs:
           - 27.2
           - 28.2
           - 29.1
-          - snapshot
-        experimental: [false]
         include:
           - emacs_version: snapshot
-            experimental: true
+            allow_failure: "true"
     name: Test on Emacs ${{ matrix.emacs_version }}
     steps:
     - uses: actions/checkout@v4
@@ -53,3 +53,4 @@ gist.github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiip
       continue-on-error: true
     - name: Startup
       run: make test-startup
+      continue-on-error: ${{ matrix.allow_failure == 'true' }}
