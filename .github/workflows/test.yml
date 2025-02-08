@@ -8,7 +8,9 @@ on:
 
 jobs:
   test:
-    runs-on: [ubuntu-latest, macos-latest]
+    runs-on:
+      - ubuntu-latest
+#      - macos-latest
     # XXX: It works? jobs.<job_id>.continue-on-error
     # https://docs.github.com/ja/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error
     # continue-on-error: ${{ matrix.experimental }}
