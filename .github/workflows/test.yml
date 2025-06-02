@@ -8,23 +8,23 @@ on:
 
 jobs:
   test:
-    runs-on:
-      - ubuntu-latest
-#      - macos-latest
     # XXX: It works? jobs.<job_id>.continue-on-error
     # https://docs.github.com/ja/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error
     # continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
+          #- macos-latest
         emacs_version:
-          - 27.2
           - 28.2
-          - 29.1
+          - 29.4
+          - 30.1
         include:
           - emacs_version: snapshot
             allow_failure: "true"
-    name: Test on Emacs ${{ matrix.emacs_version }}
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
       with:
