@@ -8,6 +8,8 @@ on:
 
 jobs:
   test:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         os:
@@ -17,8 +19,7 @@ jobs:
           - 28.2
           - 29.4
           - 30.1
-    runs-on: ${{ matrix.os }}
-    #continue-on-error: ${{ matrix.experimental }}
+        experimental: [false]
 
     steps:
     - uses: actions/checkout@v4
