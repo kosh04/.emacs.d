@@ -24,9 +24,6 @@ jobs:
           - release-snapshot
           - snapshot
         experimental: [false]
-        include:
-          - emacs-version: snapshot
-            experimental: true
     steps:
     - uses: actions/checkout@v4
       with:
