@@ -5,60 +5,37 @@ on:
   push:
     paths-ignore:
       - '**.md'
-    branches:
-      - master
+      - 'memo/*'
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        emacs_version:
-          - 26.1
-          - 27.1
-          - 28.1
-          - snapshot
-        include:
-          - emacs_version: snapshot
-            allow_failure: ture
-        include:
-          - os: macos-latest
-            emacs_version: 28.2
-
+        os:
+          - ubuntu-latest
+          # NOTE: macos supports emacs-28.1 or later
+          # - macos-latest
+        emacs-version:
+          - 28.2
+          - 29.4
+          - 30.1
+        experimental: [false]
+        # FIXME: Error when evaluating 'runs-on' for job 'test'. Unexpected value ''
+        # https://github.com/kosh04/.emacs.d/actions/runs/15479192927
+        # include:
+        #   - emacs-version: snapshot
+        #     experimental: true
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
-        # TODO: サブモジュール周りを整理する
-        # with:
-        #   fetch-depth: 1
         submodules: recursive
-        ssh-strict: false
-        ssh-known-hosts: '# `ssh-keyscan gist.github.com`
-# gist.github.com:22 SSH-2.0-babeld-dc5ec9be
-gist.github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
-# gist.github.com:22 SSH-2.0-babeld-dc5ec9be
-gist.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
-# gist.github.com:22 SSH-2.0-babeld-4a94ee6b
-gist.github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
-'
-
     - uses: purcell/setup-emacs@master
       with:
-        version: ${{ matrix.emacs_version }}
-
-    - name: Check Emacs version
-      run: emacs --version
-
-    - name: Install Packages
-      run: make package-install
-
-    - name: Byte Compiling
-      run: make compile
-
-    - name: Testing
-      run: make test
-
-    - name: Startup
-      run: make test-startup
+        version: ${{ matrix.emacs-version }}
+    - run: make package-install
+    - run: make compile
+    - run: make test
+    - run: make test-startup
