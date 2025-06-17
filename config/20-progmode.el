@@ -26,6 +26,10 @@
 
 (defalias 'make #'compile)
 
+(with-eval-after-load 'compile
+  ;; No comfirm "A compilation process is running; kill it? (yes or no)"
+  (setopt compilation-always-kill t))
+
 ;; 関数一覧
 (require 'imenu)
 (global-set-key (kbd "C-c l") 'imenu)
@@ -120,4 +124,10 @@
 
 (use-package indent-bars
   ;;:vc (:url "https://github.com/jdtsmith/indent-bars.git" :rev :newest)
-  :hook (yaml-mode . indent-bars-mode))
+  :hook ((python-mode
+	  yaml-mode)
+	 . indent-bars-mode)
+  :custom
+  ;; XXX: 一部のシステムはバックグラウンド点描がサポートされていないための回避策 (:stipple)
+  ;; https://github.com/jdtsmith/indent-bars#compatibility
+  (indent-bars-prefer-character t))

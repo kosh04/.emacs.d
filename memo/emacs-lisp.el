@@ -786,6 +786,9 @@ focus-out-hook
       (vector (make-glyph-code ?\u23ce 'escape-glyph)
               (make-glyph-code ?\^J 'escape-glyph)))
 
+(set-display-table-slot standard-display-table 'truncation ?…)
+(set-display-table-slot standard-display-table 'wrap       ?↩︎)
+
 ;; [2018-08-XX] <kbd>D</kbd> キーが押下できなくなったため回避方法いろいろ
 ;; - C-x 8 RET 0064 (?\u0064 == ?d)
 ;; - ソフトウェアキーボード
@@ -1073,3 +1076,24 @@ ansi-color-names-vector
 
 ;; シャドーされたパスを探す
 ;; M-x list-load-path-shadows
+
+;; 紛れ込んだマルチバイト文字を探す
+(defun search-forward-non-ascii ()
+  (interactive)
+  (re-search-forward "[^[:ascii:]]" nil 'noerror))
+
+(use-package time
+  :custom
+  (display-time-default-load-average nil))
+
+;; TODO: autoload ファイルの生成と起動時に読み込ませる方法 (パッケージ開発用)
+(package-generate-autoloads "unicode-escape" default-directory)
+;; もしくは手動インストールさせる？
+(package-install-file "FILE/dir/tar")
+
+;; FIXME:
+;; Emacs-29.4 にて loaddefs-generate が names#:autoload と相性が悪い（仕様が変わった？）
+;; - ~/.emacs.d/elpa-27.1/unicode-escape-1.1/unicode-escape-autoloads.el
+;;   define-namespace マクロが展開されている
+;; - ~/.emacs.d/elpa-29.4/unicode-escape-1.1/unicode-escape-autoloads.el
+;;   define-namespace マクロが展開されていない

@@ -47,7 +47,7 @@
     (define-key map "o" '("find-related" . ff-find-related-file))
     (define-key map "n" '("line-numbers" . display-line-numbers-mode))
     (define-key map "u" '("url-debug" . user::toggle-url-debug))
-    (define-key map "s" '("scratch" . user::toggle-scratch-buffer))
+    (define-key map "s" '("scratch" . scratch-buffer))
     (define-key map "l" '("ielm" . ielm))
     map)
   "Keymap for user-defined toggle commands.")
@@ -91,7 +91,8 @@
   :hook (emacs-startup . which-key-mode)
   :custom
   (which-key-idle-delay 1.5)
-  (which-key-dont-use-unicode t)
+  ;; FIXME: 値は設定されるが `which-key-separator' が nil になってしまう (カスタム変数の :set が機能していない？)
+  ;;(which-key-dont-use-unicode nil)
   )
 
 ;; or C-u q (in view-mode)
@@ -115,3 +116,5 @@
 
 (global-set-key (kbd "C-x C-,") 'switch-to-prev-buffer)
 (global-set-key (kbd "C-x C-.") 'switch-to-next-buffer)
+
+;; https://github.com/kickingvegas/casual

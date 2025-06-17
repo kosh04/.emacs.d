@@ -24,6 +24,8 @@
   ;;     "C-x u" . undo
   :bind ("C-c u" . vundo))
 
+;; TODO: undo + repeat-mode
+
 ;; NOTE: vundo vs undo-tree
 ;; https://www.reddit.com/r/emacs/comments/txwwfi/vundo_is_great_visual_undotree_for_emacs28/
 

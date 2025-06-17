@@ -27,6 +27,7 @@
 ;;(package-initialize)
 
 (with-eval-after-load "package"
+  (setopt package-native-compile t)
   (define-key package-menu-mode-map (kbd "I") 'package-install)
   (define-key package-menu-mode-map (kbd "D") 'package-uninstall)
   (define-key package-menu-mode-map (kbd "?") 'describe-package)
@@ -42,6 +43,8 @@
 
 (unless (symbol-function 'package-uninstall)
   (setf (symbol-function 'package-uninstall) #'user::package-uninstall))
+
+;(setopt package-native-compile t)
 
 ;; TODO:
 ;; - try https://github.com/raxod502/straight.el

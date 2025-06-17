@@ -1,5 +1,9 @@
 ;;; config/Markdown
 
+;; TODO: Markdown コマンド色々
+;; - multimarkdown
+;; - pandoc
+
 (use-package markdown-mode
   :mode ("/README\\.md\\'" . gfm-mode)
   :custom
@@ -7,6 +11,7 @@
   (markdown-fontify-code-blocks-natively t)
   (markdown-command
    (or (executable-find "markdown.sh") "markdown"))
+  (markdown-gfm-additional-languages "sh")
   :preface
   (declare-function shr-render-buffer "shr")
   (declare-function markdown-standalone "markdown-mode")
@@ -37,5 +42,9 @@
 (use-package easy-hugo
   :bind ("C-c t h" . easy-hugo)
   :custom
-  (easy-hugo-basedir "~/Onedrive/Documents/bookshelf")
+  (easy-hugo-basedir
+   (cond ((memq window-system '(w32))
+	  "~/Onedrive/Documents/bookshelf")
+	 (t
+	  "~/Documents/bookshelf")))
   :hook (easy-hugo-mode . hl-line-mode))

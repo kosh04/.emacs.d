@@ -18,3 +18,6 @@
 
 ;; 全角スペースのハイライトが不要ならば
 ;; (setq nobreak-char-display nil)
+
+;; Unobtrusively remove trailing whitespace
+;; https://elpa.nongnu.org/nongnu/ws-butler.html

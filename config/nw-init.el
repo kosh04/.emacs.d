@@ -32,3 +32,6 @@
 (set-display-table-slot standard-display-table
 			'vertical-border
 			(make-glyph-code ?\u2502))
+
+;; コマンドラインからメニューバー呼び出し
+;; M-x tmm-menubar (M-`)

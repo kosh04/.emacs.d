@@ -32,6 +32,10 @@
   "読み取り専用でファイルを開く."
   (read-only-mode +1))
 
+(defun dired-view-file-other-window ()
+  (interactive)
+  (dired--find-file #'view-file-other-window (dired-get-file-for-visit)))
+
 ;; or dired-view-file [v]
 (advice-add 'dired-find-file              :after 'user::read-only-mode)
 (advice-add 'dired-find-alternate-file    :after 'user::read-only-mode)
@@ -101,25 +105,25 @@
   (eww-open-file file))
 
 (with-eval-after-load "dired"
-  ;;(define-key dired-mode-map "W" 'dired-copy-pathname-as-kill)
-  ;; (define-key dired-mode-map "q"
-  ;;   (lambda () (interactive) (quit-window 'kill)))
-  ;;(define-key dired-mode-map "X" 'dired-shell-execute)
-  (define-key dired-mode-map (kbd "C-x C-q") 'wdired-change-to-wdired-mode)
-  (define-key dired-mode-map [remap beginning-of-buffer] 'user::dired-beginning-of-buffer)
-  (define-key dired-mode-map [remap backward-page] 'user::dired-beginning-of-buffer)
-  (define-key dired-mode-map [remap end-of-buffer] 'user::dired-end-of-buffer)
-  (define-key dired-mode-map [remap forward-page] 'user::dired-end-of-buffer)
-  (define-key dired-mode-map "e" 'user::dired-open-with-eww)
-  t)
+  (let ((map dired-mode-map))
+    ;;(define-key map "W" 'dired-copy-pathname-as-kill)
+    ;; (define-key map "q"
+    ;;   (lambda () (interactive) (quit-window 'kill)))
+    ;;(define-key map "X" 'dired-shell-execute)
+    (define-key map (kbd "C-x C-q") 'wdired-change-to-wdired-mode)
+    (define-key map [remap beginning-of-buffer] 'user::dired-beginning-of-buffer)
+    (define-key map [remap backward-page] 'user::dired-beginning-of-buffer)
+    (define-key map [remap end-of-buffer] 'user::dired-end-of-buffer)
+    (define-key map [remap forward-page] 'user::dired-end-of-buffer)
+    (define-key map "e" 'user::dired-open-with-eww)
+    ))
 
 (with-eval-after-load "wdired"
-  (custom-set-variables
-   '(wdired-allow-to-change-permissions t))
+  (setopt wdired-allow-to-change-permissions t)
   (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit))
 
-;; ファイル表示をマスク
-;;(add-hook 'dired-mode-hook 'dired-omit-mode)
+;; 生成されたファイル等の表示をマスク
+(add-hook 'dired-mode-hook 'dired-omit-mode)
 
 (custom-set-variables
  ;; 外部コマンドの関連付け
@@ -133,6 +137,7 @@
   :bind (:map dired-mode-map ("/" . dired-narrow)))
 
 ;; ファイルの中身を覗き見る (peep)
+;; XXX: archived by the owner on Jul 21, 2023.
 (use-package peep-dired
   :custom
   (peep-dired-cleanup-eagerly nil)
@@ -144,11 +149,15 @@
               ("<SPC>" . peep-dired-scroll-page-down)
               ("<S-SPC>" . peep-dired-scroll-page-up)))
 
+;; https://github.com/jojojames/dired-sidebar
+
 ;; より豪華な peep-dired
 (use-package ranger
   :disabled
   :after dired
   :init (ranger-override-dired-mode t))
+
+;; (use-package dired-preview)
 
 ;; ファイルに関連付けられたアイコンを表示する
 ;; darwin: ~/Library/Fonts/*.ttf
@@ -190,3 +199,6 @@
                             (dired-collapse-mode +1)
                           (error
                            (message "dired-collapse-mode: %s" err))))))
+
+;; Twin-pane file manager (mc inspired)
+;; https://github.com/sunrise-commander/sunrise-commander

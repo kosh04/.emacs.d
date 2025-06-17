@@ -91,6 +91,7 @@
 (defun user::toggle-scratch-buffer (&optional other-window)
   "scratchバッファを表示する.
 引数 OTHER-WINDOW を指定した場合はポップアップ表示する."
+  (declare (obsolete scratch-buffer "29.1"))
   (interactive "P")
   (let ((scratch (get-buffer-create "*scratch*")))
     (if other-window
@@ -98,8 +99,6 @@
       (switch-to-buffer scratch))
     (or (eq major-mode initial-major-mode)
         (funcall initial-major-mode))))
-
-(make-obsolete 'user::toggle-scratch-buffer #'scratch-buffer "29.1")
 
 ;; ParEdit
 ;; http://www.emacswiki.org/emacs/ParEdit

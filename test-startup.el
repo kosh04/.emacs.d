@@ -9,3 +9,5 @@
       (load-path (delq default-directory load-path)))
   (load-file user-init-file)
   '(run-hooks 'after-init-hook))
+
+(message "init time: %s" (emacs-init-time))

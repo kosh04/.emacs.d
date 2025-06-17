@@ -113,3 +113,6 @@
 
 ;; https://juliamono.netlify.app/
 (set-fontset-font t 'unicode "JuliaMono")
+
+;; Typographic Ligatures in Emacs
+;; https://github.com/mickeynp/ligature.el

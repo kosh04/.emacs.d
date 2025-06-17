@@ -2158,3 +2158,9 @@ Watches `edebug-active' and sets the mode-line when it changes."
 
 ;; DEL Does Not Delete
 (normal-erase-is-backspace-mode +1)
+
+;; TODO
+(setopt completion-auto-select 'second-tab)
+
+;; .srt, .vtt 字幕ファイル編集用モード
+(use-package subed)

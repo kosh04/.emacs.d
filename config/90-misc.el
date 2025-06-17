@@ -263,6 +263,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   ;; for open webp image
   (setq image-use-external-converter t))
 
+;; (run-with-idle-timer 20 t 'garbage-collect)
 (use-package gcmh
   :demand
   :config (gcmh-mode +1))
@@ -314,10 +315,12 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 	face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-(setf (symbol-function 'customize-package-variables) #'customize-group)
-
 ;; inline image viewer
 (use-package iimage
+
   :hook (info-mode . iimage-mode))
 
-(setf (symbol-function 'abbrev-edit) #'edit-abbrevs)
+;; alias
+(defalias 'customize-package-variables #'customize-group)
+(defalias 'abbrev-edit #'edit-abbrevs)
+(defalias 'reb #'re-builder)

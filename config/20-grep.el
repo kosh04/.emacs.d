@@ -27,3 +27,6 @@
   :config
   ;;(add-to-list 'ag-arguments "--word-regexp")
   nil)
+
+
+;; (setq xref-search-program 'ripgrep) ; or 'ugrep

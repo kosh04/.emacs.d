@@ -29,3 +29,7 @@
 
 ;; switch-to-buffer (C-x b) runs pop-to-buffer-same-window
 ;;(setq switch-to-buffer-obey-display-actions t)
+
+(with-eval-after-load 'ibuffer
+  ;; 自動更新
+  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode))

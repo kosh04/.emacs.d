@@ -472,13 +472,12 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
 
 (defmacro csetq (symbol value &rest args)
   "Set SYMBOL to VALUE."
+  (declare (obsolete setopt "29.1"))
   (if args
       `(progn
          (customize-set-variable ',symbol ,value)
          (csetq ,@args))
     `(customize-set-variable ',symbol ,value)))
-
-(define-obsolete-function-alias 'csetq 'setopt "29.1")
 
 ;; e.g. (file-name-extension-replace "hello.txt" "md")
 (defun file-name-extension-replace (filename to-type)

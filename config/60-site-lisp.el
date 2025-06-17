@@ -21,8 +21,7 @@
 (global-set-key (kbd "C-c g") 'google-search)
 
 (use-package wandbox
-  :load-path "site-lisp/wandbox"                ;; サブモジュール版
-  :load-path "~/Documents/GitHub/emacs-wandbox" ;; 開発版 (あれば)
+  :load-path "~/Documents/GitHub/emacs-wandbox"
   :init
   ;; TODO: bind-key で名前付きプレフィックスキーを定義する方法
   (defalias 'wandbox-command-map
@@ -51,8 +50,10 @@
   )
 
 (use-package unicode-escape
-  :load-path "site-lisp/unicode-escape"
-  :demand)
+  :after names
+  ;;:load-path "~/Documents/GitHub/unicode-escape.el"
+  ;;:demand
+  )
 
 (use-package gitignore
   :load-path "site-lisp/gitignore"

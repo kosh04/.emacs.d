@@ -31,5 +31,8 @@
 
 (load user-init-private-file t)
 
+;; Disable message: "For information about GNU Emacs and the GNU system, type \\[about-emacs]."
+(setq inhibit-startup-echo-area-message "kosh")
+
 (provide 'init-el)
 ;;; init.el ends here
