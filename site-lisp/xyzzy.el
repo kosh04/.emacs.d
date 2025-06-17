@@ -3,8 +3,8 @@
 ;; Copyright (C) 2009,2010,2015,2019 Shigeru Kobayashi
 
 ;; Author: Shigeru Kobayashi <shigeru.kb@gmail.com>
-;; Version: 0.1.1
-;; Package-Requires: ((emacs "24.4"))
+;; Version: 0.1.2
+;; Package-Requires: ((emacs "28.1"))
 ;; Created: 2009-03-11
 ;; Keywords: lisp,extensions
 ;; URL: http://github.com/kosh04/emacs-lisp/raw/master/site-lisp/xyzzy.el
@@ -41,25 +41,45 @@
 
 ;;; ChangeLog:
 
-;; - 2019-03-22 古い書式を更新＆バイトコンパイル時の警告を抑制 (Emacs 26.1)
-;; - 2015-02-23 Common Lisp 由来のシンボル群を cl-compatible.el に移行
-;; - 2010-10-09 Emacs21でもとりあえずバイトコンパイルできるように関数やシンタックスを修正
-;; - 2009-04-19 初版作成
+;; - v0.1.2 2026-06-17 雑エイリアスによるシンボル上書きバグを修正など
+;; - v0.1.1 2019-03-22 古い書式を更新＆バイトコンパイル時の警告を抑制 (Emacs 26.1)
+;; -        2015-02-23 Common Lisp 由来のシンボル群を cl-compatible.el に移行
+;; -        2010-10-09 Emacs21でもとりあえずバイトコンパイルできるように関数やシンタックスを修正
+;; - v0.1.0 2009-04-19 初版作成
 
 ;;; Code:
 
 (eval-when-compile
-  (add-to-list 'load-path (expand-file-name ".")))
-(require 'cl-lib)
+  (require 'cl-lib)
+  (require 'pcase))
 (require 'dired)
 (require 'japan-util)
-(require 'cl-compatible)
-(require 'pcase)
+(require 'seq)
+(require 'cl-compatible (expand-file-name "./cl-compatible.el"))
 ;; (require 'ielm)
+
+;; Emacs 本体のバージョンアップに伴って新たに関数が新たに実装される可能性あり
+;; シンボル名上書きに注意 (例: get-buffer <- find-buffer)
+
+(defun xyzzy--defaliases (sym def)
+  (if (fboundp sym)
+      (warn "Symbol `%s' is already defined. Stop overriding to `%s'" sym def)
+    (defalias sym def)))
+
+(defmacro xyzzy--defun (name arglist &rest args)
+  (declare (indent defun))
+  (let ((xname (intern (format "xyzzy-%s" name))))
+    `(if (fboundp ',name)
+	 (warn "Symbol `%s' is already defined." ',name)
+       (cl-defun ,xname ,arglist ,@args)
+       (defalias ',name #',xname))))
+  
+(when init-file-debug			; --debug-init
+  (advice-add 'fset :override 'xyzzy--defaliases))
 
 ;;; @@ Data-Type
 
-(defun kanji-char-p (character)
+(xyzzy--defun kanji-char-p (character)
   (multibyte-string-p (char-to-string character)))
 
 ;;; @@ Variable-and-Constant
@@ -77,13 +97,10 @@
 (defvaralias '*last-command* 'last-command)
 
 (defmacro xyzzy-defvar-local (symbol value &optional docstring)
+  (declare (obsolete defvar-local "24.3"))
   `(progn
      (defvar ,symbol ,value ,docstring)
      (make-variable-buffer-local ',symbol)))
-
-;; since 24.3
-(unless (fboundp 'defvar-local)
-  (setf (symbol-function 'defvar-local) #'xyzzy-defvar-local))
 
 ;;; @@ Character
 (fset 'char-columns #'char-width)
@@ -303,12 +320,17 @@
   (setq indicate-empty-lines (or arg (not indicate-empty-lines))))
 
 ;;; @@ Buffer
-(fset 'selected-buffer #'current-buffer)
-(fset 'find-buffer #'get-buffer)
-(fset 'create-new-buffer #'generate-new-buffer)
-(fset 'buffer-can-undo-p #'buffer-enable-undo)
-(fset 'kill-selected-buffer #'kill-this-buffer)
-(fset 'buffer-process #'get-buffer-process)
+
+(pcase-dolist
+    (`(,sym . ,def)
+     '((selected-buffer . current-buffer)
+       ;;(find-buffer . get-buffer)	; 30.1
+       (create-new-buffer . generate-new-buffer)
+       (buffer-can-undo-p . buffer-enable-undo)
+       (kill-selected-buffer . kill-this-buffer)
+       (buffer-process . get-buffer-process)
+       ))
+  (xyzzy--defaliases sym def))
 
 ;; *DON'T* use Emacs23 or later
 ;; (defvaralias 'buffer-name 'major-mode)
@@ -350,11 +372,7 @@
 
 (defun enum-buffers (fn)
   "関数FNがnon-nilを返すまでバッファを列挙し続けます."
-  (let (ret)
-    (catch 'found
-      (dolist (buffer (buffer-list))
-        (setq ret (funcall fn buffer))
-        (if ret (throw 'found ret))))))
+  (seq-some fn (buffer-list)))
 
 ;; 0:LF(unix) 1:CRLF(dos) 2:CR(mac)
 (defconst buffer-eol-alist '((0 . unix) (1 . dos) (2 . mac)))
@@ -425,7 +443,7 @@
 ;;; @@ Minibuffer
 
 ;;; @@ Region
-(defadvice kill-ring-save (after kill-ring-msg activate)
+(define-advice kill-ring-save (:after (&rest _) with-message)
   ;; kill-new の方がいいのかな?
   (message "Region copied"))
 
@@ -718,6 +736,7 @@
 ;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=mouse%20click
 (defun bingalls-edit-menu (_event)
   "右クリックでメニュー"
+  (declare (obsolete context-menu-mode "28.1"))
   (interactive "e")
   (popup-menu menu-bar-edit-menu))
 
@@ -859,7 +878,7 @@ You can use key command as C-u \\[shell-command-on-region]"
 
 (if (fboundp 'w32-get-clipboard-data)
     (fset 'get-clipboard-data #'w32-get-clipboard-data)
-    (fset 'get-clipboard-data #'x-get-clipboard))
+    (fset 'get-clipboard-data #'gui-get-selection))
 
 ;; (apropos "clipoboard")
 
@@ -1053,6 +1072,9 @@ You can use key command as C-u \\[shell-command-on-region]"
   (elisp-macroexpand-1 t))
 
 ;; (fset 'lisp-indent-hook #'lisp-indent-function)
+
+(when init-file-debug
+  (advice-remove 'fset 'xyzzy--defaliases))
 
 (provide 'xyzzy)
 
