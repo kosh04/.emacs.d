@@ -55,7 +55,8 @@
 (require 'dired)
 (require 'japan-util)
 (require 'seq)
-(require 'cl-compatible (expand-file-name "./cl-compatible.el"))
+(require 'cl-compatible
+  (expand-file-name "cl-compatible.el" (file-name-directory (or load-file-name "."))))
 ;; (require 'ielm)
 
 ;; Emacs 本体のバージョンアップに伴って新たに関数が新たに実装される可能性あり
