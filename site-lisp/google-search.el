@@ -29,16 +29,12 @@
       (setq i (1+ i) j (1+ j)))
     (substring ret 0 j)))
 
-;; "&hl=ja&lr=lang_ja&num=100"
+;; "&hl=ja&lr=lang_ja&num=100&ie=utf-8&oe=utf-8"
 (defvar google-search-url-options
-  (url-build-query-string
-   '(("ie" "UTF-8")
-     ("oe" "UTF-8")
-     ("udm" "14")
-     )))
+  '(("udm" "14")))
 
 ;;;###autoload
-(defun google-search (string)
+(defun google-search (keyword)
   (interactive
    (list (read-string "Google: "
                       (cond (mark-active
@@ -47,9 +43,11 @@
                               (region-end)))
                             (:else
                              (current-word))))))
-  (let ((url (concat "https://www.google.com/search?q="
-                     (url-hexify-string string)
-                     google-search-url-options)))
+  (let ((url (concat "https://www.google.com/search?"
+		     (url-build-query-string
+		      `(("q" ,keyword)
+			,@google-search-url-options))
+		     )))
     (browse-url url)))
 
 (provide 'google-search)
