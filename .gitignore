@@ -2,8 +2,7 @@
 *.elc
 *-autoloads.el
 custom.el
-private.el
-init-private.el
+init-local.el
 package-quickstart.el
 .emacs.desktop
 .emacs.desktop.lock

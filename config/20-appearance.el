@@ -13,6 +13,7 @@
 ;; TODO: マシン毎にフォントサイズを調整したい
 ;; "Sarasa Term J-10.5" (pixelsize=14)
 ;; "更紗等幅ゴシック J"
+;; ? (use-package use-ttf)
 (defvar user-font
   "Sarasa Term J:pixelsize=14:weight=regular:slant=normal")
 

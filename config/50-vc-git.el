@@ -161,4 +161,12 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
 (use-package git-link
   :bind (("C-c =" . git-link))
   :custom
-  (git-link-use-commit t))
+  (git-link-use-commit t)
+  (git-link-open-in-browser nil)
+  :config
+  (defun git-link-open-in-browser ()
+    "git-link から取得したリンクをブラウザで開く."
+    (interactive)
+    (let ((git-link-open-in-browser t))
+      (call-interactively #'git-link))))
+

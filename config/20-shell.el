@@ -70,7 +70,7 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
 
 ;(use-package vterm)
 
-;; Emulate A Terminal
+;; eat: Emulate A Terminal
 ;; https://codeberg.org/akib/emacs-eat.git
 
 ;; https://github.com/akermu/emacs-libvterm

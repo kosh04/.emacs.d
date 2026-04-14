@@ -122,14 +122,14 @@
   (setopt wdired-allow-to-change-permissions t)
   (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit))
 
-;; 生成されたファイル等の表示をマスク
-(add-hook 'dired-mode-hook 'dired-omit-mode)
+;; 生成されたファイル等の表示をマスク (C-x M-o)
+;; (add-hook 'dired-mode-hook 'dired-omit-mode)
 
-(custom-set-variables
- ;; 外部コマンドの関連付け
- `(dired-guess-shell-alist-user
-   '((,(rx "." (or "mp3" "ogg" "wav" "aac") eos)
-      "ffplay"))))
+;; 外部コマンドの関連付け
+(setopt
+ dired-guess-shell-alist-user
+ `((,(rx "." (or "mp3" "ogg" "wav" "aac") eos) "ffplay")
+   ("\\.plist\'" "plutil -p")))
 
 ;; interactive filter
 (use-package dired-narrow

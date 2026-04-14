@@ -4,8 +4,8 @@
   (locate-user-emacs-file "init-minimum.el")
   "最小構成の設定ファイル")
 
-(defvar user-init-private-file
-  (locate-user-emacs-file "init-private.el")
+(defvar user-init-local-file
+  (locate-user-emacs-file "init-local.el")
   "マシン固有の設定ファイル")
 
 (load user-init-minimum-file t)
@@ -29,7 +29,7 @@
 ;;  '(init-loader-nw-regexp )
 ;;  )
 
-(load user-init-private-file t)
+(load user-init-local-file t)
 
 ;; Disable message: "For information about GNU Emacs and the GNU system, type \\[about-emacs]."
 (setq inhibit-startup-echo-area-message "kosh")

@@ -31,3 +31,5 @@
 
 ;; Notepad++ はマルチ編集をフルサポート
 ;; https://forest.watch.impress.co.jp/docs/news/1549532.html
+
+;;(add-hook 'text-mode 'variable-pitch-mode)

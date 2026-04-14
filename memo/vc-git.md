@@ -46,7 +46,7 @@ Emacsのバージョンコントロールのためのインターフェース
          `("--git-dir" ,(expand-file-name "~/.dotfiles.git")
            "--work-tree" ,(expand-file-name "~")
            ,@magit-git-global-arguments)))
-    (magit-status-internal "~")))
+    (magit-init "~")))
 
 ;; or
 (let ((process-environment
@@ -54,7 +54,7 @@ Emacsのバージョンコントロールのためのインターフェース
   (mapc (lambda (x) (setf (getenv (car x)) (cdr x)))
         `(("GIT_DIR" . ,(substitute-env-vars "$HOME/.dotfiles.git"))
           ("GIT_WORK_TREE" . ,(substitute-env-vars "$HOME"))))
-  (magit-status-internal "~"))
+  (magit-init "~"))
 ```
 
 ```emacs-lisp

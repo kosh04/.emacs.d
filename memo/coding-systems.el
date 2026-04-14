@@ -27,6 +27,8 @@ default-sendmail-coding-system          ; iso-2022-jp
 default-terminal-coding-system          ; japanese-shift-jis
 (default-value 'buffer-file-coding-system) ; japanese-shift-jis
 
+(modify-coding-system-alist 'process "*" 'utf-8)
+
 ;; 文字列からcharsetの判定方法は？ (intern string) でなくて
 coding-system-alist
 
