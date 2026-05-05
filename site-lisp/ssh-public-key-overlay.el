@@ -3,28 +3,24 @@
 ;; Copyright (C) 2017  KOBAYASHI Shigeru
 
 ;; Author: KOBAYASHI Shigeru (kosh[04]) <shgeru.kb@gmail.com>
-;; Version: 0.2-git
+;; Version: 0.3-git
 ;; Created: 2017-04-18
-;; Package-Requires: ((emacs "24.3") (names "20151201.0"))
+;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: ssh, tools
 ;; License: MIT
 ;; URL: https://github.com/kosh04/.emacs.d/blob/master/site-lisp/ssh-public-key-overlay.el
 
 ;;; Commentary:
 
-;; [TODO]
-;; - names
+;;; ChangeLog:
+;; v0.3 [2025-10-31] Replace short namespace `names' with `read-symbol-shorthands'
 
 ;;; Code:
 
 (eval-when-compile
-  (require 'rx)
-  (require 'names))
+  (require 'rx))
 
-;;;###autoload
-(define-namespace ssh-public-key-overlay-
-
-(defconst regexp
+(defconst so-regexp
   (rx
    ;; KEY TYPE
    (submatch                            ; match[1]
@@ -47,31 +43,25 @@
    eol)
   "OpenSSH Public Key format.")
 
-;; (defvar-local -overlays nil)
-(defvar -overlays nil nil)
-(make-variable-buffer-local '-overlays)
+(defvar-local so--overlays nil)
 
-(defun default-format (s)
+(defun so-format (s)
   (format "%s...#%d" (substring s 0 (1- 32)) (length s)))
 
-(defvar format #'default-format
-  "Function")
-
-(defun enable ()
+(defun so-enable ()
   "Enable ssh-public-key overlay."
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward regexp nil t)
+    (while (re-search-forward so-regexp nil t)
       (let* ((n 2) ;; match[N]
              (ov (make-overlay (match-beginning n) (match-end n)))
              (s  (match-string n))
-             (ss (funcall format s))
              ;; unique-like color name from text object
              (color (let* ((colors (defined-colors))
                            (n (mod (sxhash s) (length colors))))
                       (nth n colors))))
-        (push ov -overlays)
-        (setf (overlay-get ov 'display) ss)
+        (push ov so--overlays)
+        (setf (overlay-get ov 'display) (so-format s))
         (setf (overlay-get ov 'face) `(:underline t :background ,color))
         (setf (overlay-get ov 'mouse-face) 'highlight
               (overlay-get ov 'help-echo) (format "text:%s\ncolor:%s" s color))
@@ -84,32 +74,35 @@
   (message (substitute-command-keys
             "Public key is omitted. Type \\[read-only-mode] to edit.")))
 
-(defun disable ()
+(defun so-disable ()
   "Disable ssh-public-key overlay."
-  (mapc 'delete-overlay -overlays)
-  (setq -overlays nil))
+  (mapc 'delete-overlay so--overlays)
+  (setq so--overlays nil))
 
-(defun -ro ()
+(defun so-maybe ()
   (if buffer-read-only
-      (enable)
-    (disable)))
+      (so-enable)
+    (so-disable)))
 
-:autoload
-(defun mode ()
-  (interactive)
-  (add-hook 'read-only-mode-hook #'mode nil 'local)
-  (if (called-interactively-p 'interactive)
-      (read-only-mode +1)
-    (-ro)))
+;;;###autoload
+(define-minor-mode so-mode
+  "[TODO]DOC"
+  :init-value nil
+  (cond (so-mode
+	 (add-hook 'read-only-mode-hook 'so-maybe t 'local)
+	 (so-maybe))
+	(t
+	 (remove-hook 'read-only-mode-hook 'so-maybe 'local)
+	 (so-disable))))
 
-) ;; end namespace
-
-;; optional
-(eval-after-load 'ssh-config-mode
-  '(progn
-     (add-hook 'ssh-authorized-keys-mode-hook #'ssh-public-key-overlay-mode)
-     (add-hook 'ssh-known-hosts-mode-hook     #'ssh-public-key-overlay-mode)))
+(with-eval-after-load 'ssh-config-mode
+  (add-hook 'ssh-authorized-keys-mode-hook #'so-mode)
+  (add-hook 'ssh-known-hosts-mode-hook     #'so-mode))
 
 (provide 'ssh-public-key-overlay)
+
+;; Local Variables:
+;; read-symbol-shorthands: (("so-" . "ssh-public-key-overlay-"))
+;; End:
 
 ;;; ssh-public-key-overlay.el ends here
