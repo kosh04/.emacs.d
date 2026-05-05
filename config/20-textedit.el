@@ -21,8 +21,11 @@
 
 ;; Visualize the undo tree
 (use-package vundo
-  ;;     "C-x u" . undo
-  :bind ("C-c u" . vundo))
+  ;;     "C-x u" .  undo
+  :bind ("C-c u" . vundo)
+  :config
+  (when window-system
+    (setopt vundo-glyph-alist vundo-unicode-symbols)))
 
 ;; TODO: undo + repeat-mode
 
@@ -32,4 +35,5 @@
 ;; Notepad++ はマルチ編集をフルサポート
 ;; https://forest.watch.impress.co.jp/docs/news/1549532.html
 
-;;(add-hook 'text-mode 'variable-pitch-mode)
+;; (add-hook 'text-mode-hook 'variable-pitch-mode)
+;; (add-hook 'text-mode-hook 'buffer-face-mode)

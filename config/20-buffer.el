@@ -33,4 +33,6 @@
 (with-eval-after-load 'ibuffer
   (setopt ibuffer-expert t)
   ;; 自動更新
-  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode))
+  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+  (setopt ibuffer-expert t)		; dont ask for confirmation
+  )

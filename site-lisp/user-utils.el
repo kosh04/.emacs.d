@@ -227,7 +227,7 @@ Example:
 (defun emacsclient-help-options ()
   "[user] Display \"emacsclient --help\" text."
   (interactive)
-  (let ((emacs (if (eq window-system 'ns) ; Emacs.app
+  (let ((emacs (if (string-match "Emacs\\.app" invocation-directory) ;(eq window-system 'ns) ; Emacs.app
                    (expand-file-name "bin/emacsclient" invocation-directory)
                  (expand-file-name "emacsclient" invocation-directory))))
     (with-help-window (help-buffer)
@@ -359,10 +359,14 @@ Return-Type => ((urlobj struct-url) . (query alist))"
                 )))
     (format fmt rgb)))
 
+;; Emacs 内部メモリ使用状況を調べるやついろいろ
+;; `chart-emacs-lists'
+;; `chart-emacs-storage'
+;; `memory-usage' (elpa.gnu)
+;; `memory-report' (28.1~)
 (defun gc-with-message ()
   "Show memory usage.
-See URL `https://www.reddit.com/r/emacs/comments/ck4zb3/'
-Or `chart-emacs-storage'"
+See URL `https://www.reddit.com/r/emacs/comments/ck4zb3/'"
   (interactive)
   (display-message-or-buffer
    (cl-loop for (name size used free) in (garbage-collect)

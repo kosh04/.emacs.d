@@ -127,7 +127,9 @@
   :hook ((python-mode
 	  yaml-mode)
 	 . indent-bars-mode)
-  :custom
+  :config
   ;; XXX: 一部のシステムはバックグラウンド点描がサポートされていないための回避策 (:stipple)
   ;; https://github.com/jdtsmith/indent-bars#compatibility
-  (indent-bars-prefer-character t))
+  (if (and (eq window-system 'w32)
+	   (version< emacs-version "30.1"))
+      (setopt indent-bars-prefer-character t)))

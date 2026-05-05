@@ -60,14 +60,14 @@
   (tab-bar-show t)
   (tab-bar-close-button-show 'selected)
   (tab-bar-auto-width nil)		; 勝手に伸び縮みしないで
-  (tab-bar-history-mode t)
+  (tab-bar-history-mode t)		; C-c <left>,<right> (back,forward)
   (tab-bar-new-tab-to 'rightmost)
   (tab-bar-tab-hints t)
   (tab-bar-select-tab-modifiers [meta]) ; alt-[number]:switchToTab
   (tab-bar-new-tab-choice "*scratch*")
   :bind (("C-x t l" . tab-list))
   :config
-  ;;(set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
+  (set-face-attribute 'tab-bar-tab nil :inherit 'highlight)
   (tab-rename "main" 1)
   ;; TODO: C-x t k でタブと関連バッファをまとめて削除したい
   )

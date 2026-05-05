@@ -15,7 +15,9 @@
 ;; "更紗等幅ゴシック J"
 ;; ? (use-package use-ttf)
 (defvar user-font
-  "Sarasa Term J:pixelsize=14:weight=regular:slant=normal")
+  ;;"Sarasa Term J:pixelsize=16:weight=regular:slant=normal"
+  "Sarasa Term J:pixelsize=18:weight=regular:slant=normal"
+  )
 
 (when window-system
   (if (not (font-info user-font))       ; ? (display-graphic-p)
@@ -37,7 +39,9 @@
           conf-mode)
          . display-line-numbers-mode)
   :custom
-  (display-line-numbers-widen t))
+  (display-line-numbers-widen t)
+  ;; 行番号の桁が変わるたびに横幅がずれるのが気になる方へ
+  (display-line-numbers-width-start t))
 
 ;;(display-fill-column-indicator-mode +1)
 
@@ -58,6 +62,7 @@
 ;; 端末タイプの詳細はinfo参照: (info "(elisp) Defining Faces")
 ;; - dark means "emacs -rv" or dark-theme (<-> light)
 ;; - tty means "emacs -nw" (<-> graphic)
+;; TODO: テーマの色が優先されてしまう
 (custom-set-faces
  '(mode-line
    ((((class color) (min-colors 88) (background light) (type graphic))
@@ -80,7 +85,8 @@
   :if window-system
   :hook (emacs-startup . nyan-mode)
   :custom
-  (nyan-bar-length 12))
+  (nyan-bar-length 12)
+  (nyan-cat-face-number 0))
 
 ;; フリンジ (fringes: 縁) に色々追加する
 ;; バッファ末尾
@@ -139,10 +145,10 @@
 
 ;; NOTE: Modus Themes is now built-in since emacs-28
 (use-package modus-themes
-  :if window-system
+  :if (display-graphic-p)
   :demand
   :config
-  (load-theme 'modus-vivendi t)
+  (load-theme 'modus-vivendi-tritanopia t)
   :custom
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t))
@@ -156,3 +162,6 @@
   :custom
   (auto-dark-dark-theme 'modus-vivendi)
   (auto-dark-light-theme 'modus-operandi))
+
+;; FIXME: 端末表示時に menu-bar,tab-bar,breadcrumb-mode が正常に表示されずに全体の描画が崩れる問題あり
+

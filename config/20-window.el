@@ -17,3 +17,5 @@
   :bind ("M-o" . ace-window)
   :custom
   (aw-keys (string-to-list "asdfghjkl")))
+
+;;(add-to-list 'same-window-buffer-names "*info*")

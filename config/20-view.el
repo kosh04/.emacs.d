@@ -1,11 +1,16 @@
 ;;; config/ViewMode
 
-;; 基本的にファイルは read-only+view-mode で開きたい
+;; ** 基本的にファイルは read-only+view-mode で開きたい
+;; C-x C-r と使い分けるよりはそっちの方が楽なハズ
 
 ;; TODO: Diff-mode+read-only-mode 時に有効になるキーバインドを view-mode で潰したくない
 
 ;; C-x C-q (read-only-mode) を view-mode として機能させる
 (setq view-read-only t)
+
+(define-advice find-file (:after (&rest _args) view-mode-by-default)
+  (when (called-interactively-p 'interactive)
+    (view-mode +1)))
 
 (defun user::view-mode-maybe ()
   (when (buffer-file-name)
@@ -35,7 +40,7 @@
         ("k" . previous-line)
         ;; less-like
         ("N" . View-search-last-regexp-backward)
-        ("i" . read-only-mode)
+        ("i" . View-exit-and-edit)
         ("RET" . ignore)
         ("g" . recenter)                  ; disable `View-goto-line'
         )

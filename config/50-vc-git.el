@@ -66,6 +66,10 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
   ;; (locate-dominating-file default-directory ".git")
   (dired (vc-root-dir)))
 
+(use-package vc
+  :config
+  (setq vc-log-short-style '(directory file)))
+
 ;; Magit
 ;; magit-auto-revert-mode によるプチフリーズに注意 (特に NTEmacs)
 (use-package magit
@@ -159,7 +163,8 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
 
 ;; ブラウザリンク生成 (主に init.el 読書会用)
 (use-package git-link
-  :bind (("C-c =" . git-link))
+  :bind (("C-c =" . git-link)
+	 ("C-x v w" . git-link))
   :custom
   (git-link-use-commit t)
   (git-link-open-in-browser nil)
@@ -168,5 +173,8 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
     "git-link から取得したリンクをブラウザで開く."
     (interactive)
     (let ((git-link-open-in-browser t))
-      (call-interactively #'git-link))))
-
+      (call-interactively #'git-link)))
+  ;; TODO: CGit,Gitea はセルフホスティングのため明示的なドメイン指定の必要あり
+  (add-to-list 'git-link-remote-alist '("gitea\\." git-link-gitea))
+  (add-to-list 'git-link-commit-remote-alist '("gitea\\." git-link-commit-gitea))
+  )

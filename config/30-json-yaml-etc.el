@@ -17,6 +17,10 @@
 ;; simple
 ;; (defalias 'json-decode 'json-read-from-string)
 
+;; Memo: ネイティブ化されたライブラリ関数を使おう
+;; ❌ `json-read', `json-read-from-string', `json-encode'
+;; ⭕ `json-parse-buffer',`json-parse-string',`json-serialize'
+
 ;; Emacs 24.4 より json.el でも pretty-print が標準で利用可能になった
 ;; - M-x json-pretty-print-buffer ()
 ;; - M-x json-pretty-print (begin end)

@@ -49,6 +49,8 @@
     (define-key map "u" '("url-debug" . user::toggle-url-debug))
     (define-key map "s" '("scratch" . scratch-buffer))
     (define-key map "l" '("ielm" . ielm))
+    (define-key map "|" '("fill-column" . display-fill-column-indicator-mode))
+    (define-key map "b" '("swap-window" . window-swap-states))
     map)
   "Keymap for user-defined toggle commands.")
 (global-set-key (kbd "C-c t") '("Toggle any" . ctl-c-t-map))
@@ -91,6 +93,7 @@
   :hook (emacs-startup . which-key-mode)
   :custom
   (which-key-idle-delay 1.5)
+  (which-key-sort-order 'which-key-description-order)
   ;; FIXME: 値は設定されるが `which-key-separator' が nil になってしまう (カスタム変数の :set が機能していない？)
   ;;(which-key-dont-use-unicode nil)
   )

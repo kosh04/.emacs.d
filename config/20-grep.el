@@ -2,10 +2,17 @@
 
 ;; (できれば) M-x grep,lgrep,rgrep を活用したい
 
-(with-eval-after-load 'grep
+(use-package grep
+  :config
   (define-advice grep (:after (&rest _) window-select)
     "*grep* ウィンドウにフォーカスする."
-    (pop-to-buffer next-error-last-buffer)))
+    (pop-to-buffer next-error-last-buffer))
+  (bind-keys :map grep-mode-map
+	     ("j" . next-line)
+	     ("k" . previous-line))
+  ;; 出力をファイル毎にセクションで区切る (30.1~)
+  ;;(setopt grep-use-headings t)
+  )
 
 (define-advice compilation-start (:after (&rest _) window-select)
   "compilation 実行ウィンドウにフォーカスする."

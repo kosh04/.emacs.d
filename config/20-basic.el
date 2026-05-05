@@ -13,15 +13,10 @@
 (url-handler-mode +1)
 
 ;; `what-cursor-position' [C-u C-x =]
-(let ((url "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
-      (path (locate-user-emacs-file "share/etc/UnicodeData.txt")))
-  (unless (file-exists-p path)
-    (let ((data (with-temp-buffer
-                  (url-insert-file-contents url)
-                  (buffer-string))))
-      (write-region data nil path nil 'silent)))
-  (custom-set-variables
-   `(describe-char-unicodedata-file ,path)))
+(setopt
+ describe-char-unidata-list t
+ describe-char-unicodedata-file
+ (locate-user-emacs-file "share/etc/UnicodeData.txt"))
 
 (setq use-dialog-box nil
       use-file-dialog nil)

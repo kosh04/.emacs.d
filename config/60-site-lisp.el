@@ -49,9 +49,13 @@
               (highlight-phrase "[+]GENRE")))
   )
 
+;; TODO 初期セットアップ時の開発用の別リポジトリをどう扱うか
+'
 (use-package unicode-escape
+  :if (and (file-exists-p #1="~/Documents/GitHub/unicode-escape.el")
+	   (file-directory-p #1#))
   :after names
-  ;;:load-path "~/Documents/GitHub/unicode-escape.el"
+  :load-path #1#
   ;;:demand
   )
 

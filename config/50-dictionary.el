@@ -10,6 +10,7 @@
     (google-translate-at-point)))
 
 (use-package google-translate
+  :pin #:melpa
   :custom
   (google-translate-default-source-language "auto")
   (google-translate-default-target-language "ja")

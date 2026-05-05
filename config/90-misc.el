@@ -33,19 +33,11 @@
 
 ;; Bash のキーコマンドを模倣する
 (bind-keys
+ :package minibuffer
  :map minibuffer-local-map
  ("C-u" . user::unix-line-discard)
  ("C-w" . delete-backward-word)	   	; unix-word-rubout
  )
-
-'
-(use-package* minibuffer
-  :bind
-  (:map minibuffer-local-map
-        ("C-u" . user::unix-line-discard)
-        ;; unix-word-rubout (C-w)
-        ("C-w" . delete-backward-word)
-        ))
 
 ;;; find-file-at-point
 ;; カーソル上にあるファイル名や URL を開く
@@ -296,6 +288,7 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 
 ;; TODO: ?append to 20-keymaps.el
 (use-package swap-buffers
+  :disabled
   :bind ("C-c t b" . swap-buffers))
 
 (use-package manage-minor-mode
@@ -324,3 +317,19 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 (defalias 'customize-package-variables #'customize-group)
 (defalias 'abbrev-edit #'edit-abbrevs)
 (defalias 'reb #'re-builder)
+
+(use-package dabbrev
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-regexps (rx bos " "))
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  )
+
+(use-package proced
+  :custom
+  (proced-format 'medium)
+  (proced-enable-color-flag t)
+  (proced-auto-update-flag t))
+
+;; XXX: 端末モード時にコマンドラインに ^G を含むプロセスがあるとフリーズする可能性あり
+;; Emacs is resuming after an emergency escape.
+;; migemo-options ("-i" "\a")

@@ -69,9 +69,10 @@
   (text-property-search-forward 'image-url))
 
 (use-package eww
-  ;;:custom
+  :custom
   ;;(eww-search-prefix "https://www.google.co.jp/search?q=")
   ;;(eww-search-prefix "https://lite.duckduckgo.com/lite/?q=")
+  (eww-auto-rename-buffer 'title)	; "*PAGE_TITLE # eww*"
   :config
   (defun user:eww-show-url-at-point ()
     (when-let ((url (get-text-property (point) 'shr-url)))

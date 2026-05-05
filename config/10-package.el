@@ -8,6 +8,7 @@
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 ;;(add-to-list 'package-archives '("nongnu-devel" . "https://elpa.nongnu.org/nongnu-devel/"))
 ;;(add-to-list 'package-archives '("ELPA" . "https://tromey.com/elpa/"))
+;;(add-to-list 'package-archives '("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
 
 ;; Switch to Mirrors
 ;; https://github.com/melpa/melpa#mirrors

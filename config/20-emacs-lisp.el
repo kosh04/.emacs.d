@@ -35,10 +35,10 @@
   (eldoc-idle-delay 0.3)
   (eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
   (eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
-  ;; :custom-face
-  ;; ;; 引数表示をSLIME風にする
-  ;; (eldoc-highlight-function-argument
-  ;;  ((t (:inherit highlight))))
+  :custom-face
+  ;; 引数表示をSLIME風にする
+  (eldoc-highlight-function-argument
+   ((t (:inherit highlight))))
   )
 
 ;; elisp-slime-nav [M-.] [M-,]
@@ -201,6 +201,7 @@
   (require 'names-dev))
 
 ;; less is more
+;; FIXME: 端末モードでは縦分割ウィンドウの罫線がズレてしまう
 (use-package nameless
   :custom
   (nameless-global-aliases nil)

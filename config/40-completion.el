@@ -24,6 +24,8 @@
   (completion-cycle-threshold 3)
   ;; シンボル補完時に注釈を追加 (@28.1)
   (completions-detailed t)
+  ;; ソート系コマンドが大文字小文字の区別をするか
+  ;;(sort-fold-case t)
   :config
   (add-to-list 'completion-ignored-extensions ".exe")
   )
@@ -129,7 +131,9 @@
 (use-package orderless
   :disabled
   :custom
-  (completion-styles '(orderless basic)))
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  )
 
 ;; Completion At Point Extentions
 (use-package cape

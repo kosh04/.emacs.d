@@ -123,7 +123,8 @@
   (define-key wdired-mode-map (kbd "C-x C-q") 'wdired-finish-edit))
 
 ;; 生成されたファイル等の表示をマスク (C-x M-o)
-;; (add-hook 'dired-mode-hook 'dired-omit-mode)
+;; XXX: "." ".." は残しておきたい
+;;(add-hook 'dired-mode-hook 'dired-omit-mode)
 
 ;; 外部コマンドの関連付け
 (setopt
@@ -147,7 +148,9 @@
               ("n" . peep-dired-next-file)
               ("p" . peep-dired-prev-file)
               ("<SPC>" . peep-dired-scroll-page-down)
-              ("<S-SPC>" . peep-dired-scroll-page-up)))
+              ("<S-SPC>" . peep-dired-scroll-page-up)
+	      ("<DEL>" . peep-dired-scroll-page-up) ; iTerminal
+	      ))
 
 ;; https://github.com/jojojames/dired-sidebar
 

@@ -92,8 +92,6 @@
 ;; C-u C-M-x で関数をデバッグ定義. 関数を再定義すればデバッグは解除される.
 (require 'edebug)
 
-;; M-x `memory-report' (メモリオブジェクトの統計を表示する; 28.1)
-
 ;; trace.el ---  CL の trace/untrace に近いトレース評価
 ;; http://clhs.lisp.se/Body/m_tracec.htm
 (defun fact (n) (if (zerop n) 1 (* n (fact (- n 1)))))

@@ -6,11 +6,12 @@
   :hook (emacs-startup . migemo-init)
   :custom
   (migemo-command "cmigemo")
-  (migemo-options '("-q" "--emacs" "-i" "\a")) ;??
+  (migemo-options '("-q" "--emacs")) ; "-i" "\a" ; Ruby/Migemo
   (migemo-isearch-enable-p nil)		; 必要に応じて有効化させる
   (migemo-dictionary
    (let ((dicts '("/usr/share/cmigemo/utf-8/migemo-dict"      ; apt
                   "/usr/local/share/migemo/utf-8/migemo-dict" ; homebrew
+		  "/opt/homebrew/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict"
                   "~/.emacs.d/share/dict/utf-8/migemo-dict")) ; else
          (truename (lambda (dict)
                      (if (file-exists-p dict)

@@ -37,7 +37,7 @@ update: update-package
 update-package:
 	$(EMACS) -batch $(EMACSFLAGS) -l script/elpa-cli.el update
 
-etc/UnicodeData.txt:
+share/etc/UnicodeData.txt:
 	curl "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt" -o $@
 
 clean:
