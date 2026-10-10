@@ -25,7 +25,9 @@
    ("melpa" . 10)
    ))
 
-;;(package-initialize)
+(setopt package-install-upgrade-built-in t)
+
+(package-initialize)
 
 (with-eval-after-load "package"
   (setopt package-native-compile t)

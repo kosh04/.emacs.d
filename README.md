@@ -44,6 +44,11 @@ MELPAにあるものは[リポジトリ参照](https://github.com/search?l=Emacs
 2. `make package-install`
 3. `make` (Optional; byte-compile site-lisp/*.el, and testing it)
 
+
+## Installation (Windows)
+
+- sudo cmd /c mklink /d AppData/Roaming/.emacs.d ..\..\.config\emacs\
+
 ## Rules
 
 - デフォルト設定＆標準キーバインドを尊重する (覚えることが少ない方がよい)

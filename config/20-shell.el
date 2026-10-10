@@ -31,12 +31,6 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
 ;; エスケープシーケンスを処理する ("ls --color" が使える)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-;; shell-command(M-!) のコマンド入力に補完を効かせる
-;; http://namazu.org/~tsuchiya/
-(use-package "shell-command"
-  :disabled
-  :config (shell-command-completion-mode t))
-
 (with-eval-after-load 'shell
   ;; 上下キーで補完したい
   (define-key shell-mode-map (kbd "<up>")   'comint-previous-input)

@@ -31,7 +31,9 @@
         ("w" . user::epa-list-keys-copy-fingerprint)))
 
 ;; gpg --> gpg-agent --> pinentry --> Emacs
+;; NOTE: local sockets are not supported
 (use-package pinentry
+  :when (memq system-type '(linux))
   :demand
   :config
   (pinentry-start))

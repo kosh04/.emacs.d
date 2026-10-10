@@ -89,3 +89,7 @@
 (use-package json-mode
   :config
   (add-to-list 'json-mode-hook #'rainbow-mode))
+
+(define-advice shell (:after (&rest _) cmd-cp932)
+  (when (string-match (rx "cmdproxy.exe") shell-file-name)
+    (set-buffer-process-coding-system 'cp932 'cp932)))

@@ -1,5 +1,8 @@
 ;;; early-init
 
+;; -*- lexical-binding: missing -*-
+(setopt warning-suppress-log-types '((files missing-lexbind-cookie)))
+
 ;; Start profiler when --debug-init
 (when init-file-debug
   (require 'profiler)
@@ -26,7 +29,7 @@
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 ;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-(add-to-list 'initial-frame-alist '(alpha . (0.92 0.80))) ; (active . inactive)
+(add-to-list 'initial-frame-alist '(alpha . (0.99 0.85))) ; (active . inactive)
 ;;(setf (frame-parameter nil 'alpha) '(0.90 0.90))
 ;;(setf (frame-parameter nil 'alpha) '(1.0 0.5))
 
