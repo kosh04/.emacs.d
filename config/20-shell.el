@@ -62,9 +62,7 @@ ESHELL (`C-u') を有効にすると `eshell' を開きます."
   (add-to-list 'eshell-visual-commands "ssh")
   (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show" "grep")))
 
-;(use-package vterm)
-
-;; eat: Emulate A Terminal
-;; https://codeberg.org/akib/emacs-eat.git
-
+;; Terminal Emulator いろいろ
+;; https://codeberg.org/akib/emacs-eat
 ;; https://github.com/akermu/emacs-libvterm
+;; https://github.com/dakra/ghostel

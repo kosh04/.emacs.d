@@ -72,8 +72,8 @@
    (if (or (getenv "TRAVIS")
            (getenv "GITHUB_ACTIONS"))
        nil t))
-  ;; 遅延ロード
-  (use-package-always-defer t)
+  ;; 遅延ロード (not recommended?)
+  ;;(use-package-always-defer t)
   :config
   (defface use-package--disabled-keyword-face
     '((t (:inverse-video t)))

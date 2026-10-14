@@ -7,7 +7,7 @@ package-quickstart.el
 .emacs.desktop
 .emacs.desktop.lock
 .newsrc
-.newsrc.eld
+*.eld
 /diary
 *.plstore
 /eln-cache/
@@ -69,3 +69,5 @@ network-security.data
 /nov-places
 /tldr/
 /projectile-bookmarks.eld
+/site-lisp/.auto-site.el
+/viper

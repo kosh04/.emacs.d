@@ -51,7 +51,7 @@
 
 ;; TODO: rtags
 ;; http://www.rtags.net/
-(use-package rtags)
+;(use-package rtags)
 
 (use-package ccls
   :custom

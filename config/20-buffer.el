@@ -36,3 +36,8 @@
   (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
   (setopt ibuffer-expert t)		; dont ask for confirmation
   )
+
+;; TODO: ワークスペースに紐付けられたバッファ操作コマンド
+;; (use-package bufferlo
+;;   :demand
+;;   :config (bufferlo-mode +1))

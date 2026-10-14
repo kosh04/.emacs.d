@@ -22,9 +22,16 @@
   "Type designator for proper list."
   `(and list (satisfies proper-list-p)))
 
+(defsubst typespec--circular-list-p (obj)
+  (and (listp obj)
+       (condition-case e
+	   (progn (length obj) nil)
+	 (error
+	  (eq (error-type e) 'circular-list)))))
+
 (cl-deftype circular-list ()
   "Type designator for circular list."
-  `(satisfies circular-list-p))
+  `(satisfies typespec--circular-list-p))
 
 ;; sequences
 
@@ -42,7 +49,8 @@ see URL `http://clhs.lisp.se/Body/26_glo_s.htm#string_designator'"
 
 ;; types
 
-(defvar typespec-array-dimension-limit #x10000 "?")
+(eval-when-compile
+  (defvar typespec-array-dimension-limit #x10000 "?"))
 
 (cl-deftype array-index (&optional (length (1- typespec-array-dimension-limit)))
   `(integer 0 (,length)))

@@ -8,9 +8,6 @@
 
 ;; M-x display-fill-column-indicator-mode
 
-;; 折返しのないテキストを割と見かけるので
-(add-hook 'text-mode-hook 'visual-line-mode)
-
 ;; プレーンテキストで貼り付け
 ;; (setq yank-excluded-properties t)
 
@@ -23,6 +20,8 @@
 (use-package vundo
   ;;     "C-x u" .  undo
   :bind ("C-c u" . vundo)
+  :custom
+  (vundo-compact-display nil)
   :config
   (when window-system
     (setopt vundo-glyph-alist vundo-unicode-symbols)))

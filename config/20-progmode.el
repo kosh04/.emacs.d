@@ -13,6 +13,7 @@
 (require 'electric)
 
 (electric-pair-mode +1)
+;;(add-hook 'prog-mode-hook #'electric-pair-local-mode)
 ;;(electric-layout-mode +1)
 ;;(electric-indent-mode -1)
 
@@ -110,7 +111,15 @@
   :custom
   (minimap-window-location 'right))
 
-;; インデントの表示
+;; インデントの表示いろいろ
+(use-package highlight-indentation
+  :disabled
+  :hook (prog-mode . highlight-indentation-mode)
+  :config
+  ;;(setf (face-background 'highlight-indentation-face) "#e3e3d3")
+  ;;(setf (face-background 'highlight-indentation-current-column-face) "#c3b3b3")
+  nil)
+
 (use-package highlight-indent-guides
   ;; FIXME: ダークモード未対応？
   :disabled
@@ -133,3 +142,6 @@
   (if (and (eq window-system 'w32)
 	   (version< emacs-version "30.1"))
       (setopt indent-bars-prefer-character t)))
+
+;; デバイスドライバーのセットアップ情報(INF)ファイル
+(add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))

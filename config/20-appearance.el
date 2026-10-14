@@ -62,7 +62,7 @@
 ;; 端末タイプの詳細はinfo参照: (info "(elisp) Defining Faces")
 ;; - dark means "emacs -rv" or dark-theme (<-> light)
 ;; - tty means "emacs -nw" (<-> graphic)
-;; TODO: テーマの色が優先されてしまう
+;; TODO: テーマの色(主張)が優先されてしまう
 (custom-set-faces
  '(mode-line
    ((((class color) (min-colors 88) (background light) (type graphic))
@@ -136,6 +136,7 @@
 
 ;; (load-theme 'zenburn)
 ;; (load-theme 'wombat)
+;; (load-theme 'manoj-dark)
 
 (use-package kaolin-themes
   :disabled

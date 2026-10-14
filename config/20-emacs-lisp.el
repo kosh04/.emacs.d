@@ -201,12 +201,17 @@
   (require 'names-dev))
 
 ;; less is more
-;; FIXME: 端末モードでは縦分割ウィンドウの罫線がズレてしまう
 (use-package nameless
+  :preface
+  ;; FIXME: 端末では縦罫線がズレてしまうため GUI に限定する
+  (defun nameless-mode-dwim ()
+    (interactive)
+    (when window-system
+      (nameless-mode)))
   :custom
   (nameless-global-aliases nil)
   (nameless-private-prefix t)
-  :hook (emacs-lisp-mode . nameless-mode))
+  :hook (emacs-lisp-mode . nameless-mode-dwim))
 
 ;; Surpress byte-compile warning
 ;; (unless (fboundp 'elisp--preceding-sexp)

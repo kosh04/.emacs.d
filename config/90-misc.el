@@ -15,8 +15,10 @@
   )
 
 (defun user::emacs-init-time ()
-  (message "Emacs init time %s, including %.3fs for %d GCs." (emacs-init-time "%.3fs") gc-elapsed gcs-done))
-
+  (message "Emacs init time %s, including %.3fs for %d GCs. %d Packages Loaded"
+	   (emacs-init-time "%.3fs")
+	   gc-elapsed gcs-done
+	   (length package-activated-list)))
 (add-hook 'emacs-startup-hook #'user::emacs-init-time)
 
 (defadvice locate (around modify-buffer-name activate)
@@ -100,9 +102,10 @@ see also URL `https://github.com/nicferrier/elnode/pull/101'"
 ;; https://github.com/m00natic/vlfi
 (use-package vlf)
 
+;; 半角と全角の間にスペースを入れる
 (use-package pangu-spacing
   :diminish "Pangu"
-  :config (global-pangu-spacing-mode +1))
+  :hook (text-mode))
 
 (defun init-loader-display-chart (&optional max-lines)
   "init-loader の読み込み時間をグラフ表示します.
@@ -130,14 +133,6 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
   :disabled
   :demand
   :config (beacon-mode +1))
-
-(use-package highlight-indentation
-  :disabled
-  :hook (prog-mode . highlight-indentation-mode)
-  :config
-  ;;(setf (face-background 'highlight-indentation-face) "#e3e3d3")
-  ;;(setf (face-background 'highlight-indentation-current-column-face) "#c3b3b3")
-  nil)
 
 ;; https://github.com/kosh04/.emacs.d/issues/1
 (with-eval-after-load 'compile
@@ -333,3 +328,6 @@ MAX-LINES はグラフデータの表示数を指定します. (5 or more)"
 ;; XXX: 端末モード時にコマンドラインに ^G を含むプロセスがあるとフリーズする可能性あり
 ;; Emacs is resuming after an emergency escape.
 ;; migemo-options ("-i" "\a")
+
+(setf (symbol-function 'ro) #'read-only-mode)
+

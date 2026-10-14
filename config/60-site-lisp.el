@@ -4,8 +4,14 @@
 ;; MELPA に登録した (あるいは site-lisp 以下にある) 自作パッケージは、可能な限り手動インストールする
 ;; autoload cookie によるシンボルの事前定義＆遅延ロードが有効になるため、通常パッケージに近い設定を行える
 
-;; -L ~/.emacs.d/site-lisp
-(add-to-list 'load-path (locate-user-emacs-file "site-lisp"))
+;; -L ~/.config/emacs/site-lisp
+(if (not (fboundp 'prepare-user-lisp))
+    (use-package site-lisp
+      :demand
+      :config (site-lisp-initialise))
+  ;; emacs-31
+  (setq user-lisp-directory (locate-user-emacs-file "site-lisp/"))
+  (prepare-user-lisp))
 
 (require 'textproc)
 (require 'gitter-irc)
@@ -20,6 +26,7 @@
 (require 'google-search)
 (global-set-key (kbd "C-c g") 'google-search)
 
+'
 (use-package wandbox
   :load-path "~/Documents/GitHub/emacs-wandbox"
   :init
@@ -52,10 +59,8 @@
 ;; TODO 初期セットアップ時の開発用の別リポジトリをどう扱うか
 '
 (use-package unicode-escape
-  :if (and (file-exists-p #1="~/Documents/GitHub/unicode-escape.el")
-	   (file-directory-p #1#))
   :after names
-  :load-path #1#
+  :load-path "site-lisp/unicode-escape"
   ;;:demand
   )
 

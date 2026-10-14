@@ -64,7 +64,8 @@
 
 (defun xyzzy--defaliases (sym def)
   (if (fboundp sym)
-      (warn "Symbol `%s' is already defined. Stop overriding to `%s'" sym def)
+      (if init-file-debug
+	  (warn "Symbol `%s' is already defined. Stop overriding to `%s'" sym def))
     (defalias sym def)))
 
 (defmacro xyzzy--defun (name arglist &rest args)
@@ -702,8 +703,8 @@
       (set-default 'tab-width column)))
 
 ;;; @@ Search, Regexp
-(fset 'ed::protect-match-data 'save-match-data)
-(fset 'store-match-data #'set-match-data)
+(xyzzy--defaliases 'ed::protect-match-data 'save-match-data)
+(xyzzy--defaliases 'store-match-data #'set-match-data)
 
 (defun looking-for (string &optional case-fold)
   (save-match-data                      ; 必要?

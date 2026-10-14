@@ -9,7 +9,8 @@
 (setq view-read-only t)
 
 (define-advice find-file (:after (&rest _args) view-mode-by-default)
-  (when (called-interactively-p 'interactive)
+  (when (and (called-interactively-p 'interactive)
+	     (not (memq major-mode '(dired-mode))))
     (view-mode +1)))
 
 (defun user::view-mode-maybe ()

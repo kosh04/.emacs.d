@@ -35,5 +35,10 @@
   ;;(add-to-list 'ag-arguments "--word-regexp")
   nil)
 
-
 ;; (setq xref-search-program 'ripgrep) ; or 'ugrep
+
+(keymap-global-set
+ "<help> @"
+ (lambda (str)
+   (interactive "sGrep emacs/etc: ")
+   (ag str data-directory)))

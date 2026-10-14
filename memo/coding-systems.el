@@ -203,3 +203,8 @@ current-language-environment
   ;; non-nil の場合、null バイトを無視して文字コード判別を行う
   (let ((inhibit-null-byte-detection t))
     #0#))			    ;=> (utf-8 utf-8-auto iso-2022-jp)
+
+(format "%c,%c" (max-char) (max-char 'unicode))
+;;=> "\xff,\U0010ffff"
+
+(string= "\xff" "\u00ff")		;=> nil ?

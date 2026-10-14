@@ -19,6 +19,8 @@
 ;; ファイル名のみ表示するマイナーモード (since 24.4)
 (declare-function 'dired-hide-details-mode "dired")
 
+(defalias 'dired-thumbnails 'image-dired)
+
 ;; dired-x で代用可能
 ;; [C-x C-j]   dired-jump
 ;; [C-x 4 C-j] dired-jump-other-window
@@ -205,3 +207,5 @@
 
 ;; Twin-pane file manager (mc inspired)
 ;; https://github.com/sunrise-commander/sunrise-commander
+
+;; TODO: emojione-v2.2.6-22 (emojify) のようなファイル数が多すぎるディレクトリ表示のフリーズに対処したい

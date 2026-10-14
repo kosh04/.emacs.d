@@ -34,7 +34,24 @@
 
 (use-package org-modern
   :after org
+  ;; :custom
+  ;; (org-modern-star 'replace)
+  ;; (org-modern-table nil)
+  ;; (org-modern-keyword nil)
+  ;; (org-modern-block-name nil)
   :config (global-org-modern-mode +1))
 
 ;; TODO: org-superstar-mode
 ;; https://github.com/integral-dw/org-superstar-mode
+
+;; カーソルを合わせたときだけ要素の表示?
+(use-package org-appear
+  :after org
+  :hook (org-mode . org-appear-mode)
+  :custom
+  (org-hide-emphasis-markers t)
+  ;; (org-appear-autolinks t)
+  ;; (org-appear-autosubmarkers t)
+  ;; (org-appear-autoentities t)
+  ;; (org-appear-autokeywords t)
+  )

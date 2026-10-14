@@ -36,10 +36,11 @@
 ;;(setf (cdr recentf-keep) '(file-remote-p file-readable-p))
 (add-to-list 'recentf-exclude "recentf")
 (add-to-list 'recentf-exclude "\\.git/")
-(add-to-list 'recentf-exclude "/\\.emacs\\.d/elpa/")
+(add-to-list 'recentf-exclude "/elpa/")
 ;; (add-to-list 'recentf-exclude "^/ssh:")
 (add-to-list 'recentf-exclude "^/sudo:")
 ;;(add-to-list 'recentf-exclude "^https?://")
+(add-to-list 'recentf-exclude #'file-remote-p)
 (recentf-mode +1)
 (global-set-key (kbd "C-c t r") #'recentf-open-files)
 
@@ -62,7 +63,10 @@
   ;;(add-to-list 'desktop-globals-to-save 'extended-command-history)
   (add-to-list 'desktop-path (locate-user-emacs-file "cache/"))
   (desktop-save-mode +1)
+
+  ;;(add-to-list 'desktop-modes-not-to-save 'git-commit-mode)
   )
+
 
 (defun user::restore-desktop (&optional dirname)
   ".emacs.desktop ファイルを基にセッションを復元します."
@@ -88,3 +92,12 @@
 
 ;; TODO: Desktop + Bookmark
 ;; (use-package activities)
+
+(use-package super-save
+  :disabled
+  :demand
+  :config
+  (super-save-mode +1)			; event-driven saves
+  (auto-save-visited-mode +1)		; idle saves
+  :custom
+  (super-save-remote-files nil))

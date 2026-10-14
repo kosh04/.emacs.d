@@ -1049,10 +1049,6 @@ standard-output                         ; t (eval-last-sexp)
 ;; プログラムのソース<->ヘッダの切り替え
 M-x: ff-find-other-file
 
-;; [Edit]->[Copy]
-;; キルリングとクリップボードの中途半端な同期
-(global-set-key (kbd "ESC w") 'clipboard-kill-ring-save)
-
 ;; call-processがcygwinのシンボリックリンクを辿らないのがよろしくないな
 ;; cygwin-emacsでなくNTemacsだから当然といえば当然だが
 (call-process "/bin/pwd")               ;=> 0
@@ -2150,11 +2146,7 @@ Watches `edebug-active' and sets the mode-line when it changes."
 ;; ウィンドウ枠を除去すれば、より画面を広く活用できる…かも
 (setf (frame-parameter nil 'undecorated) t)
 
-
-(add-hook 'activate-mark-hook
-	  (defun pulse-line (&rest _)
-	    "Pulse the current line."
-	    (pulse-momentary-highlight-one-line (point))))
+(add-hook 'activate-mark-hook #'pulse-momentary-highlight-one-line)
 
 ;; DEL Does Not Delete
 (normal-erase-is-backspace-mode +1)
@@ -2164,3 +2156,29 @@ Watches `edebug-active' and sets the mode-line when it changes."
 
 ;; .srt, .vtt 字幕ファイル編集用モード
 (use-package subed)
+
+;; GC はメモリ節約のためにフォント圧縮を行う
+;; 無効化することで描画の高速化が期待できるが、当然ながらメモリ肥大化の懸念あり
+(setq inhibit-compacting-font-caches t)
+
+;; -> macos.el
+;; プロキシアイコンとは？
+(setq ns-use-proxy-icon nil)
+
+;; コンパイルプロセス実行時にのみ有効な環境変数
+(let ((compilation-environment '("LANG=C")))
+  ...)
+
+;; TODO: shorthand.md
+;; コマンド略記いろいろ
+;; * dwim -> Do What I Mean
+;; * mru  -> Most Recently Used
+
+;; グリフなし文字（不可視文字）を検出
+;; M-x glyphless-display-mode
+(concat
+ "\u200B"				; zwsp
+ "\u200c"				; zwnj
+ "\u200e"				; lrm
+ "\u200f"				; rlm
+ "\u0000")

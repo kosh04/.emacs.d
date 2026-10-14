@@ -51,6 +51,7 @@
     (define-key map "l" '("ielm" . ielm))
     (define-key map "|" '("fill-column" . display-fill-column-indicator-mode))
     (define-key map "b" '("swap-window" . window-swap-states))
+    (define-key map "r" '("recentf" . recentf-open-files))
     map)
   "Keymap for user-defined toggle commands.")
 (global-set-key (kbd "C-c t") '("Toggle any" . ctl-c-t-map))

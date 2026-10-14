@@ -144,7 +144,9 @@ URL `https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/'"
 ;; FIXME: ファイル数の多いディレクトリを考慮して、起動時は無効にしたほうが無難？
 (use-package dired-k
   :hook (dired-initial-position . dired-k)
-  :bind (:map dired-mode-map ("g" . dired-k))
+  :bind (:map dired-mode-map
+	      (("g" . dired-k)
+	       ("l" . dired-k)))
   :custom
   (dired-k-style 'git)
   (dired-k-human-readable t))

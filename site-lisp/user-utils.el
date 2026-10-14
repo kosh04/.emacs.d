@@ -537,6 +537,15 @@ URL: `https://www.gnu.org/software/emacs/manual/html_node/eintr/the_002dthe.html
   (eww (concat "https://explainshell.com/explain?"
 	       (url-build-query-string `(("cmd" ,cmd))))))
 
+(defun font-installed-p (ff)
+  "font-family (FF) がインストールされていれば non-nil を返す."
+  (and window-system
+       (find-font (font-spec :family ff))))
+
+(defun char-valid-p (ch)
+  (declare (obsolete characterp "23.1")) ; then removed v28.1
+  (characterp ch))
+
 (provide 'user-utils)
 
 ;;; user-utils.el ends here

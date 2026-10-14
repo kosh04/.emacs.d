@@ -3,7 +3,8 @@
 (setq kill-whole-line t)
 
 ;; 行の切り捨て (non-nil ならば行の折り返し無効)
-(setf (default-value 'truncate-lines) t)
+;; `visual-line-mode' とどっちが使いやすい？
+(setq-default truncate-lines t)
 
 ;; URL クリックでブラウザを開く
 (add-hook 'text-mode-hook 'goto-address-mode)
